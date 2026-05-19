@@ -1,19 +1,37 @@
-# 改写规则
+# Rewrite Rules
 
-## 默认规则
+## Default Rules
 
-- 保持类型承诺。
-- 保持人物意图。
-- 不用解释替代行动。
-- 不用大纲执行感替代小说场景。
-- 不用机械日序开头重置章节。
-- 不用主角思考作为连续章节的默认结尾。
-- 不用密集一行短段制造伪节奏。
+- Keep the genre promise.
+- Keep character intent.
+- Do not replace action with explanation.
+- Do not replace scene with outline execution.
+- Do not open chapters with mechanical time resets unless time passage is dramatic.
+- Do not end consecutive chapters with the protagonist thinking, analyzing, or deciding.
+- Do not use dense one-line paragraphs as fake rhythm.
 
-## 正文修订规则
+## Anti-Container Revision
 
-1. 如果一章只是"到某地、看到问题、分析问题、决定调查"，必须增加场景阻力或人物冲突。
-2. 如果相邻章节开头都以时间推进开场，至少改写其中一章为承接上一章压力的动作、对话或后果。
-3. 如果结尾只是主角坐下思考，改为外部推进：说出决定、派出任务、收到消息、发现证据、对手出招。
-4. 合并不必要的一行短段，保留真正需要停顿的短段。
-5. 制度设计必须通过具体执行、争执、资源交换和代价呈现。
+Rewrite the chapter if it mainly reads as:
+
+```text
+arrive -> observe -> analyze -> arrange -> think about the future
+```
+
+Revision options:
+
+1. Enter through a concrete abnormal detail, a pressured line of dialogue, an ongoing consequence, or a character already acting.
+2. Add real resistance: another character wants something incompatible, a resource is insufficient, information is hidden, time is running out, or a social cost appears.
+3. Turn abstract strategy into visible execution, dispute, bargain, failure, price, or consequence.
+4. Give short paragraphs a function: turn, pause, impact, contrast, humor, threat, or emotional pressure.
+5. End outward: action starts, someone arrives, a fact is exposed, a cost lands, a rule changes, or pressure moves to the next chapter.
+
+## Chapter Attention
+
+Before finalizing, identify:
+
+- the chapter's attention source;
+- the reader question curve;
+- the external state delta;
+- the ending hook type;
+- whether the chapter shape repeats the previous chapter.

@@ -1,44 +1,174 @@
 schema: context_pack
-purpose: 记录写作前上下文编译结果。它是可复查的写作依据，不是正文或正史状态。
+purpose: >
+  Records the reproducible context compilation result before writing.
+  It is the visible input contract for a round or chapter, not prose and not
+  the current-state source of truth.
+
 fields:
   metadata:
     required: true
-    fields: [project, scope, round, chapter, generated_at, agent]
+    fields:
+      project:
+        required: true
+        purpose: Project name or id.
+        example: example-project
+      scope:
+        required: true
+        allowed: [round, chapter]
+        purpose: Whether this pack supports a round or a single chapter.
+        example: chapter
+      round:
+        required: true
+        purpose: Round id.
+        example: round_001
+      chapter:
+        required: false
+        purpose: Chapter id when scope is chapter.
+        example: ch001
+      generated_at:
+        required: true
+        purpose: Generation timestamp.
+        example: "2026-05-19T14:00:00+08:00"
+      agent:
+        required: true
+        purpose: Agent or model identifier.
+        example: codex
+
   purpose:
     required: true
-    description: 本次上下文编译支持的任务。
+    purpose: What writing task this pack supports.
+    example: Prepare ch004 by carrying forward the prior chapter's public pressure and resource shortage.
+
   read_files:
     required: true
     type: list
-    description: 文件读取清单。
-    item_fields: [file, read_mode, reason, key_takeaway]
-    allowed_read_modes: [full, summary, excerpt, targeted, not_read]
+    purpose: Files read while compiling context.
+    item_fields:
+      file:
+        required: true
+        example: chapters/ch003/final.txt
+      read_mode:
+        required: true
+        allowed: [full, summary, excerpt, targeted, not_read]
+        example: full
+      reason:
+        required: true
+        example: Immediate continuity from previous chapter.
+      key_takeaway:
+        required: true
+        example: The chapter ended with public trust damaged, not restored.
+
   global_understanding:
     required: false
+    purpose: Current whole-book understanding.
+
+  completed_volumes:
+    required: false
+    purpose: Completed volume effects on current writing.
+
   current_volume_state:
     required: false
+    purpose: Current volume goal, phase, contradictions, and remaining tasks.
+
   current_arc_state:
     required: false
+    purpose: Current 3-10 chapter event chain and phase.
+
   recent_chapter_understanding:
-    required: false
+    required: true
+    purpose: Understanding from recent chapter summaries.
+
+  recent_full_text_continuity:
+    required: true
+    purpose: Tone, rhythm, emotional carryover, and scene handoff from recent full chapters.
+
   key_old_chapter_lookbacks:
     required: true
     type: list
+    purpose: Old full-text chapters reread for foreshadowing, debts, objects, relationships, rules, or lines.
+
   active_narrative_debts:
     required: true
+    purpose: Debts to add, advance, pay, or intentionally delay.
+
   active_foreshadowing:
     required: true
+    purpose: Relevant foreshadowing and leak limits.
+
   knowledge_state:
     required: true
+    purpose: Who knows what, who misunderstands what, and what the reader knows.
+
   character_intent:
     required: true
+    purpose: Current goals, bottom lines, misunderstandings, and likely moves.
+
   world_pressure:
     required: true
+    purpose: World state, faction moves, resources, crisis, and external pressure.
+
+  style_constraints:
+    required: true
+    purpose: Style rules, banned tendencies, and prose risks.
+
+  creative_frontend:
+    required: true
+    purpose: Attention-driven writing contract for the chapter or round.
+    fields:
+      attention_source:
+        required: true
+        purpose: The force that keeps the reader reading.
+        example: public resource pressure and incompatible faction desires
+      reader_question_curve:
+        required: true
+        purpose: How the reader's active question changes.
+        example: Why are people quiet? -> Who benefits from the shortage? -> What price will the protagonist pay?
+      entry_method:
+        required: true
+        purpose: Concrete way the chapter enters the scene.
+        example: Begin with an argument already happening at the storehouse gate.
+      scene_growth:
+        required: true
+        purpose: The pressure, object, line, action, or disturbance that lets the scene grow.
+        example: A minor clerk refuses to open the ledger because doing so exposes his patron.
+      state_delta:
+        required: true
+        purpose: External state that must change by the end.
+        example: Knowledge visibility changes from private suspicion to public accusation.
+      chapter_shape:
+        required: true
+        fields:
+          opening_type:
+            required: true
+            example: consequence_in_motion
+          dominant_attention_source:
+            required: true
+            example: resource_pressure
+          main_conflict_mode:
+            required: true
+            example: negotiation
+          exposition_mode:
+            required: true
+            example: revealed_through_argument
+          ending_hook_type:
+            required: true
+            example: cost_lands
+          primary_state_delta:
+            required: true
+            example: reputation_changed
+
   plan:
     required: true
+    purpose: Round plan or chapter scene direction. It must not be mechanically translated into prose.
+
   forbidden_moves:
     required: true
+    purpose: Moves forbidden by canon, visibility, user intent, or protected files.
+
   unknowns_and_risks:
     required: true
+    purpose: Uncertain information and likely drift/flattening risks.
+
   required_updates_after_writing:
     required: true
+    purpose: Files that must be updated after writing.

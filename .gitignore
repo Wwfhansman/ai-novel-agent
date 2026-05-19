@@ -4,6 +4,9 @@
 !/projects/example-project/
 !/projects/example-project/**
 
+# Local copyrighted or private reading samples.
+/小说样本/
+
 # Generated exports and local build artifacts.
 /exports/
 /dist/
@@ -20,4 +23,3 @@
 Thumbs.db
 .vscode/
 .idea/
-

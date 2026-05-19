@@ -1,6 +1,8 @@
-# 改写规则
+# Rewrite Rules
 
-- 用修灯行动展示设定。
-- 悬疑信息逐步释放。
-- 不提前揭示父亲失踪真相。
-
+- Reveal setting through action, pressure, and cost.
+- Release mystery information gradually.
+- Do not reveal major family secrets early.
+- Do not turn a chapter into an event report.
+- Every chapter should have an attention source and an external state delta.
+- Short paragraphs must create pause, turn, impact, humor, threat, or pressure.

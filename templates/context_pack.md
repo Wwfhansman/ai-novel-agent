@@ -11,15 +11,15 @@
 
 ## Purpose
 
-本次上下文编译要支持什么任务？
+What writing task does this context pack support?
 
 ## Read Files
 
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
-| `book/constitution.md` | full | 作品最高约束 |  |
+| `book/constitution.md` | full | highest creative contract |  |
 
-Read Mode 可选：
+Read modes:
 
 ```text
 full
@@ -31,27 +31,27 @@ not_read
 
 ## Global Understanding
 
-整本书目前讲到了哪里？主角长期方向是什么？
+Where is the whole book now? What is the protagonist's long-term direction?
 
 ## Completed Volumes
 
-已完成卷对当前写作有什么影响？
+How do completed volumes affect the current writing?
 
 ## Current Volume State
 
-当前卷目标、阶段、主要矛盾和剩余任务。
+Current volume goal, phase, main contradictions, and remaining tasks.
 
 ## Current Arc State
 
-当前 3-10 章事件链是什么？本轮处于开启、推进、反转还是收束？
+What is the current 3-10 chapter event chain? Is this round opening, advancing, turning, or resolving it?
 
 ## Recent Chapter Understanding
 
-最近 12-15 章摘要理解。
+Understanding from recent 12-15 chapter summaries.
 
 ## Recent Full-Text Continuity
 
-最近 3-5 章原文带来的语气、节奏、情绪和场景承接。
+Tone, rhythm, emotional carryover, and scene handoff from recent 3-5 full chapters.
 
 ## Key Old Chapter Lookbacks
 
@@ -60,40 +60,75 @@ not_read
 
 ## Active Narrative Debts
 
-本轮/本章必须新增、推进、偿还或延后的叙事债。
+Debts that must be added, advanced, paid, or intentionally delayed this round/chapter.
 
 ## Active Foreshadowing
 
-本轮/本章相关伏笔。
+Relevant foreshadowing and how early it may surface.
 
 ## Knowledge State
 
-本轮/本章相关信息可见性。谁知道什么？谁误解什么？读者知道多少？
+Who knows what? Who misunderstands what? What does the reader know?
 
 ## Character Intent
 
-本轮/本章重要人物的当前目标、底线、误解和可能行动。
+Current goals, bottom lines, misunderstandings, and likely moves for important characters.
 
 ## World Pressure
 
-世界状态、势力行动、资源、危机和外部压力。
+World state, faction moves, resources, crisis, and external pressure.
 
 ## Style Constraints
 
-本次写作要遵守的风格规则和禁用表达。
+Style rules, banned tendencies, and current prose risks.
+
+## Creative Frontend
+
+For chapter context packs, fill this before drafting. For round context packs, sketch likely variation across the round.
+
+### Attention Source
+
+What force will keep the reader reading this chapter?
+
+### Reader Question Curve
+
+```text
+opening question -> middle question -> late question -> next-chapter pull
+```
+
+### Entry Method
+
+How will the chapter enter the scene without a mechanical time reset?
+
+### Scene Growth
+
+What concrete pressure, object, line, action, or disturbance will let the scene grow?
+
+### State Delta
+
+What external state must change by the end of the chapter?
+
+### Chapter Shape
+
+- Opening type:
+- Dominant attention source:
+- Main conflict mode:
+- Exposition mode:
+- Ending hook type:
+- Primary state delta:
 
 ## Plan
 
-本轮三章计划或本章 scene beats。
+Round plan or chapter scene direction. This is direction only; do not translate it mechanically into prose.
 
 ## Forbidden Moves
 
-本次写作不能做什么。
+What must not happen in this writing task?
 
 ## Unknowns And Risks
 
-哪些信息仍不确定？哪些地方容易跑偏？
+What remains uncertain? Where is the writing likely to drift or flatten?
 
 ## Required Updates After Writing
 
-写完后必须更新哪些文件？
+Which files must be updated after writing?

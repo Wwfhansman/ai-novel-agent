@@ -1,29 +1,38 @@
-# 风格记忆
+# Style Memory
 
-## 叙述风格
+## Narrative Style
 
-待初始化。
+To be initialized.
 
-## 对话风格
+## Dialogue Style
 
-待初始化。
+To be initialized.
 
-## 禁用倾向
+## Attention Sources That Fit This Book
 
-- 避免通用 AI 小说腔。
-- 避免用旁人惊呼代替剧情反馈。
-- 避免机械日序开头。
-- 避免每章结尾都落在主角思考、分析、决定。
-- 避免大量一行短段和同长度短句。
-- 避免平铺直叙地执行 scene beats。
+- To be initialized.
 
-## 结构要求
+## Chapter Rhythms That Fit This Book
 
-- 章节之间必须有情绪和因果连续性。
-- 每章至少有一处真实摩擦：人物阻力、信息阻力、资源阻力、时间压力或道德选择。
-- 相邻章节不能使用同一种开头和同一种结尾。
-- 章节结尾优先使用外部动作、对话、发现、阻碍或局势变化。
+- To be initialized.
 
-## 高质量样章
+## Banned Tendencies
 
-暂无。
+- Generic AI novel voice.
+- Bystander astonishment as substitute for plot feedback.
+- Mechanical time-sequence openings.
+- Consecutive endings based only on protagonist thought, analysis, or decision.
+- Dense one-line paragraphs without narrative function.
+- Flat execution of scene beats.
+- Chapters that only report what happened.
+
+## Structural Preferences
+
+- Chapters should carry emotional and causal continuity from prior chapters.
+- Each chapter should contain real friction: character resistance, information resistance, resource resistance, time pressure, social cost, or moral choice.
+- Adjacent chapters should vary opening type, attention source, main conflict mode, and ending hook.
+- Chapter endings should push outward through action, dialogue, discovery, obstacle, cost, or changed situation.
+
+## High-Quality Local Samples
+
+None yet.

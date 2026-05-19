@@ -1,15 +1,26 @@
-# 风格记忆
+# Style Memory
 
-## 叙述风格
+## Narrative Style
 
-克制、清晰、偏现场感。用具体物件和行动表达秘密，不用大段解释。
+Restrained, clear, and scene-forward. Use concrete objects and actions to express secrecy instead of long explanation.
 
-## 对话风格
+## Dialogue Style
 
-短句，保留试探和隐瞒。
+Short lines with testing, concealment, and unfinished intent.
 
-## 禁用倾向
+## Attention Sources That Fit This Book
 
-- 不用旁人惊呼代替悬疑反馈。
-- 不在开篇解释完整世界观。
+- Resource pressure.
+- Family debt and obligation.
+- A small object revealing a larger hidden rule.
 
+## Chapter Rhythms That Fit This Book
+
+- Quiet pressure that becomes a concrete cost.
+- Conversation that changes relationship or knowledge state.
+
+## Banned Tendencies
+
+- Bystander astonishment as substitute for suspense feedback.
+- Full worldbuilding explanation at the opening.
+- Chapters that only report what happened.
