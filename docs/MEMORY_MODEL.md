@@ -234,7 +234,7 @@ decision_log.yml
 - id: debt_001
   type: humiliation_payback
   created_in: ch003
-  description: 郡守当众羞辱主角，读者期待主角反击。
+  description: 角色A当众压制主角，读者期待主角反击。
   urgency: high
   expected_payoff_window: ch006-ch009
   status: open
@@ -248,13 +248,13 @@ decision_log.yml
 
 ```yaml
 - id: k_001
-  topic: 青铜令牌真正来源
-  truth: 青铜令牌来自旧王朝北境军。
+  topic: 道具A真正来源
+  truth: 道具A来自势力B，不是普通物品。
   visibility:
     reader: hinted
     protagonist: suspects
-    沈青禾: unknown
-    师父: knows_truth
+    character_a: unknown
+    character_b: knows_truth
 ```
 
 ### 4.3 世界状态
@@ -269,9 +269,9 @@ active_crises:
   - food_shortage
   - refugee_influx
 factions:
-  - name: 郡守府
-    current_goal: 控制赈灾粮，压制主角声望
-    next_action: 散布主角私吞粮食的谣言
+  - name: 势力A
+    current_goal: 控制关键资源，压制主角声望
+    next_action: 散布对主角不利的信息
 ```
 
 ### 4.4 灵感池

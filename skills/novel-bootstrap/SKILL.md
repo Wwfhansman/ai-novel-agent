@@ -7,6 +7,16 @@ description: Initialize a new AI Novel Agent project from a seed idea. Use when 
 
 Use this skill to create a new novel project from a seed. Do not use it for ordinary mid-story ideas, local setting changes, character adjustments, or current-volume revisions; use `novel-change` for those.
 
+## Anti-Contamination Rule
+
+Treat docs, schemas, templates, examples, and previous project files as process references only. Never reuse names, places, factions, items, plot devices, crisis types, or example scenes from these files unless the user explicitly asks for them.
+
+Before writing project content, create a short "contamination check" in `meta/session_log.md`:
+
+- list any names or story elements that came from docs/examples and are therefore forbidden;
+- confirm the generated project names and plot elements come from the user seed or fresh invention;
+- if the seed is close to a documented example, intentionally choose different names, institutions, objects, and opening conflicts.
+
 ## Required Inputs
 
 - User seed: premise, setting, protagonist image, genre, opening scene, or desired payoff.
@@ -31,16 +41,19 @@ Use `templates/project/` as the required output structure.
 1. **Assess the seed**
    - Extract genre, protagonist, core conflict, reader payoff, and long-form potential.
    - If the seed is underspecified, generate 3-5 viable directions and recommend one.
+   - Identify and exclude any docs/example/template story material that must not leak into the new project.
 
 2. **Create the creative constitution**
    - Write `book/constitution.md`.
    - Include genre, core selling point, protagonist long-term desire, reader promises, forbidden moves, and protected boundaries.
+   - Add a project-specific rule forbidding generic AI prose, mechanical chapter openings, repeated thought endings, and reuse of framework examples.
 
 3. **Initialize book-level memory**
    - Write `book/global_summary.md` as the initial book state.
    - Write `book/reader_model.yml`.
    - Write `book/style_memory.md`.
    - Write `book/endgame_hypotheses.yml` as hypotheses, not canon.
+   - In `style_memory.md`, define prose standards for paragraph rhythm, scene continuity, chapter openings, and chapter endings.
 
 4. **Initialize volume 001**
    - Write `volumes/vol_001/volume_outline.md`.
@@ -91,4 +104,4 @@ Stop and ask for direction if:
 - The seed implies mutually incompatible genres or reader promises.
 - Required template files are missing.
 - You cannot determine whether to overwrite existing canon.
-
+- You notice generated names, factions, items, or plot beats were copied from docs/templates/example projects.

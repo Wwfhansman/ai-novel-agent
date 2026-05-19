@@ -17,7 +17,7 @@ fields:
   one_line_summary:
     required: true
     description: 一句话摘要。
-    example: 主角抵达边城，第一次面对粮仓危机。
+    example: 主角抵达新地点，第一次面对核心危机。
   detailed_summary:
     required: true
     type: list
@@ -40,4 +40,3 @@ fields:
   next_hook:
     required: true
     description: 下一章必须承接的钩子。
-

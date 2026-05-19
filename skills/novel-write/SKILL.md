@@ -18,6 +18,27 @@ chapters/chXXX/context_pack.md
 
 The context pack is the visible record of what you read, why you read it, what you understood, what remains uncertain, and what must be updated after writing.
 
+## Prose Quality Rule
+
+Do not write outline-shaped prose. The chapter must read like a continuous novel scene, not a checklist of planned beats.
+
+Avoid:
+
+- repeated one-sentence paragraphs;
+- mechanical day-by-day openings such as "the next day / the third day" unless dramatically necessary;
+- chapter endings that only say the protagonist sat, thought, analyzed, or decided;
+- flat sequences of "go somewhere, observe problem, think about solution";
+- identical chapter shapes across a round;
+- explaining strategy in summary instead of dramatizing it through conflict, dialogue, choice, and consequence.
+
+Require:
+
+- varied paragraph length and sentence rhythm;
+- scene transitions that grow from the previous chapter's pressure;
+- at least one concrete scene-level conflict or friction per chapter;
+- chapter endings that turn the situation outward: a decision spoken aloud, an arrival, a new obstacle, a discovered object, an action already underway, or another character's move;
+- clear difference in texture between chapters in the same round.
+
 ## Read First
 
 Read:
@@ -48,8 +69,10 @@ Read:
    - Write `chapters/chXXX/context_pack.md`.
    - Create `outline.md` scene beats.
    - Draft `draft.txt`.
-   - Review the draft.
+   - Review the draft for protocol and prose quality.
+   - Run a revision pass that removes mechanical openings, repeated short paragraphs, flat exposition, and thought-only endings.
    - Write confirmed text to `final.txt` only after review.
+   - Write `review.md` for every chapter.
    - Generate `summary.yml` and `canon_delta.yml`.
    - Merge current state into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
 
@@ -96,6 +119,12 @@ Before finalizing each chapter, check:
 - World state reacts to actions.
 - Foreshadowing is not leaked too early.
 - Ending has next-chapter pull.
+- Opening does not mechanically reset time unless the story demands it.
+- Ending is not merely internal thought or planning.
+- Paragraph rhythm is varied; prose is not mostly one-line short paragraphs.
+- The chapter contains dramatized friction, not only observation and analysis.
+- Adjacent chapters do not share the same structural pattern.
+- `review.md` exists and records any prose revisions.
 
 ## Failure Handling
 
@@ -107,3 +136,8 @@ Stop before正文 if:
 - Required prior chapter files are missing.
 - The chapter would depend on an unconfirmed idea as if it were canon.
 
+Stop before finalizing if:
+
+- The draft reads like a beat outline expanded into prose.
+- Multiple chapters in the round open or end with the same pattern.
+- The protagonist's progress exists only as internal analysis, with no external action, resistance, or consequence.
