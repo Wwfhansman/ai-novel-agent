@@ -1,27 +1,32 @@
 ---
 name: novel-write
-description: Continue an existing AI Novel Agent project by writing the next chapter or next three-chapter round. Use for daily novel production, context pack generation, attention-driven chapter drafting, chapter review, canon delta creation, and memory updates.
+description: Continue an existing AI Novel Agent project by writing the next chapter or next three-chapter round. Use for daily novel production, detailed rolling synopsis updates, context pack generation, prose drafting, chapter review, canon delta creation, and memory updates.
 ---
 
 # Novel Write
 
 Use this skill for normal production writing. Default unit: one round of 3 chapters.
 
-This skill has two layers:
+The writing source is the **detailed rolling synopsis** in `planning/rolling_plan.yml`. The prose should grow from story content, continuity, characters, pressure, and scene imagination, not from a fixed intra-chapter template.
 
-1. **Memory Backend**: read files, compile context packs, protect canon, update summaries and ledgers.
-2. **Creative Frontend**: write chapters as living fiction, not as expanded outlines or event reports.
+## Core Shift
 
-The backend may be structured. The frontend must preserve freedom, scene life, character intent, reader curiosity, and local surprise.
+- Planning may be structured.
+- Prose drafting must be free, continuous, and fiction-first.
+- `rolling_plan.yml` is the authority for the next 6-15 chapters.
+- `current_round.yml` is only a 3-chapter extract from `rolling_plan.yml`.
+- `outline.md` is optional scratch. It is not required and must not become scene-beat scaffolding.
+- Review is diagnostic after drafting; it must not become a template that shapes every paragraph.
 
 ## Hard Rules
 
 - Never write `draft.txt` or `final.txt` before generating:
   - `planning/context_packs/round_XXX_context_pack.md`
   - `chapters/chXXX/context_pack.md`
-- Do not translate `outline.md` directly into prose. The outline gives direction; the chapter must find a scene.
-- A chapter fails if it can be reduced to: "the protagonist arrives, observes a problem, analyzes it, makes an arrangement, then thinks about the future."
-- Do not use docs, schemas, templates, examples, or other projects as creative source material. They are process references only.
+- Do not translate a plan, synopsis, outline, or checklist directly into prose.
+- A chapter fails if it reads like a report of tasks completed.
+- A chapter fails if the last section is mainly the protagonist summarizing lessons, analyzing the situation, or thinking about the next step.
+- Do not use docs, schemas, templates, examples, sample novels, or other projects as creative source material. They are process references only.
 - Do not silently change protected canon. Route major changes to `novel-change`.
 
 ## Read First
@@ -31,12 +36,14 @@ Read:
 - `docs/CONTEXT_PACK.md`
 - `docs/CANON_AND_SAFETY.md`
 - `docs/MEMORY_MODEL.md`
+- `docs/FILE_FORMATS.md`
 - Current project `project.yml`
 - `book/constitution.md`
 - `book/reader_model.yml`
 - `book/style_memory.md`
 - `style/rewrite_rules.md`
-- `planning/chapter_shape_history.yml` if it exists
+- `planning/rolling_plan.yml`
+- `planning/current_round.yml` if it exists
 
 ## Source Of Truth
 
@@ -46,159 +53,127 @@ Read:
 - Current character state lives in `entities/characters.yml`.
 - Current world state lives in `ledgers/world_state.yml`.
 - Current knowledge visibility lives in `ledgers/knowledge_state.yml`.
-- Current future plan lives in `planning/rolling_plan.yml`.
+- Future 6-15 chapter synopsis lives in `planning/rolling_plan.yml`.
+- Current round extract lives in `planning/current_round.yml`.
 
 When files conflict, follow `docs/CANON_AND_SAFETY.md`. Do not merge contradictions casually.
+
+## Rolling Synopsis Requirements
+
+Before each round, ensure `planning/rolling_plan.yml` contains a detailed 6-12 chapter forward window.
+
+Each planned chapter should include:
+
+- chapter id and provisional title;
+- status;
+- 300-800 Chinese characters of story synopsis;
+- continuity from previous chapter;
+- required plot developments;
+- important characters and what they want;
+- pressure, obstacle, or complication;
+- expected payoff, reveal, or reader reward;
+- bridge to the next chapter;
+- forbidden moves or canon constraints.
+
+This is not an intra-chapter structure. It describes what story content should happen, not how the chapter must be arranged.
+
+If the rolling synopsis is too thin, expand it before drafting. Do not compensate for a thin synopsis by inventing a rigid `outline.md`.
 
 ## Round Workflow
 
 1. **Establish checkpoint**
    - If Git is available and the project tracks real content, create or recommend a checkpoint before the round.
 
-2. **Compile round context**
+2. **Refresh detailed rolling synopsis**
+   - Read current canon and planning files.
+   - Update `planning/rolling_plan.yml` so the next 6-12 chapters are coherent and detailed enough to drive prose.
+   - Remove chapters already completed or mark them completed; do not leave future chapters repeating decisions already made.
+
+3. **Compile round context**
    - Read the default files from `docs/CONTEXT_PACK.md`.
    - Read recent 12-15 chapter summaries when available.
    - Read recent 3-5 chapter `final.txt` files when available.
-   - Read key old chapter originals when an old foreshadowing, debt, object, relationship, rule, line, or scene becomes relevant.
+   - Read key old chapter originals when old foreshadowing, debts, objects, relationships, rules, or lines become relevant.
    - Write `planning/context_packs/round_XXX_context_pack.md`.
 
-3. **Plan the round**
+4. **Create current round extract**
    - Plan exactly 3 chapters unless the user asks otherwise.
-   - For each chapter, identify a different attention source and chapter shape.
-   - Update or create `planning/current_round.yml`.
+   - Copy or condense each chapter from `planning/rolling_plan.yml`.
+   - Do not invent a separate competing plan.
+   - Write `planning/current_round.yml`.
 
-4. **Write each chapter independently**
-   - Create or update `chapters/chXXX/brief.md`.
+5. **Write each chapter**
+   - Create or update `chapters/chXXX/brief.md` from the detailed synopsis and immediate continuity.
    - Generate `chapters/chXXX/context_pack.md`.
-   - Design the chapter's attention engine before writing prose.
-   - Draft `draft.txt`.
-   - Review and revise until the chapter no longer reads like a container.
+   - Optionally write `outline.md` only as freeform notes if useful. Do not make it a required scene-beat checklist.
+   - Draft `draft.txt` as novel prose.
+   - Revise for continuity, concreteness, anti-reporting, and ending behavior.
    - Write confirmed text to `final.txt`.
    - Write `review.md`, `summary.yml`, and `canon_delta.yml`.
    - Merge current state into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
-   - Append the chapter shape to `planning/chapter_shape_history.yml` if the file exists; create it if useful.
 
-5. **End round**
+6. **End round**
    - Update current volume summary/state and active arc.
    - Evaluate idea pool and narrative debts.
-   - Adjust `planning/rolling_plan.yml`.
+   - Refresh `planning/rolling_plan.yml` so the next round does not repeat completed choices.
    - Record a session summary in `meta/session_log.md`.
 
-## Chapter Creative Frontend
+## Drafting Guidance
 
-Before drafting, write the following into the chapter context pack.
+During prose drafting, focus on **what is happening now**, not on proving that the plan was followed.
 
-### 1. Attention Source
+Good drafting behavior:
 
-Choose the force that keeps the reader reading. Examples:
+- enter through a concrete moment, pressure, action, dialogue, object, or consequence;
+- let characters pursue wants in the scene instead of explaining their roles;
+- let exposition surface because someone needs, hides, misreads, trades, or weaponizes information;
+- allow small local inventions if they serve the chapter and do not break canon;
+- make the chapter feel like it continues from the prior chapter's pressure, not like a new independent task card;
+- let the ending land in the world: a cost, arrival, exposed fact, changed relationship, action already underway, or pressure that naturally continues.
 
-- unknown object, abnormal event, large-scale wonder, or hidden rule;
-- immediate danger, time pressure, public embarrassment, or social pressure;
-- character conflict, incompatible desire, negotiation, deception, or test;
-- resource movement, debt movement, relationship movement, status movement;
-- irony, contradiction, dark humor, mistaken understanding, or rule reversal;
-- emotional rupture, shame, longing, fear, resentment, loyalty, or temptation.
+Avoid:
 
-Do not choose a generic task such as "advance the plot" or "explain the plan."
+- ending with a neat protagonist recap;
+- numbered lessons in prose such as "first, second, third" unless the character is literally writing a document;
+- default openings like "the next day" when time passage is not the drama;
+- paragraphs that only restate the plan;
+- repetitive "arrive -> observe -> analyze -> arrange -> think" chapters;
+- forcing every chapter to have the same internal rhythm.
 
-### 2. Reader Question Curve
+## TXT Format Rule
 
-State how the reader's active question changes during the chapter:
+`draft.txt` and `final.txt` must look like normal TXT novel text:
 
 ```text
-opening question -> middle question -> late question -> next-chapter pull
+第八章 章名
+
+正文第一段。
+正文第二段。
+正文第三段。
 ```
 
-If the question does not change, the chapter is probably flat.
-
-### 3. Entry Method
-
-Do not default to time reset openings such as "the next day." Enter through one of:
-
-- a visible abnormal detail;
-- a line of dialogue with pressure behind it;
-- a consequence already in motion;
-- a character doing something specific;
-- a social, material, or physical disturbance;
-- a quiet but loaded image.
-
-Use a time opening only when the passage of time is itself dramatic.
-
-### 4. Scene Growth
-
-Let the scene grow from concrete pressure, not from explanation.
-
-- Introduce setting through what obstructs, tempts, exposes, or costs someone.
-- Let characters reveal intent through choices, omissions, gestures, bargains, and refusals.
-- Let information appear because someone needs it, hides it, misreads it, pays for it, or weaponizes it.
-- Allow small local inventions: a minor character, object, misunderstanding, rumor, obstacle, or sensory detail may appear if it serves the current scene and does not break canon.
-
-Local inventions must be handled after writing:
-
-- canon-relevant: add to `canon_delta.yml` and current state files;
-- reusable but not confirmed: add to `ledgers/idea_pool.yml` or `ledgers/foreshadowing.yml`;
-- one-scene color only: mention in `review.md` as disposable scene texture.
-
-### 5. State Delta
-
-Every chapter must change at least one external state:
-
-- relationship;
-- resource;
-- knowledge visibility;
-- debt or promise;
-- location control;
-- reputation;
-- danger level;
-- faction move;
-- physical condition;
-- plan feasibility.
-
-Internal realization alone is not enough.
-
-## Drafting Principles
-
-- Write from scene pressure, not from a task list.
-- Prefer specific action over abstract explanation.
-- Prefer character intent over author summary.
-- Keep strategy visible through execution, argument, resource trade, failed attempt, or consequence.
-- Use short paragraphs only when they create turn, pause, impact, contrast, humor, threat, or emotional pressure.
-- Vary paragraph length naturally. Do not make every sentence its own paragraph by habit.
-- Let dialogue carry desire, concealment, status, and conflict. Do not use dialogue only to deliver exposition.
-- Avoid repeated chapter endings where the protagonist sits, thinks, understands, decides, or looks into the distance.
-- End outward: an action begins, someone arrives, a fact is exposed, a cost lands, a promise is made, a rule changes, or pressure moves to the next chapter.
-
-## Chapter Shape Diversity
-
-Across one round, adjacent chapters should not share the same shape.
-
-Track:
-
-- opening type;
-- dominant attention source;
-- main conflict mode;
-- exposition mode;
-- ending hook type;
-- primary state delta.
-
-If two adjacent chapters have the same shape, revise one before finalizing.
+- Keep one blank line after the chapter title.
+- Do not put blank lines between ordinary body paragraphs.
+- Use an extra blank line only for a deliberate scene break.
+- Do not include review notes, YAML, Markdown headings, or checklist language inside `draft.txt` or `final.txt`.
 
 ## Review Checklist
 
-Before writing `final.txt`, create or update `review.md` and answer:
+Before writing `final.txt`, create or update `review.md`.
 
-- What is this chapter's attention source?
-- How did the reader question change from opening to ending?
-- What concrete state changed?
-- Which scene would be boring if summarized? Did the draft dramatize it instead?
-- Does any paragraph exist only because the outline needed a beat? If yes, rewrite it as scene or cut it.
-- Are short paragraphs functional, or just AI rhythm?
-- Does the protagonist act, bargain, risk, refuse, lose, gain, or expose something?
-- Did another character or the world push back?
-- Is information visibility correct?
-- Are narrative debts added, advanced, paid, or intentionally delayed?
-- Does the ending push outward rather than collapse into thought?
-- Is the chapter shape different from adjacent chapters?
+The review must be diagnostic, not self-praise. It must name at least one weakness or risk and say whether it was fixed.
+
+Check:
+
+- Does the chapter follow the detailed synopsis without sounding like a synopsis?
+- Does it continue naturally from the previous chapter?
+- Does it contain concrete fictional material, not only explanation and planning?
+- Did the protagonist or another character make a choice, pay a cost, gain leverage, lose something, expose something, or change a relationship?
+- Is there enough reader reward for the genre and current debt window?
+- Does the ending avoid recap/thought-summary behavior?
+- Are body paragraphs single-spaced in TXT format?
+- Are `summary.yml`, `canon_delta.yml`, and current state files updated?
+- Did `rolling_plan.yml` change so future chapters do not repeat already-completed decisions?
 
 ## Do Not Silently Modify
 
@@ -219,7 +194,6 @@ During normal writing, this skill may modify:
 - `planning/context_packs/*`
 - `planning/current_round.yml`
 - `planning/rolling_plan.yml`
-- `planning/chapter_shape_history.yml`
 - `chapters/chXXX/*`
 - `entities/*` when current state changes
 - `ledgers/*`
@@ -247,13 +221,13 @@ Stop before drafting if:
 - a protected file must change;
 - required prior chapter files are missing;
 - the chapter depends on an unconfirmed idea as if it were canon;
-- the chapter has no attention source beyond "advance plot."
+- `planning/rolling_plan.yml` is too thin to drive prose.
 
 Stop before finalizing if:
 
-- the draft reads like an expanded outline;
-- the chapter is mostly arrival, observation, analysis, arrangement, and thought;
+- the draft reads like an expanded outline or task report;
+- the ending is mainly internal reflection, analysis, or next-step planning;
 - no external state changes;
-- adjacent chapters share the same opening, middle, and ending pattern;
-- the ending is only internal reflection;
-- `review.md`, `summary.yml`, or `canon_delta.yml` is missing.
+- ordinary body paragraphs are separated by blank lines;
+- `review.md`, `summary.yml`, or `canon_delta.yml` is missing;
+- current state files or `rolling_plan.yml` are stale after writing.

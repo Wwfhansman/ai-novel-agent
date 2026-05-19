@@ -19,7 +19,8 @@ chapters/ch001/context_pack.md
 远处读摘要
 近处读原文
 关键旧内容回看原文
-动态账本优先读取
+动态账本优先读当前状态
+详细章纲驱动剧情
 所有读取决策写入 context_pack.md
 ```
 
@@ -27,8 +28,9 @@ chapters/ch001/context_pack.md
 
 - 这本书现在在哪里。
 - 当前卷正在解决什么。
-- 最近剧情的情绪和节奏是什么。
+- 最近剧情的情绪、节奏和因果承接是什么。
 - 本轮必须推进哪些债务、伏笔、人物和世界状态。
+- `planning/rolling_plan.yml` 中本轮三章的详细章纲是什么。
 - 哪些旧章节需要回看原文。
 - 哪些信息仍然不确定。
 
@@ -51,9 +53,7 @@ planning/context_packs/round_001_context_pack.md
 
 作用：
 
-```text
-让 agent 理解本轮三章所处的全书、当前卷、当前 arc 和近期剧情。
-```
+让 agent 理解本轮三章所处的全书、当前卷、当前 arc、近期剧情和详细章纲。
 
 必须包含：
 
@@ -64,10 +64,12 @@ planning/context_packs/round_001_context_pack.md
 - 当前卷状态理解
 - 当前 arc 状态理解
 - 最近剧情理解
+- 最近全文语气和情绪承接
 - 动态账本摘要
+- `planning/rolling_plan.yml` 中本轮三章的详细章纲
 - 本轮相关旧章节回看
 - 本轮风险
-- 本轮三章初步计划
+- 本轮后必须更新的文件
 - 未确认问题
 
 ### 3.2 Chapter Context Pack
@@ -80,23 +82,23 @@ chapters/ch001/context_pack.md
 
 作用：
 
-```text
-让 agent 明确这一章具体要写什么、不能写什么、要承接什么、要改变什么。
-```
+让 agent 明确这一章要写什么剧情、承接什么压力、不能违反什么，以及写完后必须更新什么。
 
 必须包含：
 
-- 本章任务
+- 本章来自 `planning/rolling_plan.yml` 的详细章纲
 - 本章输入文件清单
 - 上一章承接点
-- 本章出场人物状态
+- 本章出场人物当前意图
 - 本章相关叙事债
 - 本章相关伏笔
 - 本章信息可见性
 - 本章世界压力
-- 本章 scene beats
 - 本章禁止事项
+- 本章写作风险
 - 本章结束后必须更新的文件
+
+不要把 chapter context pack 写成固定 scene beats 模板。它是写作输入记录，不是正文结构脚手架。
 
 ## 4. 默认读取清单
 
@@ -128,15 +130,19 @@ ledgers/idea_pool.yml
 planning/rolling_plan.yml
 ```
 
+如果 `planning/rolling_plan.yml` 太薄，先扩充详细章纲，再写正文。
+
 ### 4.2 每章开始
 
 默认读取：
 
 ```text
 本章 brief.md
-本章 outline.md 或本章 scene beats
+planning/rolling_plan.yml 中本章详细章纲
+planning/current_round.yml 中本章摘录
 上一章 final.txt
 上一章 canon_delta.yml
+最近 3-5 章 final.txt
 本章出场人物在 entities/characters.yml 中的条目
 本章相关势力、地点、物品条目
 本章相关叙事债
@@ -144,6 +150,8 @@ planning/rolling_plan.yml
 本章相关 knowledge_state
 本章相关 world_state
 ```
+
+`outline.md` 是可选草稿，不能作为默认强制读取项，也不能作为正文结构权威。
 
 ## 5. 关键旧章节回看规则
 
@@ -182,6 +190,7 @@ templates/context_pack.md
 - 本次写作基于哪些文件？
 - 哪些文件是重点？
 - 哪些旧章节被精读？
+- 本轮或本章的详细章纲是什么？
 - 本轮或本章的关键约束是什么？
 - 哪些信息不能确定？
 - 写完后需要更新哪些文件？

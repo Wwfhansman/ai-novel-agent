@@ -53,6 +53,21 @@ Understanding from recent 12-15 chapter summaries.
 
 Tone, rhythm, emotional carryover, and scene handoff from recent 3-5 full chapters.
 
+## Detailed Rolling Synopsis
+
+Copy the relevant chapter entries from `planning/rolling_plan.yml`.
+
+This section says what story content should happen. It must not become a scene-beat template.
+
+## Current Round Extract
+
+For round packs, list the three chapter synopses for this round.
+For chapter packs, state where this chapter sits inside the round.
+
+## Previous Chapter Handoff
+
+What exact pressure, action, image, unresolved problem, or emotional state carries into this chapter?
+
 ## Key Old Chapter Lookbacks
 
 | Chapter/File | Reason | Extracted Canon | Risk |
@@ -78,48 +93,15 @@ Current goals, bottom lines, misunderstandings, and likely moves for important c
 
 World state, faction moves, resources, crisis, and external pressure.
 
-## Style Constraints
+## Style And Format Constraints
 
-Style rules, banned tendencies, and current prose risks.
+Style rules, banned tendencies, prose risks, and TXT formatting constraints.
 
-## Creative Frontend
+## Prose Freedom Notes
 
-For chapter context packs, fill this before drafting. For round context packs, sketch likely variation across the round.
+Freeform notes for possible scene entry, images, dialogue, local details, or small inventions.
 
-### Attention Source
-
-What force will keep the reader reading this chapter?
-
-### Reader Question Curve
-
-```text
-opening question -> middle question -> late question -> next-chapter pull
-```
-
-### Entry Method
-
-How will the chapter enter the scene without a mechanical time reset?
-
-### Scene Growth
-
-What concrete pressure, object, line, action, or disturbance will let the scene grow?
-
-### State Delta
-
-What external state must change by the end of the chapter?
-
-### Chapter Shape
-
-- Opening type:
-- Dominant attention source:
-- Main conflict mode:
-- Exposition mode:
-- Ending hook type:
-- Primary state delta:
-
-## Plan
-
-Round plan or chapter scene direction. This is direction only; do not translate it mechanically into prose.
+Do not force these notes into the final chapter. They are sparks, not a template.
 
 ## Forbidden Moves
 
@@ -127,7 +109,7 @@ What must not happen in this writing task?
 
 ## Unknowns And Risks
 
-What remains uncertain? Where is the writing likely to drift or flatten?
+What remains uncertain? Where is the writing likely to drift, flatten, or become report-like?
 
 ## Required Updates After Writing
 

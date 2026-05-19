@@ -11,71 +11,99 @@
 
 ## Purpose
 
-支持第一轮三章规划，开启旧灯芯异常 arc。
+Support round_001 writing from the detailed rolling synopsis and open the old-wick anomaly arc.
 
 ## Read Files
 
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
-| `book/constitution.md` | full | 确认作品核心承诺 | 靠修灯、观察和推理推进，不提前揭示父亲真相。 |
-| `volumes/vol_001/volume_outline.md` | full | 确认第一卷目标 | 第一卷要证明雾灯保存记忆，并关联父亲失踪。 |
-| `ledgers/narrative_debts.yml` | full | 检查开篇期待 | debt_001 需要在 ch002-ch004 推进。 |
-| `ledgers/knowledge_state.yml` | full | 检查信息差 | 主角和读者尚不知道旧灯芯真相。 |
-| `ledgers/world_state.yml` | full | 检查世界压力 | 巡灯署将封锁外环灯巷。 |
+| `book/constitution.md` | full | Confirm core promise | Advance through repair, observation, and inference; do not reveal father truth early. |
+| `volumes/vol_001/volume_outline.md` | full | Confirm volume goal | Volume 001 proves fog lamps preserve memory and connects that to the father's disappearance. |
+| `planning/rolling_plan.yml` | full | Get detailed chapter synopsis | ch001-ch003 cover old wick anomaly, patrol pressure, and the first father clue. |
+| `ledgers/narrative_debts.yml` | full | Check opening expectations | debt_001 should begin in this round. |
+| `ledgers/knowledge_state.yml` | full | Check information visibility | Protagonist and reader do not know old wick truth. |
+| `ledgers/world_state.yml` | full | Check world pressure | Patrol agency will pressure outer ring lamp corridors. |
 
 ## Global Understanding
 
-故事尚未正式开始。核心是旧灯芯记忆异常和父亲失踪谜题。
+The story has not formally begun. The first round should open the old-wick memory anomaly and the father's disappearance mystery without explaining the entire system.
 
 ## Current Volume State
 
-第一卷处于 stage_001，目标是开启雾灯记忆主线。
+Volume 001 is in stage_001. Its goal is to open the fog-lamp memory line and establish institutional pressure.
 
 ## Current Arc State
 
-arc_001 覆盖 ch001-ch003，用于让主角发现异常并遭遇巡灯署压力。
+arc_001 covers ch001-ch003: discovery, pressure, and first personal clue.
+
+## Recent Chapter Understanding
+
+No written chapters yet.
+
+## Recent Full-Text Continuity
+
+No prior prose.
+
+## Detailed Rolling Synopsis
+
+- ch001: Lin Qi repairs an old fog lamp, hears a strange memory echo, and hides a cracked wick fragment before patrol staff arrive.
+- ch002: Patrol agency demands old wick recovery. Lin Qi notices altered records and protects her maintenance log.
+- ch003: A repair knife from her father's old tool box matches marks on the wick fragment, while patrol questions her about the old case.
+
+## Current Round Extract
+
+round_001 writes ch001-ch003 from `planning/rolling_plan.yml`. This round should not create a separate competing plan.
+
+## Previous Chapter Handoff
+
+Opening round; no prior handoff.
 
 ## Key Old Chapter Lookbacks
 
 | Chapter/File | Reason | Extracted Canon | Risk |
 | --- | --- | --- | --- |
-| 无 | 尚无旧章节 | 无 | 无 |
+| None | No prior chapters | None | None |
 
 ## Active Narrative Debts
 
-- debt_001：旧灯芯为什么会保存陌生记忆？
+- debt_001: Why can the old wick preserve strange memory?
 
 ## Active Foreshadowing
 
-- f_001：旧灯芯碎片里有父亲修灯刀划痕，第一轮只能埋或轻微暗示。
+- f_001: The wick fragment has marks connected to the father's repair knife. This round may hint, not reveal the full truth.
 
 ## Knowledge State
 
-旧灯芯保存记忆：读者 unknown，林栖 unknown，沈砚 partial。
+Old wick memory: reader unknown; Lin Qi unknown; patrol partial.
 
 ## Character Intent
 
-林栖要修复异常雾灯并保留证据。沈砚要回收异常旧灯芯。
+- Lin Qi wants to understand the abnormal lamp while keeping evidence.
+- Patrol agency wants abnormal old wicks recovered.
 
 ## World Pressure
 
-主灯塔光度下降，外环雾灯反复熄灭，巡灯署准备封锁灯巷。
+Main lamp tower light is dimming. Outer ring fog lamps fail repeatedly. Patrol agency prepares to control the corridor.
 
-## Plan
+## Style And Format Constraints
 
-1. ch001：发现异常。
-2. ch002：巡灯署施压。
-3. ch003：林栖保留碎片并发现父亲痕迹。
+- Keep explanation limited.
+- Enter through concrete repair work.
+- `final.txt` body paragraphs use single newlines, not blank lines.
+
+## Prose Freedom Notes
+
+Potential material: night fog, damp metal, wick ash, altered ledger ink, patrol boots, an old repair knife. These are optional sparks.
 
 ## Forbidden Moves
 
-- 不揭示父亲真实下落。
-- 不让主角完整读取记忆。
-- 不让巡灯署彻底摊牌。
+- Do not reveal the father's true whereabouts.
+- Do not let the protagonist read a full memory.
+- Do not let patrol fully explain its motive.
 
 ## Unknowns And Risks
 
-- 旧灯芯规则需要边写边定，避免一次解释过多。
+The old-wick rules need to develop gradually. Avoid turning the first round into an explanation document.
 
 ## Required Updates After Writing
 
@@ -86,4 +114,3 @@ arc_001 覆盖 ch001-ch003，用于让主角发现异常并遭遇巡灯署压力
 - `ledgers/knowledge_state.yml`
 - `ledgers/world_state.yml`
 - `planning/rolling_plan.yml`
-

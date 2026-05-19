@@ -1,6 +1,7 @@
 round: round_001
 status: planned
+source_plan: planning/rolling_plan.yml
 chapters: []
 goals: []
 required_context_pack: planning/context_packs/round_001_context_pack.md
-
+notes: "This file is a three-chapter extract from rolling_plan.yml, not a separate planning authority."

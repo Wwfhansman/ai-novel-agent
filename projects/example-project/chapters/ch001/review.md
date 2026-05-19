@@ -1,9 +1,11 @@
 # Chapter Review
 
-示例章节尚未写作。正式写作后应检查：
+Example chapter not written.
 
-- context pack 是否完整。
-- 正文是否符合 brief 和 outline。
-- summary 与 canon_delta 是否更新。
-- entities 与 ledgers 是否同步。
+After formal writing, check:
 
+- Did the prose follow the detailed rolling synopsis without sounding like a synopsis?
+- Did it feel like a concrete repair scene rather than a lore explanation?
+- Did the ending avoid protagonist recap or next-step analysis?
+- Did `final.txt` use one blank line after title and no blank lines between ordinary body paragraphs?
+- Were `summary.yml`, `canon_delta.yml`, `entities/`, `ledgers/`, and `planning/rolling_plan.yml` updated?

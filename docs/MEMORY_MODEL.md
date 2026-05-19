@@ -157,6 +157,8 @@ review.md
 - `final.txt`：正文细节。
 - `summary.yml`：这一章发生了什么。
 - `canon_delta.yml`：这一章改变了什么。
+- `brief.md`：从近期详细章纲抽取出的本章交接说明。
+- `outline.md`：可选创作草稿，不是强制 scene beats。
 
 ### 3.5 实体层
 
@@ -301,7 +303,7 @@ final.txt
 → canon_delta.yml
 → entities update
 → ledgers update
-→ planning update
+→ planning/rolling_plan.yml update
 ```
 
 其中：
@@ -309,7 +311,8 @@ final.txt
 - `final.txt` 保存章节原文细节。
 - `summary.yml` 保存该章发生了什么。
 - `canon_delta.yml` 保存该章造成了什么变化。
-- `entities/`、`ledgers/`、`planning/` 保存合并后的当前权威状态。
+- `entities/`、`ledgers/` 保存合并后的当前权威状态。
+- `planning/rolling_plan.yml` 保存刷新后的未来 6-15 章详细章纲，避免下一轮重复已经完成的剧情选择。
 
 `canon_delta.yml` 不能替代当前状态文件。agent 冷启动时应以当前状态文件为准，再按需回看 delta 和正文。
 
@@ -320,6 +323,7 @@ final.txt
 近处读原文
 关键旧内容回看原文
 动态账本优先读取
+详细章纲驱动剧情
 ```
 
 推荐默认读取：

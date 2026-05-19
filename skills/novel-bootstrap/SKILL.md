@@ -53,7 +53,7 @@ Use `templates/project/` as the required output structure.
    - Write `book/reader_model.yml`.
    - Write `book/style_memory.md`.
    - Write `book/endgame_hypotheses.yml` as hypotheses, not canon.
-   - In `style_memory.md`, define prose standards for paragraph rhythm, scene continuity, chapter openings, and chapter endings.
+   - In `style_memory.md`, define prose standards for paragraph rhythm, scene continuity, chapter endings, and TXT formatting.
 
 4. **Initialize volume 001**
    - Write `volumes/vol_001/volume_outline.md`.
@@ -66,8 +66,10 @@ Use `templates/project/` as the required output structure.
    - Keep `idea_pool.yml` separate from canon.
 
 6. **Initialize planning**
-   - Write `planning/rolling_plan.yml` with a 9-15 chapter window.
-   - Write `planning/current_round.yml` for round 001.
+   - Write `planning/rolling_plan.yml` with a detailed 9-15 chapter synopsis window.
+   - Each planned chapter should include 300-800 Chinese characters of story synopsis, continuity from the previous chapter, required developments, character intents, pressure/complication, reader payoff, bridge to next chapter, and constraints.
+   - Write `planning/current_round.yml` for round 001 as an extract from `rolling_plan.yml`, not a separate planning authority.
+   - Do not create rigid scene-beat outlines during bootstrap.
    - Do not write正文 yet unless the user explicitly asks to continue with `novel-write`.
 
 7. **Write meta state**

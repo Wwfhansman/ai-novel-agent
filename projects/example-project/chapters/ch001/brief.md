@@ -1,25 +1,30 @@
 # Chapter Brief
 
-## 本章目标
+## Source Synopsis
 
-让林栖在修复外环灯巷旧雾灯时第一次听见陌生记忆回声。
+Lin Qi is called to the outer ring lamp corridor during heavy night fog. The old fog lamp repeatedly goes out. Patrol staff treat it as routine malfunction and urge her to replace the wick. While disassembling the lamp, she hears a memory echo from a stranger who seems to have spoken in the same place years ago. She does not explain the anomaly and hides a cracked wick fragment before patrol footsteps reach her.
 
-## 承接上一章
+## Previous Chapter Handoff
 
-开篇章节。
+Opening chapter.
 
-## 本章要推进
+## Must Happen
 
-- 建立雾灯城和修灯职业。
-- 创建 debt_001 的正文承诺。
-- 让旧灯芯异常进入正史。
+- Establish Lin Qi's repair work.
+- Make the old wick anomaly canon.
+- Let patrol pressure arrive without explaining the full rule.
 
-## 本章禁止事项
+## Character Intent
 
-- 不揭示旧灯芯完整规则。
-- 不揭示父亲真实下落。
+- Lin Qi wants to repair the lamp and understand the anomaly.
+- Patrol wants to recover the old wick.
 
-## 结尾方向
+## Constraints
 
-林栖发现灯芯碎片上有不属于常规维修的划痕。
+- Do not reveal the old wick's full rule.
+- Do not reveal the father's disappearance truth.
+- Do not turn the chapter into worldbuilding explanation.
 
+## Next-Chapter Bridge
+
+Patrol notices the missing wick fragment and begins tracing who handled the lamp.

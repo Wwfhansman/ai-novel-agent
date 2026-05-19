@@ -1,13 +1,60 @@
-current_window: ch001-ch009
+current_window: ch001-ch006
+status: active
+source_of_truth: "Near-future chapter synopsis authority. current_round.yml is only an extract from this file."
 chapters:
   - chapter: ch001
-    purpose: 林栖修复异常雾灯，第一次听见陌生记忆回声。
+    title: 旧灯芯
     status: planned
+    synopsis: >
+      林栖在夜雾最重的时候被叫去外环灯廊。那盏旧雾灯反复熄灭，巡灯署的人只当是普通故障，催她尽快换芯。林栖拆灯时听见一段不属于现场的陌生回声，像有人在很多年前同一位置说过话。她没有立刻解释，也没有把灯芯交给巡灯署，而是在对方脚步靠近前藏起一小段裂开的灯芯碎片。
+    continuity_from_previous: 开篇章节，无前文。
+    required_developments:
+      - 建立林栖的修灯职业和雾灯异常。
+      - 让旧灯芯保存陌生记忆进入正史。
+      - 让巡灯署压力出现，但不解释完整规则。
+    character_intents:
+      - 林栖想修好灯并弄清异常。
+      - 巡灯署想回收异常灯芯，避免外传。
+    pressure_or_complication: 巡灯署的人即将到场，林栖不能公开检查灯芯。
+    payoff_or_reader_reward: 第一次神秘感和一枚可追查的灯芯碎片。
+    bridge_to_next: 巡灯署发现灯芯少了一角，开始寻找谁动过灯。
+    constraints:
+      - 不揭示父亲失踪真相。
+      - 不解释雾灯完整规则。
   - chapter: ch002
-    purpose: 巡灯署介入，要求回收旧灯芯。
+    title: 回收令
     status: planned
+    synopsis: >
+      巡灯署以例行排查的名义进入灯廊，要求所有维修记录和旧灯芯统一上交。林栖表面配合，实际发现登记簿上有几处被提前改过的痕迹。她意识到这不是普通回收，而是有人在清理特定年份的旧灯。她必须在不暴露碎片的情况下保住自己的维修记录。
+    continuity_from_previous: ch001 结尾巡灯署逼近，旧灯芯碎片仍在林栖手中。
+    required_developments:
+      - 巡灯署正式介入。
+      - 林栖发现登记簿被改动。
+      - 旧灯芯碎片暂时保住。
+    character_intents:
+      - 林栖想保住线索。
+      - 巡灯署想收走所有异常物。
+    pressure_or_complication: 维修记录可能暴露林栖碰过旧灯。
+    payoff_or_reader_reward: 读者确认有人在主动掩盖旧灯异常。
+    bridge_to_next: 林栖根据登记簿痕迹追到父亲旧工具箱。
+    constraints:
+      - 不让巡灯署直接说明动机。
   - chapter: ch003
-    purpose: 林栖保留灯芯碎片，发现父亲修灯刀痕迹。
+    title: 刀痕
     status: planned
-notes: "示例只展示前三章规划。"
-
+    synopsis: >
+      林栖在父亲留下的工具箱中找到一把修灯刀，刀口缺痕与灯芯碎片上的划痕吻合。她开始怀疑父亲当年不是失踪，而是曾经拆开过同类旧灯。与此同时，巡灯署派人询问她父亲旧案，语气像关心，问题却处处指向那把刀。
+    continuity_from_previous: ch002 结尾林栖追到父亲旧工具箱。
+    required_developments:
+      - 父亲线索进入当前剧情。
+      - 修灯刀与旧灯芯产生关联。
+      - 巡灯署对林栖的关注升级。
+    character_intents:
+      - 林栖想确认父亲是否接触过旧灯。
+      - 巡灯署想判断她掌握了多少。
+    pressure_or_complication: 林栖不能承认自己发现了刀痕关联。
+    payoff_or_reader_reward: 神秘线和亲情线第一次扣合。
+    bridge_to_next: 林栖决定去查父亲最后维修过的灯塔。
+    constraints:
+      - 不确认父亲生死。
+notes: "示例只展示详细章纲格式，不提供完整小说正文。"

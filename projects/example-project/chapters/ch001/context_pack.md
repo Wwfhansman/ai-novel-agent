@@ -11,78 +11,100 @@
 
 ## Purpose
 
-支持 ch001 写作：开篇建立主角、雾灯异常和第一条悬疑债。
+Support ch001 writing from the detailed rolling synopsis. This is an example context pack only; it does not provide full chapter prose.
 
 ## Read Files
 
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
-| `book/constitution.md` | full | 确认开篇方向 | 不解释完整世界观，用修灯行动引出秘密。 |
-| `book/reader_model.yml` | full | 确认读者期待 | 读者期待线索和局部谜题。 |
-| `volumes/vol_001/volume_state.yml` | full | 确认当前压力 | 外环灯巷雾灯异常，巡灯署即将介入。 |
-| `entities/characters.yml` | targeted | 读取林栖和沈砚 | 林栖想查异常，沈砚想回收灯芯。 |
-| `ledgers/knowledge_state.yml` | targeted | 检查秘密可见性 | 林栖和读者尚不知道旧灯芯真相。 |
-| `ledgers/world_state.yml` | full | 检查世界压力 | 主灯塔光度下降，巡灯署准备行动。 |
+| `book/constitution.md` | full | Confirm opening direction | Start with repair action, not full world explanation. |
+| `book/reader_model.yml` | full | Confirm reader expectation | Reader expects local mystery and clue progression. |
+| `planning/rolling_plan.yml` | full | Get authoritative detailed synopsis | ch001 centers on the old lamp wick and the hidden memory echo. |
+| `volumes/vol_001/volume_state.yml` | full | Confirm current pressure | Outer ring fog lamps are abnormal; patrol pressure is near. |
+| `entities/characters.yml` | targeted | Read Lin Qi and patrol-related characters | Lin Qi wants to investigate; patrol wants to recover the old wick. |
+| `ledgers/knowledge_state.yml` | targeted | Check secret visibility | Lin Qi and reader do not know the old wick's truth. |
+| `ledgers/world_state.yml` | full | Check world pressure | Main lamp tower is dimming; patrol agency prepares action. |
 
 ## Global Understanding
 
-故事刚开始。第一章应从具体修灯事件进入，不进行百科式解释。
+The story is beginning. The first chapter should enter through a concrete repair job and keep the old lamp rules mysterious.
 
 ## Current Volume State
 
-第一卷目标是证明雾灯保存记忆，并关联父亲失踪。
+Volume 001 aims to prove fog lamps can preserve memory and connect that fact to the protagonist's father's disappearance.
 
 ## Current Arc State
 
-arc_001 开启旧灯芯异常。
+arc_001 opens the old-lamp-wick anomaly.
 
 ## Recent Chapter Understanding
 
-无已写章节。
+No written chapters yet.
+
+## Recent Full-Text Continuity
+
+No prior prose.
+
+## Detailed Rolling Synopsis
+
+ch001: Lin Qi is called to the outer ring lamp corridor during heavy night fog. The old fog lamp repeatedly goes out. Patrol staff treat it as routine malfunction and urge her to replace the wick. While disassembling the lamp, she hears a memory echo from a stranger who seems to have spoken in the same place years ago. She does not explain the anomaly and hides a cracked wick fragment before patrol footsteps reach her.
+
+## Current Round Extract
+
+round_001 covers ch001-ch003: old wick anomaly, patrol recovery pressure, and the first clue connecting the lamp wick to her father's tool.
+
+## Previous Chapter Handoff
+
+Opening chapter; no prior handoff.
 
 ## Key Old Chapter Lookbacks
 
 | Chapter/File | Reason | Extracted Canon | Risk |
 | --- | --- | --- | --- |
-| 无 | 开篇章节 | 无 | 无 |
+| None | Opening chapter | None | None |
 
 ## Active Narrative Debts
 
-- debt_001 将在本章进入正文：旧灯芯为什么会保存陌生记忆？
+- debt_001 begins: why can an old lamp wick preserve strange memory?
 
 ## Active Foreshadowing
 
-- f_001 可轻微暗示，不说明父亲关联。
+- f_001 may be hinted lightly through tool marks, but the father's full connection must remain hidden.
 
 ## Knowledge State
 
-旧灯芯保存记忆：读者 unknown，林栖 unknown，沈砚 partial。
+Old wick memory: reader unknown; Lin Qi unknown; patrol partial.
 
 ## Character Intent
 
-林栖：修灯并查异常。沈砚：暂不正面登场，但其势力压力可以靠巡灯员或脚步声体现。
+- Lin Qi wants to repair the lamp and understand the anomaly.
+- Patrol wants the abnormal wick recovered before outsiders notice.
 
 ## World Pressure
 
-夜雾压近外环灯巷，主灯塔光度下降。
+Night fog presses into the outer ring lamp corridor. The main lamp tower is dimming.
 
-## Plan
+## Style And Format Constraints
 
-1. 现场修灯。
-2. 异常回声出现。
-3. 林栖判断这不是普通故障。
-4. 巡灯署逼近。
-5. 林栖藏起灯芯碎片。
+- Avoid encyclopedia worldbuilding.
+- Use concrete repair action.
+- `final.txt` should have one blank line after title and no blank lines between ordinary body paragraphs.
+
+## Prose Freedom Notes
+
+Possible details: cold metal lamp housing, damp wick ash, patrol boots on the stone corridor, a voice echo that sounds older than the lamp.
+
+These are optional sparks, not required beats.
 
 ## Forbidden Moves
 
-- 不揭示旧灯芯完整规则。
-- 不揭示父亲下落。
-- 不让沈砚直接解释动机。
+- Do not reveal the old wick's full rule.
+- Do not reveal the father's disappearance truth.
+- Do not let patrol explain their motivation directly.
 
 ## Unknowns And Risks
 
-- 开篇需要控制设定解释比例。
+Opening needs to control explanation ratio. The chapter may become too much setup if repair action is not concrete.
 
 ## Required Updates After Writing
 
@@ -91,4 +113,4 @@ arc_001 开启旧灯芯异常。
 - `ledgers/narrative_debts.yml`
 - `ledgers/knowledge_state.yml`
 - `ledgers/world_state.yml`
-
+- `planning/rolling_plan.yml`

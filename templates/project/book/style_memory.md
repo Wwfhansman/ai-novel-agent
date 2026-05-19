@@ -8,11 +8,11 @@ To be initialized.
 
 To be initialized.
 
-## Attention Sources That Fit This Book
+## Story Content Preferences
 
 - To be initialized.
 
-## Chapter Rhythms That Fit This Book
+## Chapter Rhythm Preferences
 
 - To be initialized.
 
@@ -25,13 +25,11 @@ To be initialized.
 - Dense one-line paragraphs without narrative function.
 - Flat execution of scene beats.
 - Chapters that only report what happened.
+- Protagonist recap endings that summarize the lesson of the chapter.
 
-## Structural Preferences
+## TXT Format Preference
 
-- Chapters should carry emotional and causal continuity from prior chapters.
-- Each chapter should contain real friction: character resistance, information resistance, resource resistance, time pressure, social cost, or moral choice.
-- Adjacent chapters should vary opening type, attention source, main conflict mode, and ending hook.
-- Chapter endings should push outward through action, dialogue, discovery, obstacle, cost, or changed situation.
+Body paragraphs in `draft.txt` and `final.txt` use single newlines. Do not insert blank lines between ordinary paragraphs.
 
 ## High-Quality Local Samples
 

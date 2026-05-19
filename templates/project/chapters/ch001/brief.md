@@ -1,22 +1,27 @@
 # Chapter Brief
 
-## 本章目标
+## Source Synopsis
 
-待生成。
+Copy or condense this chapter's entry from `planning/rolling_plan.yml`.
 
-## 承接上一章
+## Previous Chapter Handoff
 
-开篇章节无上一章。
+Opening chapters have no previous chapter. Later chapters should name the exact pressure, action, unresolved problem, or emotional state carried from the prior chapter.
 
-## 本章要推进
+## Must Happen
 
-- 待生成。
+- To be generated from the detailed rolling synopsis.
 
-## 本章禁止事项
+## Character Intent
 
-- 不要改写创作宪法。
+- To be generated.
 
-## 结尾方向
+## Constraints
 
-待生成。
+- Do not rewrite the creative constitution.
+- Do not reveal protected secrets early.
+- Do not turn the chapter into a task report.
 
+## Next-Chapter Bridge
+
+To be generated from the detailed rolling synopsis.

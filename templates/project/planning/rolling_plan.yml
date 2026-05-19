@@ -1,4 +1,5 @@
 current_window: ""
+status: draft
+source_of_truth: "Near-future chapter synopsis authority. current_round.yml is only an extract from this file."
 chapters: []
-notes: "近期 9-15 章计划以本文件为权威来源。"
-
+notes: "Write 6-15 upcoming chapters here as detailed story synopses. Each planned chapter should have enough story content to drive prose without requiring a scene-beat template."

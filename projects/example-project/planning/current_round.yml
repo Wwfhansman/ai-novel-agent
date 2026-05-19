@@ -1,9 +1,10 @@
 round: round_001
 status: planned
+source_plan: planning/rolling_plan.yml
 chapters: [ch001, ch002, ch003]
 goals:
   - 开启旧灯芯异常 arc。
   - 建立巡灯署压力。
   - 埋下父亲线索。
 required_context_pack: planning/context_packs/round_001_context_pack.md
-
+notes: "This is an extract from rolling_plan.yml."

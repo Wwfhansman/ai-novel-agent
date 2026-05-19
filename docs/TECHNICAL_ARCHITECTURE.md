@@ -91,7 +91,7 @@ projects/my-novel/
 - 第一卷卷纲
 - 初始实体库
 - 初始动态账本
-- 近期 9-15 章规划
+- 近期 9-15 章详细章纲
 
 ### 4.2 Context Compiler
 
@@ -123,9 +123,10 @@ chapters/ch001/context_pack.md
 每章循环：
 
 ```text
-读取上下文
+刷新 rolling_plan 详细章纲
+→ 读取上下文
 → 生成本章理解
-→ 规划 scene beats
+→ 根据章纲自由构思正文
 → 写 draft
 → 审查
 → 改写为 final

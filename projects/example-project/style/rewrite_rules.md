@@ -4,5 +4,6 @@
 - Release mystery information gradually.
 - Do not reveal major family secrets early.
 - Do not turn a chapter into an event report.
-- Every chapter should have an attention source and an external state delta.
-- Short paragraphs must create pause, turn, impact, humor, threat, or pressure.
+- Hide insight inside action, dialogue, omission, or cost.
+- Avoid protagonist recap endings.
+- Body paragraphs in `final.txt` use single newlines, not blank lines.

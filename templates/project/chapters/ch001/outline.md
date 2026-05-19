@@ -1,14 +1,9 @@
-# Chapter Outline
+# Optional Writing Notes
 
-## Scene Beats
+This file is optional scratch space.
 
-1. 待生成。
+Use it for loose ideas, possible images, dialogue fragments, sensory details, or small local inventions. Do not turn it into a required scene-beat checklist, and do not translate it mechanically into prose.
 
-## 信息释放
+## Notes
 
-- 待生成。
-
-## 情绪变化
-
-- 待生成。
-
+- To be generated only if useful.

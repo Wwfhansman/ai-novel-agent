@@ -10,7 +10,7 @@
 - Do not end consecutive chapters with the protagonist thinking, analyzing, or deciding.
 - Do not use dense one-line paragraphs as fake rhythm.
 
-## Anti-Container Revision
+## Anti-Report Revision
 
 Rewrite the chapter if it mainly reads as:
 
@@ -20,18 +20,22 @@ arrive -> observe -> analyze -> arrange -> think about the future
 
 Revision options:
 
-1. Enter through a concrete abnormal detail, a pressured line of dialogue, an ongoing consequence, or a character already acting.
-2. Add real resistance: another character wants something incompatible, a resource is insufficient, information is hidden, time is running out, or a social cost appears.
+1. Find the actual fictional moment inside the synopsis and enter there.
+2. Add resistance that occurs now, not only a future risk.
 3. Turn abstract strategy into visible execution, dispute, bargain, failure, price, or consequence.
-4. Give short paragraphs a function: turn, pause, impact, contrast, humor, threat, or emotional pressure.
-5. End outward: action starts, someone arrives, a fact is exposed, a cost lands, a rule changes, or pressure moves to the next chapter.
+4. Hide insight inside action, dialogue, omission, or cost instead of stating lessons.
+5. End outward: action starts, someone arrives, a fact is exposed, a cost lands, a rule changes, or pressure continues.
 
-## Chapter Attention
+## Ending Rules
 
-Before finalizing, identify:
+- Avoid protagonist recap endings.
+- Avoid neat "first, second, third" lesson summaries in prose unless the character is literally writing a document.
+- Avoid endings whose only function is to tell the reader the next chapter will be interesting.
+- Prefer an ending that leaves the world changed or in motion.
 
-- the chapter's attention source;
-- the reader question curve;
-- the external state delta;
-- the ending hook type;
-- whether the chapter shape repeats the previous chapter.
+## TXT Format
+
+- `draft.txt` and `final.txt` use normal TXT novel formatting.
+- Keep one blank line after the chapter title.
+- Do not put blank lines between ordinary body paragraphs.
+- Use extra blank lines only for deliberate scene breaks.

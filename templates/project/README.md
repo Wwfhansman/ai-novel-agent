@@ -12,6 +12,8 @@
 
 - 正文细节保存在 `chapters/*/final.txt`。
 - 当前状态保存在 `entities/`、`ledgers/`、`planning/`。
+- 近期剧情以 `planning/rolling_plan.yml` 的详细章纲为权威来源。
+- `planning/current_round.yml` 只是本轮三章摘录。
 - `canon_delta.yml` 是章节变更日志，不是当前状态总表。
 - 写作前必须生成 context pack。
-
+- `final.txt` 正文段落之间只换行，不额外空行。

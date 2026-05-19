@@ -1,0 +1,31 @@
+schema: current_round
+purpose: >
+  Three-chapter extract from planning/rolling_plan.yml for the active writing
+  round. It is not an independent planning authority.
+
+fields:
+  round:
+    required: true
+    example: round_003
+  status:
+    required: true
+    allowed: [planned, in_progress, completed, needs_refresh]
+    example: planned
+  source_plan:
+    required: true
+    purpose: Must point to planning/rolling_plan.yml.
+    example: planning/rolling_plan.yml
+  chapters:
+    required: true
+    type: list
+    purpose: Three chapter ids or condensed entries copied from rolling_plan.yml.
+  goals:
+    required: false
+    type: list
+    purpose: Round-level goals derived from the detailed rolling synopsis.
+  required_context_pack:
+    required: true
+    example: planning/context_packs/round_003_context_pack.md
+  notes:
+    required: false
+    purpose: Reminder that this file is an extract, not a separate plan.

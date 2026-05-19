@@ -43,8 +43,8 @@ retcon: 对旧正史的修订计划
 | 读者期待债 | `ledgers/narrative_debts.yml` | `volume_debts.yml`, `canon_delta.yml` | 全局债务以 ledger 为准。 |
 | 伏笔状态 | `ledgers/foreshadowing.yml` | `canon_delta.yml` | 是否已埋、推进、回收以 ledger 为准。 |
 | 当前卷进展 | `volumes/vol_XXX/volume_state.yml` | `volume_summary.md` | 结构化当前进展以 state 为准。 |
-| 近期未来计划 | `planning/rolling_plan.yml` | `current_round.yml` | 9-15 章计划以 rolling_plan 为准。 |
-| 本轮执行计划 | `planning/current_round.yml` | round context pack | 本轮三章以 current_round 为准。 |
+| 近期未来计划 | `planning/rolling_plan.yml` | `current_round.yml` | 6-15 章详细章纲以 rolling_plan 为准。 |
+| 本轮执行计划 | `planning/current_round.yml` | `planning/rolling_plan.yml`, round context pack | current_round 只是 rolling_plan 的三章摘录，不能另起冲突计划。 |
 | 未确认点子 | `ledgers/idea_pool.yml` | `opportunity_ledger.yml` | 不可当作正史。 |
 | 重大创作决策 | `ledgers/decision_log.yml` 或 `meta/decision_log.*` | 用户对话摘要 | 决策必须落盘。 |
 

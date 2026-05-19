@@ -1,19 +1,10 @@
-# Chapter Outline
+# Optional Writing Notes
 
-## Scene Beats
+This example project does not require a scene-beat outline.
 
-1. 林栖夜间赶到外环灯巷。
-2. 他检查反复熄灭的旧雾灯。
-3. 灯芯发出陌生记忆回声。
-4. 巡灯署的脚步声靠近。
-5. 林栖藏起一小段灯芯碎片。
+Possible sparks:
 
-## 信息释放
-
-- 雾灯能驱散夜雾。
-- 旧灯芯异常，但原因未明。
-
-## 情绪变化
-
-从职业性处理事故，转为意识到事故背后有秘密。
-
+- damp lamp housing;
+- old wick ash under Lin Qi's nails;
+- patrol boots echoing in fog;
+- a memory voice that sounds like it belongs to an earlier year.

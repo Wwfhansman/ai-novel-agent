@@ -1,9 +1,0 @@
-chapters:
-  - chapter: ch001
-    opening_type: concrete_disturbance
-    attention_source: resource_pressure
-    main_conflict_mode: negotiation
-    exposition_mode: revealed_through_argument
-    ending_hook_type: cost_lands
-    primary_state_delta: resource_visibility_changed
-

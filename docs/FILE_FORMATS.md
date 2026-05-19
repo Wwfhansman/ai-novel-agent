@@ -4,77 +4,66 @@
 
 ```text
 正文用 txt
-规则和说明用 md
+说明、brief、review、context pack 用 md
 结构化状态用 yml
-追加日志可用 jsonl
+追加日志可用 md / yml / jsonl
 ```
 
-## 2. txt
+## 2. TXT 正文格式
 
 用于：
 
-- 章节正文
-- 草稿
+- 章节草稿：`chapters/ch001/draft.txt`
+- 章节终稿：`chapters/ch001/final.txt`
 - 导出全文
 
-示例：
+正文文件只包含小说正文，不混入任务说明、审稿意见、状态字段或 Markdown 标题。
 
-```text
-chapters/ch001/draft.txt
-chapters/ch001/final.txt
-```
-
-正文文件应尽量只包含正文，不混入任务说明、审稿意见或状态字段。
-
-可以保留章节标题：
+推荐格式：
 
 ```text
 第一章 边城雪夜
 
 寒风卷过城墙时，主角站在一处关键地点前。
+第二段正文继续，不在普通段落之间空行。
+第三段正文继续。
 ```
 
-## 3. md
+规则：
+
+- 章节标题后保留一个空行。
+- 正文普通段落之间只换行，不额外空一行。
+- 只有明确场景切换时，才允许额外空行或使用一行分隔符。
+- 不要在 TXT 正文中写 `##`、清单、审稿意见、YAML 或流程字段。
+
+## 3. Markdown
 
 用于自然语言文档：
 
-- 创作宪法
-- 全书摘要
-- 卷纲
-- 卷摘要
-- 章节 brief
-- 章节 outline
-- 上下文包
-- 审稿报告
-- 风格说明
-- 开发文档
-- skill 指令
+- `book/constitution.md`
+- `book/global_summary.md`
+- `volumes/vol_001/volume_outline.md`
+- `chapters/ch001/brief.md`
+- `chapters/ch001/outline.md`
+- `chapters/ch001/context_pack.md`
+- `chapters/ch001/review.md`
+- `style/rewrite_rules.md`
 
-示例：
+`outline.md` 是可选创作草稿，不是强制 scene beats。它可以记录灵感、可能的画面、台词碎片、局部细节，但不能成为固定章节模板。
 
-```text
-book/constitution.md
-volumes/vol_001/volume_outline.md
-chapters/ch001/brief.md
-chapters/ch001/outline.md
-chapters/ch001/context_pack.md
-chapters/ch001/review.md
-```
-
-## 4. yml
+## 4. YAML
 
 用于结构化状态：
 
-- 人物状态
-- 角色意图
-- 世界状态
+- 人物当前状态
+- 世界当前状态
 - 信息可见性
 - 伏笔
 - 叙事债
 - 灵感池
 - 章节摘要
 - canon delta
-- 滚动规划
+- 近期详细章纲
 
 示例：
 
@@ -85,26 +74,12 @@ ledgers/narrative_debts.yml
 chapters/ch001/summary.yml
 chapters/ch001/canon_delta.yml
 planning/rolling_plan.yml
+planning/current_round.yml
 ```
 
 YAML 字段应尽量稳定，便于 agent 更新。
 
-## 5. jsonl
-
-用于追加型日志。
-
-示例：
-
-```text
-meta/session_log.jsonl
-meta/change_log.jsonl
-```
-
-每行一条记录。
-
-MVP 阶段如果不想复杂化，也可以先使用 `.md` 或 `.yml` 日志。
-
-## 6. 推荐章节目录
+## 5. 推荐章节目录
 
 ```text
 chapters/ch001/
@@ -115,44 +90,47 @@ chapters/ch001/
   summary.yml
   canon_delta.yml
   review.md
+  context_pack.md
 ```
 
-### 6.1 brief.md
+### 5.1 brief.md
 
-写作前任务说明。
-
-包含：
-
-- 本章目标
-- 承接上一章内容
-- 本章要推进的债务、伏笔、人物、世界状态
-- 本章禁止事项
-- 结尾方向
-
-### 6.2 outline.md
-
-本章 scene beats。
+写作前的本章交接说明。
 
 包含：
 
-- 场景列表
-- 出场人物
-- 冲突目标
-- 信息释放
-- 情绪变化
-- 转折
+- 来自 `planning/rolling_plan.yml` 的本章详细章纲摘录
+- 上一章承接点
+- 本章必须发生的剧情内容
+- 重要人物意图
+- 禁止事项
+- 下一章自然承接方向
 
-### 6.3 draft.txt
+### 5.2 outline.md
 
-AI 初稿。
+可选草稿。
 
-### 6.4 final.txt
+允许记录：
 
-确认后的正文。
+- 可能的开场画面
+- 对话碎片
+- 局部细节
+- 临时灵感
+- 需要避免的写法
 
-### 6.5 summary.yml
+不允许把它写成固定结构清单并机械翻译为正文。
 
-章节摘要。
+### 5.3 draft.txt
+
+AI 初稿。格式遵守 TXT 正文格式。
+
+### 5.4 final.txt
+
+确认后的正文。格式遵守 TXT 正文格式。
+
+### 5.5 summary.yml
+
+章节摘要。用于快速理解章节内容；冲突时回看 `final.txt`。
 
 建议字段：
 
@@ -173,9 +151,9 @@ emotional_result: ""
 next_hook: ""
 ```
 
-### 6.6 canon_delta.yml
+### 5.6 canon_delta.yml
 
-章节状态变化。
+章节造成的状态变化记录。它不是当前状态总表。
 
 建议字段：
 
@@ -217,40 +195,32 @@ next_chapter_handoff:
   - ""
 ```
 
+## 6. 近期详细章纲
+
+`planning/rolling_plan.yml` 是未来 6-15 章的权威详细章纲。
+
+它不只是任务清单。每章应有 300-800 字剧情简介，并说明承接、必须发生的剧情、人物意图、阻力或意外、读者回报、下一章桥接和限制。
+
+`planning/current_round.yml` 只是从 `rolling_plan.yml` 抽取本轮三章，不应另起一套互相冲突的计划。
+
 ## 7. 命名规范
 
 章节目录：
 
 ```text
-ch001
-ch002
-ch003
+chapters/ch001/
+chapters/ch002/
 ```
 
 卷目录：
 
 ```text
-vol_001
-vol_002
+volumes/vol_001/
+volumes/vol_002/
 ```
 
-章群文件：
+轮次 context pack：
 
 ```text
-arc_001_opening.yml
-arc_002_granary_crisis.yml
+planning/context_packs/round_001_context_pack.md
 ```
-
-ID 建议：
-
-```text
-debt_001
-f_001
-k_001
-idea_001
-opp_001
-```
-
-## 8. 编码
-
-所有文本文件使用 UTF-8。

@@ -1,0 +1,69 @@
+schema: rolling_plan
+purpose: >
+  Authoritative detailed synopsis for the next 6-15 chapters. It drives prose
+  writing at the story-content level and must not be treated as a fixed
+  intra-chapter structure.
+
+fields:
+  current_window:
+    required: true
+    purpose: Chapter range covered by this rolling plan.
+    example: ch008-ch015
+
+  status:
+    required: true
+    allowed: [draft, active, needs_refresh]
+    purpose: Whether the plan is ready to drive writing.
+    example: active
+
+  source_of_truth:
+    required: true
+    purpose: Human-readable reminder that this file is the authority for near-future chapter synopsis.
+    example: "Near-future chapter synopsis authority; current_round.yml is only an extract."
+
+  chapters:
+    required: true
+    type: list
+    item_fields:
+      chapter:
+        required: true
+        example: ch008
+      title:
+        required: false
+        example: 余粮
+      status:
+        required: true
+        allowed: [planned, drafting, completed, revised, skipped]
+        example: planned
+      synopsis:
+        required: true
+        purpose: 300-800 Chinese characters of story content, not scene beats.
+        example: "上一章的监视压力没有消失，主角退到幕后后..."
+      continuity_from_previous:
+        required: true
+        purpose: What pressure, action, or unresolved problem carries in.
+      required_developments:
+        required: true
+        type: list
+        purpose: Plot developments that must happen.
+      character_intents:
+        required: true
+        type: list
+        purpose: Important characters and what they want in this chapter.
+      pressure_or_complication:
+        required: true
+        purpose: What makes the chapter non-smooth.
+      payoff_or_reader_reward:
+        required: true
+        purpose: What reader reward, reveal, or progress this chapter gives.
+      bridge_to_next:
+        required: true
+        purpose: Why the next chapter naturally follows.
+      constraints:
+        required: false
+        type: list
+        purpose: Canon, visibility, or protected-file restrictions.
+
+  notes:
+    required: false
+    purpose: General planning notes.

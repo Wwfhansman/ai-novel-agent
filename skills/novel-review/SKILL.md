@@ -36,7 +36,8 @@ Act as a fresh agent. Read only project files, not prior conversation. Verify th
 Review a specific chapter:
 
 - `context_pack.md`
-- `outline.md`
+- `brief.md`
+- optional `outline.md` if it exists
 - `draft.txt` or `final.txt`
 - `summary.yml`
 - `canon_delta.yml`
@@ -82,6 +83,16 @@ Check whether the round produced coherent progress.
 7. **Style and genre alignment**
    - Compare to `book/constitution.md`, `book/reader_model.yml`, and `book/style_memory.md`.
 
+8. **Detailed synopsis alignment**
+   - Check whether `planning/rolling_plan.yml` is detailed enough to drive prose.
+   - Check whether `current_round.yml` is only an extract, not a competing plan.
+   - Check whether future planned chapters repeat decisions already completed.
+
+9. **Prose and TXT format**
+   - Check whether the chapter reads like fiction rather than a task report.
+   - Check whether the ending collapses into protagonist recap, analysis, or next-step thinking.
+   - Check whether `final.txt` uses one blank line after the title and no blank lines between ordinary body paragraphs.
+
 ## Output Format
 
 Produce:
@@ -104,4 +115,3 @@ If the project cannot be continued safely:
 - List blocking missing files or contradictions.
 - Recommend `novel-change` for structural changes.
 - Recommend context pack regeneration if the writing input record is incomplete.
-

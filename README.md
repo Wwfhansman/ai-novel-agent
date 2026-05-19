@@ -50,7 +50,7 @@ projects/my-novel/
 - `ledgers/narrative_debts.yml` 记录读者正在等待什么。
 - `ledgers/knowledge_state.yml` 记录谁知道什么、谁误解什么。
 - `ledgers/world_state.yml` 记录世界压力、势力行动、资源和后果。
-- `planning/rolling_plan.yml` 记录未来 9-15 章的近期路线。
+- `planning/rolling_plan.yml` 记录未来 6-15 章的详细章纲，是近期剧情规划的权威来源。
 
 章节正文仍然完整保存，但主要用于需要精确细节时回看，而不是作为唯一记忆来源。
 
@@ -83,7 +83,7 @@ Context Pack 记录：
 - 单章变化记录看 `canon_delta.yml`。
 - 人物当前状态看 `entities/characters.yml`。
 - 世界当前状态看 `ledgers/world_state.yml`。
-- 未来计划看 `planning/rolling_plan.yml`。
+- 未来详细章纲看 `planning/rolling_plan.yml`；本轮三章只看 `current_round.yml` 作为摘录。
 
 `canon_delta.yml` 是章节变化日志，不是当前状态总表。
 
@@ -265,4 +265,3 @@ MVP 文件协议已经实现：
 当前尚未选择开源许可证。
 
 在添加许可证之前，本仓库是 public source-available，但还不是正式开源授权项目。如果希望外部用户复用或贡献，建议先选择 MIT、Apache-2.0 或其他许可证。
-

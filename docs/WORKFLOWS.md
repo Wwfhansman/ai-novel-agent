@@ -48,7 +48,7 @@ novel-change
 - 第一卷卷纲
 - 初始实体库
 - 初始动态账本
-- 近期 9-15 章规划
+- 近期 9-15 章详细章纲
 
 ### 2.4 流程
 
@@ -61,7 +61,7 @@ novel-change
 → 创建初始故事圣经
 → 创建核心人物和势力
 → 创建第一卷目标
-→ 创建近期规划
+→ 创建近期详细章纲
 → 初始化项目文件
 ```
 
@@ -85,20 +85,22 @@ novel-change
 读取最近 12-15 章摘要
 读取最近 3-5 章全文
 读取动态账本
+读取并刷新 rolling_plan 详细章纲
 根据本轮目标回看关键旧章节
 生成 round context_pack.md
 生成前文理解报告
-规划本轮 3 章
+从 rolling_plan 抽取本轮 3 章到 current_round
 ```
 
 ### 3.3 单章流程
 
 ```text
 读取本章 brief
+→ 读取 rolling_plan 中的本章详细章纲
 → 生成 chapter context_pack.md
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
-→ 生成 scene beats
+→ 可选生成自由写作 notes
 → 写 draft.txt
 → 自审
 → 修改为 final.txt
@@ -118,7 +120,7 @@ novel-change
 → 检查信息可见性
 → 检查世界状态
 → 评估新灵感
-→ 调整后续 6-12 章规划
+→ 刷新后续 6-12 章详细章纲
 → 记录本轮 diff 摘要
 → 写入 session log
 ```

@@ -82,6 +82,18 @@ fields:
     required: true
     purpose: Tone, rhythm, emotional carryover, and scene handoff from recent full chapters.
 
+  detailed_rolling_synopsis:
+    required: true
+    purpose: Relevant chapter entries from planning/rolling_plan.yml.
+
+  current_round_extract:
+    required: true
+    purpose: Three-chapter extract from the rolling synopsis, not a separate plan.
+
+  previous_chapter_handoff:
+    required: false
+    purpose: Exact pressure, action, image, unresolved problem, or emotional state carried from the prior chapter.
+
   key_old_chapter_lookbacks:
     required: true
     type: list
@@ -107,59 +119,13 @@ fields:
     required: true
     purpose: World state, faction moves, resources, crisis, and external pressure.
 
-  style_constraints:
+  style_and_format_constraints:
     required: true
-    purpose: Style rules, banned tendencies, and prose risks.
+    purpose: Style rules, banned tendencies, prose risks, and TXT formatting constraints.
 
-  creative_frontend:
-    required: true
-    purpose: Attention-driven writing contract for the chapter or round.
-    fields:
-      attention_source:
-        required: true
-        purpose: The force that keeps the reader reading.
-        example: public resource pressure and incompatible faction desires
-      reader_question_curve:
-        required: true
-        purpose: How the reader's active question changes.
-        example: Why are people quiet? -> Who benefits from the shortage? -> What price will the protagonist pay?
-      entry_method:
-        required: true
-        purpose: Concrete way the chapter enters the scene.
-        example: Begin with an argument already happening at the storehouse gate.
-      scene_growth:
-        required: true
-        purpose: The pressure, object, line, action, or disturbance that lets the scene grow.
-        example: A minor clerk refuses to open the ledger because doing so exposes his patron.
-      state_delta:
-        required: true
-        purpose: External state that must change by the end.
-        example: Knowledge visibility changes from private suspicion to public accusation.
-      chapter_shape:
-        required: true
-        fields:
-          opening_type:
-            required: true
-            example: consequence_in_motion
-          dominant_attention_source:
-            required: true
-            example: resource_pressure
-          main_conflict_mode:
-            required: true
-            example: negotiation
-          exposition_mode:
-            required: true
-            example: revealed_through_argument
-          ending_hook_type:
-            required: true
-            example: cost_lands
-          primary_state_delta:
-            required: true
-            example: reputation_changed
-
-  plan:
-    required: true
-    purpose: Round plan or chapter scene direction. It must not be mechanically translated into prose.
+  prose_freedom_notes:
+    required: false
+    purpose: Optional sparks for scene entry, images, dialogue, local details, or small inventions. These are not a template.
 
   forbidden_moves:
     required: true

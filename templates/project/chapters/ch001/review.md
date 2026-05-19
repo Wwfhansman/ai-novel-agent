@@ -1,26 +1,35 @@
 # Chapter Review
 
-## 节奏
+## Synopsis Fit
 
-待审查。
+Did the chapter follow the detailed rolling synopsis without sounding like a synopsis?
 
-## 人物
+## Continuity
 
-待审查。
+Did it continue naturally from the previous chapter?
 
-## 信息可见性
+## Fictional Material
 
-待审查。
+What concrete scenes, actions, objects, dialogue, or consequences made this feel like fiction rather than a report?
 
-## 世界反应
+## Ending Check
 
-待审查。
+Does the ending avoid protagonist recap, analysis, or "next step" thinking?
 
-## 记忆更新检查
+## TXT Format Check
 
-- [ ] summary.yml 已更新
-- [ ] canon_delta.yml 已更新
-- [ ] entities/ 已同步
-- [ ] ledgers/ 已同步
-- [ ] planning/ 已同步
+- [ ] One blank line after the chapter title.
+- [ ] No blank lines between ordinary body paragraphs.
+- [ ] Extra blank lines only for deliberate scene breaks.
 
+## Weakness Or Risk
+
+Name at least one weakness or risk. If revised, describe the fix.
+
+## Memory Update Check
+
+- [ ] `summary.yml` updated.
+- [ ] `canon_delta.yml` updated.
+- [ ] `entities/` synchronized when current state changed.
+- [ ] `ledgers/` synchronized when current state changed.
+- [ ] `planning/rolling_plan.yml` refreshed so future chapters do not repeat completed choices.
