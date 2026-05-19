@@ -1,0 +1,11 @@
+project:
+  id: example-project
+  title: 雾灯城示例
+  status: bootstrapped-example
+  current_volume: vol_001
+  current_round: round_001
+  current_chapter: ch001
+  language: zh-CN
+  text_format: txt
+  notes: "脱敏示例项目，只展示协议，不提供长篇正文。"
+

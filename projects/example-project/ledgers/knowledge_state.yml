@@ -1,0 +1,14 @@
+knowledge_items:
+  - id: k_001
+    topic: 旧灯芯保存记忆
+    truth: 旧灯芯会残留被雾灯系统抹去的记忆片段。
+    visibility:
+      reader: unknown
+      char_lin_qi: unknown
+      char_shen_yan: partial
+    evidence: []
+    reveal_plan:
+      partial_reveal: ch001-ch002
+      full_reveal: volume_001_mid
+    protection: normal
+

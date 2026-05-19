@@ -1,0 +1,13 @@
+volume: vol_001
+status: planned
+current_stage: stage_001
+current_location: 雾灯城外环灯巷
+main_conflict: 旧灯芯异常与巡灯署封锁。
+current_pressure:
+  - 主灯塔光度下降。
+  - 巡灯署要求回收旧灯芯。
+remaining_tasks:
+  - 写出林栖第一次发现异常。
+  - 建立巡灯署压力。
+  - 埋下父亲失踪线索。
+

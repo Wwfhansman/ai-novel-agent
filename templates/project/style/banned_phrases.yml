@@ -1,0 +1,5 @@
+banned_phrases: []
+avoid_patterns:
+  - "空泛的旁人惊呼"
+  - "没有行动兑现的心理独白"
+

@@ -1,0 +1,8 @@
+foreshadowing:
+  - id: f_001
+    status: planned
+    created_in: bootstrap
+    content: 旧灯芯碎片里有父亲修灯刀留下的划痕。
+    intended_payoff: 第一卷中段
+    current_visibility: 未出现
+

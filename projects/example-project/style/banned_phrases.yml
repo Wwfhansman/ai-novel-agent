@@ -1,0 +1,5 @@
+banned_phrases: []
+avoid_patterns:
+  - "旁人连续惊呼"
+  - "开篇大段世界观讲解"
+

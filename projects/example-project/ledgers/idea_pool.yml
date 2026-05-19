@@ -1,0 +1,21 @@
+ideas:
+  - id: idea_001
+    title: 父亲可能藏在主灯塔记忆核心里
+    source:
+      type: bootstrap
+      note: endgame hypothesis
+    idea: 后期揭示父亲不是死亡，而是成为主灯塔维持系统的一部分。
+    potential_use:
+      - 终局反转
+      - 父子关系情绪兑现
+    target_timing:
+      earliest: volume_002
+      ideal: endgame
+    dependencies:
+      - 第一卷只能暗示父亲与主灯塔有关。
+    risks:
+      - 过早使用会破坏悬疑。
+    status: incubating
+    priority: high
+    review_after: volume_001_end
+

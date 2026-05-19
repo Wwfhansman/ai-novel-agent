@@ -1,0 +1,23 @@
+# Real novel projects are private by default.
+/projects/*
+!/projects/.gitkeep
+!/projects/example-project/
+!/projects/example-project/**
+
+# Generated exports and local build artifacts.
+/exports/
+/dist/
+/tmp/
+
+# Local session state and checkpoints inside private projects.
+**/meta/session_log.local.*
+**/meta/*.local.*
+**/meta/checkpoints/*
+!**/meta/checkpoints/.gitkeep
+
+# Editor and OS files.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

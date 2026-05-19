@@ -1,0 +1,11 @@
+factions:
+  - id: faction_lamp_office
+    name: 巡灯署
+    type: city_authority
+    current_goal: 回收异常旧灯芯，维持城市秩序。
+    resources: [巡灯员, 灯塔档案, 城防权限]
+    allies: []
+    enemies: []
+    attitude_to_protagonist: 警惕
+    current_action: 准备封锁外环灯巷。
+

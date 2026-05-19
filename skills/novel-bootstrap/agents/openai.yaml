@@ -1,0 +1,3 @@
+interface:
+  display_name: "Novel Bootstrap"
+  short_description: "Initialize a novel project from a seed"

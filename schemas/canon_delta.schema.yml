@@ -1,0 +1,62 @@
+schema: canon_delta
+purpose: 记录单章造成的变化。它是变更日志，不是当前状态总表；当前状态必须合并到 entities、ledgers、planning 或 volumes。
+fields:
+  chapter:
+    required: true
+    description: 章节 ID。
+    example: ch001
+  new_facts:
+    required: true
+    type: list
+    description: 本章新进入正史的事实。
+  character_changes:
+    required: true
+    type: list
+    description: 人物状态变化；写完后必须同步到 entities/characters.yml。
+    item_fields: [character, change]
+  relationship_changes:
+    required: true
+    type: list
+    description: 人物关系变化。
+    item_fields: [pair, change]
+  world_state_changes:
+    required: true
+    type: list
+    description: 外部世界、资源、危机或势力变化；写完后必须同步到 ledgers/world_state.yml。
+  knowledge_changes:
+    required: true
+    type: list
+    description: 信息可见性变化；写完后必须同步到 ledgers/knowledge_state.yml。
+  foreshadowing_added:
+    required: true
+    type: list
+    description: 本章新增伏笔。
+  foreshadowing_advanced:
+    required: true
+    type: list
+    description: 本章推进但未回收的伏笔。
+  foreshadowing_paid:
+    required: true
+    type: list
+    description: 本章回收的伏笔。
+  narrative_debts_added:
+    required: true
+    type: list
+    description: 本章新增叙事债。
+  narrative_debts_advanced:
+    required: true
+    type: list
+    description: 本章推进的叙事债。
+  narrative_debts_paid:
+    required: true
+    type: list
+    description: 本章偿还的叙事债。
+  ideas_added:
+    required: true
+    type: list
+    description: 本章产生但未进入正史的灵感。
+  next_chapter_handoff:
+    required: true
+    type: list
+    description: 下一章必须承接的事项。
+

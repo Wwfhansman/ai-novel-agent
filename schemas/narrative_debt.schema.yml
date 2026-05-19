@@ -1,0 +1,34 @@
+schema: narrative_debt
+purpose: 记录读者期待债。叙事债是情绪和期待，不等同于伏笔。
+fields:
+  id:
+    required: true
+    example: debt_001
+  type:
+    required: true
+    allowed: [humiliation_payback, revenge, mystery, romance, power_up, promise, rescue, betrayal_payoff, faction_growth, payoff]
+  created_in:
+    required: true
+    description: 创建章节或事件。
+  description:
+    required: true
+    description: 读者正在等待什么。
+  emotional_weight:
+    required: true
+    allowed: [low, medium, high]
+  urgency:
+    required: true
+    allowed: [low, medium, high]
+  expected_payoff_window:
+    required: true
+    description: 预计偿还窗口，例如 ch006-ch009。
+  status:
+    required: true
+    allowed: [open, advanced, paid, delayed, cancelled]
+  payoff_options:
+    required: false
+    type: list
+  risk_if_delayed:
+    required: true
+    description: 拖延造成的追读风险。
+

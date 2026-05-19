@@ -1,0 +1,23 @@
+target_reader:
+  genre: 奇幻悬疑
+  primary_desire:
+    - 跟随主角逐步破解城市秘密
+    - 看每个灯芯线索回扣到更大的真相
+    - 看主角用专业能力而不是外挂破局
+  tolerance:
+    oppression_max_chapters: 3
+    setup_without_payoff_max_chapters: 2
+    explanation_density: medium
+  dislikes:
+    - 无铺垫的全知视角
+    - 关键秘密提前讲透
+    - 只靠设定解释不靠行动推进
+  preferred_payoff:
+    - 线索回收
+    - 局部真相揭示
+    - 危机被具体解决
+current_reader_expectation:
+  summary: 等待主角第一次证明雾灯异常并进入主线。
+  risks:
+    - 开篇解释过多会削弱悬疑感。
+

@@ -1,0 +1,8 @@
+status: hypothesis
+options:
+  - id: end_001
+    description: 父亲并未死亡，而是成为主灯塔记忆核心的一部分。
+    status: candidate
+confirmed_constraints:
+  - 父亲失踪真相不能在第一卷直接揭示。
+

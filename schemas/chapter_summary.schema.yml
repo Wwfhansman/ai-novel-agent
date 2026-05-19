@@ -1,0 +1,43 @@
+schema: chapter_summary
+purpose: 记录单章发生了什么，用于快速理解章节内容；冲突时回看 final.txt。
+fields:
+  chapter:
+    required: true
+    description: 章节 ID，例如 ch001。
+    example: ch001
+  title:
+    required: true
+    description: 章节标题。
+    example: 第一章 边城雪夜
+  status:
+    required: true
+    allowed: [draft, final, revised]
+    description: 章节状态。
+    example: final
+  one_line_summary:
+    required: true
+    description: 一句话摘要。
+    example: 主角抵达边城，第一次面对粮仓危机。
+  detailed_summary:
+    required: true
+    type: list
+    description: 章节主要事件列表。
+  characters_present:
+    required: true
+    type: list
+    description: 本章出场人物。
+  locations:
+    required: true
+    type: list
+    description: 本章地点。
+  key_events:
+    required: true
+    type: list
+    description: 改变剧情状态的关键事件。
+  emotional_result:
+    required: true
+    description: 本章给读者留下的情绪结果。
+  next_hook:
+    required: true
+    description: 下一章必须承接的钩子。
+

@@ -1,0 +1,21 @@
+current_period: vol_001_stage_001
+active_location: 雾灯城外环灯巷
+public_sentiment:
+  outer_lamp_lane: 市民只知道雾灯最近不稳。
+resources:
+  protagonist_side:
+    tools: basic
+    authority: none
+  lamp_office:
+    authority: high
+    public_trust: medium
+factions:
+  - name: 巡灯署
+    current_goal: 回收异常旧灯芯。
+    next_action: 派巡灯员封锁外环灯巷。
+    pressure_level: medium
+active_crises:
+  - 主灯塔光度下降
+  - 外环雾灯反复熄灭
+consequences: []
+

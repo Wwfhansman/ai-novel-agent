@@ -1,0 +1,11 @@
+open_opportunities:
+  - id: opp_001
+    type: setting_expansion
+    source: bootstrap
+    description: 每种雾灯可以记录不同类型的城市记忆。
+    possible_paths:
+      - 扩展成案件单元
+      - 扩展成主灯塔系统规则
+    recommended_action: incubate
+    decision_deadline: ch006
+

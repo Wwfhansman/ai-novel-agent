@@ -1,0 +1,5 @@
+volume: vol_001
+debts:
+  - debt_001
+notes: "全局权威状态在 ledgers/narrative_debts.yml。"
+

@@ -1,0 +1,13 @@
+debts:
+  - id: debt_001
+    type: mystery
+    created_in: bootstrap
+    description: 旧灯芯为什么会保存陌生记忆？
+    emotional_weight: high
+    urgency: high
+    expected_payoff_window: ch002-ch004
+    status: open
+    payoff_options:
+      - 林栖在第二章证明记忆来自失踪市民。
+    risk_if_delayed: 开篇悬疑承诺会显得空泛。
+

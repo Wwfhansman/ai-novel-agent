@@ -1,0 +1,17 @@
+id: arc_001
+name: 旧灯芯开篇
+status: planned
+chapters: [ch001, ch002, ch003]
+goal: 让主角发现旧灯芯异常并遭遇巡灯署压力。
+core_conflict: 主角想查清异常，巡灯署想回收灯芯。
+cause: 外环灯巷一盏雾灯反复熄灭。
+process: []
+result: ""
+characters: [char_lin_qi, char_shen_yan]
+foreshadowing: [f_001]
+narrative_debts:
+  added: [debt_001]
+  advanced: []
+  paid: []
+contribution_to_volume: 开启雾灯记忆主线。
+

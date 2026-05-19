@@ -1,0 +1,13 @@
+volume: vol_001
+threads:
+  main:
+    - id: thread_001
+      name: 旧灯芯异常
+      status: planned
+  supporting:
+    - id: thread_002
+      name: 父亲失踪
+      status: hinted
+  waiting: []
+  closing: []
+

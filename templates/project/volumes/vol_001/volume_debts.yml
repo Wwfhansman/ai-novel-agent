@@ -1,0 +1,4 @@
+volume: vol_001
+debts: []
+notes: "卷级债务是视图；全局权威状态在 ledgers/narrative_debts.yml。"
+

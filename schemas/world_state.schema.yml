@@ -1,0 +1,29 @@
+schema: world_state
+purpose: 记录主角之外的外部系统、势力动作、资源、危机和世界反应。
+fields:
+  current_period:
+    required: true
+    description: 当前时间/卷阶段。
+  active_location:
+    required: false
+    description: 当前主要地点。
+  public_sentiment:
+    required: false
+    description: 舆论、民心或群体态度。
+  resources:
+    required: false
+    description: 关键资源状态。
+  factions:
+    required: true
+    type: list
+    description: 势力当前目标、下一步行动和压力级别。
+    item_fields: [name, current_goal, next_action, pressure_level]
+  active_crises:
+    required: true
+    type: list
+    description: 正在施压的外部危机。
+  consequences:
+    required: false
+    type: list
+    description: 主角行动造成的外部后果。
+

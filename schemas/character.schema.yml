@@ -1,0 +1,45 @@
+schema: character
+purpose: 记录人物固定设定和当前权威状态。人物当前目标、立场、意图以 entities/characters.yml 为准。
+fields:
+  id:
+    required: true
+    description: 稳定人物 ID。
+    example: char_protagonist
+  name:
+    required: true
+    description: 人物姓名。
+  role:
+    required: true
+    description: 叙事功能，例如 protagonist、ally、antagonist、supporting。
+  fixed_profile:
+    required: true
+    description: 不频繁变化的人物设定。
+  current_goal:
+    required: true
+    description: 当前阶段主动追求的目标。
+  current_stance:
+    required: true
+    description: 对主角和当前冲突的立场。
+  intent:
+    required: true
+    description: 本人物下一步自然会做什么。
+  knows:
+    required: true
+    type: list
+    description: 人物明确知道的信息。
+  misunderstands:
+    required: true
+    type: list
+    description: 人物当前误解或错误判断。
+  relationships:
+    required: true
+    type: list
+    description: 与其他人物的关系状态。
+  line_not_cross:
+    required: true
+    type: list
+    description: 人物不会轻易越过的底线。
+  last_seen:
+    required: false
+    description: 最近出场章节。
+

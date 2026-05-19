@@ -1,0 +1,5 @@
+items:
+  - id: backlog_001
+    type: review
+    description: 写完 ch003 后复查旧灯芯规则是否清晰。
+

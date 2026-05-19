@@ -1,0 +1,27 @@
+schema: knowledge_state
+purpose: 记录谁知道什么、谁误解什么、读者知道多少。信息差以 ledgers/knowledge_state.yml 为权威来源。
+fields:
+  id:
+    required: true
+    example: k_001
+  topic:
+    required: true
+    description: 秘密或信息主题。
+  truth:
+    required: true
+    description: 真实情况；终局级秘密受保护。
+  visibility:
+    required: true
+    description: 各角色/读者的信息状态。
+    allowed_values: [unknown, false_belief, suspects, hinted, partial, knows, hiding, reader_only]
+  evidence:
+    required: false
+    type: list
+    description: 已在正文出现的证据。
+  reveal_plan:
+    required: false
+    description: 部分揭示和完整揭示计划。
+  protection:
+    required: false
+    allowed: [normal, protected, endgame_secret]
+

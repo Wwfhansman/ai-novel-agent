@@ -1,0 +1,13 @@
+target_reader:
+  genre: ""
+  primary_desire: []
+  tolerance:
+    oppression_max_chapters: null
+    setup_without_payoff_max_chapters: null
+    explanation_density: ""
+  dislikes: []
+  preferred_payoff: []
+current_reader_expectation:
+  summary: ""
+  risks: []
+

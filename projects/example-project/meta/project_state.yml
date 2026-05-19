@@ -1,0 +1,12 @@
+project_status: bootstrapped-example
+canon_status: draft
+last_completed_chapter: null
+last_completed_round: null
+protected_files:
+  - book/constitution.md
+  - book/reader_model.yml
+  - book/style_memory.md
+  - volumes/vol_001/volume_outline.md
+  - ledgers/knowledge_state.yml
+  - ledgers/decision_log.yml
+

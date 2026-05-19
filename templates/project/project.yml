@@ -1,0 +1,11 @@
+project:
+  id: ""
+  title: ""
+  status: initialized
+  current_volume: vol_001
+  current_round: round_001
+  current_chapter: ch001
+  language: zh-CN
+  text_format: txt
+  notes: "复制本模板后，由 novel-bootstrap 初始化具体内容。"
+

@@ -1,0 +1,8 @@
+items:
+  - id: item_old_wick_001
+    name: 旧灯芯碎片
+    holder: 未定
+    known_function: 能让接触者听见陌生记忆回声。
+    hidden_function: 未确认。
+    foreshadowing: [f_001]
+

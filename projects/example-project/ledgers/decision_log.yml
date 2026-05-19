@@ -1,0 +1,8 @@
+decisions:
+  - id: decision_001
+    made_in: bootstrap
+    decision: 示例项目采用奇幻悬疑方向，不写完整正文。
+    affected_files:
+      - book/constitution.md
+      - volumes/vol_001/volume_outline.md
+

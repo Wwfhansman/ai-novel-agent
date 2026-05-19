@@ -1,0 +1,36 @@
+schema: idea
+purpose: 记录尚未进入正史的灵感、反转、未来剧情可能。idea 不是 canon，除非 promoted 后写入规划、伏笔或正文。
+fields:
+  id:
+    required: true
+    example: idea_001
+  title:
+    required: true
+  source:
+    required: true
+    description: 来源章节、用户输入或复盘触发点。
+  idea:
+    required: true
+    description: 灵感内容。
+  potential_use:
+    required: true
+    type: list
+  target_timing:
+    required: false
+    description: 最早/理想使用时机。
+  dependencies:
+    required: false
+    type: list
+  risks:
+    required: true
+    type: list
+  status:
+    required: true
+    allowed: [candidate, incubating, promoted, rejected, merged, expired]
+  priority:
+    required: true
+    allowed: [low, medium, high]
+  review_after:
+    required: false
+    description: 复查章节或轮次。
+

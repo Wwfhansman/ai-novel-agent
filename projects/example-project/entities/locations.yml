@@ -1,0 +1,7 @@
+locations:
+  - id: loc_outer_lamp_lane
+    name: 外环灯巷
+    function: 开篇异常雾灯所在地。
+    current_state: 一盏旧雾灯反复熄灭。
+    important_events: []
+

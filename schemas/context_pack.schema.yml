@@ -1,0 +1,44 @@
+schema: context_pack
+purpose: 记录写作前上下文编译结果。它是可复查的写作依据，不是正文或正史状态。
+fields:
+  metadata:
+    required: true
+    fields: [project, scope, round, chapter, generated_at, agent]
+  purpose:
+    required: true
+    description: 本次上下文编译支持的任务。
+  read_files:
+    required: true
+    type: list
+    description: 文件读取清单。
+    item_fields: [file, read_mode, reason, key_takeaway]
+    allowed_read_modes: [full, summary, excerpt, targeted, not_read]
+  global_understanding:
+    required: false
+  current_volume_state:
+    required: false
+  current_arc_state:
+    required: false
+  recent_chapter_understanding:
+    required: false
+  key_old_chapter_lookbacks:
+    required: true
+    type: list
+  active_narrative_debts:
+    required: true
+  active_foreshadowing:
+    required: true
+  knowledge_state:
+    required: true
+  character_intent:
+    required: true
+  world_pressure:
+    required: true
+  plan:
+    required: true
+  forbidden_moves:
+    required: true
+  unknowns_and_risks:
+    required: true
+  required_updates_after_writing:
+    required: true

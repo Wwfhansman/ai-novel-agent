@@ -1,0 +1,13 @@
+current_window: ch001-ch009
+chapters:
+  - chapter: ch001
+    purpose: 林栖修复异常雾灯，第一次听见陌生记忆回声。
+    status: planned
+  - chapter: ch002
+    purpose: 巡灯署介入，要求回收旧灯芯。
+    status: planned
+  - chapter: ch003
+    purpose: 林栖保留灯芯碎片，发现父亲修灯刀痕迹。
+    status: planned
+notes: "示例只展示前三章规划。"
+
