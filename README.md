@@ -1,84 +1,33 @@
 # AI Novel Agent
 
-AI Novel Agent 是一套面向长篇小说创作的 agent-native 系统设计。
+AI Novel Agent is an agent-native framework for writing long-form fiction with LLM agents.
 
-它的目标不是做一个普通的“AI 写作助手”，而是让 AI agent 能够从一个创作种子出发，建立小说记忆、滚动规划剧情、连续写作章节、维护人物和世界状态，并在创作过程中捕捉灵感、处理变更、复盘质量。
+It is not a web app, not a SaaS product, and not a one-click novel generator. It is a file-based creative operating system that helps an AI agent plan, write, review, and maintain a long novel over many chapters without relying on chat history as memory.
 
-第一阶段不做 UI、不做 SaaS、不做复杂数据库。MVP 采用纯文件项目结构，供 Codex、DeepSeek-TUI、Claude Code 等 agent 读取和写入。
+The project is currently an MVP protocol: skills, templates, schemas, documentation, and a small example project.
 
-## 核心理念
+## Why This Exists
 
-传统 AI 小说写作常见问题是：单章看起来通顺，但长篇会失忆、跑偏、伏笔丢失、人物降智、读者期待无人管理。
+Long novels fail under naive AI writing workflows for predictable reasons:
 
-本项目的核心假设是：
+- The model writes a decent single chapter, then loses long-term continuity.
+- Characters drift or act only to serve the plot.
+- Foreshadowing and reader expectations are forgotten.
+- The world stops reacting unless the protagonist is present.
+- Chat history becomes an invisible and unreliable memory layer.
+- Similarity-based RAG retrieves text that looks related but is not narratively relevant.
 
-> 让 AI 写长篇小说，不能只依赖聊天上下文或向量相似度检索，而应该用结构化、半结构化的项目记忆来承载小说状态。
+AI Novel Agent takes a different approach:
 
-因此，本项目采用：
+> The novel project itself is the memory system.
 
-- 文件即数据库
-- 结构化记忆优先
-- 正文用于回看细节
-- 远处读摘要，近处读原文，关键节点回看全文
-- 三章一轮滚动创作
-- 每章独立规划、写作、审稿、状态更新
-- agent skill 约束工作流
+Instead of treating the previous text as a blob to retrieve from, the framework stores the story as layered project files: book-level constraints, volume state, chapter summaries, canon deltas, entity state, narrative debts, knowledge visibility, world state, and rolling plans.
 
-## MVP 范围
+## Core Ideas
 
-MVP 只验证一件事：
+### Files As Database
 
-> 结构化记忆 + agent 工作流，是否能让 AI 稳定写出可连续发展的长篇小说。
-
-MVP 包含：
-
-- 小说启动流程：从一个 seed 初始化新书。
-- 三章一轮写作流程：每轮写 3 章。
-- 分层记忆系统：全书、卷、章群、章节、实体、动态账本。
-- 动态账本：叙事债务、信息可见性、角色意图、世界状态、伏笔、灵感池。
-- 上下文编译：写作前产出标准化 `context_pack.md`，记录读取清单、关键理解和缺口。
-- 变更管理：处理中途新想法、设定修改、大纲调整。
-- 审查流程：检查节奏、人物、信息、债务、世界反应和记忆完整性。
-
-MVP 暂不包含：
-
-- 图形化工作台
-- 多用户账号系统
-- 云端同步
-- 商业化付费系统
-- 向量数据库
-- 自动发布平台
-- 读者评论反馈系统
-
-## 文档目录
-
-- [需求文档](docs/REQUIREMENTS.md)
-- [MVP 边界](docs/MVP_SCOPE.md)
-- [技术架构](docs/TECHNICAL_ARCHITECTURE.md)
-- [记忆模型](docs/MEMORY_MODEL.md)
-- [上下文编译](docs/CONTEXT_PACK.md)
-- [正史与安全规则](docs/CANON_AND_SAFETY.md)
-- [工作流设计](docs/WORKFLOWS.md)
-- [文件格式规范](docs/FILE_FORMATS.md)
-- [开发文档](docs/DEVELOPMENT.md)
-
-## 推荐项目结构
-
-```text
-ai-novel-agent/
-  skills/
-    novel-bootstrap/
-    novel-write/
-    novel-review/
-    novel-change/
-  schemas/
-  templates/
-  docs/
-  projects/
-    my-novel/
-```
-
-每本小说项目采用独立文件夹：
+Every novel is a project folder. The files are the source of truth, and agent conversations are temporary workspaces.
 
 ```text
 projects/my-novel/
@@ -93,39 +42,227 @@ projects/my-novel/
   meta/
 ```
 
-## 关键原则
+### Structured Memory Over Vector Search
 
-项目文件是正史，agent 对话只是临时工作台。
+The framework prefers structured and semi-structured memory:
 
-正文保留细节，结构化账本保存状态，滚动规划保存未来方向，灵感池保存尚未成为正史的可能性。
+- `entities/characters.yml` records current character goals, intent, knowledge, and relationships.
+- `ledgers/narrative_debts.yml` records what the reader is waiting for.
+- `ledgers/knowledge_state.yml` records who knows what.
+- `ledgers/world_state.yml` records external pressure, factions, resources, and consequences.
+- `planning/rolling_plan.yml` records the next 9-15 chapters.
 
-同一个事实出现冲突时，以明确的唯一事实来源为准：实体当前状态看 `entities/`，动态活变量看 `ledgers/`，未来意图看 `planning/`，章节事实回看 `chapters/*/final.txt` 和 `canon_delta.yml`。agent 不能用旧摘要覆盖当前状态。
+Full chapter text is still kept, but it is used for precise lookback rather than as the primary memory layer.
 
-上下文编译不是口头步骤。每轮写作前必须生成可复查的 context pack，写明本轮读取了哪些文件、为什么读取、哪些关键旧章节被回看、哪些信息仍不确定。
+### Context Pack Before Writing
 
-写作时不能只问“这一章是否通顺”，还要问：
+Before an agent writes a chapter, it must generate a visible `context_pack.md`.
 
-- 读者还在等什么？
-- 人物是否有自己的目标？
-- 谁知道什么，谁不知道什么？
-- 世界是否对主角行动产生反应？
-- 本章是否推进、偿还或新增了叙事债务？
+The context pack records:
 
-## 当前阶段
+- which files were read
+- why they were read
+- key takeaways
+- relevant old chapter lookbacks
+- active narrative debts
+- character intent
+- knowledge visibility
+- world pressure
+- forbidden moves
+- required updates after writing
 
-当前项目已经具备 MVP 文件协议骨架：
+This makes writing inputs auditable and reproducible.
 
-1. `skills/` 包含 4 个核心写作 skill。
-2. `templates/project/` 包含可复制的空白小说项目模板。
-3. `schemas/` 包含核心结构化文件字段说明。
-4. `projects/example-project/` 展示脱敏示例项目。
+### Canon Safety
 
-下一步建议用一个私有项目跑通：
+The project defines source-of-truth rules.
+
+Examples:
+
+- Chapter text lives in `chapters/chXXX/final.txt`.
+- Chapter-level change logs live in `canon_delta.yml`.
+- Current character state lives in `entities/characters.yml`.
+- Current world state lives in `ledgers/world_state.yml`.
+- Future intent lives in `planning/rolling_plan.yml`.
+
+`canon_delta.yml` is a change log, not the current state table.
+
+## What Is Included
 
 ```text
-Bootstrap 初始化
-→ 第 1 轮 3 章
-→ Review 冷启动检查
-→ Change 插入一个中途点子
-→ 持续测试到 30 章
+ai-novel-agent/
+  docs/                 Project design and protocol docs
+  skills/               Agent skills for writing workflows
+  schemas/              Field specs for structured memory files
+  templates/            Blank novel project template
+  projects/
+    example-project/    Minimal sanitized example project
+  scripts/              Placeholder for future automation
 ```
+
+### Core Skills
+
+- `novel-bootstrap`: initialize a new novel from a seed idea.
+- `novel-write`: write the next chapter or three-chapter round with context packs and memory updates.
+- `novel-review`: cold-start review, continuity checks, source-of-truth checks, and quality review.
+- `novel-change`: safely handle mid-story ideas, setting changes, outline revisions, and retcons.
+
+### Project Template
+
+`templates/project/` contains a complete blank project structure, including:
+
+- book-level memory
+- volume memory
+- arc memory
+- chapter files
+- entity state
+- dynamic ledgers
+- rolling plans
+- style memory
+- metadata and checkpoint placeholders
+
+### Example Project
+
+`projects/example-project/` is a tiny sanitized example. It demonstrates the protocol without becoming a real novel repository.
+
+Real novel projects should be private by default. The included `.gitignore` ignores `/projects/*` except the example project.
+
+## Quick Start
+
+### 1. Clone The Repository
+
+```bash
+git clone https://github.com/Wwfhansman/ai-novel-agent.git
+cd ai-novel-agent
+```
+
+### 2. Create A Private Novel Project
+
+Copy the blank template:
+
+```bash
+cp -r templates/project projects/my-novel
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item -Recurse templates/project projects/my-novel
+```
+
+`projects/my-novel` is ignored by Git by default.
+
+### 3. Use An Agent With The Skills
+
+Ask your agent to use the appropriate skill:
+
+```text
+Use skills/novel-bootstrap to initialize projects/my-novel from this seed:
+"A young lamp repairer discovers the city lamps preserve forgotten memories."
+```
+
+Then continue with:
+
+```text
+Use skills/novel-write to write round 001 for projects/my-novel.
+```
+
+For review:
+
+```text
+Use skills/novel-review to cold-start review projects/my-novel.
+```
+
+For mid-story changes:
+
+```text
+Use skills/novel-change to evaluate this idea and integrate it safely:
+"The protagonist's father may be part of the lighthouse memory core."
+```
+
+## Recommended Workflow
+
+```text
+Bootstrap from seed
+→ Generate initial project memory
+→ Plan a 9-15 chapter rolling window
+→ Write one 3-chapter round
+→ Generate round and chapter context packs
+→ Write chapter draft/final text
+→ Generate summary and canon_delta
+→ Merge current state into entities, ledgers, and planning
+→ Cold-start review
+→ Continue or run change management
+```
+
+The default writing unit is a three-chapter round. Each chapter still gets its own context pack and memory update.
+
+## Documentation
+
+- [Requirements](docs/REQUIREMENTS.md)
+- [MVP Scope](docs/MVP_SCOPE.md)
+- [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md)
+- [Memory Model](docs/MEMORY_MODEL.md)
+- [Context Pack](docs/CONTEXT_PACK.md)
+- [Canon And Safety](docs/CANON_AND_SAFETY.md)
+- [Workflows](docs/WORKFLOWS.md)
+- [File Formats](docs/FILE_FORMATS.md)
+- [Development](docs/DEVELOPMENT.md)
+
+## Repository Safety
+
+This repository is designed to open-source the system, not your private fiction.
+
+By default:
+
+```gitignore
+/projects/*
+!/projects/.gitkeep
+!/projects/example-project/
+!/projects/example-project/**
+```
+
+If you want Git checkpoints for a real novel, keep that novel in a separate private repository or adjust the ignore rules intentionally.
+
+## Current Status
+
+MVP file protocol is implemented:
+
+- Four core skills exist under `skills/`.
+- Blank project template exists under `templates/project/`.
+- Structured memory schemas exist under `schemas/`.
+- Sanitized example project exists under `projects/example-project/`.
+- Documentation describes the design, memory model, workflows, context packs, and canon safety rules.
+
+Not included yet:
+
+- CLI automation
+- Web or desktop UI
+- Database backend
+- Vector retrieval
+- Multi-user collaboration
+- Publishing integrations
+
+## Roadmap
+
+Near-term:
+
+- Test the protocol on a private 30-chapter experiment.
+- Add lightweight validation scripts for YAML structure and required files.
+- Add a project creation helper.
+- Add context pack compilation helpers.
+
+Later:
+
+- Local workspace UI.
+- Export tools.
+- Optional database-backed project store.
+- Reader feedback ingestion.
+- Model-specific adapters.
+
+## License
+
+No license has been selected yet.
+
+Until a license is added, this repository is public source-available but not formally open-source licensed. Choose a license such as MIT or Apache-2.0 before encouraging external reuse or contributions.
+
