@@ -1,0 +1,88 @@
+schema: active_flow
+purpose: >
+  Current cross-round narrative flow authority. A flow is the continuous
+  pressure/event chain that chapters cut from; it may span across multiple
+  three-chapter production rounds.
+
+fields:
+  current_flow:
+    required: true
+    fields:
+      id:
+        required: true
+        example: arc_001_old_wick
+      status:
+        required: true
+        allowed: [active, turning, ending, paused]
+        example: active
+      linked_arc:
+        required: false
+        purpose: Optional arc file or arc id this flow belongs to.
+        example: arcs/arc_001_opening.yml
+      span:
+        required: true
+        fields:
+          started_at:
+            required: true
+            example: ch001
+          expected_range:
+            required: true
+            purpose: Flexible planned range, not a hard promise.
+            example: ch001-ch007
+      narrative_unit:
+        required: true
+        purpose: What moving event chain this flow tracks.
+      central_motion:
+        required: true
+        purpose: The pressure that keeps moving from chapter to chapter.
+      current_pressure:
+        required: true
+        purpose: External pressure currently in motion.
+      active_questions:
+        required: true
+        type: list
+        purpose: Reader-facing practical or dramatic questions still open.
+      scene_chain:
+        required: true
+        type: list
+        purpose: Planned or actual movement points. These are not chapter templates.
+        item_fields:
+          planned_chapter:
+            required: false
+            example: ch004
+          flow_position:
+            required: true
+            allowed: [opening, pressure_rising, turn, fallout, payoff, transition]
+          inbound_pressure:
+            required: true
+          chapter_turn:
+            required: true
+          outbound_pressure:
+            required: true
+      last_cut:
+        required: false
+        purpose: The last visible cut already written.
+        fields:
+          chapter:
+            required: true
+            example: ch003
+          last_visible_moment:
+            required: true
+          handoff_to_next_chapter:
+            required: true
+      end_conditions:
+        required: true
+        type: list
+        purpose: Conditions that justify ending this flow.
+      round_boundary_rule:
+        required: true
+        purpose: Reminder that round boundaries do not close this flow.
+
+  completed_flows:
+    required: true
+    type: list
+    purpose: Closed flow ids and payoff notes.
+
+  notes:
+    required: false
+    purpose: Operational notes for maintaining continuity.

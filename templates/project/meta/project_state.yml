@@ -6,7 +6,7 @@ protected_files:
   - book/constitution.md
   - book/reader_model.yml
   - book/style_memory.md
+  - meta/model_policy.yml
   - volumes/vol_001/volume_outline.md
   - ledgers/knowledge_state.yml
   - ledgers/decision_log.yml
-

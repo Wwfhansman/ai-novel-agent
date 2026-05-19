@@ -1,7 +1,8 @@
 schema: current_round
 purpose: >
   Three-chapter extract from planning/rolling_plan.yml for the active writing
-  round. It is not an independent planning authority.
+  round. It is a production batch, not a narrative unit and not an
+  independent planning authority.
 
 fields:
   round:
@@ -15,17 +16,52 @@ fields:
     required: true
     purpose: Must point to planning/rolling_plan.yml.
     example: planning/rolling_plan.yml
+  source_flow:
+    required: true
+    purpose: Must point to planning/active_flow.yml.
+    example: planning/active_flow.yml
+  production_batch:
+    required: true
+    fields:
+      chapters:
+        required: true
+        type: list
+        purpose: Three chapter ids extracted from rolling_plan.yml.
+      checkpoint_reason:
+        required: true
+        example: "Write ch007-ch009 as one operation batch; do not create a three-chapter story unit."
+      must_not_resolve_just_because_round_ends:
+        required: true
+        type: boolean
+        example: true
   chapters:
     required: true
     type: list
-    purpose: Three chapter ids or condensed entries copied from rolling_plan.yml.
+    purpose: Condensed chapter entries extracted from rolling_plan.yml with flow and handoff fields.
   goals:
     required: false
     type: list
-    purpose: Round-level goals derived from the detailed rolling synopsis.
+    deprecated: true
+    purpose: Do not use. Round-level story goals make the batch behave like a narrative container.
+  batch_tasks:
+    required: false
+    type: list
+    purpose: Operational tasks only, such as writing files and refreshing memory. No story goals.
+  batch_edges:
+    required: true
+    fields:
+      starts_inside_flow:
+        required: true
+        example: arc_001_old_wick pressure_rising
+      ends_inside_flow:
+        required: true
+        example: arc_001_old_wick turn
+      next_chapter_after_batch:
+        required: true
+        example: ch010
   required_context_pack:
     required: true
     example: planning/context_packs/round_003_context_pack.md
   notes:
     required: false
-    purpose: Reminder that this file is an extract, not a separate plan.
+    purpose: Reminder that this file is an extract and must not add plot goals absent from rolling_plan.yml.

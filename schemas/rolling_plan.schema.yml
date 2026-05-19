@@ -19,7 +19,7 @@ fields:
   source_of_truth:
     required: true
     purpose: Human-readable reminder that this file is the authority for near-future chapter synopsis.
-    example: "Near-future chapter synopsis authority; current_round.yml is only an extract."
+    example: "Near-future chapter synopsis authority; current_round.yml is only a production extract."
 
   chapters:
     required: true
@@ -35,13 +35,25 @@ fields:
         required: true
         allowed: [planned, drafting, completed, revised, skipped]
         example: planned
+      flow_id:
+        required: true
+        purpose: Continuous narrative flow this chapter belongs to.
+        example: arc_001_old_wick
+      flow_position:
+        required: true
+        allowed: [opening, pressure_rising, turn, fallout, payoff, transition]
+        purpose: Position inside the flow, not inside the three-chapter round.
+        example: pressure_rising
       synopsis:
         required: true
         purpose: 300-800 Chinese characters of story content, not scene beats.
         example: "上一章的监视压力没有消失，主角退到幕后后..."
-      continuity_from_previous:
+      inbound_pressure:
         required: true
         purpose: What pressure, action, or unresolved problem carries in.
+      chapter_turn:
+        required: true
+        purpose: Irreversible external change caused by this chapter.
       required_developments:
         required: true
         type: list
@@ -56,9 +68,18 @@ fields:
       payoff_or_reader_reward:
         required: true
         purpose: What reader reward, reveal, or progress this chapter gives.
-      bridge_to_next:
+      outbound_pressure:
         required: true
-        purpose: Why the next chapter naturally follows.
+        purpose: External pressure or unfinished motion that survives into the next chapter.
+      handoff_to_next_chapter:
+        required: true
+        purpose: The exact visible first moment or concrete pressure the next chapter should pick up.
+      external_state_at_end:
+        required: true
+        purpose: What changed in the world, relationship, resource, danger, leverage, or information visibility.
+      reader_motion:
+        required: false
+        purpose: What the reader should want to know or see next.
       constraints:
         required: false
         type: list

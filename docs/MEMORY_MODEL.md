@@ -303,6 +303,7 @@ final.txt
 → canon_delta.yml
 → entities update
 → ledgers update
+→ planning/active_flow.yml update
 → planning/rolling_plan.yml update
 ```
 
@@ -312,6 +313,7 @@ final.txt
 - `summary.yml` 保存该章发生了什么。
 - `canon_delta.yml` 保存该章造成了什么变化。
 - `entities/`、`ledgers/` 保存合并后的当前权威状态。
+- `planning/active_flow.yml` 保存当前跨轮连续剧情流，避免三章一轮被误写成独立叙事块。
 - `planning/rolling_plan.yml` 保存刷新后的未来 6-15 章详细章纲，避免下一轮重复已经完成的剧情选择。
 
 `canon_delta.yml` 不能替代当前状态文件。agent 冷启动时应以当前状态文件为准，再按需回看 delta 和正文。
@@ -322,8 +324,9 @@ final.txt
 远处读摘要
 近处读原文
 关键旧内容回看原文
-动态账本优先读取
-详细章纲驱动剧情
+动态账本按本章涉及对象定向读取
+rolling_plan 全文读取，摘要输出
+详细章纲驱动剧情，但 context pack 不复制全文
 ```
 
 推荐默认读取：
@@ -333,13 +336,15 @@ final.txt
 - 已完成卷摘要
 - 当前卷纲和状态
 - 当前 arc
+- 当前 active_flow
+- `planning/rolling_plan.yml` 全文
 - 最近 12-15 章详细摘要
-- 最近 3-5 章全文
-- 关键旧章节原文
-- 动态账本
+- 上一章全文；最近 2-3 章全文按连续性需要读取
+- 关键旧章节原文，只在触发旧伏笔、旧台词、旧物品、久未登场人物或重大秘密时读取
+- 本章涉及的动态账本条目
 - 本章任务
 
-每次读取结果必须写入 context pack。上下文编译不是隐性过程，见 [上下文编译](CONTEXT_PACK.md)。
+每次读取结果必须写入 context pack。上下文编译不是隐性过程，但 context pack 是工作记忆，不是资料库全文副本。见 [上下文编译](CONTEXT_PACK.md)。
 
 ## 7. 正史边界
 

@@ -19,6 +19,7 @@ Support ch001 writing from the detailed rolling synopsis. This is an example con
 | --- | --- | --- | --- |
 | `book/constitution.md` | full | Confirm opening direction | Start with repair action, not full world explanation. |
 | `book/reader_model.yml` | full | Confirm reader expectation | Reader expects local mystery and clue progression. |
+| `planning/active_flow.yml` | full | Confirm flow continuity | ch001 is the opening cut of arc_001_old_wick and must hand pressure to ch002. |
 | `planning/rolling_plan.yml` | full | Get authoritative detailed synopsis | ch001 centers on the old lamp wick and the hidden memory echo. |
 | `volumes/vol_001/volume_state.yml` | full | Confirm current pressure | Outer ring fog lamps are abnormal; patrol pressure is near. |
 | `entities/characters.yml` | targeted | Read Lin Qi and patrol-related characters | Lin Qi wants to investigate; patrol wants to recover the old wick. |
@@ -37,6 +38,14 @@ Volume 001 aims to prove fog lamps can preserve memory and connect that fact to 
 
 arc_001 opens the old-lamp-wick anomaly.
 
+## Active Narrative Flow
+
+- Flow id: arc_001_old_wick
+- Flow position: opening
+- Current pressure: the old fog lamp keeps failing while patrol is close enough to demand the removed wick.
+- What must not be resolved merely because the batch ends: the old-wick rule, patrol motive, and father's truth.
+- Flow end conditions: not reached in ch001.
+
 ## Recent Chapter Understanding
 
 No written chapters yet.
@@ -49,13 +58,22 @@ No prior prose.
 
 ch001: Lin Qi is called to the outer ring lamp corridor during heavy night fog. The old fog lamp repeatedly goes out. Patrol staff treat it as routine malfunction and urge her to replace the wick. While disassembling the lamp, she hears a memory echo from a stranger who seems to have spoken in the same place years ago. She does not explain the anomaly and hides a cracked wick fragment before patrol footsteps reach her.
 
-## Current Round Extract
+## Rolling Plan Extract For This Batch
 
-round_001 covers ch001-ch003: old wick anomaly, patrol recovery pressure, and the first clue connecting the lamp wick to her father's tool.
+round_001 covers ch001-ch003 as a production batch. ch001 belongs to arc_001_old_wick opening and should hand external pressure to ch002.
 
 ## Previous Chapter Handoff
 
 Opening chapter; no prior handoff.
+
+## Cut Continuity
+
+- Previous cut picked up: none, opening chapter.
+- Inbound pressure: old fog lamp failure and patrol urgency.
+- Chapter turn: Lin Qi discovers the old wick stores a stranger's memory and privately keeps a cracked fragment.
+- Outbound pressure: patrol arrives after the old wick has already lost a fragment.
+- Handoff to next chapter: patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick.
+- Transition justification if not opening from previous cut: not applicable.
 
 ## Key Old Chapter Lookbacks
 
@@ -113,4 +131,5 @@ Opening needs to control explanation ratio. The chapter may become too much setu
 - `ledgers/narrative_debts.yml`
 - `ledgers/knowledge_state.yml`
 - `ledgers/world_state.yml`
+- `planning/active_flow.yml`
 - `planning/rolling_plan.yml`

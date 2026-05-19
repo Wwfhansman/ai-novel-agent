@@ -1,10 +1,40 @@
 round: round_001
 status: planned
 source_plan: planning/rolling_plan.yml
-chapters: [ch001, ch002, ch003]
-goals:
-  - 开启旧灯芯异常 arc。
-  - 建立巡灯署压力。
-  - 埋下父亲线索。
+source_flow: planning/active_flow.yml
+production_batch:
+  chapters: [ch001, ch002, ch003]
+  checkpoint_reason: "示例 round_001 是生产批次，用于写 ch001-ch003。"
+  must_not_resolve_just_because_round_ends: true
+chapters:
+  - chapter: ch001
+    flow_id: arc_001_old_wick
+    flow_position: opening
+    inbound_pressure: "开篇无前章交接；外环雾灯反复熄灭。"
+    chapter_turn: "林栖发现旧灯芯保存陌生记忆，并私藏碎片。"
+    outbound_pressure: "巡灯署进入灯廊回收旧灯芯。"
+    handoff_to_next_chapter: "巡灯署的人推门进入灯廊，要求林栖立刻交出拆下的旧灯芯。"
+  - chapter: ch002
+    flow_id: arc_001_old_wick
+    flow_position: pressure_rising
+    inbound_pressure: "巡灯署现场回收旧灯芯，碎片仍在林栖身上。"
+    chapter_turn: "林栖发现登记簿被提前改过。"
+    outbound_pressure: "登记簿痕迹指向父亲旧工具箱。"
+    handoff_to_next_chapter: "林栖打开父亲旧工具箱，箱底那把修灯刀露出缺口。"
+  - chapter: ch003
+    flow_id: arc_001_old_wick
+    flow_position: turn
+    inbound_pressure: "林栖打开父亲旧工具箱，巡灯署仍在查谁接触过旧灯。"
+    chapter_turn: "父亲修灯刀缺口与灯芯碎片划痕吻合。"
+    outbound_pressure: "巡灯署开始用父亲旧案试探林栖掌握了多少。"
+    handoff_to_next_chapter: "巡灯署问起父亲最后维修过的灯塔，并要求林栖交出旧工具箱登记。"
+batch_tasks:
+  - "Write ch001-ch003 as files."
+  - "Update chapter memory and current-state files."
+  - "Refresh active_flow and rolling_plan after the batch."
+batch_edges:
+  starts_inside_flow: "arc_001_old_wick opening"
+  ends_inside_flow: "arc_001_old_wick turn"
+  next_chapter_after_batch: ch004
 required_context_pack: planning/context_packs/round_001_context_pack.md
-notes: "This is an extract from rolling_plan.yml."
+notes: "This is a production extract from rolling_plan.yml, not a three-chapter story unit."

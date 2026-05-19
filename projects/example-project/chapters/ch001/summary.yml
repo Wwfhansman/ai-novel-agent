@@ -9,5 +9,6 @@ locations:
   - loc_outer_lamp_lane
 key_events: []
 emotional_result: ""
-next_hook: ""
-
+external_result: ""
+handoff_to_next_chapter:
+  - "Patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick."

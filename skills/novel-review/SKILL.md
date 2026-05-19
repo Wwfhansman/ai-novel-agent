@@ -16,6 +16,7 @@ Read:
 - `docs/MEMORY_MODEL.md`
 - `docs/WORKFLOWS.md`
 - Target project `project.yml`
+- `meta/model_policy.yml` if present
 
 ## Review Modes
 
@@ -29,7 +30,9 @@ Act as a fresh agent. Read only project files, not prior conversation. Verify th
 - Active narrative debts.
 - Knowledge state and secrets.
 - World state and pressures.
+- Active cross-round narrative flow.
 - Next round writing target.
+- Whether model routing is safe and no fast-model output entered final prose or canon without premium/human confirmation.
 
 ### Chapter Review
 
@@ -54,7 +57,7 @@ Review the last 3 chapters:
 - all chapter summaries and deltas
 - updated ledgers and rolling plan
 
-Check whether the round produced coherent progress.
+Check whether the batch produced coherent progress without becoming an artificial three-chapter story unit.
 
 ## Required Checks
 
@@ -84,14 +87,29 @@ Check whether the round produced coherent progress.
    - Compare to `book/constitution.md`, `book/reader_model.yml`, and `book/style_memory.md`.
 
 8. **Detailed synopsis alignment**
+   - Check whether `planning/active_flow.yml` is present, current, and compatible with the last written chapter.
    - Check whether `planning/rolling_plan.yml` is detailed enough to drive prose.
-   - Check whether `current_round.yml` is only an extract, not a competing plan.
+   - Check whether `current_round.yml` is only a production extract, not a competing plan or hidden round goal.
    - Check whether future planned chapters repeat decisions already completed.
 
-9. **Prose and TXT format**
+9. **Cross-round flow continuity**
+   - Check whether each chapter opens from the previous external handoff or records a justified transition.
+   - Check whether the last chapter of the batch closes because the story earned closure, not because the batch ended.
+   - Check whether `planning/rolling_plan.yml` continues the same event chain after the batch when the flow is still active.
+   - Check whether ch003/ch006/ch009-style chapters are disproportionately recap-like, reflective, or conclusive.
+
+10. **Prose and TXT format**
+   - Run `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>` from the repository root when the script exists.
+   - Treat validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.
    - Check whether the ending collapses into protagonist recap, analysis, or next-step thinking.
+   - Check whether `handoff_to_next_chapter` comes from external motion, not only from a protagonist decision.
    - Check whether `final.txt` uses one blank line after the title and no blank lines between ordinary body paragraphs.
+
+11. **Model routing**
+   - Check whether `meta/model_policy.yml` exists.
+   - Check context packs and session logs for model routing records when multiple models were used.
+   - Flag any final prose, active_flow, rolling_plan, protected-file change, or canon merge that appears to have been done only by a fast or cheap model.
 
 ## Output Format
 
@@ -104,6 +122,7 @@ Review Summary
 - Required fixes
 - Suggested fixes
 - Files that appear stale or conflicting
+- Model routing risks
 - Whether novel-change is needed
 ```
 

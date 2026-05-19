@@ -15,6 +15,7 @@ Read:
 - `docs/MEMORY_MODEL.md`
 - `docs/WORKFLOWS.md`
 - Target project `project.yml`
+- `meta/model_policy.yml` if present
 - Relevant current-state files.
 
 ## Change Levels
@@ -59,6 +60,7 @@ Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 
 6. **Apply only safe changes**
    - For protected files, output a diff summary and require checkpoint/confirmation before modification.
+   - For Level 3-5 changes, require premium_model or human confirmation according to `meta/model_policy.yml` if present.
    - For ordinary changes, update authoritative files and record the decision.
 
 7. **Record decision**
@@ -72,6 +74,7 @@ Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 - Current character state: `entities/characters.yml`
 - Current information visibility: `ledgers/knowledge_state.yml`
 - Current world reaction: `ledgers/world_state.yml`
+- Current cross-round flow: `planning/active_flow.yml`
 - Future 9-15 chapter route: `planning/rolling_plan.yml`
 - Current volume goal: protected; modify only with explicit change process.
 
@@ -98,4 +101,3 @@ Stop and ask for direction if:
 - Multiple existing chapters would need retcon and the user has not approved it.
 - A protected file must change without checkpoint.
 - The change promotes an unconfirmed idea into canon without enough setup.
-

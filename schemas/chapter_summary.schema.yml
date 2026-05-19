@@ -37,6 +37,13 @@ fields:
   emotional_result:
     required: true
     description: 本章给读者留下的情绪结果。
-  next_hook:
+  external_result:
     required: true
-    description: 下一章必须承接的钩子。
+    description: 本章结束后外部世界、关系、资源、压力或信息可见性发生了什么变化。
+  handoff_to_next_chapter:
+    required: true
+    description: 下一章必须承接的具体外部压力、未完成动作、关系变化、物件、后果或信息差。
+  next_hook:
+    required: false
+    deprecated: true
+    description: 旧字段。新文件应使用 handoff_to_next_chapter。

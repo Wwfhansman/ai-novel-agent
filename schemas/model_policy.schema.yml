@@ -1,0 +1,40 @@
+schema: model_policy
+purpose: >
+  Records how a novel project maps model roles to actual agents or model names,
+  and which tasks may use cheaper or faster models.
+
+fields:
+  model_policy:
+    required: true
+    fields:
+      premium_model:
+        required: true
+        purpose: High-quality model for creative direction, long-context reasoning, prose, and canon decisions.
+        example: "deepseek-v4-pro or another premium long-context model"
+      fast_model:
+        required: false
+        purpose: Cheap or fast model for mechanical, reviewable, low-risk tasks.
+        example: "deepseek-v4-flash or another fast model"
+      default_quality_gate:
+        required: true
+        allowed: [premium_model, human]
+        purpose: Who must approve outputs before they enter canon or final prose.
+        example: premium_model
+      allowed_fast_tasks:
+        required: false
+        type: list
+        example:
+          - yaml_format_check
+          - txt_spacing_fix
+          - session_log_summary
+      forbidden_fast_tasks:
+        required: true
+        type: list
+        example:
+          - final_txt_drafting
+          - active_flow_restructure
+          - protected_file_change
+      routing_log_required:
+        required: true
+        type: boolean
+        example: true

@@ -1,0 +1,24 @@
+model_policy:
+  premium_model: "<set your premium writing model or agent>"
+  fast_model: "<optional fast/cheap model or agent>"
+  default_quality_gate: premium_model
+  allowed_fast_tasks:
+    - yaml_format_check
+    - txt_spacing_fix
+    - validator_error_summary
+    - session_log_summary
+    - diff_summary
+    - context_pack_reading_table_cleanup
+  forbidden_fast_tasks:
+    - final_txt_drafting
+    - literary_revision
+    - active_flow_creation_or_restructure
+    - rolling_plan_major_revision
+    - protected_file_change
+    - level_3_to_5_change_decision
+    - canon_state_final_merge
+  routing_log_required: true
+notes: >
+  Fast models may help with mechanical work, but anything entering final prose,
+  active_flow, rolling_plan, or canon state must be confirmed by the premium
+  model or a human.

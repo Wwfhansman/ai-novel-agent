@@ -1,12 +1,19 @@
 id: arc_001
 name: 旧灯芯开篇
 status: planned
-chapters: [ch001, ch002, ch003]
+chapters: [ch001, ch002, ch003, ch004, ch005, ch006]
+linked_flow: arc_001_old_wick
 goal: 让主角发现旧灯芯异常并遭遇巡灯署压力。
 core_conflict: 主角想查清异常，巡灯署想回收灯芯。
 cause: 外环灯巷一盏雾灯反复熄灭。
 process: []
 result: ""
+phase_plan:
+  - chapters: ch001-ch003
+    function: "opening anomaly and first personal clue"
+  - chapters: ch004-ch006
+    function: "patrol pressure becomes targeted and the father trail gains a cost"
+round_boundary_rule: "round_001 ending does not automatically close this arc."
 characters: [char_lin_qi, char_shen_yan]
 foreshadowing: [f_001]
 narrative_debts:
@@ -14,4 +21,3 @@ narrative_debts:
   advanced: []
   paid: []
 contribution_to_volume: 开启雾灯记忆主线。
-

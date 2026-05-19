@@ -13,6 +13,27 @@
 
 What writing task does this context pack support?
 
+## Context Budget
+
+- Target size:
+- Actual approximate size:
+- Budget notes:
+
+For round packs, target 3000-5000 Chinese characters.
+For chapter packs, target 1000-2500 Chinese characters.
+
+`planning/rolling_plan.yml` should be read in full before the round, but this context pack should only summarize the entries and later constraints relevant to this task.
+
+## Model Routing
+
+- premium_model:
+- fast_model:
+- premium tasks:
+- fast tasks:
+- final quality gate by:
+
+If no model switching is available, state that all tasks use the current agent/model.
+
 ## Read Files
 
 | File | Read Mode | Reason | Key Takeaway |
@@ -33,6 +54,8 @@ not_read
 
 Where is the whole book now? What is the protagonist's long-term direction?
 
+Keep this short. Do not restate the whole constitution.
+
 ## Completed Volumes
 
 How do completed volumes affect the current writing?
@@ -43,7 +66,19 @@ Current volume goal, phase, main contradictions, and remaining tasks.
 
 ## Current Arc State
 
-What is the current 3-10 chapter event chain? Is this round opening, advancing, turning, or resolving it?
+What is the current 3-10 chapter event chain? Is this batch inside an opening, advancing, turning, or resolving phase?
+
+## Active Narrative Flow
+
+Which cross-round flow is this task inside? Did the flow begin before this round, and will it continue after this round?
+
+State:
+
+- Flow id:
+- Flow position:
+- Current pressure:
+- What must not be resolved merely because the batch ends:
+- Flow end conditions:
 
 ## Recent Chapter Understanding
 
@@ -55,18 +90,36 @@ Tone, rhythm, emotional carryover, and scene handoff from recent 3-5 full chapte
 
 ## Detailed Rolling Synopsis
 
-Copy the relevant chapter entries from `planning/rolling_plan.yml`.
+Summarize the relevant chapter entries from `planning/rolling_plan.yml`.
 
 This section says what story content should happen. It must not become a scene-beat template.
 
-## Current Round Extract
+For a round pack, include the batch chapters and any later planned chapters that constrain this batch.
+For a chapter pack, include this chapter plus adjacent chapters when useful.
 
-For round packs, list the three chapter synopses for this round.
-For chapter packs, state where this chapter sits inside the round.
+Do not copy the full rolling plan into this context pack.
+
+## Rolling Plan Extract For This Batch
+
+For round packs, summarize or excerpt the relevant chapter entries from `planning/rolling_plan.yml`.
+For chapter packs, state where this chapter sits inside the active flow.
+
+This is a production extract, not a round-level story structure.
 
 ## Previous Chapter Handoff
 
 What exact pressure, action, image, unresolved problem, or emotional state carries into this chapter?
+
+## Cut Continuity
+
+- Previous cut picked up:
+- Inbound pressure:
+- Chapter turn:
+- Outbound pressure:
+- Handoff to next chapter:
+- Transition justification if not opening from previous cut:
+
+The handoff must be an external pressure, unfinished action, changed relationship, object, public consequence, or information visibility change. Do not use protagonist recap or abstract planning as the handoff.
 
 ## Key Old Chapter Lookbacks
 
@@ -75,27 +128,45 @@ What exact pressure, action, image, unresolved problem, or emotional state carri
 
 ## Active Narrative Debts
 
-Debts that must be added, advanced, paid, or intentionally delayed this round/chapter.
+Debts that must be added, advanced, paid, or intentionally delayed in this batch/chapter.
+
+Only include debts relevant to this writing task.
 
 ## Active Foreshadowing
 
 Relevant foreshadowing and how early it may surface.
 
+Only include foreshadowing relevant to this writing task.
+
 ## Knowledge State
 
 Who knows what? Who misunderstands what? What does the reader know?
+
+Only include knowledge items relevant to this writing task.
 
 ## Character Intent
 
 Current goals, bottom lines, misunderstandings, and likely moves for important characters.
 
+Only include characters who appear, are acted upon, or materially influence this task.
+
 ## World Pressure
 
 World state, faction moves, resources, crisis, and external pressure.
 
+Only include world-state pressures relevant to this writing task.
+
 ## Style And Format Constraints
 
 Style rules, banned tendencies, prose risks, and TXT formatting constraints.
+
+Include paragraph density constraints:
+
+- Body paragraphs use single newlines, not blank lines.
+- Do not merge the chapter into a few giant blocks.
+- For 2000-3500 Chinese characters, aim for 25-60 body paragraphs.
+- Most paragraphs should be 40-160 Chinese characters.
+- Split paragraphs at action changes, speaker changes, reaction beats, new information, camera shifts, and rhythm pauses.
 
 ## Prose Freedom Notes
 

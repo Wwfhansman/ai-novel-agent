@@ -11,5 +11,5 @@ narrative_debts_added: []
 narrative_debts_advanced: []
 narrative_debts_paid: []
 ideas_added: []
-next_chapter_handoff: []
-
+handoff_to_next_chapter:
+  - "Patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick."

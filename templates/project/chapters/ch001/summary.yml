@@ -7,5 +7,5 @@ characters_present: []
 locations: []
 key_events: []
 emotional_result: ""
-next_hook: ""
-
+external_result: ""
+handoff_to_next_chapter: []

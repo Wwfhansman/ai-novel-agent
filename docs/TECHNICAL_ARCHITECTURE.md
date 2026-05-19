@@ -16,6 +16,8 @@ Files as Database
 
 系统不要求固定模型或固定 agent。只要 agent 能读取文件、写入文件、遵守 skill 工作流，就可以使用本项目。
 
+模型可以按任务路由。MVP 使用 `premium_model` 和 `fast_model` 两个角色，而不是绑定具体厂商型号。详细策略见 [模型路由策略](MODEL_ROUTING.md)。
+
 ## 2. 仓库结构
 
 ```text
@@ -76,6 +78,8 @@ projects/my-novel/
   meta/
 ```
 
+`meta/model_policy.yml` 记录项目级模型分工和质量门禁。
+
 ## 4. 核心模块
 
 ### 4.1 Bootstrap
@@ -91,6 +95,7 @@ projects/my-novel/
 - 第一卷卷纲
 - 初始实体库
 - 初始动态账本
+- 第一条 active_flow 连续剧情流
 - 近期 9-15 章详细章纲
 
 ### 4.2 Context Compiler
@@ -99,11 +104,15 @@ Context Compiler 是 MVP 的核心模块。
 
 MVP 阶段不一定实现为代码，但必须实现为标准化 artifact。每轮和每章写作前，agent 必须产出 `context_pack.md`，记录读取清单、读取原因、关键理解、旧章节回看、风险和写后更新清单。
 
+Context Compiler 的目标是生成工作记忆，不是复制整个项目数据库。`planning/rolling_plan.yml` 每轮必须全文读取，但 context pack 只摘录本批次、本章相邻内容和影响当前写作的后续约束。人物、物品、债务、伏笔和世界状态按本章涉及对象定向读取。
+
 职责：
 
-- 选择本轮要读的文件。
+- 选择本批次要读的文件。
 - 选择本章要读的文件。
+- 全文读取未来 `rolling_plan.yml`，但摘要输出。
 - 决定是否回看旧章节原文。
+- 控制 context pack 体量。
 - 输出写作前理解报告。
 - 输出可复查的 context pack。
 
@@ -118,13 +127,15 @@ chapters/ch001/context_pack.md
 
 ### 4.3 Writing Loop
 
-每轮 3 章。
+默认生产批次是每轮 3 章，但 round 不是叙事单位。真正的叙事单位是 `planning/active_flow.yml` 中的连续压力链。
 
 每章循环：
 
 ```text
-刷新 rolling_plan 详细章纲
+刷新 active_flow 连续剧情流
+→ 刷新 rolling_plan 详细章纲
 → 读取上下文
+→ 承接上一章 handoff_to_next_chapter
 → 生成本章理解
 → 根据章纲自由构思正文
 → 写 draft
@@ -132,7 +143,7 @@ chapters/ch001/context_pack.md
 → 改写为 final
 → 生成 summary
 → 生成 canon_delta
-→ 更新账本和规划
+→ 更新账本、active_flow 和规划
 ```
 
 ### 4.4 Canon Update
@@ -169,6 +180,24 @@ chapters/ch001/context_pack.md
 → 更新相关文件
 ```
 
+### 4.7 Model Routing
+
+模型路由不是独立创作模块，而是所有 skill 的执行约束。
+
+职责：
+
+- 将任务分为 `premium_model`、`fast_model` 或 hybrid。
+- 确保正文、剧情方向、canon 合并和 protected files 修改由 `premium_model` 或人类确认。
+- 允许低风险机械任务使用 `fast_model`。
+- 在 context pack 或 session log 中记录实际模型分工。
+
+默认策略：
+
+```text
+premium_model: bootstrap、active_flow、rolling_plan、draft/final、重大 change、质量门禁
+fast_model: YAML/TXT 格式、脚本报错整理、diff/session log、低风险清单整理
+```
+
 ## 5. 数据流
 
 ### 5.1 新书启动数据流
@@ -185,11 +214,13 @@ User Seed
 ```text
 Project Files
 → Context Pack
+→ Active Flow Handoff
 → Chapter Draft
 → Review
 → Final Text
 → Canon Delta
 → Ledger Updates
+→ Active Flow Updates
 → Next Chapter Context
 ```
 
@@ -217,6 +248,7 @@ MVP 采用 skill 约束、受保护文件清单、diff 摘要和 Git checkpoint 
 - 更新 canon delta。
 - 更新人物当前状态。
 - 更新动态账本。
+- 更新 `planning/active_flow.yml`。
 - 提出灵感。
 
 ### 6.2 novel-write 不可以
@@ -246,7 +278,7 @@ MVP 采用 skill 约束、受保护文件清单、diff 摘要和 Git checkpoint 
 
 MVP 阶段建议使用 Git 作为文件数据库安全带：
 
-- 每轮三章前建立 Git checkpoint。
+- 每轮三章生产批次前建立 Git checkpoint。
 - 每轮结束提交一次。
 - 修改受保护文件前提交一次。
 - 大规模变更后提交一次。
@@ -263,6 +295,7 @@ Git 不是产品化依赖，但在 MVP 中是必要的回滚工具。
 - Web 工作台
 - 数据库后端
 - 多模型适配层
+- 模型路由和成本统计器
 - 自动上下文编译器
 - schema 校验器
 - 章节导出器

@@ -2,11 +2,14 @@ id: arc_001
 name: ""
 status: planned
 chapters: []
+linked_flow: ""
 goal: ""
 core_conflict: ""
 cause: ""
 process: []
 result: ""
+phase_plan: []
+round_boundary_rule: "Round boundaries do not close this arc unless the story itself reaches payoff."
 characters: []
 foreshadowing: []
 narrative_debts:
@@ -14,4 +17,3 @@ narrative_debts:
   advanced: []
   paid: []
 contribution_to_volume: ""
-

@@ -1,0 +1,17 @@
+current_flow:
+  id: ""
+  status: active
+  linked_arc: ""
+  span:
+    started_at: ""
+    expected_range: ""
+  narrative_unit: ""
+  central_motion: ""
+  current_pressure: ""
+  active_questions: []
+  scene_chain: []
+  last_cut: null
+  end_conditions: []
+  round_boundary_rule: "Round boundaries are production boundaries, not story boundaries. Do not close this flow merely because a three-chapter batch ends."
+completed_flows: []
+notes: "This file is the authority for the current cross-round narrative flow. Update it after each chapter."

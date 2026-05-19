@@ -11,6 +11,10 @@
 /exports/
 /dist/
 /tmp/
+.deepseek/
+__pycache__/
+**/__pycache__/
+*.pyc
 
 # Local session state and checkpoints inside private projects.
 **/meta/session_log.local.*

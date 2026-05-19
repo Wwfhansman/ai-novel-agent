@@ -48,6 +48,7 @@ novel-change
 - 第一卷卷纲
 - 初始实体库
 - 初始动态账本
+- 当前连续剧情流 active_flow
 - 近期 9-15 章详细章纲
 
 ### 2.4 流程
@@ -61,6 +62,7 @@ novel-change
 → 创建初始故事圣经
 → 创建核心人物和势力
 → 创建第一卷目标
+→ 创建第一条连续剧情流
 → 创建近期详细章纲
 → 初始化项目文件
 ```
@@ -83,20 +85,23 @@ novel-change
 读取当前卷纲和状态
 读取当前 arc
 读取最近 12-15 章摘要
-读取最近 3-5 章全文
-读取动态账本
-读取并刷新 rolling_plan 详细章纲
-根据本轮目标回看关键旧章节
+按连续性需要读取最近 1-3 章全文
+按本批次涉及对象定向读取动态账本
+读取并刷新 active_flow 连续剧情流
+全文读取并刷新 rolling_plan 详细章纲
+根据本批次相关压力和债务回看关键旧章节
 生成 round context_pack.md
 生成前文理解报告
-从 rolling_plan 抽取本轮 3 章到 current_round
+从 rolling_plan 摘取本批次 3 章到 current_round
 ```
 
 ### 3.3 单章流程
 
 ```text
 读取本章 brief
-→ 读取 rolling_plan 中的本章详细章纲
+→ 读取 active_flow
+→ 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
+→ 检查上一章 handoff_to_next_chapter
 → 生成 chapter context_pack.md
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
@@ -107,20 +112,22 @@ novel-change
 → 生成 summary.yml
 → 生成 canon_delta.yml
 → 更新实体和动态账本
-→ 生成下一章 handoff
+→ 更新 active_flow
+→ 生成 handoff_to_next_chapter
 ```
 
 ### 3.4 一轮结束流程
 
 ```text
-汇总三章变化
+汇总本批次变化
 → 更新当前卷摘要和状态
 → 更新当前 arc
+→ 保持 active_flow 跨过 round 边界，除非故事自然抵达 payoff
 → 检查叙事债务
 → 检查信息可见性
 → 检查世界状态
 → 评估新灵感
-→ 刷新后续 6-12 章详细章纲
+→ 滑动刷新后续 6-15 章详细章纲
 → 记录本轮 diff 摘要
 → 写入 session log
 ```

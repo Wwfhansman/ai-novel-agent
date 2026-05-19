@@ -25,6 +25,7 @@ retcon: 对旧正史的修订计划
 - `idea_pool.yml` 不是正史，除非条目状态为 `promoted` 且被写入规划、伏笔或正文。
 - `canon_delta.yml` 是章节造成的状态变化记录，不是当前状态总表。
 - `entities/`、`ledgers/`、`planning/` 存当前权威状态。
+- `planning/active_flow.yml` 是当前连续剧情流的权威来源。
 
 ## 3. 唯一事实来源
 
@@ -43,8 +44,9 @@ retcon: 对旧正史的修订计划
 | 读者期待债 | `ledgers/narrative_debts.yml` | `volume_debts.yml`, `canon_delta.yml` | 全局债务以 ledger 为准。 |
 | 伏笔状态 | `ledgers/foreshadowing.yml` | `canon_delta.yml` | 是否已埋、推进、回收以 ledger 为准。 |
 | 当前卷进展 | `volumes/vol_XXX/volume_state.yml` | `volume_summary.md` | 结构化当前进展以 state 为准。 |
+| 当前连续剧情流 | `planning/active_flow.yml` | `arcs/*`, `rolling_plan.yml`, 最近 `canon_delta.yml` | active_flow 决定章节从哪个压力中切出，不受 round 边界控制。 |
 | 近期未来计划 | `planning/rolling_plan.yml` | `current_round.yml` | 6-15 章详细章纲以 rolling_plan 为准。 |
-| 本轮执行计划 | `planning/current_round.yml` | `planning/rolling_plan.yml`, round context pack | current_round 只是 rolling_plan 的三章摘录，不能另起冲突计划。 |
+| 本批次执行计划 | `planning/current_round.yml` | `planning/rolling_plan.yml`, `planning/active_flow.yml`, round context pack | current_round 只是生产批次摘录，不能另起冲突计划或 round 级剧情目标。 |
 | 未确认点子 | `ledgers/idea_pool.yml` | `opportunity_ledger.yml` | 不可当作正史。 |
 | 重大创作决策 | `ledgers/decision_log.yml` 或 `meta/decision_log.*` | 用户对话摘要 | 决策必须落盘。 |
 
@@ -66,6 +68,7 @@ final.txt
 
 - `canon_delta.yml` 只追加或记录本章变化，不承担当前总状态。
 - 当前状态必须合并进 `entities/` 和 `ledgers/`。
+- 每章造成的外部交接必须写入 `canon_delta.yml` 的 `handoff_to_next_chapter`，并同步到 `planning/active_flow.yml` 与 `planning/rolling_plan.yml`。
 - 旧状态如果失效，必须显式更新状态字段，不要保留冲突描述。
 - 如果无法确定是否应覆盖旧状态，写入 `review.md` 或 `meta/open_questions.md`，不要静默猜。
 
@@ -129,8 +132,8 @@ MVP 阶段建议使用 Git 作为文件数据库安全带。
 
 推荐规则：
 
-- 每轮三章开始前建立 checkpoint。
-- 每轮三章结束后提交一次。
+- 每轮三章生产批次开始前建立 checkpoint。
+- 每轮三章生产批次结束后提交一次。
 - 每次受保护文件修改前提交一次。
 - 每次大规模变更后提交一次。
 

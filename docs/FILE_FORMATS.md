@@ -35,6 +35,10 @@
 - 正文普通段落之间只换行，不额外空一行。
 - 只有明确场景切换时，才允许额外空行或使用一行分隔符。
 - 不要在 TXT 正文中写 `##`、清单、审稿意见、YAML 或流程字段。
+- 仍然要正常分段。禁止把多个动作、对话、说明和情绪反应压进一个巨大自然段。
+- 2000-3500 中文字章节通常应有 25-60 个正文段落。
+- 多数正文段落建议 40-160 中文字；超过 220 字应考虑拆分，超过 360 字通常视为格式失败。
+- 动作变化、说话人变化、反应落点、新信息出现、视角/镜头变化、节奏停顿时，应主动分段。
 
 ## 3. Markdown
 
@@ -63,16 +67,20 @@
 - 灵感池
 - 章节摘要
 - canon delta
+- 当前连续剧情流
 - 近期详细章纲
+- 模型路由策略
 
 示例：
 
 ```text
 book/reader_model.yml
+meta/model_policy.yml
 entities/characters.yml
 ledgers/narrative_debts.yml
 chapters/ch001/summary.yml
 chapters/ch001/canon_delta.yml
+planning/active_flow.yml
 planning/rolling_plan.yml
 planning/current_round.yml
 ```
@@ -100,11 +108,13 @@ chapters/ch001/
 包含：
 
 - 来自 `planning/rolling_plan.yml` 的本章详细章纲摘录
-- 上一章承接点
+- 当前 `planning/active_flow.yml` 位置
+- 上一章 `handoff_to_next_chapter`
+- 本章 inbound pressure、chapter turn、outbound pressure
 - 本章必须发生的剧情内容
 - 重要人物意图
 - 禁止事项
-- 下一章自然承接方向
+- 下一章必须承接的外部压力或具体可见动作
 
 ### 5.2 outline.md
 
@@ -148,7 +158,8 @@ locations:
 key_events:
   - ""
 emotional_result: ""
-next_hook: ""
+external_result: ""
+handoff_to_next_chapter: ""
 ```
 
 ### 5.6 canon_delta.yml
@@ -191,17 +202,21 @@ narrative_debts_paid:
 ideas_added:
   - id: ""
     title: ""
-next_chapter_handoff:
+handoff_to_next_chapter:
   - ""
 ```
 
-## 6. 近期详细章纲
+## 6. 连续剧情流与近期详细章纲
+
+`planning/active_flow.yml` 是当前跨轮连续剧情流的权威来源。
+
+它描述的不是三章结构，而是持续推进的事件压力：从哪里承接、本章如何改变局面、下一章必须继承什么。一个 flow 可以跨过多个 round。
 
 `planning/rolling_plan.yml` 是未来 6-15 章的权威详细章纲。
 
-它不只是任务清单。每章应有 300-800 字剧情简介，并说明承接、必须发生的剧情、人物意图、阻力或意外、读者回报、下一章桥接和限制。
+它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`inbound_pressure`、`chapter_turn`、必须发生的剧情、人物意图、阻力或意外、读者回报、`outbound_pressure`、`handoff_to_next_chapter`、`external_state_at_end` 和限制。
 
-`planning/current_round.yml` 只是从 `rolling_plan.yml` 抽取本轮三章，不应另起一套互相冲突的计划。
+`planning/current_round.yml` 只是从 `rolling_plan.yml` 抽取生产批次，不应另起一套互相冲突的计划，也不应包含 round 级剧情目标。
 
 ## 7. 命名规范
 

@@ -39,6 +39,46 @@ fields:
     purpose: What writing task this pack supports.
     example: Prepare ch004 by carrying forward the prior chapter's public pressure and resource shortage.
 
+  context_budget:
+    required: true
+    fields:
+      target_size:
+        required: true
+        purpose: Intended pack size.
+        example: "chapter 1000-2500 Chinese characters"
+      actual_approx_size:
+        required: false
+        purpose: Rough size note if useful.
+        example: "about 1800 Chinese characters"
+      budget_notes:
+        required: false
+        purpose: What was intentionally omitted to keep the pack lean.
+
+  model_routing:
+    required: false
+    fields:
+      premium_model:
+        required: false
+        purpose: High-quality model or agent responsible for creative and canon decisions.
+        example: premium_model
+      fast_model:
+        required: false
+        purpose: Cheap or fast model used for mechanical tasks, if any.
+        example: fast_model
+      premium_tasks:
+        required: false
+        type: list
+        example: [draft_final_prose, active_flow_confirmation, canon_merge]
+      fast_tasks:
+        required: false
+        type: list
+        example: [txt_spacing_fix, validator_error_summary]
+      final_quality_gate_by:
+        required: false
+        allowed: [premium_model, human]
+        purpose: Who confirms outputs before final prose or canon updates.
+        example: premium_model
+
   read_files:
     required: true
     type: list
@@ -74,6 +114,10 @@ fields:
     required: false
     purpose: Current 3-10 chapter event chain and phase.
 
+  active_narrative_flow:
+    required: true
+    purpose: Current cross-round pressure/event chain from planning/active_flow.yml.
+
   recent_chapter_understanding:
     required: true
     purpose: Understanding from recent chapter summaries.
@@ -84,15 +128,36 @@ fields:
 
   detailed_rolling_synopsis:
     required: true
-    purpose: Relevant chapter entries from planning/rolling_plan.yml.
+    purpose: >
+      Relevant chapter entries and later constraints from planning/rolling_plan.yml.
+      The full rolling plan should be read before a round, but not copied in full.
 
   current_round_extract:
     required: true
-    purpose: Three-chapter extract from the rolling synopsis, not a separate plan.
+    purpose: Production-batch extract from the rolling synopsis, not a story container.
 
   previous_chapter_handoff:
     required: false
     purpose: Exact pressure, action, image, unresolved problem, or emotional state carried from the prior chapter.
+
+  cut_continuity:
+    required: true
+    fields:
+      previous_cut_pickup:
+        required: false
+        purpose: For non-opening chapters, the exact prior cut picked up in this task.
+      inbound_pressure:
+        required: true
+      chapter_turn:
+        required: true
+      outbound_pressure:
+        required: true
+      handoff_to_next_chapter:
+        required: true
+        purpose: Concrete first moment or pressure the next chapter must inherit.
+      transition_justification:
+        required: false
+        purpose: Required if the chapter does not open from the prior handoff.
 
   key_old_chapter_lookbacks:
     required: true

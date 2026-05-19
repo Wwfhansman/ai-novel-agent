@@ -1,0 +1,21 @@
+model_policy:
+  premium_model: "premium_model_placeholder"
+  fast_model: "fast_model_placeholder"
+  default_quality_gate: premium_model
+  allowed_fast_tasks:
+    - yaml_format_check
+    - txt_spacing_fix
+    - validator_error_summary
+    - session_log_summary
+    - diff_summary
+    - context_pack_reading_table_cleanup
+  forbidden_fast_tasks:
+    - final_txt_drafting
+    - literary_revision
+    - active_flow_creation_or_restructure
+    - rolling_plan_major_revision
+    - protected_file_change
+    - level_3_to_5_change_decision
+    - canon_state_final_merge
+  routing_log_required: true
+notes: "Example policy only. Replace placeholders in real projects."

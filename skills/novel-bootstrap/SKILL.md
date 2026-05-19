@@ -33,6 +33,7 @@ Read:
 - `docs/MEMORY_MODEL.md`
 - `docs/CANON_AND_SAFETY.md`
 - `docs/FILE_FORMATS.md`
+- `docs/MODEL_ROUTING.md`
 
 Use `templates/project/` as the required output structure.
 
@@ -66,14 +67,16 @@ Use `templates/project/` as the required output structure.
    - Keep `idea_pool.yml` separate from canon.
 
 6. **Initialize planning**
+   - Write `planning/active_flow.yml` with the first continuous flow, current pressure, flexible range, scene chain, end conditions, and a rule that round boundaries do not close the flow.
    - Write `planning/rolling_plan.yml` with a detailed 9-15 chapter synopsis window.
-   - Each planned chapter should include 300-800 Chinese characters of story synopsis, continuity from the previous chapter, required developments, character intents, pressure/complication, reader payoff, bridge to next chapter, and constraints.
-   - Write `planning/current_round.yml` for round 001 as an extract from `rolling_plan.yml`, not a separate planning authority.
+   - Each planned chapter should include 300-800 Chinese characters of story synopsis, `flow_id`, `flow_position`, `inbound_pressure`, `chapter_turn`, required developments, character intents, pressure/complication, reader payoff, `outbound_pressure`, `handoff_to_next_chapter`, `external_state_at_end`, and constraints.
+   - Write `planning/current_round.yml` for round 001 as a production extract from `rolling_plan.yml`, not a separate planning authority and not a three-chapter story unit.
    - Do not create rigid scene-beat outlines during bootstrap.
    - Do not write正文 yet unless the user explicitly asks to continue with `novel-write`.
 
 7. **Write meta state**
    - Update `project.yml` and `meta/project_state.yml`.
+   - Create or update `meta/model_policy.yml`. If the user did not name actual models, keep role placeholders such as `premium_model` and `fast_model`.
    - Record bootstrap decisions in `ledgers/decision_log.yml` or `meta/session_log.md`.
 
 ## Output Requirements
@@ -84,6 +87,7 @@ After bootstrapping, the project must let a fresh agent answer:
 - What does the target reader expect?
 - Who is the protagonist and what do they want?
 - What is volume 001 trying to accomplish?
+- What continuous narrative flow is currently active?
 - What are the next 9-15 chapters likely doing?
 - Which files are protected from silent edits?
 

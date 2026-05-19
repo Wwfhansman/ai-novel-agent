@@ -1,0 +1,37 @@
+current_flow:
+  id: arc_001_old_wick
+  status: active
+  linked_arc: arcs/arc_001_opening.yml
+  span:
+    started_at: ch001
+    expected_range: ch001-ch006
+  narrative_unit: "旧灯芯异常从发现到巡灯署压力外化。"
+  central_motion: "林栖藏下旧灯芯碎片后，巡灯署的回收行动和父亲旧线索同时逼近。"
+  current_pressure: "巡灯署即将进入外环灯廊回收旧灯芯，林栖手里有不该留下的碎片。"
+  active_questions:
+    - "旧灯芯为什么会保存陌生记忆？"
+    - "巡灯署为什么急着回收特定旧灯？"
+    - "林栖父亲是否拆过同类旧灯？"
+  scene_chain:
+    - planned_chapter: ch001
+      flow_position: opening
+      inbound_pressure: "开篇无前章交接；外环雾灯反复熄灭，巡灯署催促维修。"
+      chapter_turn: "林栖发现旧灯芯保存陌生记忆，并私藏一小段裂开的灯芯碎片。"
+      outbound_pressure: "巡灯署脚步抵达灯廊，旧灯芯已经少了一角。"
+    - planned_chapter: ch002
+      flow_position: pressure_rising
+      inbound_pressure: "巡灯署现场回收旧灯芯，碎片仍在林栖身上。"
+      chapter_turn: "林栖发现登记簿被提前改过，确认回收不是例行排查。"
+      outbound_pressure: "登记簿痕迹指向父亲留下的旧工具箱。"
+    - planned_chapter: ch003
+      flow_position: turn
+      inbound_pressure: "林栖追到父亲旧工具箱，巡灯署仍在查谁接触过旧灯。"
+      chapter_turn: "父亲修灯刀缺口与灯芯碎片划痕吻合，父亲线进入当前危机。"
+      outbound_pressure: "巡灯署开始用父亲旧案试探林栖掌握了多少。"
+  last_cut: null
+  end_conditions:
+    - "林栖确认旧灯芯、父亲旧工具和巡灯署回收行动之间存在同一条因果链。"
+    - "巡灯署压力从例行回收升级为针对林栖的可见行动。"
+  round_boundary_rule: "Round boundaries are production boundaries, not story boundaries. ch003 may turn the flow but must not become a batch summary unless the story earns it."
+completed_flows: []
+notes: "示例只展示协议。真实项目应在每章完成后更新 last_cut 和 scene_chain。"

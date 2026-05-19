@@ -42,6 +42,7 @@ templates/project/
     context_packs/
   style/
   meta/
+    model_policy.yml
 ```
 
 并放入空白模板文件。
@@ -121,6 +122,8 @@ agent 对话不是正史。
 
 但每章必须独立结算，不允许依赖未写入文件的聊天记忆。
 
+三章一轮只是生产批次，不是叙事单位。跨章连续性以 `planning/active_flow.yml` 为权威，章节必须承接上一章外部交接并留下下一章可继承的具体压力。
+
 ### 4.3 每轮建议冷启动审查
 
 每轮 3 章结束后，建议新开会话运行 review。
@@ -149,22 +152,34 @@ chapters/ch001/context_pack.md
 - 已完成卷摘要
 - 当前卷纲和状态
 - 当前 arc
+- 当前 active_flow
+- `planning/rolling_plan.yml` 全文
 - 最近 12-15 章摘要
-- 最近 3-5 章全文
-- 动态账本
-- 关键旧章节原文
+- 最近 1-3 章全文，按连续性需要决定
+- 本批次涉及的动态账本条目
+- 触发条件命中的关键旧章节原文
 
 每章开始读取：
 
 - 本章 brief
-- 上章结尾或全文
+- active_flow 中的当前 pressure 和 handoff
+- 上章全文
+- 上章 canon_delta.yml 的 handoff_to_next_chapter
+- 最近 3-5 章 summary.yml
 - 本章出场人物状态
 - 本章相关叙事债
 - 本章相关伏笔
 - 本章信息可见性
 - 本章世界压力
 
-读取完成后，agent 必须把读取清单、读取原因、关键结论、回看旧章节和不确定项写入 context pack。
+读取完成后，agent 必须把读取清单、读取原因、关键结论、回看旧章节和不确定项写入 context pack。不要把读过的文件全文复制进 context pack。
+
+推荐预算：
+
+```text
+round context pack: 3000-5000 中文字
+chapter context pack: 1000-2500 中文字
+```
 
 ## 6. 质量检查清单
 
@@ -179,7 +194,7 @@ chapters/ch001/context_pack.md
 - 信息可见性是否正确。
 - 世界状态是否有反应。
 - 伏笔是否处理得当。
-- 结尾是否有追读动力。
+- 结尾是否把外部压力交给下一章，而不是主角复盘或 round 总结。
 
 ## 7. 未来脚本
 
@@ -232,8 +247,8 @@ MVP 阶段建议使用 Git 作为回滚工具。
 推荐节奏：
 
 ```text
-每轮三章开始前 checkpoint
-每轮三章结束后 commit
+每轮三章生产批次开始前 checkpoint
+每轮三章生产批次结束后 commit
 修改受保护文件前 checkpoint
 大规模变更后 commit
 ```
