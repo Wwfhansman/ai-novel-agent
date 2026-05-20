@@ -98,9 +98,50 @@ fields:
         required: true
         example: The chapter ended with public trust damaged, not restored.
 
+  source_references:
+    required: true
+    type: list
+    purpose: File-level evidence for key claims in the context pack.
+    item_fields:
+      claim:
+        required: true
+        example: "Primary handoff for ch004"
+      source:
+        required: true
+        example: "planning/active_flow.yml"
+
   global_understanding:
     required: false
     purpose: Current whole-book understanding.
+
+  longform_scale_check:
+    required: true
+    purpose: >
+      Current macro stage, scale level, progression budget, opportunity cadence,
+      and reveal limits from book/longform_blueprint.yml.
+    fields:
+      target_length:
+        required: false
+      current_macro_stage:
+        required: true
+      intended_scope_level:
+        required: true
+      scale_constraints:
+        required: true
+        type: list
+      protagonist_progression_budget:
+        required: true
+      opportunity_cadence:
+        required: false
+      secret_reveal_limits:
+        required: true
+        type: list
+      scale_drift_risks:
+        required: true
+        type: list
+      source_refs:
+        required: true
+        type: list
 
   completed_volumes:
     required: false
@@ -158,6 +199,9 @@ fields:
       transition_justification:
         required: false
         purpose: Required if the chapter does not open from the prior handoff.
+      primary_handoff_source:
+        required: true
+        purpose: File that authoritatively supplies the primary handoff, normally planning/active_flow.yml.
 
   key_old_chapter_lookbacks:
     required: true
@@ -183,6 +227,28 @@ fields:
   world_pressure:
     required: true
     purpose: World state, faction moves, resources, crisis, and external pressure.
+
+  reader_reward_check:
+    required: true
+    fields:
+      concrete_reward:
+        required: true
+        purpose: What the reader gets in this chapter or batch.
+      expectation_created:
+        required: true
+        purpose: What the reader should want next.
+      expectation_advanced_or_paid:
+        required: true
+        purpose: Existing debt, promise, reveal, or payoff advanced here.
+      external_change:
+        required: true
+        purpose: Cost, leverage shift, public consequence, relationship change, or information visibility change.
+      memorable_material:
+        required: true
+        purpose: Concrete image, line, action, or object likely to stick.
+      source_refs:
+        required: true
+        type: list
 
   style_and_format_constraints:
     required: true

@@ -4,6 +4,7 @@ last_completed_chapter: null
 last_completed_round: null
 protected_files:
   - book/constitution.md
+  - book/longform_blueprint.yml
   - book/reader_model.yml
   - book/style_memory.md
   - meta/model_policy.yml

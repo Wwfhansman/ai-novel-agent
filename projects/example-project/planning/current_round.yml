@@ -4,30 +4,45 @@ source_plan: planning/rolling_plan.yml
 source_flow: planning/active_flow.yml
 production_batch:
   chapters: [ch001, ch002, ch003]
-  checkpoint_reason: "示例 round_001 是生产批次，用于写 ch001-ch003。"
+  checkpoint_reason: "Example round_001 writes ch001-ch003 as an operational batch."
   must_not_resolve_just_because_round_ends: true
 chapters:
   - chapter: ch001
+    macro_stage: part_001
+    scale_level: district
     flow_id: arc_001_old_wick
     flow_position: opening
-    inbound_pressure: "开篇无前章交接；外环雾灯反复熄灭。"
-    chapter_turn: "林栖发现旧灯芯保存陌生记忆，并私藏碎片。"
-    outbound_pressure: "巡灯署进入灯廊回收旧灯芯。"
-    handoff_to_next_chapter: "巡灯署的人推门进入灯廊，要求林栖立刻交出拆下的旧灯芯。"
+    inbound_pressure: "Opening chapter: old fog lamp failure and patrol recovery urgency."
+    chapter_turn: "Lin Qi discovers memory residue in the old wick and hides a fragment."
+    outbound_pressure: "Patrol reaches the lamp corridor while one wick fragment is missing."
+    handoff_to_next_chapter: "Patrol opens the door and asks Lin Qi to hand over every removed old wick."
+    scale_pacing_constraints:
+      - "No citywide system reveal."
+      - "No father_truth reveal."
   - chapter: ch002
+    macro_stage: part_001
+    scale_level: district
     flow_id: arc_001_old_wick
     flow_position: pressure_rising
-    inbound_pressure: "巡灯署现场回收旧灯芯，碎片仍在林栖身上。"
-    chapter_turn: "林栖发现登记簿被提前改过。"
-    outbound_pressure: "登记簿痕迹指向父亲旧工具箱。"
-    handoff_to_next_chapter: "林栖打开父亲旧工具箱，箱底那把修灯刀露出缺口。"
+    inbound_pressure: "Patrol demands old wicks while Lin Qi carries a hidden fragment."
+    chapter_turn: "Altered repair records prove the recovery is targeted."
+    outbound_pressure: "Altered ledger traces point to the father's old tool box."
+    handoff_to_next_chapter: "Lin Qi opens the old tool box and sees a nick in the repair knife."
+    scale_pacing_constraints:
+      - "Keep pressure institutional but local."
+      - "Do not grant city-scale memory control."
   - chapter: ch003
+    macro_stage: part_001
+    scale_level: district
     flow_id: arc_001_old_wick
     flow_position: turn
-    inbound_pressure: "林栖打开父亲旧工具箱，巡灯署仍在查谁接触过旧灯。"
-    chapter_turn: "父亲修灯刀缺口与灯芯碎片划痕吻合。"
-    outbound_pressure: "巡灯署开始用父亲旧案试探林栖掌握了多少。"
-    handoff_to_next_chapter: "巡灯署问起父亲最后维修过的灯塔，并要求林栖交出旧工具箱登记。"
+    inbound_pressure: "Lin Qi opens the father's old tool box while patrol investigates old repairs."
+    chapter_turn: "The father's repair knife and the old wick fragment are visibly connected."
+    outbound_pressure: "Patrol begins using the father's old case to pressure Lin Qi."
+    handoff_to_next_chapter: "Patrol asks about the last tower her father repaired and requests the old tool box registration."
+    scale_pacing_constraints:
+      - "Father line may become personal pressure, not a full reveal."
+      - "Current scope remains old lamp district."
 batch_tasks:
   - "Write ch001-ch003 as files."
   - "Update chapter memory and current-state files."

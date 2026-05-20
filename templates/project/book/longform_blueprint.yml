@@ -1,0 +1,61 @@
+status: draft
+source_of_truth: "Protected long-form scale authority. Do not silently change during normal writing."
+
+target_length:
+  expected_total_words: null
+  expected_total_chapters: null
+  expected_chapter_words: "2000-3500"
+  notes: ""
+
+macro_structure:
+  - id: part_001
+    name: ""
+    expected_chapters: ""
+    story_function: ""
+    scope_level: ""
+    main_progression: ""
+    allowed_reveals: []
+    forbidden_reveals: []
+
+scale_map:
+  world:
+    name: ""
+    level: world
+    description: ""
+    must_not_be_reduced_to: []
+  regions: []
+  cities: []
+  factions:
+    - name: ""
+      intended_scale: ""
+      jurisdiction: ""
+      relative_power: ""
+      notes: ""
+
+power_pacing:
+  current_system: ""
+  stages:
+    - stage_id: early
+      chapter_range: ""
+      allowed_progression: ""
+      forbidden_progression: []
+      major_opportunity_interval: ""
+      minor_reward_interval: ""
+      notes: ""
+
+secret_pacing:
+  - secret_id: ""
+    description: ""
+    earliest_hint: ""
+    earliest_partial_reveal: ""
+    earliest_full_reveal: ""
+    visibility_limit: ""
+
+scale_guardrails:
+  - ""
+
+review_questions:
+  - "Does this chapter shrink a world-level concept into a city/local concept?"
+  - "Does this chapter spend a future-volume reveal too early?"
+  - "Does this chapter advance protagonist power faster than the current stage budget?"
+  - "Does this chapter solve a macro problem with a local scene shortcut?"

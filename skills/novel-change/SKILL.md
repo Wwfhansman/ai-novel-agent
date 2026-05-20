@@ -76,6 +76,7 @@ Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 - Current world reaction: `ledgers/world_state.yml`
 - Current cross-round flow: `planning/active_flow.yml`
 - Future 9-15 chapter route: `planning/rolling_plan.yml`
+- Whole-book scale, macro stages, power pacing, and reveal windows: `book/longform_blueprint.yml` (protected)
 - Current volume goal: protected; modify only with explicit change process.
 
 ## Diff Summary for Protected Changes

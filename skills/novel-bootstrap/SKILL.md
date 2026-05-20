@@ -49,32 +49,42 @@ Use `templates/project/` as the required output structure.
    - Include genre, core selling point, protagonist long-term desire, reader promises, forbidden moves, and protected boundaries.
    - Add a project-specific rule forbidding generic AI prose, mechanical chapter openings, repeated thought endings, and reuse of framework examples.
 
-3. **Initialize book-level memory**
+3. **Initialize long-form scale control**
+   - Write `book/longform_blueprint.yml`.
+   - Treat it as the protected whole-book scale authority, not a loose brainstorm.
+   - Define approximate target length, expected chapter count, chapter word range, macro stages/maps/volumes, world-region-city hierarchy, faction scale, protagonist progression budget, opportunity frequency, and reveal windows for major secrets.
+   - If the seed is small, expand it into a long-form structure instead of shrinking the whole book to the opening location.
+   - Explicitly record scale guardrails such as "X is a world, not a city" or "the opening family conflict is local, not the whole power ceiling."
+   - Keep distant stages flexible; the purpose is scale awareness and pacing budget, not a fully locked million-word outline.
+
+4. **Initialize book-level memory**
    - Write `book/global_summary.md` as the initial book state.
    - Write `book/reader_model.yml`.
    - Write `book/style_memory.md`.
    - Write `book/endgame_hypotheses.yml` as hypotheses, not canon.
    - In `style_memory.md`, define prose standards for paragraph rhythm, scene continuity, chapter endings, and TXT formatting.
 
-4. **Initialize volume 001**
+5. **Initialize volume 001**
    - Write `volumes/vol_001/volume_outline.md`.
    - Write `volume_summary.md`, `volume_state.yml`, `volume_threads.yml`, and `volume_debts.yml`.
+   - Align the current volume with `book/longform_blueprint.yml`: state which macro stage it belongs to, what scale it may touch, and what it must not reveal or resolve.
    - Keep the current volume clear; do not pretend the whole multi-million-word story is fixed.
 
-5. **Initialize entities and ledgers**
+6. **Initialize entities and ledgers**
    - Create protagonist and initial important entities in `entities/`.
    - Create empty or initial entries in `ledgers/`.
    - Keep `idea_pool.yml` separate from canon.
 
-6. **Initialize planning**
+7. **Initialize planning**
    - Write `planning/active_flow.yml` with the first continuous flow, current pressure, flexible range, scene chain, end conditions, and a rule that round boundaries do not close the flow.
    - Write `planning/rolling_plan.yml` with a detailed 9-15 chapter synopsis window.
    - Each planned chapter should include 300-800 Chinese characters of story synopsis, `flow_id`, `flow_position`, `inbound_pressure`, `chapter_turn`, required developments, character intents, pressure/complication, reader payoff, `outbound_pressure`, `handoff_to_next_chapter`, `external_state_at_end`, and constraints.
+   - Each planned chapter should respect the current macro stage, scale level, power pacing, opportunity budget, and secret reveal window from `book/longform_blueprint.yml`.
    - Write `planning/current_round.yml` for round 001 as a production extract from `rolling_plan.yml`, not a separate planning authority and not a three-chapter story unit.
    - Do not create rigid scene-beat outlines during bootstrap.
    - Do not write正文 yet unless the user explicitly asks to continue with `novel-write`.
 
-7. **Write meta state**
+8. **Write meta state**
    - Update `project.yml` and `meta/project_state.yml`.
    - Create or update `meta/model_policy.yml`. If the user did not name actual models, keep role placeholders such as `premium_model` and `fast_model`.
    - Record bootstrap decisions in `ledgers/decision_log.yml` or `meta/session_log.md`.
@@ -84,6 +94,10 @@ Use `templates/project/` as the required output structure.
 After bootstrapping, the project must let a fresh agent answer:
 
 - What is this book?
+- What long-form scale is this book aiming for?
+- Which macro stage, map, or volume is the opening currently inside?
+- What world/region/city/faction scale must not collapse?
+- What progression and reveal pacing is allowed at the current stage?
 - What does the target reader expect?
 - Who is the protagonist and what do they want?
 - What is volume 001 trying to accomplish?
@@ -96,6 +110,7 @@ After bootstrapping, the project must let a fresh agent answer:
 You may create protected files during bootstrap. After bootstrap, do not silently modify:
 
 - `book/constitution.md`
+- `book/longform_blueprint.yml`
 - `book/reader_model.yml`
 - `book/style_memory.md` core rules
 - `volumes/vol_001/volume_outline.md` volume goal

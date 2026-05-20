@@ -51,7 +51,9 @@ projects/my-novel/
 - `ledgers/knowledge_state.yml` 记录谁知道什么、谁误解什么。
 - `ledgers/world_state.yml` 记录世界压力、势力行动、资源和后果。
 - `planning/active_flow.yml` 记录当前跨轮连续剧情流，是章节连贯性的权威来源。
-- `planning/rolling_plan.yml` 记录未来 6-15 章的详细章纲，是近期剧情规划的权威来源。
+- `planning/rolling_plan.yml` 只记录未来 6-15 章的详细章纲，是近期剧情规划的权威来源。
+- `planning/completed_plan_log.yml` 归档已完成章纲，避免历史计划污染未来窗口。
+- `planning/future_backlog.yml` 存放远期点子，不参与每轮全文读取。
 - `meta/model_policy.yml` 记录强模型/快模型的任务分工，避免为了省钱牺牲正文和正史质量。
 
 章节正文仍然完整保存，但主要用于需要精确细节时回看，而不是作为唯一记忆来源。
@@ -406,6 +408,7 @@ Use skills/novel-review to inspect the latest written chapters in projects/my-no
 - 是否段落之间错误地空行。
 - 是否因为误解 TXT 规则而把正文写成 7-9 个巨大段落。
 - 是否缺少外部状态变化和 reader reward。
+- 每章 review 是否回答了 Reader Reward Check：本章给了读者什么、推进/偿还了什么期待、制造了什么新期待。
 - 运行 `python scripts/validate_novel_output.py projects/my-novel --chapters <latest chapters> --fix-format`，并把失败项作为必须修复项。
 
 如果需要重写，请先说明问题，再用 skills/novel-write 的规则重写对应章节，并同步更新记忆文件。
@@ -493,6 +496,25 @@ MVP 文件协议已经实现：
 - 可选数据库后端。
 - 读者反馈接入。
 - 多模型适配。
+
+## Long-Form Scale Control
+
+`book/longform_blueprint.yml` is the protected whole-book scale authority.
+
+It records the intended book length, macro stages, world/region/city hierarchy,
+faction scale, protagonist progression budget, opportunity cadence, and reveal
+windows for major secrets. This file exists to stop a long serial from shrinking
+into the current scene, such as turning a world-level premise into one city or
+spending late-book power and endgame secrets in the opening arc.
+
+Normal writing must read this file before refreshing `active_flow.yml` and
+`rolling_plan.yml`. Round and chapter context packs must include a
+`Longform Scale Check`. Changes to target length, macro structure, scale map,
+power pacing, or secret pacing should go through `novel-change`, not silent
+`novel-write` edits.
+
+New projects created with `novel-bootstrap` should initialize this file before
+writing the first chapter.
 
 ## License
 

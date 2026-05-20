@@ -1,0 +1,43 @@
+schema: completed_plan_log
+purpose: >
+  Archive of completed rolling-plan chapter entries. This keeps
+  planning/rolling_plan.yml focused on the current future window while
+  preserving historical planning decisions for audit and review.
+
+fields:
+  archived_through:
+    required: false
+    purpose: Last chapter id archived into this log.
+    example: ch009
+  entries:
+    required: true
+    type: list
+    item_fields:
+      chapter:
+        required: true
+        example: ch009
+      title:
+        required: false
+      completed_in_round:
+        required: false
+        example: round_003
+      original_plan_summary:
+        required: true
+        purpose: Condensed version of the plan before writing.
+      actual_result_summary:
+        required: true
+        purpose: What actually happened, usually aligned with summary.yml.
+      major_deviations:
+        required: false
+        type: list
+        purpose: Useful differences between plan and final prose.
+      handoff_result:
+        required: true
+        purpose: Actual primary handoff recorded after completion.
+      source_refs:
+        required: true
+        type: list
+        example:
+          - chapters/ch009/summary.yml
+          - chapters/ch009/canon_delta.yml
+

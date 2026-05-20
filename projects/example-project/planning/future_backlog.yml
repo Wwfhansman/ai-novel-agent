@@ -1,0 +1,10 @@
+items:
+  - id: fb_001
+    status: candidate
+    horizon: vol_001_late
+    idea: "The missing father line may connect to the oldest fog-lamp tower, but this is not yet in the rolling window."
+    depends_on:
+      - "Father tool clue established"
+    promotion_rule: "Promote only after the first patrol confrontation resolves."
+    source: "example bootstrap"
+

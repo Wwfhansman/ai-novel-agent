@@ -1,8 +1,9 @@
 schema: rolling_plan
 purpose: >
-  Authoritative detailed synopsis for the next 6-15 chapters. It drives prose
-  writing at the story-content level and must not be treated as a fixed
-  intra-chapter structure.
+  Authoritative detailed synopsis for the next 6-15 upcoming chapters. It drives
+  prose writing at the story-content level and must not be treated as a fixed
+  intra-chapter structure. Completed chapter plans should be archived to
+  planning/completed_plan_log.yml; distant ideas belong in planning/future_backlog.yml.
 
 fields:
   current_window:
@@ -33,8 +34,16 @@ fields:
         example: 余粮
       status:
         required: true
-        allowed: [planned, drafting, completed, revised, skipped]
+        allowed: [planned, drafting, revised, skipped]
         example: planned
+      macro_stage:
+        required: true
+        purpose: Part/stage id from book/longform_blueprint.yml.
+        example: part_001
+      scale_level:
+        required: true
+        purpose: Intended story scale for this chapter.
+        example: local
       flow_id:
         required: true
         purpose: Continuous narrative flow this chapter belongs to.
@@ -84,6 +93,10 @@ fields:
         required: false
         type: list
         purpose: Canon, visibility, or protected-file restrictions.
+      scale_pacing_constraints:
+        required: true
+        type: list
+        purpose: Limits from book/longform_blueprint.yml that prevent scale collapse, premature reveals, or over-fast progression.
 
   notes:
     required: false

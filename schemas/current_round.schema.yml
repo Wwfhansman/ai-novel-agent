@@ -38,6 +38,30 @@ fields:
     required: true
     type: list
     purpose: Condensed chapter entries extracted from rolling_plan.yml with flow and handoff fields.
+    item_fields:
+      chapter:
+        required: true
+      macro_stage:
+        required: true
+        purpose: Copied from planning/rolling_plan.yml and book/longform_blueprint.yml.
+      scale_level:
+        required: true
+        purpose: Copied from planning/rolling_plan.yml.
+      flow_id:
+        required: true
+      flow_position:
+        required: true
+      inbound_pressure:
+        required: true
+      chapter_turn:
+        required: true
+      outbound_pressure:
+        required: true
+      handoff_to_next_chapter:
+        required: true
+      scale_pacing_constraints:
+        required: true
+        type: list
   goals:
     required: false
     type: list

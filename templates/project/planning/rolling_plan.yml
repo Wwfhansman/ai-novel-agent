@@ -1,5 +1,5 @@
 current_window: ""
 status: draft
-source_of_truth: "Near-future chapter synopsis authority. current_round.yml is only a production extract from this file."
+source_of_truth: "Near-future chapter synopsis authority only. Keep this file focused on upcoming planned chapters; move completed entries to planning/completed_plan_log.yml and distant ideas to planning/future_backlog.yml."
 chapters: []
-notes: "Write 6-15 upcoming chapters here as detailed story synopses. Each planned chapter should include flow_id, flow_position, inbound_pressure, chapter_turn, outbound_pressure, handoff_to_next_chapter, and external_state_at_end. These fields describe continuity, not a scene-beat template."
+notes: "Write 6-15 upcoming chapters here as detailed story synopses. Do not keep completed chapters here after a round is finalized. Each planned chapter should include macro_stage, scale_level, flow_id, flow_position, inbound_pressure, chapter_turn, outbound_pressure, handoff_to_next_chapter, external_state_at_end, reader reward, and scale_pacing_constraints from book/longform_blueprint.yml."

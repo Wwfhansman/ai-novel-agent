@@ -89,6 +89,7 @@ final.txt
 
 ```text
 book/constitution.md
+book/longform_blueprint.yml
 book/reader_model.yml
 book/style_memory.md 的核心风格规则
 book/endgame_hypotheses.yml 中已确认的终局约束

@@ -47,6 +47,7 @@ book/
 
 ```text
 book/constitution.md
+book/longform_blueprint.yml
 book/global_summary.md
 book/reader_model.yml
 book/style_memory.md
@@ -326,6 +327,8 @@ final.txt
 关键旧内容回看原文
 动态账本按本章涉及对象定向读取
 rolling_plan 全文读取，摘要输出
+completed_plan_log 按需审计
+future_backlog 只读相关远期点子
 详细章纲驱动剧情，但 context pack 不复制全文
 ```
 

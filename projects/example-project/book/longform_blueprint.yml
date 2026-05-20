@@ -1,0 +1,86 @@
+status: active
+source_of_truth: "Protected long-form scale authority. Do not silently change during normal writing."
+
+target_length:
+  expected_total_words: 800000
+  expected_total_chapters: 300
+  expected_chapter_words: "2000-3000"
+  notes: "Example only. Real projects should set their own expected scale during bootstrap."
+
+macro_structure:
+  - id: part_001
+    name: "Old Lamp District"
+    expected_chapters: "ch001-ch060"
+    story_function: "Establish the repair protagonist, the memory-lamp premise, and the first local pressure chain."
+    scope_level: "district"
+    main_progression: "From unnoticed repair work to discovering that lamp memories are being manipulated."
+    allowed_reveals:
+      - "Old lamps can preserve fragments of memory."
+      - "Someone is actively erasing selected traces."
+    forbidden_reveals:
+      - "The final origin of the lamp network."
+      - "The protagonist's father truth."
+  - id: part_002
+    name: "City Archive"
+    expected_chapters: "ch061-ch140"
+    story_function: "Expand from district incidents to city-level institutions and archive politics."
+    scope_level: "city"
+    main_progression: "The protagonist learns that repair skill can change public memory conflicts."
+    allowed_reveals: []
+    forbidden_reveals:
+      - "Endgame network controller."
+
+scale_map:
+  world:
+    name: "Unnamed Memory World"
+    level: world
+    description: "A world where civic infrastructure can preserve, distort, and trade memory traces."
+    must_not_be_reduced_to:
+      - "one street"
+      - "one workshop"
+  regions:
+    - name: "North Canal Region"
+      intended_scale: "regional"
+      description: "Later expansion area, not part of the opening district."
+  cities:
+    - name: "Greywick"
+      intended_scale: "city"
+      description: "The first major city, containing the old lamp district and the archive bureau."
+  factions:
+    - name: "Archive Bureau"
+      intended_scale: "city institution"
+      jurisdiction: "memory records and public archive disputes"
+      relative_power: "far above a repair shop, below regional authorities"
+      notes: "Should pressure the protagonist indirectly before direct confrontation."
+
+power_pacing:
+  current_system: "Repair skill, memory perception, and civic leverage rather than combat ranks."
+  stages:
+    - stage_id: opening
+      chapter_range: "ch001-ch060"
+      allowed_progression: "Learn to detect memory residue and repair small objects with consequences."
+      forbidden_progression:
+        - "Directly rewrite citywide memory."
+        - "Expose the final network truth."
+      major_opportunity_interval: "20-40 chapters"
+      minor_reward_interval: "3-8 chapters"
+      notes: "Opening rewards should be tactile, local, and consequence-driven."
+
+secret_pacing:
+  - secret_id: father_truth
+    description: "The protagonist's father is tied to the memory-lamp system."
+    earliest_hint: "ch001-ch010"
+    earliest_partial_reveal: "ch050-ch080"
+    earliest_full_reveal: "after ch180"
+    visibility_limit: "Reader may suspect early; protagonist should not know the full truth early."
+
+scale_guardrails:
+  - "The old lamp district is an opening location, not the whole world."
+  - "Archive Bureau pressure should feel institutional, not like a single bully."
+  - "Major truths should leak as evidence, not as explanation."
+
+review_questions:
+  - "Does this chapter shrink the city/archive premise into a one-shop problem?"
+  - "Does this chapter reveal father_truth before its pacing window?"
+  - "Does this chapter grant a city-scale ability too early?"
+  - "Does this chapter preserve room for the next map?"

@@ -1,0 +1,106 @@
+schema: longform_blueprint
+purpose: >
+  Protected whole-book scale authority. It prevents long-form drift such as
+  shrinking a world into a city, accelerating protagonist progression too fast,
+  or revealing endgame material during an opening arc.
+
+fields:
+  status:
+    required: true
+    allowed: [draft, active, needs_review]
+    purpose: Whether the blueprint is ready to constrain writing.
+    example: active
+
+  source_of_truth:
+    required: true
+    purpose: Reminder that this file is the authority for long-form scale and pacing.
+    example: "Protected long-form scale authority."
+
+  target_length:
+    required: true
+    fields:
+      expected_total_words:
+        required: false
+        purpose: Approximate intended book length.
+        example: 2000000
+      expected_total_chapters:
+        required: false
+        purpose: Approximate intended chapter count.
+        example: 900
+      expected_chapter_words:
+        required: true
+        purpose: Normal chapter size range.
+        example: "2000-3500"
+      notes:
+        required: false
+
+  macro_structure:
+    required: true
+    type: list
+    purpose: Large book parts, maps, volumes, or world stages.
+    item_fields:
+      id:
+        required: true
+        example: part_001
+      name:
+        required: true
+      expected_chapters:
+        required: true
+        purpose: Flexible chapter range for this large stage.
+        example: ch001-ch080
+      story_function:
+        required: true
+        purpose: What this stage contributes to the whole book.
+      scope_level:
+        required: true
+        purpose: local, city, region, world, upper_world, etc.
+        example: local
+      main_progression:
+        required: true
+      allowed_reveals:
+        required: true
+        type: list
+      forbidden_reveals:
+        required: true
+        type: list
+
+  scale_map:
+    required: true
+    purpose: Canonical scale of world, regions, cities, factions, and institutions.
+    fields:
+      world:
+        required: true
+      regions:
+        required: false
+        type: list
+      cities:
+        required: false
+        type: list
+      factions:
+        required: true
+        type: list
+
+  power_pacing:
+    required: true
+    purpose: Budget for protagonist progression, opportunities, and major rewards.
+    fields:
+      current_system:
+        required: true
+      stages:
+        required: true
+        type: list
+
+  secret_pacing:
+    required: true
+    type: list
+    purpose: Reveal windows for major secrets and protected truths.
+
+  scale_guardrails:
+    required: true
+    type: list
+    purpose: Short explicit rules that writing and review must enforce.
+
+  review_questions:
+    required: true
+    type: list
+    purpose: Questions each review should answer for long-form scale drift.

@@ -16,4 +16,4 @@ batch_edges:
   ends_inside_flow: ""
   next_chapter_after_batch: ""
 required_context_pack: planning/context_packs/round_001_context_pack.md
-notes: "This file is a production extract from rolling_plan.yml, not a story unit. Do not add round-level plot goals here."
+notes: "This file is a production extract from rolling_plan.yml, not a story unit. Do not add round-level plot goals here. Each chapter extract should include macro_stage, scale_level, flow_id, flow_position, inbound_pressure, chapter_turn, outbound_pressure, handoff_to_next_chapter, and scale_pacing_constraints."

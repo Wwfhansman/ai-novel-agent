@@ -24,6 +24,7 @@ active_flow 负责跨轮连续性
 rolling_plan 全文读取，摘要输出
 context_pack 只记录必要结论，不复制资料库
 所有读取决策写入 context_pack.md
+关键结论必须写 source_refs
 ```
 
 上下文编译的目标不是塞最多材料，而是让 agent 明确：
@@ -37,6 +38,7 @@ context_pack 只记录必要结论，不复制资料库
 - 哪些旧章节需要回看原文。
 - 哪些信息仍然不确定。
 - 是否使用模型切换，以及哪些任务由强模型最终确认。
+- 每个关键结论来自哪个项目文件。
 
 上下文编译应该模拟人类作者的工作记忆：
 
@@ -70,6 +72,7 @@ Old Chapter Lookback Extract: 每个旧章节只摘必要事实或短摘录
 - 只记录本章实际需要的条目和结论。
 - 如果超过预算，优先删复述、背景说明和低相关账本内容，不删 handoff、active_flow、rolling_plan 本章信息、禁止事项和写后更新清单。
 - 如果使用模型切换，context pack 必须记录 `model_routing`，并说明 final prose 和 canon 更新由谁做质量门禁。
+- `source_refs` 不计入铺陈，不需要长引文，但必须能说明关键结论来自哪个文件。
 
 ## 4. 两级 Context Pack
 
@@ -96,6 +99,7 @@ planning/context_packs/round_001_context_pack.md
 
 - 本批次范围，不是 round 级剧情目标
 - 文件读取清单
+- source_refs 读取证据
 - 模型路由记录
 - 全书状态理解
 - 已完成卷影响
@@ -129,6 +133,7 @@ chapters/ch001/context_pack.md
 
 - 本章来自 `planning/rolling_plan.yml` 的详细章纲
 - 本章输入文件清单
+- source_refs 读取证据
 - 模型路由记录
 - 上一章承接点
 - 当前 active_flow 位置
@@ -138,6 +143,7 @@ chapters/ch001/context_pack.md
 - 本章相关伏笔
 - 本章信息可见性
 - 本章世界压力
+- 本章 reader reward check
 - 本章风格和 TXT 格式约束，包括段落密度
 - 本章禁止事项
 - 本章写作风险
@@ -166,6 +172,9 @@ book/style_memory.md（摘要）
 当前 arc 文件
 planning/active_flow.yml
 planning/rolling_plan.yml（必须全文读取）
+book/longform_blueprint.yml（必须全文读取）
+planning/completed_plan_log.yml（只在需要审计旧计划或对照偏差时读取）
+planning/future_backlog.yml（只读与本批次相关或即将 promoted 的条目）
 planning/current_round.yml（如果存在）
 最近 12-15 章 summary.yml
 最近 1-3 章 final.txt（根据连续性需要决定）
@@ -261,3 +270,13 @@ templates/context_pack.md
 - 写完后需要更新哪些文件？
 
 如果 context pack 不能回答这些问题，就视为编译不合格。
+
+关键结论必须可追溯。例如：
+
+```text
+claim: 上一章主交接是厉康鑫走入灵兽山深处
+source: planning/active_flow.yml
+
+claim: 陈家调查员已确认石板下方为空心
+source: chapters/ch008/canon_delta.yml
+```

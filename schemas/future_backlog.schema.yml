@@ -1,0 +1,33 @@
+schema: future_backlog
+purpose: >
+  Stores long-range ideas, arcs, set pieces, future payoffs, and distant
+  possibilities that are not part of the current 6-15 chapter rolling window.
+
+fields:
+  items:
+    required: true
+    type: list
+    item_fields:
+      id:
+        required: true
+        example: fb_001
+      status:
+        required: true
+        allowed: [candidate, incubating, promoted, rejected, expired]
+        example: candidate
+      horizon:
+        required: true
+        purpose: Approximate distance or target arc.
+        example: vol_002_mid
+      idea:
+        required: true
+      depends_on:
+        required: false
+        type: list
+      promotion_rule:
+        required: false
+        purpose: When this can move into planning/rolling_plan.yml.
+      source:
+        required: false
+        purpose: User idea, agent spark, review finding, or chapter origin.
+

@@ -14,6 +14,14 @@ Did the opening pick up `handoff_to_next_chapter` from the prior chapter or just
 
 What concrete scenes, actions, objects, dialogue, or consequences made this feel like fiction rather than a report?
 
+## Reader Reward Check
+
+- What concrete reader reward did this chapter deliver?
+- What existing expectation, debt, or promise did it advance or pay?
+- What new expectation did it create?
+- What external cost, leverage shift, reveal, or relationship change happened?
+- What image, line, action, or object is memorable?
+
 ## Ending Check
 
 Does the ending avoid protagonist recap, analysis, or "next step" thinking?

@@ -32,6 +32,7 @@ Support the round_001 production batch from the detailed rolling synopsis while 
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
 | `book/constitution.md` | full | Confirm core promise | Advance through repair, observation, and inference; do not reveal father truth early. |
+| `book/longform_blueprint.yml` | full | Confirm long-form scale and pacing budget | ch001-ch003 are district-scope opening chapters inside part_001; do not reveal father_truth or citywide lamp rules. |
 | `volumes/vol_001/volume_outline.md` | full | Confirm volume goal | Volume 001 proves fog lamps preserve memory and connects that to the father's disappearance. |
 | `planning/active_flow.yml` | full | Confirm cross-round flow | ch001-ch003 are cuts from arc_001_old_wick, not a closed three-chapter container. |
 | `planning/rolling_plan.yml` | full | Get detailed chapter synopsis | ch001-ch003 cover old wick anomaly, patrol pressure, and the first father clue. |
@@ -42,6 +43,18 @@ Support the round_001 production batch from the detailed rolling synopsis while 
 ## Global Understanding
 
 The story has not formally begun. The first round should open the old-wick memory anomaly and the father's disappearance mystery without explaining the entire system.
+
+## Longform Scale Check
+
+- Target length / chapter scale: about 300 chapters, 2000-3000 words per normal chapter.
+- Current macro stage or part: `part_001`, Old Lamp District, expected ch001-ch060.
+- Intended scope level for this batch/chapter: district/local opening pressure.
+- World / region / city / faction scale constraints: the old lamp district is not the whole world; the Archive Bureau should feel institutional but should not become fully explained yet.
+- Protagonist progression budget: Lin Qi may detect residue and preserve small clues; she cannot rewrite city memory.
+- Opportunity cadence: opening rewards should be tactile and local, with major system reveals delayed.
+- Secret or endgame reveal limits: father_truth may be hinted, not partially or fully revealed.
+- Scale drift risks: over-explaining the lamp network, making patrol motive too small, or solving the father line too early.
+- Source refs: `book/longform_blueprint.yml`
 
 ## Current Volume State
 

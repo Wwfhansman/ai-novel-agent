@@ -45,6 +45,7 @@
 用于自然语言文档：
 
 - `book/constitution.md`
+- `book/longform_blueprint.yml`
 - `book/global_summary.md`
 - `volumes/vol_001/volume_outline.md`
 - `chapters/ch001/brief.md`
@@ -83,6 +84,8 @@ chapters/ch001/canon_delta.yml
 planning/active_flow.yml
 planning/rolling_plan.yml
 planning/current_round.yml
+planning/completed_plan_log.yml
+planning/future_backlog.yml
 ```
 
 YAML 字段应尽量稳定，便于 agent 更新。
@@ -213,6 +216,8 @@ handoff_to_next_chapter:
 它描述的不是三章结构，而是持续推进的事件压力：从哪里承接、本章如何改变局面、下一章必须继承什么。一个 flow 可以跨过多个 round。
 
 `planning/rolling_plan.yml` 是未来 6-15 章的权威详细章纲。
+
+它只保存当前未来窗口，不长期保留已完成章节。已完成章纲归档到 `planning/completed_plan_log.yml`，更远期灵感和未来可能放入 `planning/future_backlog.yml`。
 
 它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`inbound_pressure`、`chapter_turn`、必须发生的剧情、人物意图、阻力或意外、读者回报、`outbound_pressure`、`handoff_to_next_chapter`、`external_state_at_end` 和限制。
 

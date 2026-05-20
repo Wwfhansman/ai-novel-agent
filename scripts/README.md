@@ -20,6 +20,10 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012
 - `final.txt` 是否因为误解 TXT 规则而写成少数巨大段落。
 - 是否存在超过 360 中文字的超长段落，或大量超过 220 字的长段落。
 - 章节结尾是否是主角复盘、计划、抽象短句、看夜色、吹灯等默认 AI 收束。
+- 每章是否具备必需文件：brief、context_pack、draft、final、review、summary、canon_delta。
+- context pack 是否包含读取证据、reader reward、cut continuity 和写后更新清单。
+- review 是否包含 Reader Reward Check、TXT Format Check 和 Memory Update Check。
+- rolling_plan 是否仍堆积 completed 章节，是否缺少 completed_plan_log / future_backlog。
 - `rolling_plan.yml` / `current_round.yml` 是否残留 `bridge_to_next`、`continuity_from_previous`、`next_hook` 等旧字段。
 - `summary.yml` 是否仍使用 `next_hook`。
 

@@ -39,6 +39,7 @@ If no model switching is available, state that all tasks use the current agent/m
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
 | `book/constitution.md` | full | highest creative contract |  |
+| `book/longform_blueprint.yml` | full | long-form scale and pacing authority |  |
 
 Read modes:
 
@@ -50,11 +51,34 @@ targeted
 not_read
 ```
 
+## Source References
+
+Every key writing claim must cite where it came from. Use short source refs instead of long quotes.
+
+| Claim | Source |
+| --- | --- |
+| Current primary handoff | `planning/active_flow.yml` |
+| Previous chapter visible cut | `chapters/chXXX/final.txt` |
+| Character current intent | `entities/characters.yml` |
+| Current macro scale and pacing budget | `book/longform_blueprint.yml` |
+
 ## Global Understanding
 
 Where is the whole book now? What is the protagonist's long-term direction?
 
 Keep this short. Do not restate the whole constitution.
+
+## Longform Scale Check
+
+- Target length / chapter scale:
+- Current macro stage or part:
+- Intended scope level for this batch/chapter:
+- World / region / city / faction scale constraints:
+- Protagonist progression budget:
+- Opportunity cadence:
+- Secret or endgame reveal limits:
+- Scale drift risks:
+- Source refs:
 
 ## Completed Volumes
 
@@ -118,6 +142,7 @@ What exact pressure, action, image, unresolved problem, or emotional state carri
 - Outbound pressure:
 - Handoff to next chapter:
 - Transition justification if not opening from previous cut:
+- Primary handoff source:
 
 The handoff must be an external pressure, unfinished action, changed relationship, object, public consequence, or information visibility change. Do not use protagonist recap or abstract planning as the handoff.
 
@@ -155,6 +180,15 @@ Only include characters who appear, are acted upon, or materially influence this
 World state, faction moves, resources, crisis, and external pressure.
 
 Only include world-state pressures relevant to this writing task.
+
+## Reader Reward Check
+
+- Concrete reader reward this chapter/batch must deliver:
+- New expectation created:
+- Existing expectation advanced or paid:
+- External cost, leverage shift, reveal, or relationship change:
+- Memorable image, line, action, or object:
+- Source refs:
 
 ## Style And Format Constraints
 

@@ -18,6 +18,7 @@ Support ch001 writing from the detailed rolling synopsis. This is an example con
 | File | Read Mode | Reason | Key Takeaway |
 | --- | --- | --- | --- |
 | `book/constitution.md` | full | Confirm opening direction | Start with repair action, not full world explanation. |
+| `book/longform_blueprint.yml` | full | Confirm long-form scale and pacing budget | ch001 is district-scope opening material; no citywide system reveal or father_truth reveal. |
 | `book/reader_model.yml` | full | Confirm reader expectation | Reader expects local mystery and clue progression. |
 | `planning/active_flow.yml` | full | Confirm flow continuity | ch001 is the opening cut of arc_001_old_wick and must hand pressure to ch002. |
 | `planning/rolling_plan.yml` | full | Get authoritative detailed synopsis | ch001 centers on the old lamp wick and the hidden memory echo. |
@@ -26,9 +27,31 @@ Support ch001 writing from the detailed rolling synopsis. This is an example con
 | `ledgers/knowledge_state.yml` | targeted | Check secret visibility | Lin Qi and reader do not know the old wick's truth. |
 | `ledgers/world_state.yml` | full | Check world pressure | Main lamp tower is dimming; patrol agency prepares action. |
 
+## Source References
+
+| Claim | Source |
+| --- | --- |
+| Long-form opening scope is district/local | `book/longform_blueprint.yml` |
+| ch001 is the opening cut of arc_001_old_wick | `planning/active_flow.yml` |
+| ch001 old-wick anomaly and patrol handoff | `planning/rolling_plan.yml` |
+| Lin Qi and patrol intents | `entities/characters.yml` |
+| Old-wick truth must remain hidden | `ledgers/knowledge_state.yml` |
+
 ## Global Understanding
 
 The story is beginning. The first chapter should enter through a concrete repair job and keep the old lamp rules mysterious.
+
+## Longform Scale Check
+
+- Target length / chapter scale: example project aims at a long serial, not a short closed mystery.
+- Current macro stage or part: `part_001`, Old Lamp District.
+- Intended scope level for this batch/chapter: district/local.
+- World / region / city / faction scale constraints: old lamp district is only the opening location; patrol pressure hints at a larger city institution.
+- Protagonist progression budget: Lin Qi may notice memory residue and hide a fragment; she cannot control or explain the system.
+- Opportunity cadence: first chapter reward is the risky wick fragment, not a full power unlock.
+- Secret or endgame reveal limits: father_truth remains only hinted.
+- Scale drift risks: making the patrol too small or the system too explained.
+- Source refs: `book/longform_blueprint.yml`
 
 ## Current Volume State
 
@@ -101,6 +124,15 @@ Old wick memory: reader unknown; Lin Qi unknown; patrol partial.
 ## World Pressure
 
 Night fog presses into the outer ring lamp corridor. The main lamp tower is dimming.
+
+## Reader Reward Check
+
+- Concrete reader reward this chapter/batch must deliver: the first old-wick memory anomaly and a risky hidden fragment.
+- New expectation created: why patrol urgently recovers old wicks.
+- Existing expectation advanced or paid: opening premise moves from normal repair to memory mystery.
+- External cost, leverage shift, reveal, or relationship change: Lin Qi keeps evidence that patrol expects to recover.
+- Memorable image, line, action, or object: a cracked wick fragment hidden before patrol boots reach the corridor.
+- Source refs: `planning/rolling_plan.yml`, `book/longform_blueprint.yml`, `ledgers/knowledge_state.yml`
 
 ## Style And Format Constraints
 

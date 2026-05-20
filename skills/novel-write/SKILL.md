@@ -19,6 +19,11 @@ Never let the round size decide the story shape. A narrative flow may span 2, 5,
 
 Use three planning layers:
 
+0. `book/longform_blueprint.yml`
+   - The protected whole-book scale authority.
+   - Tracks target length, macro stages, world/region/city hierarchy, faction scale, progression budget, opportunity cadence, and secret reveal windows.
+   - It prevents the agent from shrinking a world into a city, treating the opening map as the whole book, or spending late-book power/reveal budget too early.
+
 1. `planning/active_flow.yml`
    - The current continuous story flow.
    - Tracks the ongoing pressure, scene chain, last visible cut, and next opening.
@@ -26,6 +31,9 @@ Use three planning layers:
 
 2. `planning/rolling_plan.yml`
    - The detailed 6-15 chapter synopsis.
+   - It is the current future window only.
+   - Completed chapter plans should be moved to `planning/completed_plan_log.yml`.
+   - Distant ideas should live in `planning/future_backlog.yml`.
    - Each chapter should link to a flow and identify its entry/pickup and cut point.
 
 3. `planning/current_round.yml`
@@ -49,12 +57,17 @@ Use three planning layers:
 - Read `planning/rolling_plan.yml` in full before each round. It is the future-planning authority.
 - Do not copy full project files or the full rolling plan into context packs. Context packs are working memory, not a duplicated database.
 - Follow `meta/model_policy.yml` when it exists. A fast or cheap model may assist mechanical tasks, but final prose, active_flow, rolling_plan, canon merges, and protected-file decisions must be confirmed by a premium model or human.
+- Key context-pack claims must include source refs. Do not rely on "I remember reading it."
+- Read `book/longform_blueprint.yml` before refreshing planning and before drafting. Treat it as protected. If it is missing, create a stop/fix task instead of guessing long-form scale.
+- Every round and chapter context pack must include a `Longform Scale Check`.
+- Do not silently change target length, macro stages, world scale, faction scale, power pacing, or secret reveal windows. Route those changes to `novel-change`.
 
 ## Context Budget Policy
 
 Use working-memory context, like a human writer:
 
 - remember the whole-book promise, current volume goal, active flow, and full future rolling plan;
+- remember the long-form blueprint: current macro stage, scale level, progression budget, and reveal limits;
 - keep recent chapters sharp: previous chapter full text, recent summaries, and recent full text when continuity needs it;
 - read entity and ledger entries by relevance, not by default full dump;
 - reread old chapter originals only when a concrete trigger exists.
@@ -98,6 +111,7 @@ Read once per session or when uncertain:
 - `docs/FILE_FORMATS.md`
 - Current project `project.yml`
 - `book/constitution.md`
+- `book/longform_blueprint.yml`
 - `book/reader_model.yml`
 - `book/style_memory.md`
 - `style/rewrite_rules.md`
@@ -131,7 +145,10 @@ If model routing is used, record it in the round context pack or `meta/session_l
 - Current world state lives in `ledgers/world_state.yml`.
 - Current knowledge visibility lives in `ledgers/knowledge_state.yml`.
 - Current continuous flow lives in `planning/active_flow.yml`.
+- Long-form scale, map hierarchy, progression budget, and reveal windows live in `book/longform_blueprint.yml`.
 - Future 6-15 chapter synopsis lives in `planning/rolling_plan.yml`.
+- Completed planning history lives in `planning/completed_plan_log.yml`.
+- Distant future ideas live in `planning/future_backlog.yml`.
 - Current round extract lives in `planning/current_round.yml`.
 
 When files conflict, follow `docs/CANON_AND_SAFETY.md`. Do not merge contradictions casually.
@@ -162,6 +179,8 @@ Each planned chapter should include:
 
 - chapter id and provisional title;
 - status;
+- macro stage or part id from `book/longform_blueprint.yml`;
+- intended scale level for this chapter: local / family / city / region / world / upper_world / other project-specific level;
 - `flow_id`;
 - `flow_position`: start / continue / turn / end / bridge;
 - 300-800 Chinese characters of story synopsis;
@@ -174,6 +193,7 @@ Each planned chapter should include:
 - `cut_point`: where the chapter should cut without closing the narrative;
 - `handoff_to_next_chapter`: the first visible moment, external pressure, object, consequence, or unfinished action the next chapter should pick up;
 - forbidden moves or canon constraints.
+- scale/pacing constraints: what this chapter must not shrink, over-reveal, or over-advance.
 
 This is story-content planning, not an intra-chapter prose template.
 
@@ -192,13 +212,18 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 
 3. **Refresh active flow and rolling synopsis**
    - Read current canon and planning files.
+   - Read `book/longform_blueprint.yml` and identify the current macro stage, allowed scale level, progression budget, opportunity cadence, and reveal limits.
    - Update `planning/active_flow.yml` so the ongoing flow continues across the round boundary when appropriate.
    - Update `planning/rolling_plan.yml` so the next 6-15 chapters are detailed enough to drive prose.
-   - Remove or mark completed chapters; do not leave future chapters repeating decisions already made.
+   - Ensure `planning/rolling_plan.yml` does not collapse global scale, does not spend future-stage reveals, and does not accelerate protagonist progression beyond the current stage budget.
+   - Move completed chapter plan entries into `planning/completed_plan_log.yml`; do not keep completed chapters in the future window.
+   - Move distant or not-yet-actionable ideas into `planning/future_backlog.yml`.
+   - Do not leave future chapters repeating decisions already made.
 
 4. **Compile round context**
    - Read according to `docs/CONTEXT_PACK.md`.
    - Read `meta/model_policy.yml` if present and record the model routing plan.
+   - Always read `book/longform_blueprint.yml` in full.
    - Always read `planning/rolling_plan.yml` in full.
    - Read recent 12-15 chapter summaries when available.
    - Read recent 1-3 chapter `final.txt` files when continuity needs exact prose, scene carryover, or tone.
@@ -219,6 +244,10 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Create or update `chapters/chXXX/brief.md` from the detailed synopsis and flow continuity.
    - Generate `chapters/chXXX/context_pack.md`.
    - Chapter context should include this chapter's rolling-plan entry, adjacent chapter constraints when useful, previous handoff, active flow, and relevant targeted entity/ledger entries. Do not include full ledgers or the whole rolling plan.
+   - Chapter context must include the applicable macro stage, scale level, power pacing, opportunity budget, and reveal limits from `book/longform_blueprint.yml`.
+   - Chapter context must include `Source References` for the primary handoff, character states, active debts, knowledge visibility, world pressure, and reader reward.
+   - Chapter context must include `Source References` for long-form scale claims.
+   - Treat `planning/active_flow.yml` `last_cut.handoff_to_next_chapter` as the primary handoff authority unless `novel-change` explicitly changes it.
    - Keep the chapter pack within the context budget unless the chapter is paying off old material.
    - Optionally write `outline.md` only as freeform notes if useful. Do not make it a required scene-beat checklist.
    - Draft `draft.txt` as novel prose.
@@ -237,6 +266,8 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Update current volume summary/state and active arc.
    - Evaluate idea pool and narrative debts.
    - Refresh `planning/rolling_plan.yml` so the next round picks up the active flow.
+   - Archive completed plan entries to `planning/completed_plan_log.yml`.
+   - Keep only the next 6-15 upcoming chapters in `planning/rolling_plan.yml`.
    - Record a session summary in `meta/session_log.md`.
 
 ## Drafting Guidance
@@ -249,6 +280,8 @@ Good drafting behavior:
 - let characters pursue wants in the scene instead of explaining their roles;
 - let exposition surface because someone needs, hides, misreads, trades, or weaponizes information;
 - allow small local inventions if they serve the chapter and do not break canon;
+- deliver a concrete reader reward: payoff, reveal, leverage shift, cost, relationship change, new capability, danger escalation, or memorable fictional material;
+- create or advance a reader expectation instead of only moving characters through tasks;
 - cut while the situation is still moving;
 - make the next chapter feel like the next breath, not a new task.
 
@@ -297,7 +330,11 @@ Check:
 - Is this chapter a cut from the active flow, not an independent container?
 - Does the opening pick up the previous cut? If not, is the transition justified?
 - Does the chapter follow the detailed synopsis without sounding like a synopsis?
+- Does the chapter stay inside the current macro stage and scale level?
+- Does the chapter avoid shrinking world-level or region-level concepts into local terms?
+- Does the chapter respect power progression, opportunity cadence, and secret reveal windows?
 - Does it contain concrete fictional material, not only explanation and planning?
+- Does it deliver a clear reader reward and create/advance reader expectation?
 - Did a character make a choice, pay a cost, gain leverage, lose something, expose something, or change a relationship?
 - Is there enough reader reward for the genre and current debt window?
 - Does the ending avoid recap/thought-summary behavior?
@@ -341,6 +378,7 @@ During normal writing, this skill may modify:
 Protected or confirmation-required:
 
 - `book/constitution.md`
+- `book/longform_blueprint.yml`
 - endgame-level secrets
 - protagonist core motive
 - current volume goal
@@ -355,6 +393,7 @@ Stop before drafting if:
 - context packs cannot identify required current state;
 - source-of-truth files conflict and cannot be resolved;
 - a protected file must change;
+- `book/longform_blueprint.yml` is missing, stale, or contradicted by planning;
 - required prior chapter files are missing;
 - the chapter depends on an unconfirmed idea as if it were canon;
 - `planning/active_flow.yml` is missing or stale;
