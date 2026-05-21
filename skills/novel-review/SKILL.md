@@ -18,143 +18,96 @@ Read:
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
 
-## Review Modes
+## 审查模式
 
-### Cold-Start Review
+### 冷启动审查
 
-Act as a fresh agent. Read only project files, not prior conversation. Verify that the project explains:
+模拟一个新 agent。只读项目文件，不读之前的对话。验证项目文件能否解释：
 
-- What the book is.
-- What long-form scale the book is aiming for.
-- Which macro stage/map/volume the current chapters occupy.
-- Whether world, region, city, faction, and power-system scale remain stable.
-- Whether progression and secret reveals respect the current pacing budget.
-- Current volume goal and stage.
-- Current protagonist and major character goals.
-- Active narrative debts.
-- Knowledge state and secrets.
-- World state and pressures.
-- Active cross-round narrative flow.
-- Next round writing target.
-- Whether model routing is safe and no fast-model output entered final prose or canon without premium/human confirmation.
+- 这是一本什么书。
+- 本书目标长篇规模是什么。
+- 当前章节处于哪个宏观阶段/地图/卷。
+- 世界/区域/城市/势力/力量体系规模是否稳定。
+- 递进和秘密揭示是否在当前节奏预算内。
+- 当前卷目标和阶段。
+- 当前主角和主要角色目标。
+- 活跃的叙事债务。
+- 信息可见性和秘密。
+- 世界状态和压力。
+- 活跃的跨轮连续剧情流。
+- 下一轮写作目标。
+- 模型路由是否安全，没有 fast_model 的输出未经 premium/human 确认就进入正文或正史。
 
-### Chapter Review
+### 单章审查
 
-Review a specific chapter:
+审查特定章节的 `context_pack.md`、`brief.md`、`draft.txt`/`final.txt`、`summary.yml`、`canon_delta.yml` 以及受影响的 `entities/`、`ledgers/`、`planning/`。检查最终状态文件是否在章节完成后更新。
 
-- `context_pack.md`
-- `brief.md`
-- optional `outline.md` if it exists
-- `draft.txt` or `final.txt`
-- `summary.yml`
-- `canon_delta.yml`
-- affected `entities/`, `ledgers/`, and `planning/`
+### 轮次审查
 
-Check whether final state files were updated after the chapter.
+审查最近 3 章：round context pack、所有 chapter context pack、所有章节摘要和 delta、更新后的账本和滚动章纲。检查批次是否产生了连贯的进展而没有变成人工的三章故事单元。
 
-### Round Review
+## 必查项
 
-Review the last 3 chapters:
+1. **Context pack 有效性**：是否列出了读取文件、原因、关键收获、旧章节回看、不确定项和必须更新项？
 
-- round context pack
-- all chapter context packs
-- all chapter summaries and deltas
-- updated ledgers and rolling plan
+2. **唯一事实来源一致性**：如果 summary、delta、entity state、ledger 和 planning 不一致，识别权威文件。
 
-Check whether the batch produced coherent progress without becoming an artificial three-chapter story unit.
+3. **读者与债务健康度**：识别逾期债务、过多铺垫缺少 payoff、目标读者缺少回报。检查每章是否交付了具体的读者回报，是否制造或推进了下一个期待。
 
-## Required Checks
+4. **角色意图**：检查每个重要角色是否从当前目标出发行动，而不只是为了推动剧情。
 
-1. **Context pack validity**
-   - Does it list read files, reasons, key takeaways, old chapter lookbacks, unknowns, and required updates?
+5. **信息可见性**：检查是否有角色知道了不该知道的事，秘密是否过早揭示。
 
-2. **Source-of-truth consistency**
-   - Use `docs/CANON_AND_SAFETY.md`.
-   - If summary, delta, entity state, ledger, and planning disagree, identify the authoritative file.
+6. **世界状态**：检查势力/资源/危机/公共压力是否对最近章节做出反应。
 
-3. **Reader and debt health**
-   - Identify overdue debts.
-   - Identify too much setup without payoff.
-   - Identify missing payoff for target reader.
-   - Identify whether each chapter delivered a concrete reader reward.
-   - Identify whether each chapter created or advanced a next expectation.
+7. **风格与类型对齐**：对照 `book/constitution.md`、`book/reader_model.yml`、`book/style_memory.md`。
 
-4. **Character intent**
-   - Check whether each important character acted from current goals, not just plot convenience.
+8. **长篇规模控制**：检查 `book/longform_blueprint.yml` 是否存在且为最新、当前章节是否属于预期宏观阶段、世界级名称和势力是否保持预期规模。标记规模缩水。
 
-5. **Knowledge visibility**
-   - Check whether any character knows something they should not.
-   - Check whether secrets were revealed too early.
+9. **详细章纲对齐**：检查 `active_flow.yml` 是否存在且与上一章兼容、`rolling_plan.yml` 是否足够驱动正文、是否只包含未来窗口章节、已完成章纲是否归档、远期点子是否在 `future_backlog.yml`。
 
-6. **World state**
-   - Check whether factions, resources, crises, and public pressure reacted to recent chapters.
+10. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
 
-7. **Style and genre alignment**
-   - Compare to `book/constitution.md`, `book/reader_model.yml`, and `book/style_memory.md`.
-
-8. **Long-form scale control**
-   - Check whether `book/longform_blueprint.yml` exists and is current.
-   - Check whether the current chapter range belongs to the expected macro stage.
-   - Check whether world-level names, regions, cities, factions, and institutions keep their intended scale.
-   - Flag scale collapse, such as a world becoming a city, a regional force behaving like a household, or an opening-map conflict being treated as the whole book.
-   - Check whether protagonist power, major opportunities, and artifact/secret reveals are moving within the current stage budget.
-   - Check whether `planning/rolling_plan.yml`, `active_flow.yml`, and recent prose contradict the blueprint.
-   - Treat target length, macro structure, scale map, power pacing, and secret pacing as protected unless `novel-change` confirms a change.
-
-9. **Detailed synopsis alignment**
-   - Check whether `planning/active_flow.yml` is present, current, and compatible with the last written chapter.
-   - Check whether `planning/rolling_plan.yml` is detailed enough to drive prose.
-   - Check whether `planning/rolling_plan.yml` contains only upcoming chapters, not completed history.
-   - Check whether completed chapters were archived to `planning/completed_plan_log.yml`.
-   - Check whether distant ideas live in `planning/future_backlog.yml`, not the current future window.
-   - Check whether `current_round.yml` is only a production extract, not a competing plan or hidden round goal.
-   - Check whether future planned chapters repeat decisions already completed.
-
-10. **Cross-round flow continuity**
-   - Check whether each chapter opens from the previous external handoff or records a justified transition.
-   - Check whether the last chapter of the batch closes because the story earned closure, not because the batch ended.
-   - Check whether `planning/rolling_plan.yml` continues the same event chain after the batch when the flow is still active.
-   - Check whether ch003/ch006/ch009-style chapters are disproportionately recap-like, reflective, or conclusive.
-
-11. **Prose and TXT format**
-   - Run `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>` from the repository root when the script exists.
+11. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
    - Treat validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.
+   - Check whether the chapter contains weave material around the core task: daily life, reactions, dialogue, world/system texture, relationship friction, scene objects, body/mood beats, wrong guesses, lightness, awkwardness, softness, or character habit.
+   - Check whether the chapter tried to complete too many tasks, or whether it kept one primary advancement and left appropriate problems unfinished.
+   - Check whether the chapter function and pressure curve vary naturally across chapters instead of repeating the same internal rhythm.
+   - Check whether the chapter added more than 1-2 new core information variables without enough action/reaction to digest them.
+   - Check whether rules, systems, institutions, power mechanics, or political facts were verified through event, cost, mistake, or reaction rather than only explained.
    - Check whether the ending collapses into protagonist recap, analysis, or next-step thinking.
-   - Check whether `handoff_to_next_chapter` comes from external motion, not only from a protagonist decision.
-   - Check whether `final.txt` uses one blank line after the title and no blank lines between ordinary body paragraphs.
+   - 检查交接是否来自外部运动，而不只是主角的内心决定。
+   - 检查 `final.txt` 标题后是否只有一空行、正文段落之间是否无空行。
 
-12. **Reader reward**
-   - Check whether each chapter has a `Reader Reward Check` in review or context pack.
-   - Check whether the reward appears in the actual prose, not only the plan.
-   - Flag chapters that only move setup forward without payoff, reveal, cost, leverage shift, relationship change, or memorable fictional material.
+12. **读者回报**
+   - 检查每章是否在 review 或 context pack 中有 Reader Reward Check。
+   - 检查回报是否出现在实际正文中，而不只是计划中。
+   - 标记只推进设定却没有 payoff/揭示/代价/杠杆变化/关系变化/难忘小说素材的章节。
 
-13. **Model routing**
-   - Check whether `meta/model_policy.yml` exists.
-   - Check context packs and session logs for model routing records when multiple models were used.
-   - Flag any final prose, active_flow, rolling_plan, protected-file change, or canon merge that appears to have been done only by a fast or cheap model.
+13. **模型路由**
+   - 检查 `meta/model_policy.yml` 是否存在。
+   - 检查 context pack 和 session log 中是否记录了多模型使用情况。
+   - 标记任何看起来只由 fast/cheap 模型完成的正文、active_flow、rolling_plan、受保护文件修改或正史合并。
 
-## Output Format
-
-Produce:
+## 输出格式
 
 ```text
-Review Summary
-- Overall status: pass / pass with risks / fail
-- Biggest risks
-- Required fixes
-- Suggested fixes
-- Files that appear stale or conflicting
-- Long-form scale risks
-- Model routing risks
-- Whether novel-change is needed
+审查摘要
+- 总体状态：pass / pass with risks / fail
+- 最大风险
+- 必须修复
+- 建议修复
+- 陈旧或冲突的文件
+- 长篇规模风险
+- 模型路由风险
+- 是否需要进入 novel-change
 ```
 
-## Failure Handling
+## 失败处理
 
-If the project cannot be continued safely:
-
-- Do not rewrite正文.
-- List blocking missing files or contradictions.
-- Recommend `novel-change` for structural changes.
-- Recommend context pack regeneration if the writing input record is incomplete.
+如果项目无法安全继续：
+- 不要重写正文。
+- 列出阻碍性的缺失文件或矛盾。
+- 推荐 `novel-change` 处理结构性变化。
+- 推荐重新生成 context pack——如果写作输入记录不完整。

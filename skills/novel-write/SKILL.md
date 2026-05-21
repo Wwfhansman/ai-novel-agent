@@ -49,8 +49,8 @@ Use three planning layers:
 - Do not translate a plan, synopsis, outline, or checklist directly into prose.
 - Do not treat one chapter or one round as a complete narrative box.
 - Round boundaries are production boundaries, not story boundaries. Do not make ch003/ch006/ch009 feel like cleanup, recap, reset, or phase closure unless `planning/active_flow.yml` and `planning/rolling_plan.yml` explicitly say the story has earned payoff.
-- If the previous chapter declares `handoff_to_next_chapter`, this chapter's opening must pick it up directly unless a justified transition is recorded in context pack and review.
-- If the previous chapter declares `handoff_to_next_chapter` in `canon_delta.yml`, reflect it in this chapter's `brief.md`, `context_pack.md`, and `planning/rolling_plan.yml` entry before drafting.
+- 如果上一章的 `canon_delta.yml` 中有 `actual_handoff`，本章开头必须承接，除非在 context pack 和 review 中记录了有理有据的切换理由。
+- 承接后，在本章的 `brief.md`、`context_pack.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
 - Do not use docs, schemas, templates, examples, sample novels, or other projects as creative source material. They are process references only.
 - Do not silently change protected canon. Route major changes to `novel-change`.
 - Before accepting any `final.txt`, run `python scripts/validate_novel_output.py <project> --chapters chXXX` from the repository root when the script exists. If it fails, fix the listed issues and rerun. Do not call the chapter complete until validation passes.
@@ -79,27 +79,32 @@ Recommended context pack budgets:
 
 `planning/rolling_plan.yml` is the exception to the lean-read rule: read it in full each round, because future planning decides how the current chapter should be written. But summarize only the batch chapters, adjacent chapters, and later constraints that affect this task.
 
-## Banned Default Endings
+## 结尾规则
 
-These are hard failures unless the project style explicitly demands them and the review explains why:
+以下结尾模式应避免，除非项目风格明确要求且在 review 中说明理由：
 
-- protagonist sits and thinks;
-- protagonist summarizes lessons;
-- protagonist plans the next step in abstract;
-- protagonist looks at night, window, candle, distance, or empty room as a mood button;
-- "he knew..." / "he understood..." / "this step was important..." endings;
-- final one-line abstract atmosphere paragraphs;
-- chapter ending exists only to say the next chapter will matter.
+**空泛反思式结尾（应避免）：**
+- 章末主角独自坐下，空泛思考，没有外部动作落地。
+- 主角在章末以"他明白了""他知道了"收束全章教训。
+- 主角抽象地规划下一步："接下来他打算……""他知道该怎么做了……"。
+- 用夜景、窗户、烛火、远望、空房间作为情绪按钮收尾——如果前面全是动作和对白，最后突然"安静下来看窗外"。
+- 最后一段是纯氛围短句，没有任何具体信息、动作或物件落地。
+- 章末的唯一功能是告诉读者"下一章会很重要"。
 
-Prefer cut points:
+**区分：以下情况不应被误判为反思式结尾：**
+- 主角在章末做出了具体决策，且这个决策在下一章开头被执行（例如"他决定赌一把"然后下一章直接进入行动）。
+- 主角的思考揭示了新信息或对前文的反转理解（例如"他忽然意识到那个人从未提过自己的姓氏"——这是信息释放）。
+- 主角在章末推演策略、分析局面，且推演内容包含新变量或新风险（权谋/修仙/悬疑文的核心爽点）。
+- 用环境收束情绪但环境本身是情节的一部分（例如"雨停了"紧跟在战斗结束之后）。
 
-- an action has just begun;
-- a conversation is interrupted or left unfinished;
-- someone arrives;
-- a cost lands;
-- a concrete object, order, wound, document, or sound changes the situation;
-- a choice is made publicly and cannot be withdrawn;
-- pressure moves before the protagonist can fully process it.
+**推荐的切分点：**
+- 一个动作刚刚开始，还没完成。
+- 对话被打断或故意没说完。
+- 有人到场、离场、闯入。
+- 一个代价刚刚落地、一道命令被下达、一件物品被打碎或交到手中。
+- 一个选择被当众做出，无法收回。
+- 压力在主角来得及完全消化之前就已经向前移动了。
+- 新的信息、物件、声音、伤口改变了局面。
 
 ## Read First
 
@@ -114,6 +119,7 @@ Read once per session or when uncertain:
 - `book/longform_blueprint.yml`
 - `book/reader_model.yml`
 - `book/style_memory.md`
+- `book/chapter_rhythm_guide.md`（本章类型对应的节奏模板）
 - `style/rewrite_rules.md`
 - `planning/active_flow.yml`
 - `planning/rolling_plan.yml`
@@ -183,16 +189,23 @@ Each planned chapter should include:
 - intended scale level for this chapter: local / family / city / region / world / upper_world / other project-specific level;
 - `flow_id`;
 - `flow_position`: start / continue / turn / end / bridge;
+- `chapter_function`: crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / domestic_management / dungeon_rule / transition, or a project-specific equivalent;
+- `pressure_curve`: how pressure rises, delays, releases, or transfers across the chapter;
+- `reader_question_in` and `reader_question_out`: the visible reader expectation entering and leaving the chapter;
 - 300-800 Chinese characters of story synopsis;
 - `entry_from_previous`: the concrete pickup from the prior cut;
-- required plot developments;
+- `core_advance`: one primary external advancement, required beats, and what must deliberately remain unfinished;
+- `information_release`: 1-2 new core variables, deferred information, rule/system pressure, and any planned misdirection or partial understanding;
 - important characters and what they want;
 - pressure, obstacle, or complication;
-- `chapter_turn`: the irreversible external change caused by the chapter;
-- expected payoff, reveal, or reader reward;
-- `cut_point`: where the chapter should cut without closing the narrative;
-- `handoff_to_next_chapter`: the first visible moment, external pressure, object, consequence, or unfinished action the next chapter should pick up;
-- forbidden moves or canon constraints.
+- `chapter_turn`：本章造成的不可逆外部变化；
+- 预期 payoff、揭示或读者回报；
+- `side_yield`：除核心推进外进入长期记忆的世界/系统质感、关系变化、资源/地位变化或可复用伏笔；
+- `叙事织入`：人物日常反应、场景即时质感、关系温度波动——让人物、场景和系统有"居住感"、但不需要解决章节任务的织入材料；
+- `density_control`：要求的织入节拍数、是否允许闲笔停顿；
+- `cut_point`：章节在何处切分而不关闭叙事；
+- `planned_handoff`：下一章必须承接的首要可见时刻、外部压力、物件、后果或未完成的动作；
+- 禁止事项或正史约束。
 - scale/pacing constraints: what this chapter must not shrink, over-reveal, or over-advance.
 
 This is story-content planning, not an intra-chapter prose template.
@@ -235,7 +248,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 5. **Create current round extract**
    - Plan exactly 3 chapters unless the user asks otherwise.
    - Extract or condense each chapter from `planning/rolling_plan.yml`.
-   - Include `flow_id`, `flow_position`, `inbound_pressure`, `chapter_turn`, `outbound_pressure`, and `handoff_to_next_chapter`.
+   - Include `flow_id`, `flow_position`, `chapter_function`, `pressure_curve`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `chapter_turn`, `planned_handoff`, `叙事织入`, and `density_control`.
    - Use `batch_tasks`, not round-level story goals.
    - Do not invent a separate competing plan.
    - Write `planning/current_round.yml`.
@@ -247,7 +260,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Chapter context must include the applicable macro stage, scale level, power pacing, opportunity budget, and reveal limits from `book/longform_blueprint.yml`.
    - Chapter context must include `Source References` for the primary handoff, character states, active debts, knowledge visibility, world pressure, and reader reward.
    - Chapter context must include `Source References` for long-form scale claims.
-   - Treat `planning/active_flow.yml` `last_cut.handoff_to_next_chapter` as the primary handoff authority unless `novel-change` explicitly changes it.
+   - Treat `planning/active_flow.yml` `last_cut.current_handoff` as the primary handoff authority unless `novel-change` explicitly changes it.
    - Keep the chapter pack within the context budget unless the chapter is paying off old material.
    - Optionally write `outline.md` only as freeform notes if useful. Do not make it a required scene-beat checklist.
    - Draft `draft.txt` as novel prose.
@@ -270,31 +283,65 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Keep only the next 6-15 upcoming chapters in `planning/rolling_plan.yml`.
    - Record a session summary in `meta/session_log.md`.
 
-## Drafting Guidance
+## 写作心法
 
-During prose drafting, focus on **what is happening now**.
+写作时聚焦"此刻正在发生什么"，而不是"这段应该完成什么任务"。
 
-Good drafting behavior:
+好写法：
+- 尽量从上一章留下的压力切口开局——上一章的物件、动作、对话、后果，而不是"第二天"。
+- 让人物在场景里追逐自己的欲望，而不是站在场景里解释自己的立场。
+- 让信息因为"有人需要""有人隐瞒""有人误读""有人交易""有人拿来当武器"而浮现，而不是靠旁白介绍。
+- 允许小的局部即兴发挥——只要不破坏正史。
+- 给读者一个具体的回报：爽点兑现、真相揭示、局面反转、代价落地、关系变化、新能力展示、危险升级，或者一段难忘的小说画面。
+- 制造或推进读者的期待，而不只是让人物走完任务流程。
+- 在局势仍在运动时切分，不要在一切都安静下来后才收尾。
+- 让下一章的第一句话像这口气还没喘完——而不是一个新任务的开始。
 
-- open from the prior chapter's last visible pressure when possible;
-- let characters pursue wants in the scene instead of explaining their roles;
-- let exposition surface because someone needs, hides, misreads, trades, or weaponizes information;
-- allow small local inventions if they serve the chapter and do not break canon;
-- deliver a concrete reader reward: payoff, reveal, leverage shift, cost, relationship change, new capability, danger escalation, or memorable fictional material;
-- create or advance a reader expectation instead of only moving characters through tasks;
-- cut while the situation is still moving;
-- make the next chapter feel like the next breath, not a new task.
+## 网文节奏规则
 
-Avoid:
+一章只有一个任务，但不是每一段、每一句都围绕这个任务。
 
-- reset openings that ignore the prior cut;
-- ending with a neat protagonist recap;
-- numbered lessons in prose such as "first, second, third" unless the character is literally writing a document;
-- default openings like "the next day" when time passage is not the drama;
-- paragraphs that only restate the plan;
-- repetitive "arrive -> observe -> analyze -> arrange -> think" chapters;
-- forcing every chapter or every round to have the same internal rhythm.
-- making every third chapter cleaner, more reflective, or more conclusive than the surrounding chapters just because the batch ended.
+写作前先明确：
+- 本章唯一的那个核心推进是什么。
+- 本章刻意不完成什么（收编/摊牌/解释/证据引爆/关系确认）。
+- 本章功能和压力曲线——不同章类型要有不同的节奏形状，不要在每章重复同一种内部节拍。
+- 进入和离开本章的读者疑问。
+- 本章只释放 1-2 个读者必须记住的新信息变量，其余延后。
+- 至少一个进入长期记忆的 side yield（世界质感/关系变化/资源变化/可复用伏笔）。
+- 3-5 个叙事织入节拍——围绕核心人物、世界、系统或社会结构产生生活感。
+
+叙事织入可以包括：日常琐事、小不便、轻松斗嘴、误读反应、食物、衣物、房间、天气作为生活质感、旁人反应、人物习惯、行动前的停顿、非策略性的情感对话、世界质感、制度流程、资源账目、修炼或系统操作、副本规则反应、家族运转、旁观者的后果、一个小小错误猜测。
+
+不要把这些织入当成水文废话。它们的作用是让人物、盟友、对手、场景、系统和社会结构有"居住感"，但它们不需要揭秘、不需要推进势力逻辑、不需要解决章节任务。
+
+连续两页都是计划/推理/派系分析/任务执行/未来安排——必须重写或放松节奏。
+连续两段解释规则/势力/计划/推论/功法——下一段必须是行动、反应、对话、误读、冲突、感官质感、代价、或场景移动。
+
+对于悬疑/副本/规则/修仙/权谋/经营章，优先用"事件验证"的信息：规则被测试、代价落地、人物做出反应、有人误用了系统、某种制度改变了行为。
+
+### 不同类型章节的节奏参考
+
+不要对所有章节用同一个节奏比例。以下按四种基本节奏类型分述：
+
+**推进型（打脸/战斗/突破/比试/展示）：**
+主线推进是主体，但保留对话交锋和世界质感的间隙。不要让打脸章的"众人震惊"只用一句话带过——围观者反应是爽点兑现的核心组件。
+
+**建制型（种田/经营/赶路/交易/拍卖）：**
+主线推进和日常运转交替出现。建制型章节的力量来自"积累感"——小投入→小收获→扩大→阻力→质变。数字、资源、流程本身就是叙事材料，但要通过人物的反应和摩擦来消化。
+
+**推理型（悬疑/副本/权谋试探/调查/揭秘）：**
+对话和反应密度高，但一章只放 1-2 个读者需要记住的新信息变量。让规则和真相通过事件、代价、误用、冲突进入正文，不要连续多段旁白解释。连续反转不要超过一次——给读者消化空间。
+
+**日常型（关系拉扯/余波回收/过渡/家庭）：**
+主线压力低，但情绪温度高。用人物互动、对话摩擦、身体反应和场景质感来填充。注意：日常不是水——日常段要有人物反应、关系温度变化或世界质感的自然呈现。
+
+### 避免以下写法：
+- 无视上一章切口的重启式开头。
+- 用主角内心复盘来收束全章。
+- 正文里出现"第一……第二……第三……"式的条理化总结——除非人物在写文书。
+- 把所有章节或所有轮次都写成同一个内部节拍。
+- 因为批次结束而让每轮第三章变得更"干净"、更"反思"、更"总结"。
+- 重复出现"到达→观察→分析→安排→思考"的章节奏。
 
 ## TXT Format Rule
 
@@ -308,43 +355,60 @@ Avoid:
 正文第三段。
 ```
 
-- Keep one blank line after the chapter title.
-- Do not put blank lines between ordinary body paragraphs.
-- Use an extra blank line only for a deliberate scene break.
-- Do not include review notes, YAML, Markdown headings, or checklist language inside `draft.txt` or `final.txt`.
-- Normal paragraphing is still required. "No blank lines between paragraphs" means paragraphs are separated by a single newline, not that multiple actions should be merged into giant blocks.
-- For a 2000-3500 Chinese character web-novel chapter, aim for 25-60 body paragraphs.
-- Most body paragraphs should be 40-160 Chinese characters.
-- Split when action changes, speaker changes, a reaction lands, a new piece of information appears, the camera shifts, or the rhythm needs a beat.
-- A paragraph over 220 Chinese characters is a warning sign. A paragraph over 360 Chinese characters is usually a formatting failure unless it is a deliberate long-shot passage explained in review.
-- Do not swing back to fake rhythm: avoid dense one-line paragraphs unless they carry a real beat.
+- 章节标题后保留一个空行。
+- 正文普通段落之间不空行，只换行。额外空行只用于明确的场景切换。
+- 不要在 `draft.txt` 或 `final.txt` 中放入审稿意见、YAML、Markdown 标题或清单语言。
+- 仍需正常分段。"段落间不空行"不等于把多个动作合并成巨大段落。
+- 2000-3500 中文字章节的段落数按章节类型有所不同，短段落在手机上恰是优点。核心规则是防"一大坨"：多数段落 40-160 字，超过 220 字视为格式失败（除非 review 中说明是刻意的长镜头段落）。
+- 在动作变化、说话人变化、反应落点、新信息出现、镜头变化、节奏停顿时主动分段。
+- 避免没有叙事功能的密集碎行——短段要有真正的节拍承载。
 
-## Review Checklist
+## 审查清单
 
-Before writing `final.txt`, create or update `review.md`.
+在写 `final.txt` 之前，创建或更新 `review.md`。审查必须是诊断性的，不是自我表扬。必须至少指出一个弱点或风险，并说明是否已修复。
 
-The review must be diagnostic, not self-praise. It must name at least one weakness or risk and say whether it was fixed.
+检查：
 
-Check:
+### 连续性与容器检查
+- 本章是 active flow 上的一个切分，还是一个独立的故事容器？
+- 开头是否承接了上一章的切口？如果没有，转换是否在 context pack 和 review 中说明了理由？
+- 本章是否跟随了详细章纲，但没有写成章纲翻译？
+- 如果是本批次最后一章，是否避免了因批次结束而变成总结/复盘/暂停？
 
-- Is this chapter a cut from the active flow, not an independent container?
-- Does the opening pick up the previous cut? If not, is the transition justified?
-- Does the chapter follow the detailed synopsis without sounding like a synopsis?
-- Does the chapter stay inside the current macro stage and scale level?
-- Does the chapter avoid shrinking world-level or region-level concepts into local terms?
-- Does the chapter respect power progression, opportunity cadence, and secret reveal windows?
-- Does it contain concrete fictional material, not only explanation and planning?
-- Does it deliver a clear reader reward and create/advance reader expectation?
-- Did a character make a choice, pay a cost, gain leverage, lose something, expose something, or change a relationship?
-- Is there enough reader reward for the genre and current debt window?
-- Does the ending avoid recap/thought-summary behavior?
-- Does the ending create a concrete `handoff_to_next_chapter` grounded in external motion?
-- If this is the last chapter of a round, does it avoid becoming a round summary or artificial pause?
-- Are body paragraphs single-spaced in TXT format?
-- Is paragraph density readable on mobile, with normal body paragraphs rather than 7-9 giant blocks?
-- Did `scripts/validate_novel_output.py` pass for this chapter?
-- Are `summary.yml`, `canon_delta.yml`, and current state files updated?
-- Did `active_flow.yml` and `rolling_plan.yml` change so the next chapter continues the flow?
+### 规模与节奏检查
+- 本章是否保持在当前宏观阶段和规模层级内？
+- 是否避免了把世界级/区域级概念缩小为本地概念？
+- 是否遵守了力量递进节奏、机遇频率和秘密揭示窗口？
+- 本章功能与压力曲线是什么？（不要每章都用同一种节拍）
+- 是否控制了信息密度——本章新增核心变量是否超过 1-2 个？
+
+### 叙事织入检查
+- 本章除核心推进外，是否有围绕任务的织入材料：日常细节、人物反应、对话摩擦、世界/制度质感、关系温度波动、场景物件、身体/情绪节拍、误读、轻松感、尴尬、柔软或人物习惯？
+- 是否连续两页每一段都在功能性推进剧情/传递信息？
+- 是否有两段连续解释规则/势力/计划/推论/功法，而没有紧跟行动、反应、对话、冲突或场景移动？
+- 规则、制度、功法、政治事实是否通过事件、代价、误用或人物反应验证，而不只是旁白说明？
+
+### 回报与期待检查
+- 本章给了读者什么具体回报？
+- 推进或制造了什么新期待？
+- 是否有角色做出了选择、付出了代价、获得了杠杆、失去了什么、暴露了什么或改变了关系？
+- 读者回报是否足够（考虑当前类型和债务窗口）？
+
+### 结尾检查
+- 结尾是否避免了空泛反思/复盘式收束？
+- 结尾是否产生了基于外部运动的、可以被下一章直接承接的交接？
+- 如果结尾是短句氛围收束——它有没有具体的内容落地支撑？没有具体内容的短句氛围结尾应该重写。
+
+### TXT 格式检查
+- 正文普通段落之间是否无空行？
+- 段落密度是否适合手机阅读？（不是 7-9 个巨大段落；也不应该全是碎行的假节奏）
+- 是否有超过 220 字的大段落？
+- `python scripts/validate_novel_output.py` 是否通过？
+
+### 记忆更新检查
+- `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/`、`volumes/`、`planning/` 是否已更新？
+- `active_flow.yml` 的 `last_cut` 是否记录了本章实际交接？
+- `rolling_plan.yml` 是否滑动了未来窗口（已完成章纲归档到 completed_plan_log.yml）？
 
 ## Do Not Silently Modify
 

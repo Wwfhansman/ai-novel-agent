@@ -36,8 +36,8 @@
 - 只有明确场景切换时，才允许额外空行或使用一行分隔符。
 - 不要在 TXT 正文中写 `##`、清单、审稿意见、YAML 或流程字段。
 - 仍然要正常分段。禁止把多个动作、对话、说明和情绪反应压进一个巨大自然段。
-- 2000-3500 中文字章节通常应有 25-60 个正文段落。
-- 多数正文段落建议 40-160 中文字；超过 220 字应考虑拆分，超过 360 字通常视为格式失败。
+- 2000-3500 中文字章节通常应有 35-70 个正文段落；面向手机阅读时宁可略密分段。
+- 多数正文段落建议 35-100 中文字；超过 120 字应考虑拆分，超过 160 字通常会造成手机阅读负担，超过 220 字视为格式失败。
 - 动作变化、说话人变化、反应落点、新信息出现、视角/镜头变化、节奏停顿时，应主动分段。
 
 ## 3. Markdown
@@ -112,9 +112,14 @@ chapters/ch001/
 
 - 来自 `planning/rolling_plan.yml` 的本章详细章纲摘录
 - 当前 `planning/active_flow.yml` 位置
-- 上一章 `handoff_to_next_chapter`
+- 上一章 `actual_handoff`（写完后记录的实际交接）
+- 本章 chapter_function、pressure_curve、reader_question_flow
 - 本章 inbound pressure、chapter turn、outbound pressure
-- 本章必须发生的剧情内容
+- 本章 core_advance：唯一核心推进、必须发生的剧情内容、必须不完成的事项
+- 本章 information_release：本章只释放哪些核心新变量，哪些信息、规则、身份、资源或关系必须延后
+- 本章 side_yield：除核心推进外，进入长期记忆的世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔
+- 本章 叙事织入：人物日常反应、场景即时质感、关系温度波动
+- 本章 density_control：织入节拍数要求、是否允许闲笔停顿
 - 重要人物意图
 - 禁止事项
 - 下一章必须承接的外部压力或具体可见动作
@@ -162,7 +167,7 @@ key_events:
   - ""
 emotional_result: ""
 external_result: ""
-handoff_to_next_chapter: ""
+actual_handoff: ""
 ```
 
 ### 5.6 canon_delta.yml
@@ -205,7 +210,7 @@ narrative_debts_paid:
 ideas_added:
   - id: ""
     title: ""
-handoff_to_next_chapter:
+actual_handoff:
   - ""
 ```
 
@@ -219,7 +224,11 @@ handoff_to_next_chapter:
 
 它只保存当前未来窗口，不长期保留已完成章节。已完成章纲归档到 `planning/completed_plan_log.yml`，更远期灵感和未来可能放入 `planning/future_backlog.yml`。
 
-它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`inbound_pressure`、`chapter_turn`、必须发生的剧情、人物意图、阻力或意外、读者回报、`outbound_pressure`、`handoff_to_next_chapter`、`external_state_at_end` 和限制。
+它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`chapter_function`、`pressure_curve`、`reader_question_flow`、`core_advance`、`information_release`、人物意图、阻力或意外、`chapter_turn`、读者回报、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和限制。
+
+每章应尽量只有一个核心外部推进，并明确 `must_not_complete`。`叙事织入` 用来保留人物、世界、系统和社会结构周围的织入材料：生活细节、人物反应、对话摩擦、关系温度、世界/制度/规则质感、场景物件、轻微误读、停顿、尴尬、柔软、小幽默或人物习惯。正文可以有无直接剧情功能的段落，只要它们增强人物和场景的自然感。
+
+一般章节的 `information_release.new_core_variables` 不宜超过 1-2 个。更多真相、规则、身份、资源收益、关系变化应写入 `deferred_information` 或后续章节。
 
 `planning/current_round.yml` 只是从 `rolling_plan.yml` 抽取生产批次，不应另起一套互相冲突的计划，也不应包含 round 级剧情目标。
 

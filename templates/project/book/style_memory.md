@@ -1,49 +1,61 @@
-# Style Memory
+# 风格记忆
 
-## Narrative Style
+## 叙述风格
 
-To be initialized.
+待初始化。
 
-## Dialogue Style
+## 对话风格
 
-To be initialized.
+待初始化。
 
-## Story Content Preferences
+## 内容偏好
 
-- To be initialized.
+待初始化。
 
-## Chapter Rhythm Preferences
+## 章节节奏偏好
 
-- To be initialized.
+- 每章只推进一个核心外部事件，保留叙事织入：日常细节、人物反应、对话摩擦、场景质感、关系温度、世界/制度运转、人物习惯、身体反应、轻微误读或小幽默。
+- 区分章节功能与压力曲线。网文章节可能是：打脸、升级突破、拍卖交易、赶路探索、种田经营、副本规则、权谋试探、关系拉扯、余波回收、过渡、危机、调查、揭秘、社交冲突、比试等。不要强迫所有章节使用同一种内部节拍。
+- 每章解决或推进一个读者可见的疑问，同时保留或制造下一个具体疑问。
+- 每章新增核心信息变量控制在 1-2 个——除非是确实需要大量揭示的 payoff 章。让规则、制度、功法通过事件、代价、误用、反应来呈现，而不是连续多段解释。
+- 每章除核心推进外应有 side yield：世界/系统质感、关系变化、资源/地位/账目变化或可复用伏笔。
 
-## Banned Tendencies
+## 禁止倾向
 
-- Generic AI novel voice.
-- Bystander astonishment as substitute for plot feedback.
-- Mechanical time-sequence openings.
-- Consecutive endings based only on protagonist thought, analysis, or decision.
-- Endings that organize the plot inside the protagonist's mind instead of leaving pressure in the world.
-- Ch003/ch006/ch009-style round summaries, cleanup beats, or strategic resets.
-- Dense one-line paragraphs without narrative function.
-- Flat execution of scene beats.
-- Chapters that only report what happened.
-- Protagonist recap endings that summarize the lesson of the chapter.
+- 通用 AI 小说腔。
+- 以路人震惊/旁观者反应作为唯一的剧情反馈手段（合理的围观者反应应配合其他反馈）。
+- 机械的日序开头（"第二天""次日"除非时间流逝本身是戏剧内容）。
+- 连续多章以主角内心思考、分析或决策收尾。
+- 用主角脑内总结代替外部世界的压力运动。
+- 每轮第三章变成"更干净""更反思""更总结"的批次收束。
+- 没有叙事功能的密集碎行。
+- 机械执行场景节拍。
+- 只报告"发生了什么"的报告式章节。
+- 主角复盘式结尾。
+- 每一句都在服务剧情推进、信息传递、推理或未来安排。
+- 连续多章同一种内部节拍、同一种压力曲线、同一种"到达→分析→执行"的形状。
+- 密集的规则/系统/势力/功法解释，没有紧跟行动、反应、误读、代价或场景移动。
 
-## TXT Format Preference
+## TXT 格式偏好
 
-Body paragraphs in `draft.txt` and `final.txt` use single newlines. Do not insert blank lines between ordinary paragraphs.
+`draft.txt` 和 `final.txt` 正文段落之间不空行，只换行。"不空行"不等于"不分段"——目标是有手机可读的正常段落密度：
+- 2000-3500 字章节通常需要 25-60 个正文段落（按章节类型调整）。
+- 多数正文段落 40-160 字。
+- 在动作变化、说话人变化、反应落点、新信息出现、镜头/视角变化、节奏停顿时主动分段。
+- 超过 220 字视为格式失败（除非 review 中说明是刻意为之的长镜头段落）。
+- 避免两种极端：没有叙事功能的密集碎行，和 220+ 字的巨大段落。
 
-Do not confuse "no blank lines" with "few paragraphs." The target is normal mobile-readable web-novel paragraphing:
+## 全局写作常量
 
-- 2000-3500 Chinese character chapters usually need 25-60 body paragraphs.
-- Most body paragraphs should stay around 40-160 Chinese characters.
-- Split at action changes, speaker changes, reaction beats, new information, camera shifts, and rhythm pauses.
-- Avoid both extremes: dense one-line fake rhythm and 300-600 character giant blocks.
+以下规则每章通用，不需要在每章规划中重复：
+- 每章最大主要任务数：1
+- 每章最大新信息节点数：1-2
+- 解释打断规则：连续两段解释后，插入行动/反应/对话/误读/冲突/感官节拍/场景移动。
 
-## Chapter Continuity Preference
+## 章节连续性偏好
 
-Chapters should feel like cuts from a continuous event chain. Prefer openings that inherit the prior chapter's external pressure and endings that hand off a visible next moment. Round boundaries are invisible to the reader unless the story itself has earned a phase payoff.
+章节应读起来像连续事件链上的一个切分。优先使用承接上一章外部压力的开头，和交出一个可见下一时刻的结尾。轮次边界对读者不可见——除非故事本身抵达了阶段 payoff。
 
-## High-Quality Local Samples
+## 高质量本地文笔样本
 
-None yet.
+暂无。

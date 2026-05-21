@@ -1,19 +1,8 @@
 round: round_001
-status: planned
-source_plan: planning/rolling_plan.yml
-source_flow: planning/active_flow.yml
-production_batch:
-  chapters: []
-  checkpoint_reason: "Write this batch as an operational unit only."
-  must_not_resolve_just_because_round_ends: true
 chapters: []
-batch_tasks:
-  - "Write the listed chapters."
-  - "Update chapter memory and current-state files."
-  - "Slide planning/rolling_plan.yml forward after the batch."
+source: planning/rolling_plan.yml
+status: planned
 batch_edges:
   starts_inside_flow: ""
   ends_inside_flow: ""
-  next_chapter_after_batch: ""
-required_context_pack: planning/context_packs/round_001_context_pack.md
-notes: "This file is a production extract from rolling_plan.yml, not a story unit. Do not add round-level plot goals here. Each chapter extract should include macro_stage, scale_level, flow_id, flow_position, inbound_pressure, chapter_turn, outbound_pressure, handoff_to_next_chapter, and scale_pacing_constraints."
+notes: "本文件只记录生产批次，不复制章纲。每章具体规划见 planning/rolling_plan.yml。"

@@ -32,52 +32,47 @@ Level 5: Work DNA change requiring reboot-level handling
 
 Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 
-## Workflow
+## 工作流
 
-1. **Restate the requested change**
-   - Identify exact user intent.
-   - Identify whether it is canon, proposal, or idea.
+1. **重述变更请求**
+   - 识别精确的用户意图。
+   - 判断它属于正史 / 提案 / 未确认灵感。
 
-2. **Classify impact**
-   - Assign Level 1-5.
-   - Identify affected files and protected files.
+2. **分级影响**
+   - 分配 Level 1-5。
+   - 识别受影响文件和受保护文件。
 
-3. **Read relevant canon**
-   - Read current authoritative state files.
-   - Read related chapters if the change touches existing正文.
-   - Do not rely only on summaries for retcon-sensitive changes.
+3. **读取相关正史**
+   - 读取当前权威状态文件。
+   - 如果变更触及已有正文，读取相关章节全文——retcon 敏感的变更不能只靠摘要。
 
-4. **Assess compatibility**
-   - Check creative constitution.
-   - Check reader model.
-   - Check current volume goal.
-   - Check character intent and knowledge state.
-   - Check narrative debt and foreshadowing effects.
+4. **评估兼容性**
+   - 检查创作宪法、读者模型、当前卷目标、角色意图和信息可见性、叙事债务和伏笔影响。
 
-5. **Propose integration**
-   - Offer one recommended path and alternatives when useful.
-   - Decide whether to write to `idea_pool`, `foreshadowing`, `planning`, `entities`, or protected files.
+5. **提出接入方案**
+   - 提供一个推荐路径，有需要时给出备选。
+   - 判断写入 `idea_pool` / `foreshadowing` / `planning` / `entities` / 受保护文件。
 
-6. **Apply only safe changes**
-   - For protected files, output a diff summary and require checkpoint/confirmation before modification.
-   - For Level 3-5 changes, require premium_model or human confirmation according to `meta/model_policy.yml` if present.
-   - For ordinary changes, update authoritative files and record the decision.
+6. **只应用安全变更**
+   - 受保护文件：修改前输出 diff 摘要、建立 checkpoint、要求确认。
+   - Level 3-5 变更：根据 `meta/model_policy.yml` 要求 premium_model 或人类确认。
+   - 普通变更：更新权威文件并记录决策。
 
-7. **Record decision**
-   - Update `ledgers/decision_log.yml` or `meta/session_log.md`.
-   - If not applying immediately, write the idea to `ledgers/idea_pool.yml`.
+7. **记录决策**
+   - 更新 `ledgers/decision_log.yml` 或 `meta/session_log.md`。
+   - 如果不立即应用，写入 `ledgers/idea_pool.yml`。
 
-## Safe Destinations
+## 安全落脚点
 
-- New uncertain idea: `ledgers/idea_pool.yml`
-- Potential future payoff: `ledgers/foreshadowing.yml`
-- Current character state: `entities/characters.yml`
-- Current information visibility: `ledgers/knowledge_state.yml`
-- Current world reaction: `ledgers/world_state.yml`
-- Current cross-round flow: `planning/active_flow.yml`
-- Future 9-15 chapter route: `planning/rolling_plan.yml`
-- Whole-book scale, macro stages, power pacing, and reveal windows: `book/longform_blueprint.yml` (protected)
-- Current volume goal: protected; modify only with explicit change process.
+- 新的不确定点子 → `ledgers/idea_pool.yml`
+- 潜在未来 payoff → `ledgers/foreshadowing.yml`
+- 当前角色状态 → `entities/characters.yml`
+- 当前信息可见性 → `ledgers/knowledge_state.yml`
+- 当前世界反应 → `ledgers/world_state.yml`
+- 当前跨轮 flow → `planning/active_flow.yml`
+- 未来章纲路径 → `planning/rolling_plan.yml`
+- 全书规模/宏观阶段/递进节奏/揭示窗口 → `book/longform_blueprint.yml`（受保护）
+- 当前卷目标 → 受保护，只在显式变更流程中修改。
 
 ## Diff Summary for Protected Changes
 

@@ -110,6 +110,8 @@ planning/context_packs/round_001_context_pack.md
 - 最近全文语气和情绪承接
 - 本批次涉及的动态账本条目摘要
 - `planning/rolling_plan.yml` 中本批次章节的详细章纲
+- 本批次章节功能与压力曲线：哪些是危机、过渡、经营、调查、揭秘、关系、规则验证等章节，压力如何延迟、释放或转移
+- 本批次信息释放计划：每章 1-2 个核心新变量，哪些真相、规则、身份、资源或关系必须延后
 - 后续 3-6 章对本批次选择的约束或伏笔方向
 - 这批章节是否开始于一个已存在 flow，是否会延续到下一批
 - 本批次相关旧章节回看
@@ -137,7 +139,14 @@ chapters/ch001/context_pack.md
 - 模型路由记录
 - 上一章承接点
 - 当前 active_flow 位置
-- 本章的 inbound pressure、chapter turn、outbound pressure、handoff_to_next_chapter
+- 本章 chapter_function、pressure_curve、reader_question_flow
+- 本章的 inbound pressure、chapter turn、outbound pressure、交接（planning 中为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff）
+- 本章 core_advance：唯一核心推进、必须发生事项、必须不完成事项
+- 本章 information_release：本章只释放哪些核心新变量，哪些信息、规则、身份、资源或关系必须延后
+- 本章 side_yield：除核心推进外，进入长期记忆的世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔
+- 本章 叙事织入：人物日常反应、场景即时质感、关系温度波动
+- 本章 density_control：织入节拍数要求、是否允许闲笔停顿
+- 本章出场人物当前意图
 - 本章出场人物当前意图
 - 本章相关叙事债
 - 本章相关伏笔
@@ -149,7 +158,11 @@ chapters/ch001/context_pack.md
 - 本章写作风险
 - 本章结束后必须更新的文件
 
-格式约束必须明确：正文普通段落之间不空行，但章节仍需正常分段。2000-3500 中文字章节通常应有 25-60 个正文段落，多数段落 40-160 字；超过 220 字应考虑拆分，超过 360 字通常视为格式失败。
+格式约束必须明确：正文普通段落之间不空行，但章节仍需正常分段。2000-3500 中文字章节的段落数按章节类型有所不同（打脸/战斗章 15+ 段、种田/日常章 20+ 段、悬疑/副本章 20+ 段），短段落在手机上恰是优点。核心规则是防"一大坨"：多数段落 40-160 字，超过 220 字视为格式失败。
+
+节奏约束必须明确：章节有任务，但不是每一段都围绕任务。context pack 应写出 3-5 个可用叙事织入节拍，用于人物反应、对话摩擦、生活感、关系温度、场景质感、世界/制度/规则质感、轻微误读、停顿、尴尬、柔软或小幽默。叙事织入不是脱离主线的废话，而是防止正文变成章纲翻译的必要材料。
+
+信息密度约束必须明确：一般章节只让读者记住 1-2 个核心新变量。规则、制度、功法、政治事实、推理结论等信息，应通过事件验证、误用代价、人物反应、冲突或场景动作进入正文，不要连续多段解释。
 
 不要把 chapter context pack 写成固定 scene beats 模板。它是写作输入记录，不是正文结构脚手架。
 
@@ -208,7 +221,7 @@ planning/active_flow.yml
 
 `outline.md` 是可选草稿，不能作为默认强制读取项，也不能作为正文结构权威。
 
-上一章 `canon_delta.yml` 里的 `handoff_to_next_chapter` 是硬输入。非开篇章节必须承接它，或者在 context pack 和 review 中解释为什么切换场景、时间或 POV。
+上一章 `canon_delta.yml` 里的 `actual_handoff` 是硬输入。非开篇章节必须承接它，或者在 context pack 和 review 中解释为什么切换场景、时间或 POV。
 
 ### 5.3 按需读取判断
 

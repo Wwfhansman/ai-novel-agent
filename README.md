@@ -133,7 +133,20 @@ planning/active_flow.yml
 - `inbound_pressure`：这一章从上一章继承了什么外部压力。
 - `chapter_turn`：这一章让局面发生了什么不可逆变化。
 - `outbound_pressure`：这一章结束后还有什么压力没有消失。
-- `handoff_to_next_chapter`：下一章必须承接的具体时刻、后果、动作、物件、关系变化或信息差。
+- `planned_handoff`：下一章必须承接的具体时刻、后果、动作、物件、关系变化或信息差（规划中）。写完后，canon_delta 中记录 `actual_handoff`（实际交接），active_flow 中记录 `current_handoff`（当前最新交接）。
+
+同时，当前版本要求每章避免变成“任务清单的文学化执行”。章纲和写作前 brief 应明确：
+
+- `core_advance`：本章唯一核心推进是什么。
+- `must_not_complete`：本章刻意不完成什么，避免单章过满。
+- `chapter_function` 和 `pressure_curve`：本章是危机、修炼、赶路、交易、社交冲突、揭秘、余波、调查、经营、关系、规则验证还是过渡，压力如何延迟、释放或转移。
+- `reader_question_flow`：本章承接什么读者疑问（`enters_with`），留下什么具体新疑问（`leaves_with`）。
+- `information_release`：本章只释放 1-2 个核心新变量，哪些真相、规则、身份、资源或关系必须延后。
+- `side_yield`：除核心推进外，进入长期记忆的世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔。
+- `叙事织入`：人物和世界周围的织入材料，例如生活细节、人物反应、对话摩擦、关系温度、世界/制度/规则质感、轻微误读、小幽默、场景物件、身体反应或人物习惯。
+- `density_control`：限制主要任务数和新信息节点数，确保正文有呼吸感。
+
+换句话说：**章节有任务，但不是每一句都服务任务。**
 
 ### 正史安全规则
 
@@ -291,6 +304,10 @@ Use skills/novel-bootstrap to initialize projects/my-novel from this seed:
 - 创建或更新 meta/model_policy.yml；如果我没指定模型，就使用 premium_model / fast_model 占位符。
 - 必须创建 planning/active_flow.yml。
 - 必须创建 planning/rolling_plan.yml，覆盖未来 9-15 章。
+- rolling_plan 中每章必须包含 chapter_function、pressure_curve、reader_question_flow、core_advance、information_release、side_yield、叙事织入、density_control。
+- 每章尽量只有一个核心外部推进；不要把一章规划成多个任务一次性完成。
+- information_release 一般只放 1-2 个读者必须记住的新变量，其他真相、规则、身份、资源或关系变化写入 deferred。
+- 叙事织入 要给人物、场景、世界和系统留织入材料：人物反应、对话摩擦、生活细节、关系温度、世界/制度/规则质感、轻微误读、闲话、场景物件、身体反应、人物习惯或小幽默。
 - planning/current_round.yml 只能是生产批次摘录，不能写 round 级剧情目标。
 - 不写正文，除非我明确要求继续进入 novel-write。
 ```
@@ -308,16 +325,28 @@ Use skills/novel-write to continue projects/my-novel.
 - 每轮必须全文读取 planning/rolling_plan.yml，但 context pack 只摘录本批次、相邻章节和影响本批次的后续约束。
 - round context pack 控制在 3000-5000 中文字；chapter context pack 控制在 1000-2500 中文字。
 - 人物、物品、伏笔、债务、knowledge_state、world_state 按本章涉及对象定向读取，不要整份复述。
-- 每章都必须从上一章 handoff_to_next_chapter 或 active_flow 的外部压力中长出来。
+- 每章都必须从上一章的 actual_handoff 或 active_flow 的外部压力中长出来。
+- 每章都必须在 brief/context_pack 中写清楚：
+  - chapter_function 和 pressure_curve：本章功能与压力曲线。
+  - reader_question_flow：本章承接和留下的读者疑问。
+  - core_advance：唯一核心推进。
+  - must_not_complete：本章刻意不完成的收编、摊牌、解释、证据引爆或关系变化。
+  - information_release：本章只释放 1-2 个核心新变量，其余延后。
+  - side_yield：世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔。
+  - 叙事织入：至少 3 个不直接解决任务、但让人物、场景、世界或系统自然生长的织入节拍。
+  - density_control：限制主要任务数和新信息节点数。
 - 不要把这一轮 3 章写成一个独立小故事。
 - 不要让最后一章因为 round 结束而复盘、总结、收束或战略规划。
 
 写作要求：
 - 正文写入每章 final.txt。
 - TXT 正文标题后空一行，正文普通段落之间不要空行。
-- 正文必须正常分段：2000-3500 中文字章节通常 25-60 个正文段落，多数段落 40-160 字；超过 220 字应考虑拆分，超过 360 字通常视为格式失败。
+- 正文必须正常分段。2000-3500 中文字章节的段落数按章节类型有所不同（打脸/战斗章 15+ 段、种田/日常章 20+ 段、悬疑/副本章 20+ 段），短段落在手机上恰是优点。核心规则是防"一大坨"：多数段落 40-160 字，超过 220 字视为格式失败。在动作变化、说话人变化、反应落点、新信息出现、镜头变化、节奏停顿时主动分段。
+- 写作时不要让每一段每一句都围绕任务。章节有任务，但人物、世界和系统周围要有织入材料：日常动作、人物反应、对话摩擦、轻微误读、闲话、关系温度、世界/制度/规则质感、场景物件、身体反应、小幽默或无伤大雅的停顿。
+- 如果连续两页都是计划、推理、派系分析、任务执行或未来安排，必须重写或放松节奏。
+- 如果连续两段都在解释规则、势力、计划、推理或功法系统，下一段必须是行动、反应、对话、误读、冲突、感官质感、代价或场景移动。
 - 结尾避免主角总结、分析、决定下一步。
-- 结尾必须留下具体的 handoff_to_next_chapter。
+- 结尾必须留下具体的交接——规划中称为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff。
 - 每章写完必须运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
 - 如果脚本报告 reflective ending、short atmosphere ending、protagonist thought ending，必须重写结尾后重新运行。
 - 写完每章后更新 summary.yml、canon_delta.yml、entities、ledgers、volumes、planning/active_flow.yml、planning/rolling_plan.yml。
@@ -333,8 +362,12 @@ Use skills/novel-write to write only the next chapter for projects/my-novel.
 - 确认本轮已经全文读取 planning/rolling_plan.yml；本章 context pack 只摘本章条目、前后相邻条目和必要后续约束。
 - 读取上一章 final.txt、summary.yml、canon_delta.yml。
 - 按需读取本章涉及的人物、物品、伏笔、债务和信息可见性条目。
-- 如果上一章有 handoff_to_next_chapter，本章开头必须承接；如果不承接，必须在 context_pack.md 和 review.md 说明原因。
+- 如果上一章有 actual_handoff，本章开头必须承接；如果不承接，必须在 context_pack.md 和 review.md 说明原因。
 - 写作时不要机械翻译章纲，不要生成固定三段式或任务报告式正文。
+- 本章只能有一个核心外部推进。写作前必须列出 chapter_function、pressure_curve、reader_question_flow、core_advance、must_not_complete、information_release、side_yield、叙事织入、density_control。
+- 叙事织入 至少包含 3 个织入节拍，用于人物反应、对话摩擦、生活感、关系温度、世界/制度/规则质感、场景质感、轻微误读、停顿、尴尬、柔软或小幽默。
+- 不要把所有对话都写成情报交换，不要让所有段落都服务于推进和解释。
+- TXT 正文按手机阅读优化：防长段、不卡短段。多数段落 40-160 字，超过 220 字必须拆分。
 - 写完必须运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
 - 写完后更新本章记忆和 active_flow。
 ```
@@ -348,8 +381,11 @@ Use skills/novel-review to cold-start review projects/my-novel.
 - 新 agent 能否理解当前故事讲到哪里。
 - active_flow 是否能说明当前连续剧情流。
 - rolling_plan 是否足够支撑下一批次写作。
+- rolling_plan 是否包含 chapter_function、pressure_curve、reader_question_flow、core_advance、must_not_complete、information_release、side_yield、叙事织入、density_control。
 - current_round 是否只是生产摘录，没有隐藏 round 级剧情目标。
 - 最近章节是否像独立容器，尤其是否在章末主角复盘、总结、规划。
+- 最近章节是否每章任务过满，或每一段都在推进剧情/解释信息/安排未来。
+- 最近章节是否有足够织入材料：人物反应、生活细节、关系温度、世界/制度/规则质感、场景物件、人物习惯、轻微误读或小幽默。
 - final.txt 是否遵守 TXT 格式。
 - entities、ledgers、volumes、planning 是否与最近章节同步。
 
@@ -372,9 +408,12 @@ Use skills/novel-review and skills/novel-change to migrate projects/my-novel to 
 任务：
 - 先运行：python scripts/validate_novel_output.py projects/my-novel --chapters <latest chapters>
 - 清理 planning/rolling_plan.yml 中的旧字段：goal、continuity_from_previous、bridge_to_next、next_hook、结尾方向、情绪节奏、本轮目标。
-- 把未来章节全部改成 active-flow 字段：flow_id、flow_position、inbound_pressure、chapter_turn、outbound_pressure、handoff_to_next_chapter、external_state_at_end。
+- 把未来章节全部改成当前字段：flow_id、flow_position、chapter_function、pressure_curve、reader_question_flow、core_advance、information_release、chapter_turn、side_yield、planned_handoff、叙事织入、density_control。
+- core_advance 必须包含 one_sentence、must_happen、must_not_complete。
+- information_release 必须包含 new_core_variables、deferred；一般章节 new_core_variables 不超过 1-2 个。
+- 叙事织入 包含 人物日常反应、场景即时质感、关系温度波动。
 - 把 planning/current_round.yml 改成生产批次摘录，不写 round 级剧情目标。
-- 把最近 summary.yml 中的 next_hook 改成 handoff_to_next_chapter。
+- 把最近 summary.yml 中的 next_hook 改成 actual_handoff。
 - 检查最近 3 章 final.txt 的 TXT 空行、复盘式结尾、短句氛围结尾。
 - 不要继续写新章节，直到迁移和验证通过。
 ```
@@ -402,13 +441,20 @@ Use skills/novel-review to inspect the latest written chapters in projects/my-no
 
 重点检查：
 - 是否像流水账或大纲扩写。
+- 是否每章任务过满，把多个推进、收编、摊牌、解释、证据引爆塞进同一章。
+- 是否每一段每一句都在服务任务，缺少织入材料。
+- 是否缺少人物反应、对话摩擦、生活细节、关系温度、世界/制度/规则质感、场景物件、人物习惯、轻微误读、小幽默或自然停顿。
+- 是否一次释放太多核心新信息，超过读者能记住的 1-2 个变量。
+- 规则、制度、功法、政治事实或推理结论是否通过事件、代价、误用、人物反应或冲突进入正文，而不是只由旁白说明。
 - 是否每章独立开头、独立结尾，缺少跨章连续性。
 - 是否章末总是主角思考、总结、规划。
 - 是否最后一段是空泛氛围句或短句钩子。
 - 是否段落之间错误地空行。
 - 是否因为误解 TXT 规则而把正文写成 7-9 个巨大段落。
+- 是否仍有大量 160 字以上的手机阅读负担段落。
 - 是否缺少外部状态变化和 reader reward。
 - 每章 review 是否回答了 Reader Reward Check：本章给了读者什么、推进/偿还了什么期待、制造了什么新期待。
+- 每章 review 是否回答了 Web-Novel Rhythm Check / Weave Material Check：本章功能和压力曲线是什么、核心推进是什么、有没有完成太多任务、有哪些织入节拍。
 - 运行 `python scripts/validate_novel_output.py projects/my-novel --chapters <latest chapters> --fix-format`，并把失败项作为必须修复项。
 
 如果需要重写，请先说明问题，再用 skills/novel-write 的规则重写对应章节，并同步更新记忆文件。

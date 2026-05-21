@@ -1,108 +1,169 @@
 current_window: ch001-ch003
 status: active
-source_of_truth: "Near-future chapter synopsis authority only. Keep this file focused on upcoming planned chapters; move completed entries to planning/completed_plan_log.yml and distant ideas to planning/future_backlog.yml."
+source_of_truth: "近期章纲权威来源。仅保留未来窗口章节，已完成的移入 planning/completed_plan_log.yml，远期点子放入 planning/future_backlog.yml。"
 chapters:
   - chapter: ch001
-    title: Old Wick
+    title: "旧灯芯"
     status: planned
     macro_stage: part_001
-    scale_level: district
+    scale_level: "街区"
     flow_id: arc_001_old_wick
     flow_position: opening
+    chapter_function: investigation
+    pressure_curve: "低开例行 → 中段异常浮现 → 高压巡灯署逼近 → 交接"
+    reader_question_flow:
+      enters_with: "为什么旧雾灯反复熄灭？"
+      leaves_with: "巡灯署为什么急着回收旧灯芯？如果发现碎片少了一角会怎样？"
     synopsis: >
-      Lin Qi is called to repair an old fog lamp in the outer corridor. While
-      replacing the wick, she hears a memory echo that does not belong to the
-      present scene. Patrol officers are already on their way to recover old
-      wicks, so she hides one cracked fragment before they arrive. The chapter
-      should open the memory-lamp premise through repair action, not through
-      explanation.
-    inbound_pressure: "Opening chapter. Old fog lamp failure and patrol recovery urgency."
-    chapter_turn: "Lin Qi discovers that old wicks can preserve memory residue and hides a fragment."
-    required_developments:
-      - "Establish Lin Qi as a repair worker."
-      - "Make old-wick memory residue canon."
-      - "Bring patrol pressure to the door without explaining the full system."
-    character_intents:
-      - "Lin Qi wants to fix the lamp and understand the anomaly."
-      - "Patrol wants all abnormal old wicks recovered."
-    pressure_or_complication: "Patrol arrives before Lin Qi can openly inspect the fragment."
-    payoff_or_reader_reward: "First supernatural signal and a concrete risky object."
-    outbound_pressure: "Patrol reaches the lamp corridor while one wick fragment is missing."
-    handoff_to_next_chapter: "Patrol opens the door and asks Lin Qi to hand over every removed old wick."
-    external_state_at_end: "A public repair object becomes private evidence and patrol recovery reaches the scene."
-    reader_motion: "Reader wants to know why patrol is urgent about old wicks."
+      大雾夜，林栖被叫去外环灯廊修一盏反复熄灭的旧雾灯。拆开铜罩、抽出旧灯芯的瞬间，她听见灯芯灰里响了一句不属于今夜的话——"别把灯交出去"。声音极轻，像从潮湿金属深处擦出来。巡灯署的人已经到了廊外，催她换芯。林栖压下心跳，把一片裂开的灯芯碎片藏进袖口，重新扣上铜罩。门被推开，领头的伸出手：所有拆下来的旧灯芯，立刻回收。
+    core_advance:
+      one_sentence: "林栖发现旧灯芯里残留了一段陌生记忆，并私下藏起一片灯芯碎片。"
+      must_happen:
+        - "建立林栖的修灯人日常工作。"
+        - "让旧灯芯异常成为正史事件。"
+        - "让巡灯署压力抵达灯廊，但不解释完整规则。"
+      must_not_complete:
+        - "不要揭示父亲失踪的真相。"
+        - "不要解释灯芯保存记忆的完整规则。"
+        - "不要在这一章就点明巡灯署回收旧灯芯的真实动机。"
+    information_release:
+      new_core_variables:
+        - "旧灯芯可以残留记忆碎片。"
+        - "巡灯署正在紧急回收旧灯芯。"
+      deferred:
+        - "为什么旧灯芯能保存记忆。"
+        - "巡灯署回收旧灯芯的真实目的。"
+        - "父亲是否接触过同类旧灯。"
+    chapter_turn: "林栖发现旧灯芯残留陌生记忆，私下藏匿碎片——从此她的修灯工作不再安全。"
+    side_yield:
+      - "修灯是一个有工具、有巡逻监督的市政职业，不是自由手艺。"
+      - "同事关系从日常熟悉转为公事公办的压迫感。"
+      - "林栖获得了一片巡灯署想控制却不知道已经缺失的灯芯碎片。"
+      - "可复用伏笔：裂开的灯芯碎片、父亲的旧修灯刀。"
+    叙事织入:
+      人物日常反应:
+        - "巡灯署的年轻助手一开始当这是普通维修，语气随意。"
+        - "林栖紧张时会默数螺丝。"
+      场景即时质感:
+        - "灯油渍、湿灯芯味、廊道潮气、铜罩冰凉、抹布粗糙。"
+      关系温度波动:
+        - "日常的工作熟悉感在巡灯署抵达时突然变成审问般的压迫。"
+        - "林栖抱怨雾灯只在领导醒着时坏，换来同事一个无奈的白眼。"
+    density_control:
+      required_weave_beats: 3
+      allow_idle: true
+    planned_handoff: "巡灯署推开灯廊的门，领头的人伸出手，要林栖立刻交出刚拆下来的旧灯芯。"
     constraints:
-      - "Do not reveal father_truth."
-      - "Do not explain complete lamp rules."
+      - "不要揭示父亲失踪真相。"
+      - "不要解释灯芯记忆系统的完整规则。"
     scale_pacing_constraints:
-      - "Opening stage only: local memory-lamp anomaly, no citywide system reveal."
-      - "Keep the old lamp district as an opening location, not the whole world."
+      - "开篇阶段：仅限街区级异常，不要展开全市规则体系。"
+      - "旧灯区是开篇地点，不是整个世界。"
 
   - chapter: ch002
-    title: Recovery Order
+    title: "回收令"
     status: planned
     macro_stage: part_001
-    scale_level: district
+    scale_level: "街区"
     flow_id: arc_001_old_wick
     flow_position: pressure_rising
+    chapter_function: investigation
+    pressure_curve: "中段官方压力 → 中段线索浮现 → 高压私人风险 → 交接"
+    reader_question_flow:
+      enters_with: "巡灯署会发现灯芯碎片少了一角吗？"
+      leaves_with: "登记簿的痕迹为什么指向父亲的旧工具箱？"
     synopsis: >
-      Patrol enters under the name of routine recovery and asks for all repair
-      records. Lin Qi cooperates on the surface, but notices that several old
-      ledger entries were altered before patrol arrived. She realizes the
-      recovery is not routine; someone is cleaning traces from a specific time
-      period. The pressure turns toward her father's old tool box.
-    inbound_pressure: "Patrol demands the old wicks while Lin Qi still carries the hidden fragment."
-    chapter_turn: "Lin Qi finds altered repair records and confirms the recovery is targeted."
-    required_developments:
-      - "Patrol agency intervenes."
-      - "Altered records become evidence."
-      - "The hidden fragment remains risky but safe for now."
-    character_intents:
-      - "Lin Qi wants to keep the clue."
-      - "Patrol wants abnormal materials and records controlled."
-    pressure_or_complication: "The repair log could expose Lin Qi's contact with the old wick."
-    payoff_or_reader_reward: "Reader confirms a cover-up is underway."
-    outbound_pressure: "Altered ledger traces point to the father's old tool box."
-    handoff_to_next_chapter: "Lin Qi opens the old tool box and sees a nick in the repair knife."
-    external_state_at_end: "Patrol pressure shifts from public recovery to private family risk."
-    reader_motion: "Reader wants to know how the father's tool connects to the wick."
+      巡灯署以"例行回收"为名进入灯廊，要求林栖交出所有维修记录。林栖表面配合，却发现登记簿上有几页在她来之前被提前改过——纸页的纤维还新，墨迹与前后页不同。她意识到回收不是例行公事，有人在清理特定时期的维修痕迹。压力从"交出旧灯芯"转向一个更危险的方向：林栖的父亲，当年也是修灯人。
+    core_advance:
+      one_sentence: "林栖确认巡灯署的回收令是定向清理，不是例行公事。"
+      must_happen:
+        - "巡灯署介入回收。"
+        - "被改动的登记簿成为证据。"
+        - "碎片仍安全但风险升级。"
+      must_not_complete:
+        - "不要让巡灯署解释它的全部动机。"
+        - "不要揭示是谁改了登记簿。"
+    information_release:
+      new_core_variables:
+        - "巡灯署的回收令针对特定时期——有人在清理痕迹。"
+      deferred:
+        - "谁在清理痕迹。"
+        - "那个时期发生了什么。"
+    chapter_turn: "林栖发现登记簿被人提前篡改，确认回收不是例行公事，而是定向清理。"
+    side_yield:
+      - "登记簿、印章、回收流程展示了机构如何控制记忆物品。"
+      - "一个老文书在问话时表现得像闲聊，但手指在发抖。"
+      - "登记簿被篡改的痕迹指向父亲的旧案。"
+    叙事织入:
+      人物日常反应:
+        - "老文书用闲谈掩饰紧张，问林栖最近修灯顺不顺利。"
+        - "林栖在说谎前会下意识把页角抚平。"
+      场景即时质感:
+        - "档案室的灰尘、冷掉的茶、旧印泥的涩味、缺页的线孔。"
+      关系温度波动:
+        - "客气的官方问话在没人提高音量时变得越来越压迫。"
+        - "林栖抱怨官印的种类比坏灯还多，老文书没有笑。"
+    density_control:
+      required_weave_beats: 3
+      allow_idle: true
+    planned_handoff: "林栖打开父亲留下的旧工具箱，发现修灯刀上有一道缺口。"
     constraints:
-      - "Do not let patrol explain its full motive."
+      - "不要让巡灯署解释全部动机。"
     scale_pacing_constraints:
-      - "Keep pressure institutional but local; do not resolve Archive Bureau motive."
-      - "Do not grant city-scale memory rewriting."
+      - "保持压力在机构/街区层面，不要上升到全市规则体系。"
+      - "不要在这一章赋予改写记忆的能力。"
 
   - chapter: ch003
-    title: Knife Mark
+    title: "刀痕"
     status: planned
     macro_stage: part_001
-    scale_level: district
+    scale_level: "街区"
     flow_id: arc_001_old_wick
     flow_position: turn
+    chapter_function: reveal
+    pressure_curve: "低开私人物品 → 中段认知对接 → 高压试探 → 交接"
+    reader_question_flow:
+      enters_with: "父亲的旧工具箱和旧灯芯之间有什么关联？"
+      leaves_with: "父亲修的最后一盏灯在哪里？林栖怎么保护手里的线索不被巡灯署发现？"
     synopsis: >
-      Lin Qi finds that the nick in her father's repair knife matches a mark on
-      the wick fragment. The father line moves from background grief into the
-      current pressure. At the same time, patrol asks about the last tower her
-      father repaired, making the question sound casual while tightening around
-      the same object.
-    inbound_pressure: "Lin Qi opens the father's old tool box while patrol investigates old repairs."
-    chapter_turn: "The father's repair knife and the old wick fragment are visibly connected."
-    required_developments:
-      - "Father clue enters current plot."
-      - "Repair knife connects to old wick marks."
-      - "Patrol attention on Lin Qi escalates."
-    character_intents:
-      - "Lin Qi wants to confirm what her father touched."
-      - "Patrol wants to test how much Lin Qi knows."
-    pressure_or_complication: "Lin Qi cannot admit she noticed the knife-mark connection."
-    payoff_or_reader_reward: "Mystery line and emotional line lock together for the first time."
-    outbound_pressure: "Patrol begins using the father's old case to pressure Lin Qi."
-    handoff_to_next_chapter: "Patrol asks about the last tower her father repaired and requests the old tool box registration."
-    external_state_at_end: "The father's old file becomes an active handle for patrol pressure."
-    reader_motion: "Reader wants to see how Lin Qi protects the clue without exposing herself."
+      林栖发现修灯刀上的缺口与灯芯碎片上的划痕吻合——父亲碰过同类旧灯。这条从背景悲伤里浮出来的线索，把父亲拉进了当前的危机。与此同时，巡灯署的人装作闲聊，问起父亲最后修的那座塔。"西角那座旧塔，你父亲常去吧？"语气随意，目光却钉在她脸上。
+    core_advance:
+      one_sentence: "父亲的修灯刀与旧灯芯碎片的划痕吻合——父亲线正式接入当前危机。"
+      must_happen:
+        - "父亲线索从背景故事进入当前剧情。"
+        - "修灯刀缺口与灯芯碎片痕迹产生物证关联。"
+        - "巡灯署对林栖的注意力升级。"
+      must_not_complete:
+        - "不要确认父亲是死是活。"
+        - "不要揭示西角塔事件的全貌。"
+    information_release:
+      new_core_variables:
+        - "父亲的修灯刀和旧灯芯碎片有可见的物证关联。"
+      deferred:
+        - "西角塔发生了什么。"
+        - "父亲是否还活着。"
+    chapter_turn: "父亲的修灯刀与旧灯芯碎片的物证关联被确认，旧案变成新危机。"
+    side_yield:
+      - "工具登记制度把私人维修行为与机构档案连接起来。"
+      - "父亲从背景悲伤变成正在运作的压力源。"
+      - "旧工具箱既是线索来源，也是呈堂证供的风险。"
+    叙事织入:
+      人物日常反应:
+        - "邻居差点推门进来借工具，林栖用身体挡住桌上的工具箱。"
+        - "林栖发抖时也会把工具按原来的顺序摆回去。"
+      场景即时质感:
+        - "工具箱里还有旧油和旧布的气味。"
+        - "父亲的标签习惯：每件工具都贴了编号，只有一件没有。"
+      关系温度波动:
+        - "巡灯署的闲聊让家族记忆变得不再安全。"
+        - "林栖意识到她不能告诉任何人刀痕的事——包括对她友善的同事。"
+    density_control:
+      required_weave_beats: 3
+      allow_idle: true
+    planned_handoff: "巡灯署的人问起父亲最后修的那座塔，并要求林栖交出旧工具的登记记录。"
     constraints:
-      - "Do not confirm whether the father is alive."
+      - "不要确认父亲的生死。"
     scale_pacing_constraints:
-      - "Father line may become personal pressure, not a full reveal."
-      - "Current scope remains old lamp district."
-notes: "Example only. Completed chapter plans should be archived to planning/completed_plan_log.yml. Distant ideas belong in planning/future_backlog.yml."
+      - "父亲线只能变成个人层面的压力，不要变成全面揭示。"
+      - "当前规模仍限于旧灯区。"
+notes: "示例仅为展示协议。已完成章纲应归档至 planning/completed_plan_log.yml，远期点子归入 planning/future_backlog.yml。"

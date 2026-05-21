@@ -1,15 +1,30 @@
 chapter: ch001
-new_facts: []
-character_changes: []
-relationship_changes: []
-world_state_changes: []
-knowledge_changes: []
-foreshadowing_added: []
+new_facts:
+  - "旧灯芯可在特定条件下残留记忆碎片——林栖拆灯时听见了陌生人声。"
+  - "巡灯署正在紧急回收旧灯芯，回收行为并非完全透明。"
+character_changes:
+  - character: char_lin_qi
+    change: "从普通修灯人变成私下藏匿线索的人。"
+relationship_changes:
+  - pair: "林栖 <> 巡灯署"
+    change: "从被管理的日常关系到暗中对立。"
+world_state_changes:
+  - "巡灯署启动旧灯芯回收，回收行为在制度表面下有关键动机尚未揭示。"
+knowledge_changes:
+  - topic: "旧灯芯的秘密"
+    change: "林栖初步发现异常，巡灯署已知但隐瞒。"
+foreshadowing_added:
+  - id: f_001
+    content: "灯芯碎片上有细微划痕，来源不明。"
+  - id: f_002
+    content: "父亲的旧修灯刀——尚未出场但已在 brief 中作为后续伏笔。"
 foreshadowing_advanced: []
 foreshadowing_paid: []
-narrative_debts_added: []
+narrative_debts_added:
+  - id: debt_001
+    description: "读者期待知道灯芯碎片划痕的来源和巡灯署回收旧灯芯的真实目的。"
 narrative_debts_advanced: []
 narrative_debts_paid: []
 ideas_added: []
-handoff_to_next_chapter:
-  - "Patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick."
+actual_handoff:
+  - "巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？"

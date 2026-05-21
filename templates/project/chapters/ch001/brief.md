@@ -1,46 +1,79 @@
-# Chapter Brief
+# 章节写作前交接
 
-## Source Synopsis
+## 来源章纲
 
-Summarize or condense this chapter's entry from `planning/rolling_plan.yml`.
+来自 `planning/rolling_plan.yml` 的本章条目摘要。
 
-## Active Flow
+## 当前 Flow 位置
 
-- Flow id:
-- Flow position:
-- Current pressure:
+- Flow id：
+- Flow position：
+- 当前压力：
 
-## Previous Chapter Handoff
+## 本章功能与压力曲线
 
-Opening chapters have no previous chapter. Later chapters should name the exact pressure, action, unresolved problem, external consequence, object, or relationship state carried from the prior chapter.
+- 本章功能：crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / building / transition / face_slap / breakthrough / auction / showing_off / competition / dungeon_rule
+- 压力曲线：
+- reader_question_flow：
+  - enters_with：
+  - leaves_with：
 
-## Inbound Pressure
+## 上一章实际交接
 
-What is already moving before this chapter begins?
+开篇章无前章交接。后续章应写出从上一章承接的具体压力、动作、未解决问题、外部后果、物件或关系状态。
 
-## Chapter Turn
+## 核心推进
 
-What irreversible external state change should this chapter cause?
+命名本章必须完成的唯一核心外部推进。
 
-## Outbound Pressure
+## 必须发生
 
-What pressure or unfinished motion survives after the chapter?
+- 来自详细章纲的生成本章必须发生事项。
 
-## Must Happen
+## 必须不完成
 
-- To be generated from the detailed rolling synopsis.
+- 什么该延后——问题、关系、揭示、计划或收编？
+- 什么真相、规则、身份、资源或关系变化应该留给后续章节？
 
-## Character Intent
+## 人物意图
 
-- To be generated.
+- 待生成。
 
-## Constraints
+## 信息释放
 
-- Do not rewrite the creative constitution.
-- Do not reveal protected secrets early.
-- Do not turn the chapter into a task report.
-- Do not close the active flow merely because the chapter or round ends.
+- 读者必须记住的新核心变量：
+- 有意延后的信息/规则/真相：
+- 通过事件验证的规则/系统/制度/世界压力：
+- 允许的误读/错误猜测/部分理解：
 
-## Handoff To Next Chapter
+## Side Yield
 
-Concrete first moment, pressure, object, consequence, or unfinished action the next chapter should pick up.
+除核心推进外，进入长线故事的额外价值：
+- 世界/系统质感、关系变化、资源/地位/账目变化、可复用细节或伏笔。
+
+## 叙事织入
+
+不直接解决章节任务、但让虚构世界有"居住感"的织入材料。
+- 人物日常反应：
+- 场景即时质感：
+- 关系温度波动：
+
+## 节奏护栏
+
+- 一章有一个任务，但不是每一段都围绕它。
+- 至少 3 个叙事织入节拍。
+- 不要让所有对话都变成情报交换。
+- 连续两页都是计划/推理/分析/任务执行/未来安排 → 重写或放松。
+- 连续两段解释后 → 下一段是行动、反应、对话、误读、冲突、感官质感或场景移动。
+- 解决一个可见的读者疑问，同时保留或制造下一个。
+
+## 约束
+
+- 不要改写创作宪法。
+- 不要过早揭示受保护秘密。
+- 不要把章节变成任务报告。
+- 不要因为章节或轮次结束而关闭 active flow。
+
+## 下一章交接
+
+下一章必须承接的具体可见时刻、压力、物件、后果或未完成动作。规划阶段写为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff。

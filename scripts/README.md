@@ -18,7 +18,7 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012
 
 - `final.txt` 正文段落之间是否错误空行。
 - `final.txt` 是否因为误解 TXT 规则而写成少数巨大段落。
-- 是否存在超过 360 中文字的超长段落，或大量超过 220 字的长段落。
+- 是否存在超过 220 中文字的超长段落，或大量超过 140 字的长段落。
 - 章节结尾是否是主角复盘、计划、抽象短句、看夜色、吹灯等默认 AI 收束。
 - 每章是否具备必需文件：brief、context_pack、draft、final、review、summary、canon_delta。
 - context pack 是否包含读取证据、reader reward、cut continuity 和写后更新清单。

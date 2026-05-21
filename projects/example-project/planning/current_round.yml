@@ -1,55 +1,8 @@
 round: round_001
+chapters: [ch001, ch002, ch003]
+source: planning/rolling_plan.yml
 status: planned
-source_plan: planning/rolling_plan.yml
-source_flow: planning/active_flow.yml
-production_batch:
-  chapters: [ch001, ch002, ch003]
-  checkpoint_reason: "Example round_001 writes ch001-ch003 as an operational batch."
-  must_not_resolve_just_because_round_ends: true
-chapters:
-  - chapter: ch001
-    macro_stage: part_001
-    scale_level: district
-    flow_id: arc_001_old_wick
-    flow_position: opening
-    inbound_pressure: "Opening chapter: old fog lamp failure and patrol recovery urgency."
-    chapter_turn: "Lin Qi discovers memory residue in the old wick and hides a fragment."
-    outbound_pressure: "Patrol reaches the lamp corridor while one wick fragment is missing."
-    handoff_to_next_chapter: "Patrol opens the door and asks Lin Qi to hand over every removed old wick."
-    scale_pacing_constraints:
-      - "No citywide system reveal."
-      - "No father_truth reveal."
-  - chapter: ch002
-    macro_stage: part_001
-    scale_level: district
-    flow_id: arc_001_old_wick
-    flow_position: pressure_rising
-    inbound_pressure: "Patrol demands old wicks while Lin Qi carries a hidden fragment."
-    chapter_turn: "Altered repair records prove the recovery is targeted."
-    outbound_pressure: "Altered ledger traces point to the father's old tool box."
-    handoff_to_next_chapter: "Lin Qi opens the old tool box and sees a nick in the repair knife."
-    scale_pacing_constraints:
-      - "Keep pressure institutional but local."
-      - "Do not grant city-scale memory control."
-  - chapter: ch003
-    macro_stage: part_001
-    scale_level: district
-    flow_id: arc_001_old_wick
-    flow_position: turn
-    inbound_pressure: "Lin Qi opens the father's old tool box while patrol investigates old repairs."
-    chapter_turn: "The father's repair knife and the old wick fragment are visibly connected."
-    outbound_pressure: "Patrol begins using the father's old case to pressure Lin Qi."
-    handoff_to_next_chapter: "Patrol asks about the last tower her father repaired and requests the old tool box registration."
-    scale_pacing_constraints:
-      - "Father line may become personal pressure, not a full reveal."
-      - "Current scope remains old lamp district."
-batch_tasks:
-  - "Write ch001-ch003 as files."
-  - "Update chapter memory and current-state files."
-  - "Refresh active_flow and rolling_plan after the batch."
 batch_edges:
-  starts_inside_flow: "arc_001_old_wick opening"
-  ends_inside_flow: "arc_001_old_wick turn"
-  next_chapter_after_batch: ch004
-required_context_pack: planning/context_packs/round_001_context_pack.md
-notes: "This is a production extract from rolling_plan.yml, not a three-chapter story unit."
+  starts_inside_flow: arc_001_old_wick
+  ends_inside_flow: arc_001_old_wick
+notes: "本文件只记录生产批次，不复制章纲。每章具体规划见 planning/rolling_plan.yml。"

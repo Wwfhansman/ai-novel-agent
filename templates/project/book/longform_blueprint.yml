@@ -51,6 +51,15 @@ secret_pacing:
     earliest_full_reveal: ""
     visibility_limit: ""
 
+payoff_cadence:
+  note: "跨章爽点频率——防止 30 章写得均匀平淡。"
+  minor_every: "3-5 章"
+  minor_example: "小打脸/小突破/小揭秘/小收获"
+  major_every: "10-15 章"
+  major_example: "大高潮/大反转/大突破/卷内转折"
+  arc_climax_every: "30-50 章"
+  arc_climax_example: "卷级高潮/终局级揭示/核心关系质变"
+
 scale_guardrails:
   - ""
 

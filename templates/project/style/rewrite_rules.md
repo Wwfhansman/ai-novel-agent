@@ -1,51 +1,50 @@
-# Rewrite Rules
+# 改写规则
 
-## Default Rules
+## 默认规则
 
-- Keep the genre promise.
-- Keep character intent.
-- Do not replace action with explanation.
-- Do not replace scene with outline execution.
-- Do not open chapters with mechanical time resets unless time passage is dramatic.
-- Do not end consecutive chapters with the protagonist thinking, analyzing, or deciding.
-- Do not make a chapter or three-chapter round feel like a closed container unless the active flow explicitly reaches payoff.
-- Do not use dense one-line paragraphs as fake rhythm.
+- 保持类型承诺。
+- 保持人物意图。
+- 不要用解释替代行动。
+- 不要用章纲翻译替代场景写作。
+- 不要机械用"第二天/第三天/次日"开头——除非时间流逝本身是戏剧。
+- 不要让连续多章以主角思考、分析或决定收尾。
+- 不要让一个章节或三章批次读起来像封闭的故事容器——除非 active flow 确实抵达了 payoff。
+- 不要用密集碎行制造假节奏。
+- 不要让每段都服务章节任务。章节需要叙事织入：日常细节、人物反应/对话、世界/制度质感、场景物件、小的误读、关系摩擦、身体节拍和轻松感。
+- 不要强迫所有章节用同一种压力曲线。使用不同章节功能，如打脸、升级突破、拍卖、赶路、种田、社交冲突、揭秘、余波、调查、副本规则、关系拉扯、过渡等。
 
-## Anti-Report Revision
+## 反报告式改写
 
-Rewrite the chapter if it mainly reads as:
+如果章节读起来像"到达→观察→分析→安排→思考接下来怎么办"，应改写。改写方向：
 
-```text
-arrive -> observe -> analyze -> arrange -> think about the future
-```
+1. 找到章纲里真正的虚构时刻，直接进入那个时刻。
+2. 加入此刻正在发生的阻力，而不只是未来的风险。
+3. 把抽象策略转化为可见的执行、争论、讨价还价、失败、代价或后果。
+4. 把领悟藏在行动、对话、省略或代价里，不要直接用陈述句说教。
+5. 向外收尾：动作刚开始、有人到了、事实被暴露、代价落地、规则变了、压力在继续。
+6. 检查上一章的交接并让本章开头从那里长出来——除非有意识地切换场景/时间/POV。
 
-Revision options:
+## 网文节奏改写
 
-1. Find the actual fictional moment inside the synopsis and enter there.
-2. Add resistance that occurs now, not only a future risk.
-3. Turn abstract strategy into visible execution, dispute, bargain, failure, price, or consequence.
-4. Hide insight inside action, dialogue, omission, or cost instead of stating lessons.
-5. End outward: action starts, someone arrives, a fact is exposed, a cost lands, a rule changes, or pressure continues.
-6. Check the prior chapter's handoff and make the opening grow from it unless the transition is deliberately justified.
+如果章节读起来像"每一句都在完成规划"，应重写或放松节奏。改写前先明确：
+- 本章必须保留的唯一核心推进。
+- 本章刻意不完成的收编/摊牌/揭示/关系确认。
+- 本章功能与压力曲线。
+- 进入和离开本章的读者疑问。
+- 至少 3 个叙事织入节拍：人物反应、对话摩擦、日常感、世界/制度质感、场景物件、身体/情绪节拍、误读、轻松感、小矛盾。
+- 一个进入长期记忆的 side yield。
 
-## Ending Rules
+叙事织入不是水文。它们让人物、盟友、对手、场景、系统和社会结构有"居住感"，但不需要揭秘、推进势力逻辑或解决章节问题。
 
-- Avoid protagonist recap endings.
-- Avoid neat "first, second, third" lesson summaries in prose unless the character is literally writing a document.
-- Avoid endings whose only function is to tell the reader the next chapter will be interesting.
-- Prefer an ending that leaves the world changed or in motion.
-- A chapter ending should leave motion in the world, not merely order in the protagonist's mind.
-- The next chapter's first moment should be able to pick up a concrete pressure, object, action, consequence, or relationship change.
+连续两段解释规则/势力/计划/推论/功法——下一段必须是行动、反应、对话、误读、冲突、感官质感、代价或场景移动。
 
-## TXT Format
+对于悬疑/副本/规则/修仙/权谋章，优先用事件验证的信息：规则被测试、代价落地、人物做出反应、有人误用了系统、制度改变了行为。
 
-- `draft.txt` and `final.txt` use normal TXT novel formatting.
-- Keep one blank line after the chapter title.
-- Do not put blank lines between ordinary body paragraphs.
-- Use extra blank lines only for deliberate scene breaks.
-- Paragraphs are separated by single newlines. Do not merge a chapter into a few giant blocks.
-- For a 2000-3500 Chinese character chapter, aim for 25-60 body paragraphs.
-- Most paragraphs should be 40-160 Chinese characters.
-- Split paragraphs when action changes, speaker changes, a reaction lands, a new fact appears, the camera shifts, or rhythm needs a beat.
-- Paragraphs over 220 Chinese characters should be split unless there is a deliberate long-shot reason.
-- Paragraphs over 360 Chinese characters are formatting failures in normal prose.
+## 结尾规则
+
+- 避免主角复盘式结尾（区分：空泛复盘 vs 揭示新信息或做出可执行决策的思考）。
+- 避免"第一……第二……第三……"的条理化总结——除非人物在写文书。
+- 避免结尾的唯一功能是告诉读者下一章会很有趣。
+- 优先选择让世界处于变化或运动中的结尾。
+- 章末应在世界中留下运动，而不只是主角脑中有了秩序。
+- 下一章的第一个瞬间应该能承接一个具体的压力、物件、动作、后果或关系变化。

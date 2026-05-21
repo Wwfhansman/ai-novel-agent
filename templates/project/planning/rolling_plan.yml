@@ -1,5 +1,38 @@
 current_window: ""
 status: draft
-source_of_truth: "Near-future chapter synopsis authority only. Keep this file focused on upcoming planned chapters; move completed entries to planning/completed_plan_log.yml and distant ideas to planning/future_backlog.yml."
+source_of_truth: "近期章纲权威来源。仅保留未来窗口（6-15章），已完成的归档至 planning/completed_plan_log.yml，远期点子放入 planning/future_backlog.yml。"
 chapters: []
-notes: "Write 6-15 upcoming chapters here as detailed story synopses. Do not keep completed chapters here after a round is finalized. Each planned chapter should include macro_stage, scale_level, flow_id, flow_position, inbound_pressure, chapter_turn, outbound_pressure, handoff_to_next_chapter, external_state_at_end, reader reward, and scale_pacing_constraints from book/longform_blueprint.yml."
+notes: "在此填入 6-15 章详细章纲。每章应有 300-800 字剧情简介。一章只推进一个核心外部事件，保留叙事织入，避免正文变成任务清单的文学化执行。"
+chapter_shape_template:
+  chapter: ""
+  title: ""
+  status: planned
+  macro_stage: ""
+  scale_level: ""
+  flow_id: ""
+  flow_position: "opening / pressure_rising / turn / fallout / payoff / transition"
+  chapter_function: "crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / building / transition / face_slap / breakthrough / auction / showing_off / competition / dungeon_rule"
+  synopsis: "300-800 字剧情简介，写故事内容而不是场景节拍清单。"
+  pressure_curve: "描述压力如何在章内上升、延迟、释放或转移。例如：低开例行 → 中段异常浮现 → 高压逼近 → 交接。"
+  reader_question_flow:
+    enters_with: "本章承接什么读者疑问？"
+    leaves_with: "本章留下什么具体新疑问？"
+  core_advance:
+    one_sentence: "本章唯一核心外部推进。"
+    must_happen: []
+    must_not_complete: []
+  information_release:
+    new_core_variables: []
+    deferred: []
+  chapter_turn: "本章造成的不可逆外部变化（含外部状态变化）。"
+  side_yield: []
+  叙事织入:
+    人物日常反应: []
+    场景即时质感: []
+    关系温度波动: []
+  density_control:
+    required_weave_beats: 3
+    allow_idle: true
+  planned_handoff: "下一章必须承接的具体可见压力、动作、后果、物件或关系变化。"
+  constraints: []
+  scale_pacing_constraints: []

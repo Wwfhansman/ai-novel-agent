@@ -1,14 +1,24 @@
 chapter: ch001
-title: 旧灯芯
-status: draft
-one_line_summary: 示例章节尚未写作，只展示摘要结构。
-detailed_summary: []
+title: "旧灯芯"
+status: final
+one_line_summary: "大雾夜，修灯人林栖在更换旧灯芯时听见陌生人的记忆残留，私下藏起一片碎片，巡灯署随后上门回收。"
+detailed_summary:
+  - "外环三号雾灯反复熄灭，巡灯署通知林栖前往维修。"
+  - "拆开铜罩后，林栖在拔灯芯时听见一句不属于今夜的话：'别把灯交出去'。"
+  - "她在灰烬中发现一片指甲盖大小的碎片，表面有细微划痕。"
+  - "巡灯署进入灯廊，要求回收所有拆下的旧灯芯。"
+  - "林栖把碎片藏入袖口，交出灯芯，未被当场察觉。"
 characters_present:
   - char_lin_qi
+  - char_patrol_leader
+  - char_patrol_assistant
 locations:
-  - loc_outer_lamp_lane
-key_events: []
-emotional_result: ""
-external_result: ""
-handoff_to_next_chapter:
-  - "Patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick."
+  - loc_outer_lamp_corridor
+key_events:
+  - "林栖发现旧灯芯残留记忆声音。"
+  - "林栖藏匿灯芯碎片。"
+  - "巡灯署回收旧灯芯。"
+emotional_result: "紧张、隐秘的兴奋与不安交织——林栖获得了一条线索，但她的日常工作从此不再安全。"
+external_result: "巡灯署完成本次回收，但灯芯碎片已缺失一角。"
+actual_handoff:
+  - "林栖袖口藏着碎片走出灯廊，巡灯署领头人收走的灯芯是否被察觉缺角？"

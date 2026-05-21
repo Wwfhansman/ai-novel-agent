@@ -5,13 +5,16 @@ current_flow:
   span:
     started_at: ""
     expected_range: ""
-  narrative_unit: ""
-  central_motion: ""
-  current_pressure: ""
-  active_questions: []
-  scene_chain: []
-  last_cut: null
-  end_conditions: []
-  round_boundary_rule: "Round boundaries are production boundaries, not story boundaries. Do not close this flow merely because a three-chapter batch ends."
+  central_motion: "描述这个 flow 正在推进什么事件链。"
+  current_pressure: "当前处于运动中的外部压力。"
+  active_questions:
+    - "读者仍在等待回答的具体问题。"
+  last_cut:
+    chapter: null
+    last_visible_moment: null
+    current_handoff: null
+  end_conditions:
+    - "这个 flow 自然结束的条件——不是按章节数，是按剧情完成度。"
+  round_boundary_rule: "轮次是生产边界，不是故事边界。不要在批次结束时关闭 flow，除非剧情确实抵达了 payoff。"
 completed_flows: []
-notes: "This file is the authority for the current cross-round narrative flow. Update it after each chapter."
+notes: "本文件是当前跨轮连续剧情流的权威来源。每章完成后更新 last_cut。逐章规划请见 planning/rolling_plan.yml。"

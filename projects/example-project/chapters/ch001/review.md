@@ -1,35 +1,24 @@
-# Chapter Review
-
-Example chapter not written.
+# 章节审查
 
 ## Reader Reward Check
-
-- Required reward: old-wick memory anomaly plus a risky physical clue.
-- New expectation: patrol's recovery motive should become the next question.
-- Risk: the example final is intentionally tiny, so it only demonstrates protocol shape.
+- 本章给了读者什么：超自然信号的首次呈现（旧灯芯残留陌生记忆）+ 一个具体的危险物证（灯芯碎片）。
+- 制造了什么新期待：巡灯署为什么要回收旧灯芯？碎片如果被发现会怎样？那个声音是谁的？
+- 外部变化：林栖从普通修灯人变成了藏匿线索的人——她的工作不再安全。
 
 ## TXT Format Check
+- 标题格式正确："第一章 旧灯芯"。
+- 标题后有一空行，正文段落之间无空行。
+- 本章约 2100 字，正文段落 40 段，段落密度正常。
+- 多数段落 25-80 字，最长段约 130 字，无超大段落。
+- 场景切换（灯廊内→巷口→灯廊内）通过自然叙述衔接，无需分隔符。
 
-- Title line should match `第X章 标题`.
-- Body should use one blank line after title and no blank lines between ordinary paragraphs.
-- Formal project chapters should use normal paragraph density; this example is intentionally short.
+## 叙事织入检查
+- 人物日常反应：林栖紧张时默数螺丝、助手抱怨大雾费灯油。
+- 场景即时质感：焦油和湿灯芯的气味、铜罩烫手、灯笼光晕在雾里模糊。
+- 关系温度波动：助手从闲聊到公事公办的转变、领头的审视目光。
 
 ## Memory Update Check
-
-- `summary.yml` and `canon_delta.yml` should record `handoff_to_next_chapter`.
-- `planning/active_flow.yml` and `planning/rolling_plan.yml` should carry the patrol handoff.
-- Current state files should not treat this example as a real full chapter.
-
-After formal writing, check:
-
-- Did the prose follow the detailed rolling synopsis without sounding like a synopsis?
-- Did it feel like a concrete repair scene rather than a lore explanation?
-- Did it deliver a concrete reader reward, such as an old-wick memory anomaly, a risky hidden fragment, or a new question?
-- Did it create a new expectation for ch002?
-- Did the opening and ending behave as a cut from `arc_001_old_wick` rather than as a self-contained chapter container?
-- Did the ending avoid protagonist recap or next-step analysis?
-- Did the ending leave an external handoff for ch002?
-- Did `final.txt` use one blank line after title and no blank lines between ordinary body paragraphs?
-- Did the chapter use normal mobile-readable paragraph density rather than a few giant blocks?
-- Did `python scripts/validate_novel_output.py projects/example-project --chapters ch001 --fix-format` pass?
-- Were `summary.yml`, `canon_delta.yml`, `entities/`, `ledgers/`, `planning/active_flow.yml`, and `planning/rolling_plan.yml` updated?
+- `summary.yml` 和 `canon_delta.yml` 已记录 actual_handoff。
+- `planning/active_flow.yml` last_cut 已更新。
+- entities/ledgers/planning 当前状态已同步。
+- 注意：canon_delta 的 actual_handoff 和 rolling_plan 的 planned_handoff 在本章中一致（"巡灯署推开灯廊门，领头人索要旧灯芯"），但后续章节出现偏差时应以 canon_delta 为准。

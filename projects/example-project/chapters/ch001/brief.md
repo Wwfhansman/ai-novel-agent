@@ -1,49 +1,44 @@
-# Chapter Brief
+# 章节写作前交接
 
-## Source Synopsis
+## 来源章纲
+来自 `planning/rolling_plan.yml` ch001 条目。
 
-Lin Qi is called to the outer ring lamp corridor during heavy night fog. The old fog lamp repeatedly goes out. Patrol staff treat it as routine malfunction and urge her to replace the wick. While disassembling the lamp, she hears a memory echo from a stranger who seems to have spoken in the same place years ago. She does not explain the anomaly and hides a cracked wick fragment before patrol footsteps reach her.
-
-## Active Flow
-
+## 当前 flow 位置
 - Flow id: arc_001_old_wick
-- Flow position: opening
-- Current pressure: Patrol is close enough to enter the lamp corridor while the cracked wick fragment is no longer safely public.
+- Flow position: opening（开篇章）
+- 当前压力：巡灯署即将进入灯廊回收旧灯芯——而林栖手里已经有了不该留的东西。
 
-## Previous Chapter Handoff
+## 上一章交接
+开篇章，无前章交接。
 
-Opening chapter.
+## 本章功能与压力曲线
+- 本章功能：investigation（调查发现）
+- 压力曲线：低开例行维修 → 中段异常浮现（记忆声音）→ 高压逼近（巡灯署进入）→ 交接（碎片被藏，压力悬而未决）
+- 承接读者疑问：为什么旧雾灯反复熄灭？
+- 留下读者疑问：巡灯署为什么急着回收旧灯芯？碎片上的划痕是什么？
 
-## Inbound Pressure
+## 核心推进
+唯一推进：林栖发现旧灯芯残留陌生记忆，并私下藏起一片灯芯碎片。
 
-Opening chapter. The old fog lamp fails repeatedly, and patrol wants a quick replacement.
+## 必须不完成
+- 不揭示父亲失踪的真相。
+- 不解释灯芯记忆的完整规则。
+- 不点明巡灯署的真实动机。
 
-## Chapter Turn
+## 信息释放
+- 本章新变量（1-2个）：旧灯芯可残留记忆碎片；巡灯署正在回收旧灯芯。
+- 延后信息：为什么旧灯芯能保存记忆、巡灯署真实目的、父亲是否接触过同类旧灯。
 
-Lin Qi discovers the old wick stores a stranger's memory and privately keeps a cracked fragment.
+## 叙事织入
+- 人物日常反应：林栖紧张时默数螺丝、助手抱怨大雾。
+- 场景即时质感：焦油味、铜罩烫手、灯油渍、湿灯芯、灯笼光在雾里模糊。
+- 关系温度波动：助手从闲聊到公事公办、领头的审视目光。
 
-## Outbound Pressure
+## 禁止事项
+- 不要揭示父亲线。
+- 不要解释灯芯记忆规则。
+- 不要写成世界观说明书。
+- 不要让林栖在章末冷静总结。
 
-Patrol arrives at the corridor after the wick has already lost a fragment.
-
-## Must Happen
-
-- Establish Lin Qi's repair work.
-- Make the old wick anomaly canon.
-- Let patrol pressure arrive without explaining the full rule.
-
-## Character Intent
-
-- Lin Qi wants to repair the lamp and understand the anomaly.
-- Patrol wants to recover the old wick.
-
-## Constraints
-
-- Do not reveal the old wick's full rule.
-- Do not reveal the father's disappearance truth.
-- Do not turn the chapter into worldbuilding explanation.
-- Do not end with Lin Qi calmly summarizing what she learned.
-
-## Handoff To Next Chapter
-
-Patrol pushes into the lamp corridor and demands that Lin Qi immediately hand over the removed old wick.
+## 下一章交接
+巡灯署领头人索要拆下来的旧灯芯——林栖递出的灯芯是否缺角已被察觉？碎片藏在袖口能藏多久？
