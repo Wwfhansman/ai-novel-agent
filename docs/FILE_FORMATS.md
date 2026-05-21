@@ -230,7 +230,7 @@ actual_handoff:
 
 一般章节的 `information_release.new_core_variables` 不宜超过 1-2 个。更多真相、规则、身份、资源收益、关系变化应写入 `deferred_information` 或后续章节。
 
-`planning/current_round.yml` 只是从 `rolling_plan.yml` 抽取生产批次，不应另起一套互相冲突的计划，也不应包含 round 级剧情目标。
+`planning/current_round.yml` 只是生产批次追踪器，只记录本轮写哪几章、状态和起止 flow；详细章纲仍以 `rolling_plan.yml` 为唯一权威。它不应复制章节规划、不应另起一套互相冲突的计划，也不应包含 round 级剧情目标。
 
 ## 7. 命名规范
 

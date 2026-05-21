@@ -205,7 +205,7 @@ idea_pool.yml（只读 candidate/promoted 且与本批次相关的条目）
 ```text
 本章 brief.md
 planning/rolling_plan.yml（全文已读；本章 context pack 只摘本章、前一章、后一章和必要后续约束）
-planning/current_round.yml 中本章摘录
+planning/current_round.yml 中的本批次章节列表、状态和起止 flow
 planning/active_flow.yml
 上一章 final.txt
 上一章 canon_delta.yml

@@ -92,7 +92,7 @@ novel-change
 根据本批次相关压力和债务回看关键旧章节
 生成 round context_pack.md
 生成前文理解报告
-从 rolling_plan 摘取本批次 3 章到 current_round
+把本批次 3 章、状态和起止 flow 写入 current_round
 ```
 
 ### 3.3 单章流程

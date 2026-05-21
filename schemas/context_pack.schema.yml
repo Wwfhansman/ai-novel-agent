@@ -173,9 +173,9 @@ fields:
       Relevant chapter entries and later constraints from planning/rolling_plan.yml.
       The full rolling plan should be read before a round, but not copied in full.
 
-  current_round_extract:
+  current_round_tracker:
     required: true
-    purpose: Production-batch extract from the rolling synopsis, not a story container.
+    purpose: Production-batch chapter list, status, and flow edges from current_round.yml; detailed chapter planning remains in rolling_plan.yml.
 
   previous_chapter_handoff:
     required: false

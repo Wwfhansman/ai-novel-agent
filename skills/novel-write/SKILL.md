@@ -37,8 +37,9 @@ Use three planning layers:
    - Each chapter should link to a flow and identify its entry/pickup and cut point.
 
 3. `planning/current_round.yml`
-   - A 3-chapter production extract.
-   - It must not become a narrative container.
+   - A lightweight production-batch tracker.
+   - It records only which chapters are being written, status, and where the batch starts/ends inside the active flow.
+   - It must not copy chapter synopsis fields or become a second planning source.
 
 ## Hard Rules
 
@@ -156,7 +157,7 @@ If model routing is used, record it in the round context pack or `meta/session_l
 - Future 6-15 chapter synopsis lives in `planning/rolling_plan.yml`.
 - Completed planning history lives in `planning/completed_plan_log.yml`.
 - Distant future ideas live in `planning/future_backlog.yml`.
-- Current round extract lives in `planning/current_round.yml`.
+- Current round tracker lives in `planning/current_round.yml`.
 
 When files conflict, follow `docs/CANON_AND_SAFETY.md`. Do not merge contradictions casually.
 
@@ -246,12 +247,12 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Write `planning/context_packs/round_XXX_context_pack.md`。**必须按照 `templates/project/planning/context_packs/round_001_context_pack.md` 的 section 结构填写。**
    - Keep the round pack within the context budget unless the project is at a major transition or user explicitly asks for a fuller audit.
 
-5. **Create current round extract**
+5. **Create current round tracker**
    - Plan exactly 3 chapters unless the user asks otherwise.
-   - Extract or condense each chapter from `planning/rolling_plan.yml`.
-   - Include `flow_id`, `flow_position`, `chapter_function`, `pressure_curve`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `chapter_turn`, `planned_handoff`, `叙事织入`, and `density_control`.
-   - Use `batch_tasks`, not round-level story goals.
-   - Do not invent a separate competing plan.
+   - Record only `round`, `chapters`, `source`, `status`, `batch_edges.starts_inside_flow`, `batch_edges.ends_inside_flow`, and optional operational `notes`.
+   - Do not copy `flow_id`, `chapter_function`, `pressure_curve`, `core_advance`, `planned_handoff`, `叙事织入`, or other per-chapter planning fields into this file.
+   - Do not add `batch_tasks` or round-level story goals.
+   - Treat `planning/rolling_plan.yml` as the only detailed near-future chapter plan.
    - Write `planning/current_round.yml`.
 
 6. **Write each chapter as a cut from the flow**

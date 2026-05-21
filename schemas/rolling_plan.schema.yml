@@ -20,7 +20,7 @@ fields:
   source_of_truth:
     required: true
     purpose: Human-readable reminder that this file is the authority for near-future chapter synopsis.
-    example: "Near-future chapter synopsis authority; current_round.yml is only a production extract."
+    example: "Near-future chapter synopsis authority; current_round.yml is only a production-batch tracker."
 
   chapters:
     required: true

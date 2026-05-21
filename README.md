@@ -159,7 +159,7 @@ planning/active_flow.yml
 - 世界当前状态看 `ledgers/world_state.yml`。
 - 当前连续剧情流看 `planning/active_flow.yml`。
 - 未来详细章纲看 `planning/rolling_plan.yml`。
-- 本生产批次只看 `current_round.yml` 作为执行摘录，不把它当作叙事单位。
+- 本生产批次只看 `current_round.yml` 作为批次追踪器，不把它当作叙事单位或第二套章纲。
 
 `canon_delta.yml` 是章节变化日志，不是当前状态总表。
 
@@ -307,7 +307,7 @@ Use skills/novel-bootstrap to initialize projects/my-novel from this seed:
 - 每章尽量只有一个核心外部推进；不要把一章规划成多个任务一次性完成。
 - information_release 一般只放 1-2 个读者必须记住的新变量，其他真相、规则、身份、资源或关系变化写入 deferred。
 - 叙事织入 要给人物、场景、世界和系统留织入材料：人物反应、对话摩擦、生活细节、关系温度、世界/制度/规则质感、轻微误读、闲话、场景物件、身体反应、人物习惯或小幽默。
-- planning/current_round.yml 只能是生产批次摘录，不能写 round 级剧情目标。
+- planning/current_round.yml 只能是生产批次追踪器，不能复制章纲，不能写 round 级剧情目标。
 - 不写正文，除非我明确要求继续进入 novel-write。
 ```
 
@@ -381,7 +381,7 @@ Use skills/novel-review to cold-start review projects/my-novel.
 - active_flow 是否能说明当前连续剧情流。
 - rolling_plan 是否足够支撑下一批次写作。
 - rolling_plan 是否包含 chapter_function、pressure_curve、reader_question_flow、core_advance、must_not_complete、information_release、side_yield、叙事织入、density_control。
-- current_round 是否只是生产摘录，没有隐藏 round 级剧情目标。
+- current_round 是否只是生产批次追踪器，没有复制章纲或隐藏 round 级剧情目标。
 - 最近章节是否像独立容器，尤其是否在章末主角复盘、总结、规划。
 - 最近章节是否每章任务过满，或每一段都在推进剧情/解释信息/安排未来。
 - 最近章节是否有足够织入材料：人物反应、生活细节、关系温度、世界/制度/规则质感、场景物件、人物习惯、轻微误读或小幽默。
@@ -411,7 +411,7 @@ Use skills/novel-review and skills/novel-change to migrate projects/my-novel to 
 - core_advance 必须包含 one_sentence、must_happen、must_not_complete。
 - information_release 必须包含 new_core_variables、deferred；一般章节 new_core_variables 不超过 1-2 个。
 - 叙事织入 包含 人物日常反应、场景即时质感、关系温度波动。
-- 把 planning/current_round.yml 改成生产批次摘录，不写 round 级剧情目标。
+- 把 planning/current_round.yml 改成生产批次追踪器，不复制章纲，不写 round 级剧情目标。
 - 把最近 summary.yml 中的 next_hook 改成 actual_handoff。
 - 检查最近 3 章 final.txt 的 TXT 空行、复盘式结尾、短句氛围结尾。
 - 不要继续写新章节，直到迁移和验证通过。

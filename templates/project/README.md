@@ -18,7 +18,7 @@ Core rules:
 - Near-future detailed synopsis lives in `planning/rolling_plan.yml`.
 - Completed chapter plans move to `planning/completed_plan_log.yml`.
 - Distant future ideas live in `planning/future_backlog.yml`.
-- `planning/current_round.yml` is only a production extract, not a story unit.
+- `planning/current_round.yml` is only a production-batch tracker, not a story unit or second chapter plan.
 - `canon_delta.yml` is a chapter change log, not the current-state table.
 - A context pack must be generated before prose drafting.
 - Context packs must include `Longform Scale Check`.

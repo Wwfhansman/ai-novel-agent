@@ -46,7 +46,7 @@ retcon: 对旧正史的修订计划
 | 当前卷进展 | `volumes/vol_XXX/volume_state.yml` | `volume_summary.md` | 结构化当前进展以 state 为准。 |
 | 当前连续剧情流 | `planning/active_flow.yml` | `arcs/*`, `rolling_plan.yml`, 最近 `canon_delta.yml` | active_flow 决定章节从哪个压力中切出，不受 round 边界控制。 |
 | 近期未来计划 | `planning/rolling_plan.yml` | `current_round.yml` | 6-15 章详细章纲以 rolling_plan 为准。 |
-| 本批次执行计划 | `planning/current_round.yml` | `planning/rolling_plan.yml`, `planning/active_flow.yml`, round context pack | current_round 只是生产批次摘录，不能另起冲突计划或 round 级剧情目标。 |
+| 本批次追踪状态 | `planning/current_round.yml` | `planning/rolling_plan.yml`, `planning/active_flow.yml`, round context pack | current_round 只记录本轮写哪几章、状态和起止 flow，不能复制章纲、另起冲突计划或写 round 级剧情目标。 |
 | 未确认点子 | `ledgers/idea_pool.yml` | `opportunity_ledger.yml` | 不可当作正史。 |
 | 重大创作决策 | `ledgers/decision_log.yml` 或 `meta/decision_log.*` | 用户对话摘要 | 决策必须落盘。 |
 
