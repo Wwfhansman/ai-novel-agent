@@ -164,7 +164,7 @@ chapters/ch001/context_pack.md
 - 本章 brief
 - active_flow 中的当前 pressure 和 handoff
 - 上章全文
-- 上章 canon_delta.yml 的 handoff_to_next_chapter
+- 上章 canon_delta.yml 的 actual_handoff
 - 最近 3-5 章 summary.yml
 - 本章出场人物状态
 - 本章相关叙事债

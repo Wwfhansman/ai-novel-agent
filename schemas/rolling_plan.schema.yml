@@ -31,72 +31,101 @@ fields:
         example: ch008
       title:
         required: false
-        example: 余粮
       status:
         required: true
         allowed: [planned, drafting, revised, skipped]
-        example: planned
       macro_stage:
         required: true
         purpose: Part/stage id from book/longform_blueprint.yml.
-        example: part_001
       scale_level:
         required: true
         purpose: Intended story scale for this chapter.
-        example: local
       flow_id:
         required: true
         purpose: Continuous narrative flow this chapter belongs to.
-        example: arc_001_old_wick
       flow_position:
         required: true
         allowed: [opening, pressure_rising, turn, fallout, payoff, transition]
         purpose: Position inside the flow, not inside the three-chapter round.
-        example: pressure_rising
+      chapter_function:
+        required: true
+        purpose: Web-novel chapter function, such as crisis, face_slap, investigation, building, relationship, aftermath, transition, or project-specific equivalent.
       synopsis:
         required: true
         purpose: 300-800 Chinese characters of story content, not scene beats.
-        example: "上一章的监视压力没有消失，主角退到幕后后..."
-      inbound_pressure:
+      pressure_curve:
         required: true
-        purpose: What pressure, action, or unresolved problem carries in.
+        purpose: How pressure rises, delays, releases, or transfers across the chapter.
+      reader_question_flow:
+        required: true
+        fields:
+          enters_with:
+            required: true
+            purpose: Visible reader expectation entering this chapter.
+          leaves_with:
+            required: true
+            purpose: Visible reader expectation leaving this chapter.
+      core_advance:
+        required: true
+        fields:
+          one_sentence:
+            required: true
+            purpose: The one primary external advancement.
+          must_happen:
+            required: false
+            type: list
+          must_not_complete:
+            required: true
+            type: list
+            purpose: What this chapter deliberately leaves unfinished.
+      information_release:
+        required: true
+        fields:
+          new_core_variables:
+            required: true
+            type: list
+            purpose: 1-2 new variables readers must remember.
+          deferred:
+            required: true
+            type: list
+            purpose: Information, rules, identities, resources, or relationship changes delayed to later chapters.
       chapter_turn:
         required: true
-        purpose: Irreversible external change caused by this chapter.
-      required_developments:
+        purpose: Irreversible external change caused by this chapter, including world/relationship/resource state.
+      side_yield:
         required: true
         type: list
-        purpose: Plot developments that must happen.
-      character_intents:
+        purpose: World/system texture, relationship shifts, resource changes, or reusable foreshadowing beyond the core advance.
+      叙事织入:
         required: true
-        type: list
-        purpose: Important characters and what they want in this chapter.
-      pressure_or_complication:
+        purpose: Branch-and-leaf material that gives characters, places, systems, and relationships lived-in texture.
+        suggested_fields:
+          人物日常反应: []
+          场景即时质感: []
+          关系温度波动: []
+      density_control:
         required: true
-        purpose: What makes the chapter non-smooth.
-      payoff_or_reader_reward:
+        fields:
+          required_weave_beats:
+            required: true
+            type: integer
+          allow_idle:
+            required: true
+            type: boolean
+      planned_handoff:
         required: true
-        purpose: What reader reward, reveal, or progress this chapter gives.
-      outbound_pressure:
-        required: true
-        purpose: External pressure or unfinished motion that survives into the next chapter.
-      handoff_to_next_chapter:
-        required: true
-        purpose: The exact visible first moment or concrete pressure the next chapter should pick up.
-      external_state_at_end:
-        required: true
-        purpose: What changed in the world, relationship, resource, danger, leverage, or information visibility.
-      reader_motion:
-        required: false
-        purpose: What the reader should want to know or see next.
+        purpose: Concrete visible pressure, action, consequence, object, or relationship change the next chapter must pick up.
       constraints:
         required: false
         type: list
-        purpose: Canon, visibility, or protected-file restrictions.
       scale_pacing_constraints:
-        required: true
+        required: false
         type: list
         purpose: Limits from book/longform_blueprint.yml that prevent scale collapse, premature reveals, or over-fast progression.
+
+  chapter_shape_template:
+    required: false
+    purpose: Empty helper shape used by templates only; real project entries live under chapters.
 
   notes:
     required: false

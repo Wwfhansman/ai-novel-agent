@@ -187,13 +187,12 @@ fields:
       previous_cut_pickup:
         required: false
         purpose: For non-opening chapters, the exact prior cut picked up in this task.
-      inbound_pressure:
+      current_handoff:
         required: true
+        purpose: Latest actual handoff from active_flow.last_cut.current_handoff or prior canon_delta actual_handoff.
       chapter_turn:
         required: true
-      outbound_pressure:
-        required: true
-      handoff_to_next_chapter:
+      planned_or_actual_handoff:
         required: true
         purpose: Concrete first moment or pressure the next chapter must inherit.
       transition_justification:

@@ -17,6 +17,7 @@ Read:
 - `docs/WORKFLOWS.md`
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
+- `style/samples.md`（如有内容，审查时对照检查文笔是否偏离项目风格）
 
 ## 审查模式
 
@@ -91,6 +92,18 @@ Read:
    - 标记任何看起来只由 fast/cheap 模型完成的正文、active_flow、rolling_plan、受保护文件修改或正史合并。
 
 ## 输出格式
+
+14. **记忆工程卫生**
+   - 检查所有 YAML 文件是否有重复 key（YAML 解析器静默覆盖，不会报错）。
+   - 检查 `entities/characters.yml` 中每个有实质性变化的角色的 `change_history` 是否有条目。
+   - 检查 `ledgers/narrative_debts.yml`、`ledgers/foreshadowing.yml` 中状态字段的拼写一致性（`paid`/`partiall_paid` 等）。
+   - 检查 `ledgers/world_state.yml` 的资源/危机/势力条目是否与最近章节事件同步。
+   - 检查 `canon_delta.yml` 和 `summary.yml` 的 `actual_handoff` 是否存在、是否与 `active_flow.yml` 的 `last_cut.current_handoff` 一致。
+   - 如果发现 YAML 错误或数据不一致 → 列入必须修复项，不是可接受的弱点。
+
+15. **文笔多样性**
+   - 检查最近 3 章正文是否存在高频重复句式（硬规则："不是X而是Y / 不是X，是Y"每章最多 1 次；超过即为必须修复。也检查连续段落以同一句式开头、大量"他/她做了A，然后做了B"的平铺直叙）。
+   - 句式重复不一定是单章问题——可能是模型默认腔。标记为风险并给出替换建议。
 
 ```text
 审查摘要

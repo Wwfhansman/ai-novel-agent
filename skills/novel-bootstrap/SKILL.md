@@ -35,6 +35,7 @@ Read:
 - `docs/FILE_FORMATS.md`
 - `docs/MODEL_ROUTING.md`
 - `templates/project/book/chapter_rhythm_guide.md`（初始化章纲时参考网文章类型模板）
+- `templates/project/style/samples.md`（占位模板——bootstrap 时不写内容，但需告知用户此文件用于后续存放文笔风格报告）
 
 Use `templates/project/` as the required output structure.
 

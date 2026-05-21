@@ -37,10 +37,10 @@
 ## Cut Continuity
 
 - 上一章切口是否被承接：
-- 本章 inbound pressure：
+- 本章 current_handoff：
+- 本章 pressure_curve：
 - 本章 chapter turn：
-- 本章 outbound pressure：
-- 本章交接给下一章：
+- 本章 planned_handoff：
 - 如果没有从上一章切口打开——转换理由：
 - 交接信息主要来源：
 

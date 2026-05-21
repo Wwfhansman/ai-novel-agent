@@ -68,7 +68,7 @@ final.txt
 
 - `canon_delta.yml` 只追加或记录本章变化，不承担当前总状态。
 - 当前状态必须合并进 `entities/` 和 `ledgers/`。
-- 每章造成的外部交接必须写入 `canon_delta.yml` 的 `handoff_to_next_chapter`，并同步到 `planning/active_flow.yml` 与 `planning/rolling_plan.yml`。
+- 每章造成的外部交接必须写入 `canon_delta.yml` 的 `actual_handoff`，并同步到 `planning/active_flow.yml` 的 `last_cut.current_handoff`；规划中的未来交接写入 `planning/rolling_plan.yml` 的 `planned_handoff`。
 - 旧状态如果失效，必须显式更新状态字段，不要保留冲突描述。
 - 如果无法确定是否应覆盖旧状态，写入 `review.md` 或 `meta/open_questions.md`，不要静默猜。
 

@@ -59,13 +59,26 @@
 
 ## 弱点或风险
 
-至少指出一个弱点或风险。如果已修改，描述修改方式。
+至少指出一个弱点或风险。**必须给出具体的修改建议，不能只说"可接受"或"后续观察"。** 如果已修改，描述修改方式。
+
+### 建议修改
+
+如果重写，具体怎么改？不重写的话，下一章如何弥补？
+
+## 记忆工程卫生检查
+
+- [ ] YAML 无重复 key（`grep -c` 同名 key 在同一个 YAML 文档中不超过 1 次）。
+- [ ] 所有有实质性变化的角色的 `change_history` 非空。
+- [ ] `narrative_debts.yml` 状态字段拼写正确（`open`/`in_progress`/`paid`/`abandoned`）。
+- [ ] `world_state.yml` 资源/危机/势力条目与本章事件同步。
+- [ ] `canon_delta.yml` 的 `actual_handoff` 与 `active_flow.yml` 的 `last_cut.current_handoff` 一致。
+- [ ] 没有重复的 YAML key 覆盖问题。
 
 ## 记忆更新检查
 
-- `summary.yml` 已更新。
-- `canon_delta.yml` 已更新（含 actual_handoff）。
-- `entities/` 当前状态变化已同步。
-- `ledgers/` 当前状态变化已同步。
-- `planning/active_flow.yml` 已更新 last_cut 和 current_handoff。
-- `planning/rolling_plan.yml` 已刷新，未来章节不再重复已完成选择。
+- [ ] `summary.yml` 已更新。
+- [ ] `canon_delta.yml` 已更新（含 actual_handoff）。
+- [ ] `entities/` 当前状态变化已同步（含 change_history）。
+- [ ] `ledgers/` 当前状态变化已同步。
+- [ ] `planning/active_flow.yml` 已更新 last_cut 和 current_handoff。
+- [ ] `planning/rolling_plan.yml` 已刷新。

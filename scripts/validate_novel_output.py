@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -83,18 +85,18 @@ REQUIRED_CHAPTER_FILES = [
 ]
 
 REQUIRED_CONTEXT_SECTIONS = [
-    "## Read Files",
-    "## Source References",
-    "## Longform Scale Check",
-    "## Reader Reward Check",
-    "## Cut Continuity",
-    "## Required Updates After Writing",
+    ("## Read Files", "## 读取文件"),
+    ("## Source References", "## 来源引用"),
+    ("## Longform Scale Check", "## 长篇规模检查"),
+    ("## Reader Reward Check", "## 读者回报检查"),
+    ("## Cut Continuity", "## 切分连续性"),
+    ("## Required Updates After Writing", "## 写完后必须更新的文件"),
 ]
 
 REQUIRED_REVIEW_SECTIONS = [
-    "## Reader Reward Check",
-    "## TXT Format Check",
-    "## Memory Update Check",
+    ("## Reader Reward Check", "## 读者回报检查"),
+    ("## TXT Format Check", "## TXT 格式检查"),
+    ("## Memory Update Check", "## 记忆更新检查"),
 ]
 
 # Genre-aware paragraph density minimums.
@@ -320,14 +322,17 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
     context_pack = chapter_dir / "context_pack.md"
     if context_pack.exists():
         text = context_pack.read_text(encoding="utf-8")
-        for section in REQUIRED_CONTEXT_SECTIONS:
-            if section not in text:
-                warnings.append(f"MISSING_CONTEXT_SECTION: {context_pack} lacks {section}.")
+        for en_section, zh_section in REQUIRED_CONTEXT_SECTIONS:
+            if en_section not in text and zh_section not in text:
+                warnings.append(
+                    f"MISSING_CONTEXT_SECTION: {context_pack} lacks {en_section} / {zh_section}."
+                )
         if (
             "source:" not in text
             and "Source:" not in text
             and "Source Refs" not in text
             and "Source References" not in text
+            and "来源" not in text
         ):
             warnings.append(
                 f"MISSING_SOURCE_REFS: {context_pack} must cite file sources for key claims."
@@ -336,9 +341,11 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
     review = chapter_dir / "review.md"
     if review.exists():
         text = review.read_text(encoding="utf-8")
-        for section in REQUIRED_REVIEW_SECTIONS:
-            if section not in text:
-                warnings.append(f"MISSING_REVIEW_SECTION: {review} lacks {section}.")
+        for en_section, zh_section in REQUIRED_REVIEW_SECTIONS:
+            if en_section not in text and zh_section not in text:
+                warnings.append(
+                    f"MISSING_REVIEW_SECTION: {review} lacks {en_section} / {zh_section}."
+                )
 
     # Handoff checks — accept both old and new field names
     for fname, label in [("summary.yml", "summary"), ("canon_delta.yml", "canon_delta")]:
@@ -360,6 +367,10 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
 def validate_planning(project: Path) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
+
+    errs, warns = validate_project_yaml(project)
+    errors.extend(errs)
+    warnings.extend(warns)
 
     longform = project / "book" / "longform_blueprint.yml"
     if not longform.exists():
@@ -418,9 +429,166 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
         text = path.read_text(encoding="utf-8")
         if re.search(r"\bnext_hook\s*:", text):
             errors.append(
-                f"STALE_SUMMARY_FIELD: {path} uses next_hook; use actual_handoff or handoff_to_next_chapter."
+                f"STALE_SUMMARY_FIELD: {path} uses next_hook; use actual_handoff."
             )
 
+    # YAML duplicate key check for critical state files
+    yaml_files = list((project / "entities").glob("*.yml"))
+    yaml_files += list((project / "ledgers").glob("*.yml"))
+    yaml_files += [
+        project / "planning" / "active_flow.yml",
+        project / "planning" / "rolling_plan.yml",
+    ]
+    for yf in yaml_files:
+        if yf.exists():
+            dups = _find_yaml_duplicate_keys(yf)
+            if dups:
+                for key, count in dups:
+                    errors.append(
+                        f"YAML_DUPLICATE_KEY: {yf} has key '{key}' defined {count} times. "
+                        "YAML parsers silently keep only the last value, causing data loss."
+                    )
+
+    return errors, warnings
+
+
+def validate_project_yaml(project: Path) -> tuple[list[str], list[str]]:
+    """Validate YAML syntax for project files when a local parser is available."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    yaml_files = sorted(project.rglob("*.yml"))
+    if not yaml_files:
+        return errors, warnings
+
+    try:
+        import yaml  # type: ignore[import-not-found]
+    except ImportError:
+        yaml = None
+
+    if yaml is not None:
+        for yf in yaml_files:
+            try:
+                yaml.safe_load(yf.read_text(encoding="utf-8"))
+            except Exception as exc:  # pragma: no cover - parser-specific detail
+                detail = str(exc).strip().splitlines()[0] if str(exc).strip() else "unknown YAML parse error"
+                errors.append(f"YAML_PARSE_ERROR: {yf}: {detail}")
+        return errors, warnings
+
+    ruby = shutil.which("ruby")
+    if not ruby:
+        warnings.append(
+            "YAML_PARSE_SKIPPED: PyYAML is not installed and ruby is not available; "
+            "syntax parsing was skipped."
+        )
+        return errors, warnings
+
+    ruby_code = "require 'yaml'; YAML.load_file(ARGV[0])"
+    for yf in yaml_files:
+        result = subprocess.run(
+            [ruby, "-e", ruby_code, str(yf)],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            message = (result.stderr or result.stdout).strip().splitlines()
+            detail = message[0] if message else "unknown YAML parse error"
+            errors.append(f"YAML_PARSE_ERROR: {yf}: {detail}")
+    return errors, warnings
+
+
+def _find_yaml_duplicate_keys(path: Path) -> list[tuple[str, int]]:
+    """Find duplicate mapping keys within the same approximate YAML scope.
+
+    This lightweight check complements real YAML parsing. It handles common
+    nested maps and list items well enough for project memory files.
+    """
+    key_pattern = re.compile(r"^(\s*)([\w一-鿿_-]+)\s*:")
+    list_key_pattern = re.compile(r"^(\s*)-\s+([\w一-鿿_-]+)\s*:")
+    bare_list_item_pattern = re.compile(r"^(\s*)-\s*(?:#.*)?$")
+    seen: dict[tuple[tuple[str, ...], str], int] = {}
+    duplicates: list[tuple[str, int]] = []
+    stack: list[tuple[int, str]] = []
+
+    for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+
+        list_match = list_key_pattern.match(line)
+        if list_match:
+            indent = len(list_match.group(1))
+            key = list_match.group(2)
+            while stack and stack[-1][0] >= indent:
+                stack.pop()
+            item_marker = f"[]@{lineno}"
+            scope = tuple(name for _, name in stack) + (item_marker,)
+            seen[(scope, key)] = seen.get((scope, key), 0) + 1
+            stack.append((indent, item_marker))
+            stack.append((indent + 2, key))
+            continue
+
+        bare_list_item_match = bare_list_item_pattern.match(line)
+        if bare_list_item_match:
+            indent = len(bare_list_item_match.group(1))
+            while stack and stack[-1][0] >= indent:
+                stack.pop()
+            stack.append((indent, f"[]@{lineno}"))
+            continue
+
+        m = key_pattern.match(line)
+        if not m:
+            continue
+
+        indent = len(m.group(1))
+        key = m.group(2)
+        while stack and stack[-1][0] >= indent:
+            stack.pop()
+        scope = tuple(name for _, name in stack)
+        seen[(scope, key)] = seen.get((scope, key), 0) + 1
+        stack.append((indent, key))
+
+    for (_scope, key), count in seen.items():
+        if count > 1:
+            duplicates.append((key, count))
+    return duplicates
+
+
+# ---- prose pattern diversity check ----
+
+REPETITIVE_SENTENCE_PATTERNS = [
+    (r"并非.{0,30}(而是|是)", "并非X而是Y"),
+    (r"没有.{0,10}(害怕|紧张|恐惧|担心|犹豫|迟疑)", "没有害怕/紧张/恐惧/担心..."),
+]
+
+NOT_BUT_PATTERN = re.compile(r"不是.{0,30}(而是|是)")
+MAX_NOT_BUT_PER_CHAPTER = 1
+
+
+def _check_prose_patterns(path: Path) -> tuple[list[str], list[str]]:
+    """Check for overused sentence patterns in chapter prose."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    text = path.read_text(encoding="utf-8")
+    # Merge across lines for cross-paragraph patterns
+    flat = text.replace("\n", "")
+
+    not_but_count = len(NOT_BUT_PATTERN.findall(flat))
+    if not_but_count > MAX_NOT_BUT_PER_CHAPTER:
+        errors.append(
+            f"OVERUSED_NOT_BUT_PATTERN: {path} uses '不是X而是Y / 不是X，是Y' "
+            f"{not_but_count} times; max allowed is {MAX_NOT_BUT_PER_CHAPTER}. "
+            "This sentence shape is reserved for one deliberate contrast per chapter. "
+            "Rewrite the rest as direct observation, action, dialogue, image, or consequence."
+        )
+
+    for pattern, label in REPETITIVE_SENTENCE_PATTERNS:
+        count = len(re.findall(pattern, flat))
+        if count >= 8:
+            warnings.append(
+                f"REPETITIVE_PATTERN: {path} uses '{label}' {count} times. "
+                "Overuse makes prose feel like a series of footnotes. "
+                "Vary sentence structure: some observations can stand without negation."
+            )
     return errors, warnings
 
 
@@ -461,6 +629,12 @@ def main() -> int:
         errs, warns = validate_txt(chapter_dir / "final.txt", args.fix_format, strict=args.strict)
         all_errors.extend(errs)
         all_warnings.extend(warns)
+        # Prose pattern diversity check
+        final_txt = chapter_dir / "final.txt"
+        if final_txt.exists():
+            errs, warns = _check_prose_patterns(final_txt)
+            all_errors.extend(errs)
+            all_warnings.extend(warns)
 
     exit_code = 0
 

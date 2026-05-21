@@ -135,7 +135,7 @@ chapters/ch001/context_pack.md
 刷新 active_flow 连续剧情流
 → 刷新 rolling_plan 详细章纲
 → 读取上下文
-→ 承接上一章 handoff_to_next_chapter
+→ 承接上一章 actual_handoff
 → 生成本章理解
 → 根据章纲自由构思正文
 → 写 draft

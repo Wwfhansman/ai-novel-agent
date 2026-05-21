@@ -1,91 +1,52 @@
 schema: current_round
 purpose: >
-  Three-chapter extract from planning/rolling_plan.yml for the active writing
-  round. It is a production batch, not a narrative unit and not an
-  independent planning authority.
+  Lightweight production-batch tracker. It records which chapters are being
+  written together and where the batch starts/ends inside active flow. It is not
+  a story unit and not an independent planning authority.
 
 fields:
   round:
     required: true
     example: round_003
-  status:
-    required: true
-    allowed: [planned, in_progress, completed, needs_refresh]
-    example: planned
-  source_plan:
-    required: true
-    purpose: Must point to planning/rolling_plan.yml.
-    example: planning/rolling_plan.yml
-  source_flow:
-    required: true
-    purpose: Must point to planning/active_flow.yml.
-    example: planning/active_flow.yml
-  production_batch:
-    required: true
-    fields:
-      chapters:
-        required: true
-        type: list
-        purpose: Three chapter ids extracted from rolling_plan.yml.
-      checkpoint_reason:
-        required: true
-        example: "Write ch007-ch009 as one operation batch; do not create a three-chapter story unit."
-      must_not_resolve_just_because_round_ends:
-        required: true
-        type: boolean
-        example: true
   chapters:
     required: true
     type: list
-    purpose: Condensed chapter entries extracted from rolling_plan.yml with flow and handoff fields.
-    item_fields:
-      chapter:
-        required: true
-      macro_stage:
-        required: true
-        purpose: Copied from planning/rolling_plan.yml and book/longform_blueprint.yml.
-      scale_level:
-        required: true
-        purpose: Copied from planning/rolling_plan.yml.
-      flow_id:
-        required: true
-      flow_position:
-        required: true
-      inbound_pressure:
-        required: true
-      chapter_turn:
-        required: true
-      outbound_pressure:
-        required: true
-      handoff_to_next_chapter:
-        required: true
-      scale_pacing_constraints:
-        required: true
-        type: list
-  goals:
-    required: false
-    type: list
-    deprecated: true
-    purpose: Do not use. Round-level story goals make the batch behave like a narrative container.
-  batch_tasks:
-    required: false
-    type: list
-    purpose: Operational tasks only, such as writing files and refreshing memory. No story goals.
+    purpose: Chapter ids in this production batch, usually three.
+  source:
+    required: true
+    purpose: Must point to planning/rolling_plan.yml.
+    example: planning/rolling_plan.yml
+  status:
+    required: true
+    allowed: [planned, in_progress, completed, needs_refresh]
   batch_edges:
     required: true
     fields:
       starts_inside_flow:
         required: true
-        example: arc_001_old_wick pressure_rising
+        purpose: How this batch starts inside the active narrative flow.
       ends_inside_flow:
         required: true
-        example: arc_001_old_wick turn
-      next_chapter_after_batch:
-        required: true
-        example: ch010
-  required_context_pack:
-    required: true
-    example: planning/context_packs/round_003_context_pack.md
+        purpose: How this batch ends inside the active narrative flow.
+  completed_chapters:
+    required: false
+    type: list
+    purpose: Optional short completion notes after a batch is done.
+  post_round_state:
+    required: false
+    purpose: Optional checklist of memory/planning files updated after completion.
   notes:
     required: false
-    purpose: Reminder that this file is an extract and must not add plot goals absent from rolling_plan.yml.
+    purpose: Operational note; must not add plot goals absent from rolling_plan.yml.
+
+deprecated_fields:
+  source_plan:
+    replacement: source
+  source_flow:
+    replacement: planning/active_flow.yml referenced from context pack or notes
+  production_batch:
+    replacement: chapters
+  goals:
+    replacement: batch_edges or notes
+  chapter_entries:
+    replacement: planning/rolling_plan.yml

@@ -55,12 +55,17 @@ fields:
     required: true
     type: list
     description: 本章产生但未进入正史的灵感。
-  handoff_to_next_chapter:
+  actual_handoff:
     required: true
     type: list
-    description: 下一章必须承接的外部压力、未完成动作、关系变化、物件、信息差或可见后果；不能只是“主角决定下一步”。
+    description: 本章最终实际留下的外部压力、未完成动作、关系变化、物件、信息差或可见后果；下一章必须承接，不能只是“主角决定下一步”。
+  handoff_to_next_chapter:
+    required: false
+    deprecated: true
+    type: list
+    description: 旧字段。新文件应使用 actual_handoff。
   next_chapter_handoff:
     required: false
     deprecated: true
     type: list
-    description: 旧字段。新文件应使用 handoff_to_next_chapter。
+    description: 旧字段。新文件应使用 actual_handoff。

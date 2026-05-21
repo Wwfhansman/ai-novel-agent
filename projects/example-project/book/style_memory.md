@@ -32,4 +32,4 @@ Short lines with testing, concealment, and unfinished intent.
 
 Body paragraphs in `draft.txt` and `final.txt` use single newlines. Do not insert blank lines between ordinary paragraphs.
 
-For mobile reading, most body paragraphs should be 35-100 Chinese characters. Split at action changes, speaker changes, reaction beats, new information, camera shifts, and rhythm pauses. Paragraphs over 120 Chinese characters should be considered for splitting; over 160 usually burdens mobile reading; over 220 should be treated as a format failure unless deliberately justified.
+For mobile reading, paragraph length follows chapter type: action and confrontation scenes can use shorter, denser paragraphs, while daily-life or management scenes may be slightly longer. Most body paragraphs should stay around 40-160 Chinese characters. Paragraphs over 220 Chinese characters should be treated as a format failure unless the review explicitly justifies a deliberate long take or uninterrupted action chain.

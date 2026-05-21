@@ -128,12 +128,11 @@ planning/active_flow.yml
 下一章从一个具体动作、后果、物件、关系变化或信息差继续
 ```
 
-每章规划必须关注四个连续性字段：
+每章规划必须关注三类连续性：
 
-- `inbound_pressure`：这一章从上一章继承了什么外部压力。
+- `active_flow.last_cut.current_handoff`：上一章实际留下的最新外部压力。
 - `chapter_turn`：这一章让局面发生了什么不可逆变化。
-- `outbound_pressure`：这一章结束后还有什么压力没有消失。
-- `planned_handoff`：下一章必须承接的具体时刻、后果、动作、物件、关系变化或信息差（规划中）。写完后，canon_delta 中记录 `actual_handoff`（实际交接），active_flow 中记录 `current_handoff`（当前最新交接）。
+- `planned_handoff`：下一章必须承接的具体时刻、后果、动作、物件、关系变化或信息差（规划中）。写完后，canon_delta 中记录 `actual_handoff`（实际交接），active_flow 中记录 `last_cut.current_handoff`（当前最新交接）。
 
 同时，当前版本要求每章避免变成“任务清单的文学化执行”。章纲和写作前 brief 应明确：
 

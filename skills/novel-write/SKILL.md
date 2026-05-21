@@ -121,6 +121,7 @@ Read once per session or when uncertain:
 - `book/style_memory.md`
 - `book/chapter_rhythm_guide.md`（本章类型对应的节奏模板）
 - `style/rewrite_rules.md`
+- `style/samples.md`（本项目文笔风格报告——如果有内容，本章正文必须遵守其文笔指令）
 - `planning/active_flow.yml`
 - `planning/rolling_plan.yml`
 - `planning/current_round.yml` if it exists
@@ -188,10 +189,10 @@ Each planned chapter should include:
 - macro stage or part id from `book/longform_blueprint.yml`;
 - intended scale level for this chapter: local / family / city / region / world / upper_world / other project-specific level;
 - `flow_id`;
-- `flow_position`: start / continue / turn / end / bridge;
+- `flow_position`: opening / pressure_rising / turn / fallout / payoff / transition;
 - `chapter_function`: crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / domestic_management / dungeon_rule / transition, or a project-specific equivalent;
 - `pressure_curve`: how pressure rises, delays, releases, or transfers across the chapter;
-- `reader_question_in` and `reader_question_out`: the visible reader expectation entering and leaving the chapter;
+- `reader_question_flow`: the visible reader expectation entering and leaving the chapter (`enters_with`, `leaves_with`);
 - 300-800 Chinese characters of story synopsis;
 - `entry_from_previous`: the concrete pickup from the prior cut;
 - `core_advance`: one primary external advancement, required beats, and what must deliberately remain unfinished;
@@ -242,7 +243,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Read recent 1-3 chapter `final.txt` files when continuity needs exact prose, scene carryover, or tone.
    - Read only relevant entity and ledger entries for this batch.
    - Read key old chapter originals when old foreshadowing, debts, objects, relationships, rules, or lines become relevant.
-   - Write `planning/context_packs/round_XXX_context_pack.md`.
+   - Write `planning/context_packs/round_XXX_context_pack.md`。**必须按照 `templates/project/planning/context_packs/round_001_context_pack.md` 的 section 结构填写。**
    - Keep the round pack within the context budget unless the project is at a major transition or user explicitly asks for a fuller audit.
 
 5. **Create current round extract**
@@ -255,8 +256,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 
 6. **Write each chapter as a cut from the flow**
    - Create or update `chapters/chXXX/brief.md` from the detailed synopsis and flow continuity.
-   - Generate `chapters/chXXX/context_pack.md`.
-   - Chapter context should include this chapter's rolling-plan entry, adjacent chapter constraints when useful, previous handoff, active flow, and relevant targeted entity/ledger entries. Do not include full ledgers or the whole rolling plan.
+   - Generate `chapters/chXXX/context_pack.md`。**必须按照 `templates/project/chapters/ch001/context_pack.md` 的 section 结构填写，section 名可用中文或英文，但结构需完整。**
    - Chapter context must include the applicable macro stage, scale level, power pacing, opportunity budget, and reveal limits from `book/longform_blueprint.yml`.
    - Chapter context must include `Source References` for the primary handoff, character states, active debts, knowledge visibility, world pressure, and reader reward.
    - Chapter context must include `Source References` for long-form scale claims.
@@ -269,7 +269,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - If a cheaper model assisted formatting or summaries, confirm no unreviewed cheap-model prose entered `final.txt` or canon state.
    - Run `python scripts/validate_novel_output.py <project> --chapters chXXX --fix-format`.
    - If validation reports a reflective ending, short atmosphere ending, or protagonist thought ending, rewrite the ending and rerun validation.
-   - Write `review.md`, `summary.yml`, and `canon_delta.yml`.
+   - Write `review.md`。**必须按照 `templates/project/chapters/ch001/review.md` 的 section 结构填写，section 名可用中文或英文，但结构需完整。审查是诊断性的，不是自我表扬。必须至少指出一个弱点或风险并给出具体的修改建议。**
    - Merge current state into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
    - Update `planning/active_flow.yml` with the chapter's actual last visible cut and handoff.
 
@@ -339,6 +339,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 - 无视上一章切口的重启式开头。
 - 用主角内心复盘来收束全章。
 - 正文里出现"第一……第二……第三……"式的条理化总结——除非人物在写文书。
+- "不是X而是Y / 不是X，是Y"每章最多 1 次。写之前必须确认它是本章唯一值得保留的概念反转或认知切分；其他地方改成直接描写、动作、对话、物件、后果或肯定句。
 - 把所有章节或所有轮次都写成同一个内部节拍。
 - 因为批次结束而让每轮第三章变得更"干净"、更"反思"、更"总结"。
 - 重复出现"到达→观察→分析→安排→思考"的章节奏。
@@ -387,6 +388,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 - 是否连续两页每一段都在功能性推进剧情/传递信息？
 - 是否有两段连续解释规则/势力/计划/推论/功法，而没有紧跟行动、反应、对话、冲突或场景移动？
 - 规则、制度、功法、政治事实是否通过事件、代价、误用或人物反应验证，而不只是旁白说明？
+- "不是X而是Y / 不是X，是Y"是否超过 1 次？如果超过，必须在 `final.txt` 前重写。保留的唯一一次必须在 review 中说明为什么非用不可。
 
 ### 回报与期待检查
 - 本章给了读者什么具体回报？

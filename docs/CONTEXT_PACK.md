@@ -140,7 +140,7 @@ chapters/ch001/context_pack.md
 - 上一章承接点
 - 当前 active_flow 位置
 - 本章 chapter_function、pressure_curve、reader_question_flow
-- 本章的 inbound pressure、chapter turn、outbound pressure、交接（planning 中为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff）
+- 本章的 current_handoff、pressure_curve、chapter_turn、planned_handoff（写完后在 canon_delta 中记录 actual_handoff）
 - 本章 core_advance：唯一核心推进、必须发生事项、必须不完成事项
 - 本章 information_release：本章只释放哪些核心新变量，哪些信息、规则、身份、资源或关系必须延后
 - 本章 side_yield：除核心推进外，进入长期记忆的世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔

@@ -36,8 +36,8 @@
 - 只有明确场景切换时，才允许额外空行或使用一行分隔符。
 - 不要在 TXT 正文中写 `##`、清单、审稿意见、YAML 或流程字段。
 - 仍然要正常分段。禁止把多个动作、对话、说明和情绪反应压进一个巨大自然段。
-- 2000-3500 中文字章节通常应有 35-70 个正文段落；面向手机阅读时宁可略密分段。
-- 多数正文段落建议 35-100 中文字；超过 120 字应考虑拆分，超过 160 字通常会造成手机阅读负担，超过 220 字视为格式失败。
+- 段落数按章节类型浮动：打脸/战斗章通常更短更密，种田/日常章可以稍长，悬疑/副本章按信息释放切段。面向手机阅读时宁可略密分段。
+- 多数正文段落建议 40-160 中文字；超过 220 字视为格式失败，除非 review 明确说明这是刻意保留的长镜头或完整动作链。
 - 动作变化、说话人变化、反应落点、新信息出现、视角/镜头变化、节奏停顿时，应主动分段。
 
 ## 3. Markdown
@@ -114,7 +114,7 @@ chapters/ch001/
 - 当前 `planning/active_flow.yml` 位置
 - 上一章 `actual_handoff`（写完后记录的实际交接）
 - 本章 chapter_function、pressure_curve、reader_question_flow
-- 本章 inbound pressure、chapter turn、outbound pressure
+- 本章 current_handoff、pressure_curve、chapter_turn、planned_handoff
 - 本章 core_advance：唯一核心推进、必须发生的剧情内容、必须不完成的事项
 - 本章 information_release：本章只释放哪些核心新变量，哪些信息、规则、身份、资源或关系必须延后
 - 本章 side_yield：除核心推进外，进入长期记忆的世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔
@@ -224,7 +224,7 @@ actual_handoff:
 
 它只保存当前未来窗口，不长期保留已完成章节。已完成章纲归档到 `planning/completed_plan_log.yml`，更远期灵感和未来可能放入 `planning/future_backlog.yml`。
 
-它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`chapter_function`、`pressure_curve`、`reader_question_flow`、`core_advance`、`information_release`、人物意图、阻力或意外、`chapter_turn`、读者回报、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和限制。
+它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`chapter_function`、`pressure_curve`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和限制。
 
 每章应尽量只有一个核心外部推进，并明确 `must_not_complete`。`叙事织入` 用来保留人物、世界、系统和社会结构周围的织入材料：生活细节、人物反应、对话摩擦、关系温度、世界/制度/规则质感、场景物件、轻微误读、停顿、尴尬、柔软、小幽默或人物习惯。正文可以有无直接剧情功能的段落，只要它们增强人物和场景的自然感。
 
