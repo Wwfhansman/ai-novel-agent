@@ -61,17 +61,17 @@ STALE_PLANNING_PATTERNS = [
 ]
 
 REQUIRED_PLANNING_FIELDS = [
-    "macro_stage",
-    "scale_level",
-    "chapter_function",
-    "pressure_curve",
-    "reader_question_flow",
-    "core_advance",
-    "information_release",
-    "chapter_turn",
-    "side_yield",
-    "planned_handoff",
-    "叙事织入",
+    ("macro_stage",),
+    ("scale_level",),
+    ("chapter_function",),
+    ("pressure_curve",),
+    ("reader_question_flow",),
+    ("core_advance",),
+    ("information_release",),
+    ("chapter_turn",),
+    ("side_yield",),
+    ("planned_handoff",),
+    ("叙事织入", "narrative_weave"),
 ]
 
 REQUIRED_CHAPTER_FILES = [
@@ -82,6 +82,12 @@ REQUIRED_CHAPTER_FILES = [
     "review.md",
     "summary.yml",
     "canon_delta.yml",
+]
+
+QUALITY_GATE_FILES = [
+    "prompt.md",
+    "reader_pass.md",
+    "memory_update_plan.md",
 ]
 
 REQUIRED_CONTEXT_SECTIONS = [
@@ -319,6 +325,57 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
         if not path.exists():
             errors.append(f"MISSING_CHAPTER_FILE: {path}")
 
+    for filename in QUALITY_GATE_FILES:
+        path = chapter_dir / filename
+        if not path.exists():
+            warnings.append(
+                f"MISSING_QUALITY_GATE: {path} is missing. New workflow expects this file before accepting final.txt."
+            )
+
+    reader_pass = chapter_dir / "reader_pass.md"
+    if reader_pass.exists():
+        text = reader_pass.read_text(encoding="utf-8")
+        if re.search(r"(是否允许进入\s*final|final verdict|verdict)\s*[:：]?\s*\n\s*revise required\b", text, re.IGNORECASE) or re.search(
+            r"^\s*(是否允许进入\s*final|final verdict|verdict)\s*[:：]\s*revise required\b",
+            text,
+            re.IGNORECASE | re.MULTILINE,
+        ):
+            errors.append(
+                f"READER_PASS_BLOCKED: {reader_pass} says revise required; revise draft before accepting final.txt."
+            )
+        if "最值得保留的一段" not in text and "Passage Worth Keeping" not in text:
+            warnings.append(
+                f"READER_PASS_INCOMPLETE: {reader_pass} should identify a passage worth keeping."
+            )
+        if "cold_reader_subagent" not in text and "same_agent_fallback" not in text:
+            warnings.append(
+                f"READER_PASS_READER_UNSPECIFIED: {reader_pass} should record cold_reader_subagent or same_agent_fallback."
+            )
+        if "局部润色建议" not in text and "Prose Polish" not in text:
+            warnings.append(
+                f"READER_PASS_POLISH_MISSING: {reader_pass} should include local prose polish suggestions "
+                "for stiff phrasing, odd cuts, unnatural description, or dialogue rhythm."
+            )
+
+    memory_plan = chapter_dir / "memory_update_plan.md"
+    if memory_plan.exists():
+        text = memory_plan.read_text(encoding="utf-8")
+        if not re.search(r"status\s*:\s*(ready_for_director_merge|needs_director_review)", text):
+            warnings.append(
+                f"MEMORY_PLAN_STATUS_MISSING: {memory_plan} should record status: "
+                "ready_for_director_merge / needs_director_review."
+            )
+        if not re.search(r"evidence|证据", text, re.IGNORECASE):
+            warnings.append(
+                f"MEMORY_PLAN_EVIDENCE_MISSING: {memory_plan} should cite evidence from final.txt "
+                "for proposed memory changes."
+            )
+        if re.search(r"(已在\s*director\s*监督下直接更新|本章已完成的更新|以下文件已.*直接更新|已直接更新|##\s*合并判断|已合并文件|director\s*已审核并合并)", text):
+            errors.append(
+                f"ARCHIVIST_DIRECT_MERGE_CLAIM: {memory_plan} claims files were directly updated. "
+                "memory_update_plan.md must remain a draft proposal; director merge status belongs in review.md."
+            )
+
     context_pack = chapter_dir / "context_pack.md"
     if context_pack.exists():
         text = context_pack.read_text(encoding="utf-8")
@@ -346,6 +403,28 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 warnings.append(
                     f"MISSING_REVIEW_SECTION: {review} lacks {en_section} / {zh_section}."
                 )
+        stale_markers = [
+            (chapter_dir / "memory_update_plan.md", r"memory_update_plan\.md\s*(尚未生成|未生成|待.*生成|将在.*生成)"),
+            (chapter_dir / "summary.yml", r"summary\.yml\s*(⏳|尚未生成|未生成|待.*生成)"),
+            (chapter_dir / "canon_delta.yml", r"canon_delta\.yml\s*(⏳|尚未生成|未生成|待.*生成)"),
+            (chapter_dir / "reader_pass.md", r"reader_pass\.md\s*(尚未生成|未生成|待.*生成)"),
+        ]
+        for artifact, pattern in stale_markers:
+            if artifact.exists() and re.search(pattern, text, re.IGNORECASE):
+                errors.append(
+                    f"STALE_REVIEW_STATUS: {review} still says {artifact.name} is pending/missing, "
+                    "but the file exists. Refresh review.md after final reconciliation."
+                )
+        memory_plan = chapter_dir / "memory_update_plan.md"
+        if memory_plan.exists() and not re.search(
+            r"(Post[- ]Merge QA|最终\s*QA|最终验证|最终校验|Validation passed|validator.*(通过|passed))",
+            text,
+            re.IGNORECASE,
+        ):
+            errors.append(
+                f"POST_MERGE_QA_MISSING: {review} must record the final post-merge QA/validator result. "
+                "Run QA after director merges memory and planning updates; pre-merge QA is not enough."
+            )
 
     # Handoff checks — accept both old and new field names
     for fname, label in [("summary.yml", "summary"), ("canon_delta.yml", "canon_delta")]:
@@ -408,15 +487,17 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
                     f"STALE_PLANNING_FIELD: {path} contains old planning language matching /{pattern}/."
                 )
         if path.name == "rolling_plan.yml":
-            for field in REQUIRED_PLANNING_FIELDS:
-                if field not in text:
-                    warnings.append(f"MISSING_FLOW_FIELD: {path} lacks {field}.")
+            for aliases in REQUIRED_PLANNING_FIELDS:
+                if not any(field in text for field in aliases):
+                    warnings.append(f"MISSING_FLOW_FIELD: {path} lacks {' / '.join(aliases)}.")
         if path.name == "rolling_plan.yml" and re.search(r"\bstatus\s*:\s*completed\b", text):
             errors.append(
                 f"COMPLETED_PLAN_NOT_ARCHIVED: {path} contains completed chapters. "
                 "Move finished chapter plan entries to planning/completed_plan_log.yml "
                 "and keep rolling_plan.yml as the future window."
             )
+
+    errors.extend(_validate_planning_state_uniqueness(project))
 
     for path in [
         project / "planning" / "completed_plan_log.yml",
@@ -450,6 +531,83 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
                     )
 
     return errors, warnings
+
+
+def _chapter_sort_key(chapter: str) -> int:
+    match = re.search(r"ch(\d+)", chapter)
+    return int(match.group(1)) if match else -1
+
+
+def _expand_window(window: str) -> set[str]:
+    match = re.search(r"ch(\d+)\s*-\s*ch(\d+)", window)
+    if not match:
+        one = re.search(r"ch(\d+)", window)
+        return {f"ch{int(one.group(1)):03d}"} if one else set()
+    start = int(match.group(1))
+    end = int(match.group(2))
+    if end < start:
+        return set()
+    return {f"ch{i:03d}" for i in range(start, end + 1)}
+
+
+def _extract_rolling_plan_chapters(text: str) -> list[tuple[str, str | None]]:
+    chapters: list[tuple[str, str | None]] = []
+    matches = list(re.finditer(r"^\s*-\s*chapter\s*:\s*[\"']?(ch\d+)[\"']?", text, re.MULTILINE))
+    for i, match in enumerate(matches):
+        chapter = match.group(1)
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        block = text[match.start():end]
+        status_match = re.search(r"^\s*status\s*:\s*[\"']?([\w_-]+)", block, re.MULTILINE)
+        chapters.append((chapter, status_match.group(1) if status_match else None))
+    return chapters
+
+
+def _extract_archived_chapters(text: str) -> set[str]:
+    return set(re.findall(r"^\s*-\s*chapter\s*:\s*[\"']?(ch\d+)[\"']?", text, re.MULTILINE))
+
+
+def _validate_planning_state_uniqueness(project: Path) -> list[str]:
+    """Check that finished plan history and future rolling window do not overlap."""
+    errors: list[str] = []
+    rolling = project / "planning" / "rolling_plan.yml"
+    completed = project / "planning" / "completed_plan_log.yml"
+    if not rolling.exists() or not completed.exists():
+        return errors
+
+    rolling_text = rolling.read_text(encoding="utf-8")
+    completed_text = completed.read_text(encoding="utf-8")
+    rolling_chapters = _extract_rolling_plan_chapters(rolling_text)
+    rolling_ids = {chapter for chapter, _status in rolling_chapters}
+    completed_ids = _extract_archived_chapters(completed_text)
+    overlap = sorted(rolling_ids & completed_ids, key=_chapter_sort_key)
+    if overlap:
+        errors.append(
+            f"PLANNING_SOURCE_OVERLAP: {rolling} and {completed} both contain "
+            f"{', '.join(overlap)}. Keep completed chapters only in completed_plan_log.yml."
+        )
+
+    window_match = re.search(r"current_window\s*:\s*[\"']?([^\"'\n#]+)", rolling_text)
+    if window_match:
+        window_ids = _expand_window(window_match.group(1).strip())
+        window_overlap = sorted(window_ids & completed_ids, key=_chapter_sort_key)
+        if window_overlap:
+            errors.append(
+                f"ROLLING_WINDOW_INCLUDES_ARCHIVED: {rolling} current_window includes archived chapters "
+                f"{', '.join(window_overlap)}. Slide the window to the first unfinished chapter."
+            )
+
+    archived_match = re.search(r"archived_through\s*:\s*[\"']?(ch\d+)", completed_text)
+    if archived_match:
+        archived_no = _chapter_sort_key(archived_match.group(1))
+        stale = sorted(
+            chapter for chapter, _status in rolling_chapters if _chapter_sort_key(chapter) <= archived_no
+        )
+        if stale:
+            errors.append(
+                f"ROLLING_PLAN_BEFORE_ARCHIVE_BOUNDARY: {rolling} contains {', '.join(stale)} "
+                f"at or before archived_through={archived_match.group(1)}."
+            )
+    return errors
 
 
 def validate_project_yaml(project: Path) -> tuple[list[str], list[str]]:

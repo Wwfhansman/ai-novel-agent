@@ -22,3 +22,8 @@
 - `planning/active_flow.yml` last_cut 已更新。
 - entities/ledgers/planning 当前状态已同步。
 - 注意：canon_delta 的 actual_handoff 和 rolling_plan 的 planned_handoff 在本章中一致（"巡灯署推开灯廊门，领头人索要旧灯芯"），但后续章节出现偏差时应以 canon_delta 为准。
+
+## Post-Merge QA / 最终 QA
+- 示例项目 post-merge validator 已运行：`python3 scripts/validate_novel_output.py projects/example-project --chapters ch001`。
+- 结果：Validation passed with 1 warning（短氛围结尾示例保留）。
+- post-merge QA 后未再修改示例 canon 或 planning 状态。

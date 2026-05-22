@@ -103,17 +103,25 @@ novel-change
 → 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
 → 检查上一章 actual_handoff
 → 生成 chapter context_pack.md
+→ 生成 prompt.md（500 字以内的正文抬头纸）
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
 → 可选生成自由写作 notes
 → 写 draft.txt
-→ 自审
-→ 修改为 final.txt
+→ draft self-check（连续解释/任务执行/无体温段落必须先重写）
+→ 生成 reader_pass.md（冷读质量门）
+→ reader_pass 通过后写入 final.txt
+→ 运行 validator（诊断工具，不等于质量通过）
 → 生成 summary.yml
 → 生成 canon_delta.yml
+→ 生成 memory_update_plan.md 草案（如有 archivist，只能是草案）
 → 更新实体和动态账本
 → 更新 active_flow
 → 生成 actual_handoff，并同步 active_flow.last_cut.current_handoff
+→ 归档本章到 completed_plan_log.yml，并从 rolling_plan.yml 移除已完成条目
+→ 最终对账：review 不保留待生成状态；rolling_plan 只保留未来章节；completed_plan_log 只保留已完成章节
+→ post-merge QA：合并全部状态文件后运行 validator / novel-qa
+→ post-merge QA 通过后，本章才算完成
 ```
 
 ### 3.4 一轮结束流程
@@ -128,6 +136,7 @@ novel-change
 → 检查世界状态
 → 评估新灵感
 → 滑动刷新后续 6-15 章详细章纲
+→ 确认 rolling_plan.current_window 从第一章未完成章节开始
 → 记录本轮 diff 摘要
 → 写入 session log
 ```

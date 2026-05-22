@@ -43,9 +43,12 @@ Use three planning layers:
 
 ## Hard Rules
 
-- Never write `draft.txt` or `final.txt` before generating:
+- Never write `draft.txt` before generating:
   - `planning/context_packs/round_XXX_context_pack.md`
   - `chapters/chXXX/context_pack.md`
+  - `chapters/chXXX/prompt.md`
+- Never promote `draft.txt` into `final.txt` before completing draft self-check and `chapters/chXXX/reader_pass.md`.
+- `reader_pass.md` should be produced by an independent cold-reader subagent whenever the environment supports subagents. Same-agent cold reading is a fallback, not the default.
 - `planning/active_flow.yml`, `planning/rolling_plan.yml`, and `planning/current_round.yml` must be valid YAML before drafting.
 - Do not translate a plan, synopsis, outline, or checklist directly into prose.
 - Do not treat one chapter or one round as a complete narrative box.
@@ -54,7 +57,7 @@ Use three planning layers:
 - 承接后，在本章的 `brief.md`、`context_pack.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
 - Do not use docs, schemas, templates, examples, sample novels, or other projects as creative source material. They are process references only.
 - Do not silently change protected canon. Route major changes to `novel-change`.
-- Before accepting any `final.txt`, run `python scripts/validate_novel_output.py <project> --chapters chXXX` from the repository root when the script exists. If it fails, fix the listed issues and rerun. Do not call the chapter complete until validation passes.
+- Before accepting any `final.txt`, complete `reader_pass.md` and run `python scripts/validate_novel_output.py <project> --chapters chXXX` from the repository root when the script exists. If either quality gate blocks or validation fails, fix the listed issues and rerun. Do not call the chapter complete until both pass.
 - Read `planning/rolling_plan.yml` in full before each round. It is the future-planning authority.
 - Do not copy full project files or the full rolling plan into context packs. Context packs are working memory, not a duplicated database.
 - Follow `meta/model_policy.yml` when it exists. A fast or cheap model may assist mechanical tasks, but final prose, active_flow, rolling_plan, canon merges, and protected-file decisions must be confirmed by a premium model or human.
@@ -245,6 +248,7 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Read only relevant entity and ledger entries for this batch.
    - Read key old chapter originals when old foreshadowing, debts, objects, relationships, rules, or lines become relevant.
    - Write `planning/context_packs/round_XXX_context_pack.md`。**必须按照 `templates/project/planning/context_packs/round_001_context_pack.md` 的 section 结构填写。**
+   - Include a short "上一轮读者回看" based on rereading the previous round's `final.txt` files when they exist: best chapter, most assignment-like chapter, one sentence/paragraph that should have been fixed, and one flaw this round must not repeat.
    - Keep the round pack within the context budget unless the project is at a major transition or user explicitly asks for a fuller audit.
 
 5. **Create current round tracker**
@@ -263,16 +267,30 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
    - Chapter context must include `Source References` for long-form scale claims.
    - Treat `planning/active_flow.yml` `last_cut.current_handoff` as the primary handoff authority unless `novel-change` explicitly changes it.
    - Keep the chapter pack within the context budget unless the chapter is paying off old material.
+   - Generate `chapters/chXXX/prompt.md` from the chapter context and rolling plan. Keep it under 500 Chinese characters. It is the prose-writing card, not an audit file.
+   - `prompt.md` must contain only the immediate writing constraints: one-sentence chapter aim, chapter function/pressure curve, must happen, must not complete, 1-2 information-release points, 3 weave beats, 2-3 style constraints, and concrete model-voice traps to avoid.
    - Optionally write `outline.md` only as freeform notes if useful. Do not make it a required scene-beat checklist.
    - Draft `draft.txt` as novel prose.
-   - Revise for continuity, concreteness, anti-reporting, and cut-point behavior.
+   - Run a draft self-check before writing `final.txt`. If the draft contains three consecutive paragraphs of explanation/planning/inference/task execution without external action, dialogue, sensory input, or immediate character reaction, rewrite that section in draft first.
+   - Create `chapters/chXXX/reader_pass.md` before `final.txt`. This is a cold reader quality gate, not engineering review.
+   - Prefer a cold-reader subagent for `reader_pass.md`. Give it only `draft.txt`, `prompt.md`, style prose guidance from `book/style_memory.md`, `style/samples.md` if non-empty, and 1-2 sentences of necessary prior context.
+   - Do not give the cold-reader subagent `rolling_plan.yml`, YAML ledgers, `summary.yml`, `canon_delta.yml`, or engineering validation output. Its job is reader experience, prose, rhythm, character warmth, and dialogue naturalness.
+   - If subagents are unavailable, write `reader: same_agent_fallback` in `reader_pass.md`, explain why, and mark the cold-read confidence as lower.
+   - `reader_pass.md` must identify one passage worth keeping, the three stiffest spots, local prose-polish suggestions, 1-2 required local revisions, and `pass` or `revise required`.
+   - If `reader_pass.md` says `revise required`, or cannot identify any passage worth keeping, revise `draft.txt` before writing `final.txt`.
+   - Revise for reader experience, continuity, concreteness, anti-reporting, and cut-point behavior.
    - Write confirmed text to `final.txt`.
    - If a cheaper model assisted formatting or summaries, confirm no unreviewed cheap-model prose entered `final.txt` or canon state.
-   - Run `python scripts/validate_novel_output.py <project> --chapters chXXX --fix-format`.
+   - Run `python scripts/validate_novel_output.py <project> --chapters chXXX --fix-format`. In OpenCode, you may call `novel-qa` here as `phase: pre_merge` for an early mechanical QA pass. This is not the final completion gate.
    - If validation reports a reflective ending, short atmosphere ending, or protagonist thought ending, rewrite the ending and rerun validation.
    - Write `review.md`。**必须按照 `templates/project/chapters/ch001/review.md` 的 section 结构填写，section 名可用中文或英文，但结构需完整。审查是诊断性的，不是自我表扬。必须至少指出一个弱点或风险并给出具体的修改建议。**
+   - In OpenCode, prefer calling `novel-archivist` after `final.txt` is accepted to produce `chapters/chXXX/memory_update_plan.md`. Treat it as a draft, not an automatic canon merge.
    - Merge current state into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
    - Update `planning/active_flow.yml` with the chapter's actual last visible cut and handoff.
+   - Archive the completed chapter plan to `planning/completed_plan_log.yml` and remove it from `planning/rolling_plan.yml`.
+   - Run post-merge QA after all state files are merged: `python scripts/validate_novel_output.py <project> --chapters chXXX`. In OpenCode, call `novel-qa` with `phase: post_merge`.
+   - If post-merge QA fails, fix the state files and rerun it. Do not mark the chapter complete until post-merge QA passes.
+   - Record the final post-merge QA command/result and remaining warnings in `review.md`. If you edit canon or planning files after this, rerun post-merge QA.
 
 7. **End round**
    - Do not close the narrative flow just because the round ended.
@@ -365,15 +383,66 @@ If the rolling synopsis is too thin, expand it before drafting. Do not compensat
 - 在动作变化、说话人变化、反应落点、新信息出现、镜头变化、节奏停顿时主动分段。
 - 避免没有叙事功能的密集碎行——短段要有真正的节拍承载。
 
+## Draft Self-Check And Cold Reader Gate
+
+在写 `final.txt` 之前，必须先完成 draft self-check 和 `reader_pass.md`。这两步是质量门，不是事后总结。
+
+Draft self-check 硬规则：
+
+- 如果连续 3 段都在解释规则、计划、推理、势力、系统或任务执行，必须先局部重写。
+- 如果连续 3 段没有外部动作、对话、感官输入或人物即时反应，必须先局部重写。
+- 如果对话只是在交换信息，没有停顿、遮掩、误解、情绪、动作或关系变化，必须先局部重写。
+- 如果找不到一段让读者愿意停下来多看一眼的段落，不能进入 `final.txt`。
+- 停下来重写的成本低于产出差的 `final.txt` 后假装没看到。
+
+`reader_pass.md` 默认由独立 cold-reader subagent 生成。该 subagent 的身份是同类型中文网文资深责编，只看读者体验、文笔自然度、节奏松紧、人物体温、对白是否像人说话，以及局部断句、描写、转场是否僵硬。不要检查 YAML、账本或工程完整性。输出必须短，通常 300-800 字。
+
+Cold-reader subagent 只接收：
+
+- `draft.txt`
+- `prompt.md`
+- `book/style_memory.md` 中与文笔有关的部分
+- `style/samples.md`（如果有真实内容）
+- 1-2 句必要前情
+
+不要给 cold-reader subagent：`planning/rolling_plan.yml`、动态账本、`summary.yml`、`canon_delta.yml`、validator 输出或工程同步任务。避免工程上下文污染读者判断。
+
+如果运行环境不能启用 subagent，允许同 agent fallback，但必须在 `reader_pass.md` 中写明：
+
+- `reader: same_agent_fallback`
+- fallback 原因
+- 冷读置信度较低
+
+`reader_pass.md` 输出：
+
+0. reader：`cold_reader_subagent` / `same_agent_fallback`。
+1. 最值得保留的一段：如果没有，写"没有"。
+2. 最生硬的 3 处。
+3. 局部润色建议：3-5 条，针对断句僵硬、描写不自然、对话像信息交换、转场突兀或句式重复。可以给短句级替换方向，但不要整段代写，不要改变剧情事实。
+4. 必须重写的 1-2 个局部。
+5. 是否允许进入 final：`pass` / `revise required`。
+
+如果输出 `revise required`，或"最值得保留的一段"为"没有"，必须重写 draft 后再重新冷读。
+
 ## 审查清单
 
-在写 `final.txt` 之前，创建或更新 `review.md`。审查必须是诊断性的，不是自我表扬。必须至少指出一个弱点或风险，并说明是否已修复。
+在写 `final.txt` 之后，创建或更新 `review.md`。审查必须是诊断性的，不是自我表扬。必须至少指出一个弱点或风险，并说明是否已修复。`review.md` 不能替代 `reader_pass.md`；它记录最终质量风险和工程同步结果。
 
 检查：
 
 ### 连续性与容器检查
 - 本章是 active flow 上的一个切分，还是一个独立的故事容器？
 - 开头是否承接了上一章的切口？如果没有，转换是否在 context pack 和 review 中说明了理由？
+
+### 最终对账检查
+- `review.md` 不得保留“summary.yml / canon_delta.yml / memory_update_plan.md 尚未生成、待生成、⏳”这类过期状态。
+- `memory_update_plan.md` 必须保持草案身份；不要把 archivist 草案改成“已直接更新”的执行报告。
+- `memory_update_plan.md` 不得包含“合并判断”“已合并文件”“director 已审核并合并”这类执行结果表述。
+- director 合并记忆库后，把实际合并结果写进 `review.md` 的工程同步段。
+- `rolling_plan.yml` 只保留未来未完成章节；已完成章节必须移动到 `planning/completed_plan_log.yml`。
+- `current_window` 必须从第一章未完成章节开始，不能覆盖已归档章节。
+- post-merge QA 必须在所有 `entities/`、`ledgers/`、`planning/`、`summary.yml`、`canon_delta.yml` 修改之后运行。pre-merge QA 不能替代它。
+- `review.md` 必须记录最终 QA/validator 结果；如果最终 QA 后又改了 canon 或 planning，必须重新 QA。
 - 本章是否跟随了详细章纲，但没有写成章纲翻译？
 - 如果是本批次最后一章，是否避免了因批次结束而变成总结/复盘/暂停？
 

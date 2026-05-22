@@ -96,8 +96,11 @@ YAML 字段应尽量稳定，便于 agent 更新。
 chapters/ch001/
   brief.md
   outline.md
+  prompt.md
   draft.txt
+  reader_pass.md
   final.txt
+  memory_update_plan.md
   summary.yml
   canon_delta.yml
   review.md
@@ -138,15 +141,48 @@ chapters/ch001/
 
 不允许把它写成固定结构清单并机械翻译为正文。
 
-### 5.3 draft.txt
+### 5.3 prompt.md
+
+正文生成前的抬头纸，控制在 500 字以内。它不是审计记录，只放写作时必须盯住的即时约束：本章一句话目标、chapter_function、pressure_curve、must_happen、must_not_complete、1-2 个信息释放点、3 个叙事织入点、2-3 条文笔约束和必须避开的模型腔。
+
+`prompt.md` 不能替代 `context_pack.md`。context pack 仍是写前证据包，负责记录读取来源、关键结论和可审计上下文。
+
+### 5.4 draft.txt
 
 AI 初稿。格式遵守 TXT 正文格式。
 
-### 5.4 final.txt
+### 5.5 reader_pass.md
+
+draft 到 final 之间的冷读质量门，通常 300-800 字。它只看读者体验、文笔自然度、节奏松紧、人物体温和对白是否像人说话；不检查 YAML、账本或工程同步。
+
+必须包含：
+
+- reader：`cold_reader_subagent` / `same_agent_fallback`。如果 fallback，说明原因。
+- 最值得保留的一段。如果没有，写"没有"。
+- 最生硬的 3 处。
+- 局部润色建议：3-5 条，只看断句、描写自然度、对话呼吸、转场和句式重复；可以给短句级改法，不整段代写，不改变剧情事实。
+- 必须重写的 1-2 个局部。
+- 是否允许进入 final：`pass` / `revise required`。
+
+如果 `reader_pass.md` 输出 `revise required`，或找不到值得保留的一段，不能写入 `final.txt`。
+
+### 5.6 final.txt
 
 确认后的正文。格式遵守 TXT 正文格式。
 
-### 5.5 summary.yml
+`final.txt` 不是 `draft.txt` 的格式整理版，而是 draft 经过自检、冷读和必要改写后的确认版。
+
+### 5.7 memory_update_plan.md
+
+final 确认后的记忆更新草案。它不是正史，不是当前状态文件，只用于让主控 agent 审核并合并 `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/`、`planning/` 更新。
+
+如果由 `novel-archivist` 生成，必须包含 evidence 和 confidence；不确定项必须写入 Open Questions，不得静默猜测。
+
+`memory_update_plan.md` 永远是草案，不得写“本章已完成的更新”“以下文件已直接更新”“已在 director 监督下直接更新”。主控合并后的结果写入 `review.md` 的工程同步段。
+
+它也不得写“合并判断”“已合并文件”或用 ✅ 表示状态文件已经更新。archivist 只能写建议和证据；执行结果属于 `review.md`。
+
+### 5.8 summary.yml
 
 章节摘要。用于快速理解章节内容；冲突时回看 `final.txt`。
 
@@ -170,7 +206,7 @@ external_result: ""
 actual_handoff: ""
 ```
 
-### 5.6 canon_delta.yml
+### 5.9 canon_delta.yml
 
 章节造成的状态变化记录。它不是当前状态总表。
 

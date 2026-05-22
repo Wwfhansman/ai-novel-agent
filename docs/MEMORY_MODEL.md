@@ -140,8 +140,11 @@ chapters/ch001/
 ```text
 brief.md
 outline.md
+prompt.md
 draft.txt
+reader_pass.md
 final.txt
+memory_update_plan.md
 summary.yml
 canon_delta.yml
 review.md
@@ -160,6 +163,9 @@ review.md
 - `canon_delta.yml`：这一章改变了什么。
 - `brief.md`：从近期详细章纲抽取出的本章交接说明。
 - `outline.md`：可选创作草稿，不是强制 scene beats。
+- `prompt.md`：正文生成前的短抬头纸。
+- `reader_pass.md`：draft 到 final 之间的冷读质量门。
+- `memory_update_plan.md`：final 后的记忆更新草案，不是正史，需由主控审核合并。
 
 ### 3.5 实体层
 
@@ -299,7 +305,11 @@ expired
 每章写完后，内容应被消化为：
 
 ```text
-final.txt
+prompt.md
+→ draft.txt
+→ reader_pass.md
+→ final.txt
+→ memory_update_plan.md
 → summary.yml
 → canon_delta.yml
 → entities update

@@ -1,5 +1,13 @@
 # 章节审查
 
+## Final 前质量门
+
+- `prompt.md` 是否存在且控制在 500 字以内？
+- draft self-check 是否发现并修复了连续解释、连续任务执行、连续无动作/无对话/无感官输入的问题？
+- `reader_pass.md` 是否给出 `pass`？
+- 如果 `reader_pass.md` 曾给出 `revise required`，draft 如何改过？
+- 本章最值得保留的一段是哪一段？
+
 ## 章纲贴合度
 
 本章是否跟随了详细章纲，但没有写成章纲翻译？
@@ -82,3 +90,11 @@
 - [ ] `ledgers/` 当前状态变化已同步。
 - [ ] `planning/active_flow.yml` 已更新 last_cut 和 current_handoff。
 - [ ] `planning/rolling_plan.yml` 已刷新。
+
+## Post-Merge QA / 最终 QA
+
+- [ ] post-merge QA 在 director 合并全部记忆和 planning 更新之后运行。
+- [ ] 运行命令：`python scripts/validate_novel_output.py <project> --chapters ch001`
+- [ ] 结果：Validation passed / Validation passed with warnings / failed。
+- [ ] 如果有 warning，列出 warning 和处理理由。
+- [ ] post-merge QA 之后没有再修改 `entities/`、`ledgers/`、`planning/`、`summary.yml` 或 `canon_delta.yml`；如果改过，已重新运行 QA。

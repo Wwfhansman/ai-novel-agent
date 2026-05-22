@@ -58,9 +58,9 @@ projects/my-novel/
 
 章节正文仍然完整保存，但主要用于需要精确细节时回看，而不是作为唯一记忆来源。
 
-### 写作前必须生成 Context Pack
+### 写作前必须生成 Context Pack 和 Prompt
 
-agent 正式写正文之前，必须先生成可复查的 `context_pack.md`。
+agent 正式写正文之前，必须先生成可复查的 `context_pack.md`，再压缩出 500 字以内的 `prompt.md` 抬头纸。context pack 负责证据和来源，prompt 负责正文生成时必须盯住的即时约束。
 
 Context Pack 记录：
 
@@ -181,6 +181,59 @@ meta/model_policy.yml
 ```
 
 详细规则见 [模型路由策略](docs/MODEL_ROUTING.md)。
+
+### OpenCode 多 Agent
+
+如果使用 OpenCode 创作，本项目提供第一阶段多 agent 配置：
+
+- `novel-director`：主控 / 导演 agent。
+- `novel-cold-reader`：冷读责编 subagent。
+- `novel-qa`：机械 QA subagent。
+- `novel-archivist`：严格记忆档案员 subagent。
+
+启动方式不需要改变。在项目根目录运行：
+
+```bash
+opencode
+```
+
+OpenCode 会按 `opencode.json` 默认进入 `novel-director`。你仍然像以前一样输入写作提示词，例如：
+
+```text
+继续 projects/my-novel，写下一轮 3 章，按 novel-write 流程走。
+```
+
+`novel-director` 会在流程中调用：
+
+- `novel-cold-reader`：生成 `reader_pass.md`，只看文笔、节奏、人物体温、读者体验和局部润色建议；不看工程文件。
+- `novel-qa`：检查 validator、TXT/YAML 格式和质量门漏项。
+- `novel-archivist`：在 final 确认后生成 `memory_update_plan.md` 和记忆更新草案。
+
+当前模板按 OpenCode Go 官方套餐写法配置模型：
+
+```yaml
+model: opencode-go/deepseek-v4-flash
+```
+
+其中 `opencode-go` 是 provider 名。不要写成 `opencode` 或 `OpenCode Go`；OpenCode 的 `model:` 字段需要 provider 的机器名。
+
+如果你使用其他模型提供商，或者你的 OpenCode `/models` 里模型 ID 不同，只需要改这两个文件的 `model:` 行：
+
+```text
+.opencode/agents/novel-cold-reader.md
+.opencode/agents/novel-qa.md
+.opencode/agents/novel-archivist.md
+```
+
+OpenCode 的写法通常是：
+
+```text
+provider/model-id
+```
+
+例如你可以换成自己已连接 provider 下的轻量模型。建议只把冷读、QA 和记忆更新草案放到轻量模型；正文 final、重大剧情方向、active_flow/rolling_plan 重构和 canon 最终合并仍应由强模型或人类确认。
+
+配置文件位于 `.opencode/agents/`，详细说明见 [OpenCode 多 Agent 配置](docs/OPENCODE_AGENTS.md)。
 
 ## 项目包含什么
 
@@ -320,7 +373,7 @@ Use skills/novel-write to continue projects/my-novel.
 - 写下一个生产批次，默认 3 章。
 - 遵守 meta/model_policy.yml：正文、active_flow、rolling_plan、canon 最终合并必须由 premium_model 或人类确认。
 - fast_model 只可用于 YAML 检查、TXT 空行修复、脚本报错整理、session log、diff 摘要等低风险任务。
-- 先编译 round context pack，再逐章编译 chapter context pack。
+- 先编译 round context pack，再逐章编译 chapter context pack，并为每章生成 500 字以内的 prompt.md 抬头纸。
 - 每轮必须全文读取 planning/rolling_plan.yml，但 context pack 只摘录本批次、相邻章节和影响本批次的后续约束。
 - round context pack 控制在 3000-5000 中文字；chapter context pack 控制在 1000-2500 中文字。
 - 人物、物品、伏笔、债务、knowledge_state、world_state 按本章涉及对象定向读取，不要整份复述。
@@ -334,6 +387,10 @@ Use skills/novel-write to continue projects/my-novel.
   - side_yield：世界/系统质感、关系变化、资源/地位/账本变化或可复用伏笔。
   - 叙事织入：至少 3 个不直接解决任务、但让人物、场景、世界或系统自然生长的织入节拍。
   - density_control：限制主要任务数和新信息节点数。
+- 每章写 draft 前必须生成 `prompt.md`：只放本章即时写作约束，不超过 500 字。
+- draft 不能直接晋升 final。必须先完成 draft self-check 和 `reader_pass.md` 冷读质量门；`reader_pass.md` 优先由独立 cold-reader subagent 生成。
+- 如果 reader_pass 找不到值得保留的一段，或结论是 `revise required`，必须先重写 draft 局部，不能写 final。
+- reader_pass 必须包含局部润色建议，用读者视角指出断句僵硬、描写不自然、对话像信息交换、转场突兀或句式重复的问题。它可以给短句级替换方向，但不整段代写、不改变剧情事实。
 - 不要把这一轮 3 章写成一个独立小故事。
 - 不要让最后一章因为 round 结束而复盘、总结、收束或战略规划。
 
@@ -347,8 +404,11 @@ Use skills/novel-write to continue projects/my-novel.
 - 结尾避免主角总结、分析、决定下一步。
 - 结尾必须留下具体的交接——规划中称为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff。
 - 每章写完必须运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
+- `Validation passed` 只说明格式和诊断规则通过，不等于文笔质量通过；质量门是 draft self-check 和 reader_pass。
 - 如果脚本报告 reflective ending、short atmosphere ending、protagonist thought ending，必须重写结尾后重新运行。
 - 写完每章后更新 summary.yml、canon_delta.yml、entities、ledgers、volumes、planning/active_flow.yml、planning/rolling_plan.yml。
+- **最终 QA 必须在记忆和 planning 合并之后运行。** pre-merge QA 只能提前发现格式问题，不能作为章节完成依据。post-merge QA/validator 通过前，不要把本章标记为 completed。
+- post-merge QA 之后如果又改了 `entities/`、`ledgers/`、`planning/`、`summary.yml` 或 `canon_delta.yml`，必须重新运行 post-merge QA。
 ```
 
 ### 只写下一章
@@ -367,8 +427,11 @@ Use skills/novel-write to write only the next chapter for projects/my-novel.
 - 叙事织入 至少包含 3 个织入节拍，用于人物反应、对话摩擦、生活感、关系温度、世界/制度/规则质感、场景质感、轻微误读、停顿、尴尬、柔软或小幽默。
 - 不要把所有对话都写成情报交换，不要让所有段落都服务于推进和解释。
 - TXT 正文按手机阅读优化：防长段、不卡短段。多数段落 40-160 字，超过 220 字必须拆分。
-- 写完必须运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
-- 写完后更新本章记忆和 active_flow。
+- 写完 final 后可以先运行 pre-merge QA：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
+- 生成 `summary.yml`、`canon_delta.yml` 和 `memory_update_plan.md` 草案；`memory_update_plan.md` 只能是草案，不能声称已合并或已直接更新。
+- director 合并 `entities/`、`ledgers/`、`volumes/`、`planning/active_flow.yml`、`planning/rolling_plan.yml`，并把本章从 rolling_plan 归档到 `completed_plan_log.yml`。
+- 合并后必须运行 post-merge QA：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX`。
+- post-merge QA/validator 通过前，不要把本章标记为 completed；如果 QA 后又改了 canon 或 planning 文件，必须重新 QA。
 ```
 
 ### 冷启动审查

@@ -167,6 +167,13 @@ fields:
     required: true
     purpose: Tone, rhythm, emotional carryover, and scene handoff from recent full chapters.
 
+  previous_round_reader_lookback:
+    required: false
+    purpose: >
+      Short reader-view reread of the previous round's final.txt files: best
+      chapter, most assignment-like chapter, one unfixed weak line/paragraph,
+      and one flaw to avoid this round.
+
   detailed_rolling_synopsis:
     required: true
     purpose: >

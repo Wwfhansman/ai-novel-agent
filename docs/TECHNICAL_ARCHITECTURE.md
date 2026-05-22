@@ -102,7 +102,7 @@ projects/my-novel/
 
 Context Compiler 是 MVP 的核心模块。
 
-MVP 阶段不一定实现为代码，但必须实现为标准化 artifact。每轮和每章写作前，agent 必须产出 `context_pack.md`，记录读取清单、读取原因、关键理解、旧章节回看、风险和写后更新清单。
+MVP 阶段不一定实现为代码，但必须实现为标准化 artifact。每轮和每章写作前，agent 必须产出 `context_pack.md`，记录读取清单、读取原因、关键理解、旧章节回看、风险和写后更新清单。每章正文生成前还必须从 context pack 压缩出 `prompt.md`；draft 到 final 之间必须产出 `reader_pass.md`。
 
 Context Compiler 的目标是生成工作记忆，不是复制整个项目数据库。`planning/rolling_plan.yml` 每轮必须全文读取，但 context pack 只摘录本批次、本章相邻内容和影响当前写作的后续约束。人物、物品、债务、伏笔和世界状态按本章涉及对象定向读取。
 
@@ -121,6 +121,8 @@ Context Compiler 的目标是生成工作记忆，不是复制整个项目数据
 ```text
 planning/context_packs/round_001_context_pack.md
 chapters/ch001/context_pack.md
+chapters/ch001/prompt.md
+chapters/ch001/reader_pass.md
 ```
 
 详细规范见 [上下文编译](CONTEXT_PACK.md)。

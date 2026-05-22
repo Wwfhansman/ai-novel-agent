@@ -74,6 +74,15 @@
 
 最近 3-5 章全文的语气、情绪承接、场景交接。
 
+## 上一轮读者回看
+
+基于上一轮 3 章 `final.txt` 的陌生读者重读，不只读 summary/review。
+
+- 最好看的一章：
+- 最像交作业的一章：
+- 最应该改但没改的一句话/一段：
+- 本轮必须避免重复的一个毛病：
+
 ## 本批次章纲摘录
 
 从 `planning/rolling_plan.yml` 摘录本批次 3 章的 synopsis、chapter_function、pressure_curve、planned_handoff。
