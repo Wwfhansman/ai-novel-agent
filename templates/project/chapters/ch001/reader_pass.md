@@ -34,3 +34,5 @@ reader: cold_reader_subagent / same_agent_fallback
 ## 是否允许进入 final
 
 pass / revise required
+
+如果这里是 `revise required`，修稿后必须补 `reader_recheck.md`，且 recheck verdict 为 `pass` 后才能写入 `final.txt`。

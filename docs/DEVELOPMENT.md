@@ -142,7 +142,7 @@ agent 对话不是正史。
 
 ```text
 planning/context_packs/round_001_context_pack.md
-chapters/ch001/context_pack.md
+chapters/ch001/writing_packet.md
 ```
 
 每轮开始读取：
@@ -161,7 +161,7 @@ chapters/ch001/context_pack.md
 
 每章开始读取：
 
-- 本章 brief
+- 本章 writing_packet 生成所需来源
 - active_flow 中的当前 pressure 和 handoff
 - 上章全文
 - 上章 canon_delta.yml 的 actual_handoff
@@ -172,13 +172,13 @@ chapters/ch001/context_pack.md
 - 本章信息可见性
 - 本章世界压力
 
-读取完成后，agent 必须把读取清单、读取原因、关键结论、回看旧章节和不确定项写入 context pack。不要把读过的文件全文复制进 context pack。
+读取完成后，agent 必须把读取清单、读取原因、关键结论、回看旧章节和不确定项写入 round context pack 或 chapter writing packet。不要把读过的文件全文复制进去。
 
 推荐预算：
 
 ```text
 round context pack: 3000-5000 中文字
-chapter context pack: 1000-2500 中文字
+chapter writing_packet: 1000-2500 中文字；Writing Card 500-700 中文字
 ```
 
 ## 6. 质量检查清单
@@ -218,7 +218,7 @@ scripts/check_missing_updates
 
 ### 7.3 compile_context
 
-根据当前章节和任务生成 context pack。
+根据当前章节和任务生成 writing packet。
 
 ### 7.4 export_novel
 

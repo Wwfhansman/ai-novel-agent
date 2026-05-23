@@ -4,8 +4,7 @@ project:
   status: bootstrapped-example
   current_volume: vol_001
   current_round: round_001
-  current_chapter: ch001
+  current_chapter: ch002
   language: zh-CN
   text_format: txt
   notes: "脱敏示例项目，只展示协议，不提供长篇正文。"
-

@@ -1,6 +1,6 @@
 # 写作心法与格式规则
 
-本文档从 `skills/novel-write/SKILL.md` 提取。写作时不必全文塞入 `prompt.md`，但 `prompt.md` 必须摘取本章最相关的硬约束。审查时参考 `skills/novel-review/SKILL.md`。
+本文档从 `skills/novel-write/SKILL.md` 提取。写作时不必全文塞入 `writing_packet.md`，但 Writing Card 必须摘取本章最相关的硬约束。审查时参考 `skills/novel-review/SKILL.md`。
 
 ## 写作心法
 

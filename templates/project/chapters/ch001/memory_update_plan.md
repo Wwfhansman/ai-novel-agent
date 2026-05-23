@@ -1,86 +1,43 @@
 # Memory Update Plan
 
+> v2 diff-only 草案。目标 50 行以内。不要复述 summary，不要输出完整 YAML，不要声称已合并。
+
 ## Source
 
 - chapter:
 - final_txt:
-- prior_state_files:
+- summary:
+- canon_delta:
+- status: ready_for_director_merge / needs_director_review
 
-## Confidence
+## Coverage Gaps
 
-status: ready_for_director_merge / needs_director_review
-reason:
+- none
 
-## Chapter Summary Draft
+## State Update Candidates
 
-```yaml
-chapter:
-title:
-status: final
-one_line_summary:
-detailed_summary: []
-characters_present: []
-locations: []
-key_events: []
-emotional_result:
-external_result:
-actual_handoff: []
-```
+- target:
+  operation:
+  value:
+  evidence:
+  confidence: high / medium / low
 
-## Canon Delta Draft
+## Planning Update Candidates
 
-```yaml
-chapter:
-new_facts: []
-character_changes: []
-relationship_changes: []
-world_state_changes: []
-knowledge_changes: []
-foreshadowing_added: []
-foreshadowing_advanced: []
-foreshadowing_paid: []
-narrative_debts_added: []
-narrative_debts_advanced: []
-narrative_debts_paid: []
-ideas_added: []
-actual_handoff: []
-```
+- target:
+  operation:
+  value:
+  evidence:
+  confidence: high / medium / low
 
-## Entities Update Draft
+## Manual Review
 
-- file:
-- existing_state:
-- proposed_change:
-- evidence:
-- confidence: high / medium / low
-
-## Ledgers Update Draft
-
-- file:
-- existing_state:
-- proposed_change:
-- evidence:
-- confidence: high / medium / low
-
-## Planning Update Draft
-
-- active_flow.last_cut.current_handoff:
-- rolling_plan changes needed:
-- completed_plan_log changes needed:
-- evidence:
-- confidence:
+- target:
+  reason:
+  evidence:
 
 ## Merge Boundary
 
 - this_file_is: draft_only
 - director_must_merge: true
 - no_direct_file_updates_claimed: true
-
-## Open Questions
-
-- 
-
-## Must Not Change
-
-- protected files not touched:
-- uncertain items left for director:

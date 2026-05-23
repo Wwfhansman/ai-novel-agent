@@ -1,6 +1,6 @@
 ---
 name: novel-review
-description: Review an AI Novel Agent project, round, chapter, or memory state. Use for cold-start continuity checks, quality review, source-of-truth conflict detection, context pack validation, narrative debt checks, information visibility checks, and run-drift diagnosis.
+description: Review an AI Novel Agent project, round, chapter, or memory state. Use for cold-start continuity checks, quality review, source-of-truth conflict detection, writing packet validation, narrative debt checks, information visibility checks, and run-drift diagnosis.
 ---
 
 # Novel Review
@@ -42,15 +42,15 @@ Read:
 
 ### 单章审查
 
-审查特定章节的 `context_pack.md`、`brief.md`、`draft.txt`/`final.txt`、`summary.yml`、`canon_delta.yml` 以及受影响的 `entities/`、`ledgers/`、`planning/`。检查最终状态文件是否在章节完成后更新。
+审查特定章节的 `writing_packet.md`、`draft.txt`/`final.txt`、`summary.yml`、`canon_delta.yml`、`memory_update_plan.md`、`planning/merge_previews/*` 以及受影响的 `entities/`、`ledgers/`、`planning/`。检查最终状态文件是否在章节完成后更新。
 
 ### 轮次审查
 
-审查最近 3 章：round context pack、所有 chapter context pack、所有章节摘要和 delta、更新后的账本和滚动章纲。检查批次是否产生了连贯的进展而没有变成人工的三章故事单元。
+审查最近 3 章：round context pack、所有 chapter writing packet、所有章节摘要和 delta、merge preview、更新后的账本和滚动章纲。检查批次是否产生了连贯的进展而没有变成人工的三章故事单元。
 
 ## 必查项
 
-1. **Context pack 有效性**：是否列出了读取文件、原因、关键收获、旧章节回看、不确定项和必须更新项？
+1. **Writing packet 有效性**：是否列出了读取文件、原因、关键收获、旧章节回看、不确定项、Writing Card 和必须更新项？
 
 2. **唯一事实来源一致性**：如果 summary、delta、entity state、ledger 和 planning 不一致，识别权威文件。
 
@@ -63,7 +63,7 @@ Read:
 6. **世界状态**：检查势力/资源/危机/公共压力是否对最近章节做出反应。
 
 7. **风格与类型对齐**：对照 `book/constitution.md`、`book/reader_model.yml`、`book/style_memory.md`。
-   - 如果 `style/samples.md` 非空，检查 `prompt.md` 是否提取了 3-5 条正向样本文风锚点，`reader_pass.md` 是否检查样本文风对齐，正文是否贴近样本的句子节奏、段落手感、描写温度、对话语感和情绪处理。
+   - 如果 `style/samples.md` 非空，检查 `writing_packet.md` 的 Writing Card 是否提取了 3-5 条正向样本文风锚点，`reader_pass.md` 是否检查样本文风对齐，正文是否贴近样本的句子节奏、段落手感、描写温度、对话语感和情绪处理。
    - 样本只允许提供语言方法；如果正文迁移了样本人名、地名、剧情、专有设定或标志性桥段，必须标记为污染风险。
 
 8. **长篇规模控制**：检查 `book/longform_blueprint.yml` 是否存在且为最新、当前章节是否属于预期宏观阶段、世界级名称和势力是否保持预期规模。标记规模缩水。
@@ -86,13 +86,13 @@ Read:
    - 检查 `final.txt` 标题后是否只有一空行、正文段落之间是否无空行。
 
 12. **读者回报**
-   - 检查每章是否在 review 或 context pack 中有 Reader Reward Check。
+   - 检查每章是否在 review 或 writing_packet 中有 Reader Reward Check。
    - 检查回报是否出现在实际正文中，而不只是计划中。
    - 标记只推进设定却没有 payoff/揭示/代价/杠杆变化/关系变化/难忘小说素材的章节。
 
 13. **模型路由**
    - 检查 `meta/model_policy.yml` 是否存在。
-   - 检查 context pack 和 session log 中是否记录了多模型使用情况。
+   - 检查 writing_packet / round context pack / session log 中是否记录了多模型使用情况。
    - 标记任何看起来只由 fast/cheap 模型完成的正文、active_flow、rolling_plan、受保护文件修改或正史合并。
 
 ## 输出格式
@@ -127,4 +127,4 @@ Read:
 - 不要重写正文。
 - 列出阻碍性的缺失文件或矛盾。
 - 推荐 `novel-change` 处理结构性变化。
-- 推荐重新生成 context pack——如果写作输入记录不完整。
+- 推荐重新生成 writing_packet——如果写作输入记录不完整。

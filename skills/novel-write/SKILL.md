@@ -28,33 +28,32 @@ Use these planning layers:
 
 - Never write `draft.txt` before generating:
   - `planning/context_packs/round_XXX_context_pack.md`
-  - `chapters/chXXX/context_pack.md`
-  - `chapters/chXXX/prompt.md`
+  - `chapters/chXXX/writing_packet.md`
 - Never promote `draft.txt` into `final.txt` before completing draft self-check and `chapters/chXXX/reader_pass.md`.
 - `reader_pass.md` should be produced by an independent cold-reader subagent whenever the environment supports subagents. Same-agent cold reading is a fallback, not the default.
 - `planning/active_flow.yml`, `planning/rolling_plan.yml`, and `planning/current_round.yml` must be valid YAML before drafting.
 - Do not translate a plan, synopsis, outline, or checklist directly into prose.
 - Do not treat one chapter or one round as a complete narrative box.
 - Round boundaries are production boundaries, not story boundaries. Do not make ch003/ch006/ch009 feel like cleanup, recap, reset, or phase closure unless `planning/active_flow.yml` and `planning/rolling_plan.yml` explicitly say the story has earned payoff.
-- 如果上一章的 `canon_delta.yml` 中有 `actual_handoff`，本章开头必须承接，除非在 context pack 和 review 中记录了有理有据的切换理由。
-- 承接后，在本章的 `brief.md`、`context_pack.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
+- 如果上一章的 `canon_delta.yml` 中有 `actual_handoff`，本章开头必须承接，除非在 `writing_packet.md` 和 review 中记录了有理有据的切换理由。
+- 承接后，在本章的 `writing_packet.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
 - Do not use docs, schemas, templates, examples, sample novels, or other projects as creative source material. They are process references only.
 - Do not silently change protected canon. Route major changes to `novel-change`.
 - Before accepting any `final.txt`, complete `reader_pass.md` and run `python scripts/validate_novel_output.py <project> --chapters chXXX` from the repository root when the script exists. If either quality gate blocks or validation fails, fix the listed issues and rerun. Do not call the chapter complete until both pass.
 - Read `planning/rolling_plan.yml` in full before each round. It is the future-planning authority.
-- Do not copy full project files or the full rolling plan into context packs. Context packs are working memory, not a duplicated database.
+- Do not copy full project files or the full rolling plan into round context packs or writing packets. They are working memory, not a duplicated database.
 - Follow `meta/model_policy.yml` when it exists. A fast or cheap model may assist mechanical tasks, but final prose, active_flow, rolling_plan, canon merges, and protected-file decisions must be confirmed by a premium model or human.
-- Key context-pack claims must include source refs. Do not rely on "I remember reading it."
+- Key `writing_packet.md` claims must include source refs. Do not rely on "I remember reading it."
 - Read `book/longform_blueprint.yml` before refreshing planning and before drafting. Treat it as protected. If it is missing, create a stop/fix task instead of guessing long-form scale.
-- Every round and chapter context pack must include a `Longform Scale Check`.
-- If `style/samples.md` contains real project style guidance, treat it as a positive prose anchor, not an optional appendix. Extract 3-5 chapter-specific style anchors into each `prompt.md`, and ask the cold reader/review to check sample alignment.
+- Every round context pack and chapter writing packet must include a `Longform Scale Check`.
+- If `style/samples.md` contains real project style guidance, treat it as a positive prose anchor, not an optional appendix. Extract 3-5 chapter-specific style anchors into each `writing_packet.md` Writing Card, and ask the cold reader/review to check sample alignment.
 - Do not silently change target length, macro stages, world scale, faction scale, power pacing, or secret reveal windows. Route those changes to `novel-change`.
 
 ## Context Budget Policy
 
 Use working-memory context: keep whole-book promise, current volume goal, active flow, long-form scale, and rolling plan in mind; read entity/ledger entries by relevance; reread old chapter originals only when a concrete trigger exists.
 
-Budgets: round context pack 3000-5000 Chinese characters; chapter context pack 1000-2500. Read `rolling_plan.yml` in full each round, but summarize only the batch chapters, adjacent chapters, and later constraints that affect this task.
+Budgets: round context pack 3000-5000 Chinese characters; chapter `writing_packet.md` 1000-2500 Chinese characters, with the Writing Card around 500-700. Read `rolling_plan.yml` in full each round, but summarize only the batch chapters, adjacent chapters, and later constraints that affect this task.
 
 ## Read First
 
@@ -68,7 +67,7 @@ Read once per session or when uncertain:
 - `planning/active_flow.yml`, `planning/rolling_plan.yml`, `planning/current_round.yml` if it exists
 - `meta/model_policy.yml` if it exists
 
-Do not paste these files into context packs. Extract only the operational conclusions needed for the current task.
+Do not paste these files into context packs or writing packets. Extract only the operational conclusions needed for the current task.
 
 ## Model Routing
 
@@ -78,7 +77,7 @@ Default:
 
 - Use `premium_model` for active_flow, rolling_plan, chapter concept, draft prose, final prose revision, ending rewrite, canon merge, and quality gate.
 - Use `fast_model` only for YAML/TXT formatting, validator error summaries, diff summaries, session logs, and other mechanical tasks whose output can be checked.
-- Hybrid context pack drafting is allowed, but the writing agent must confirm the final context pack before drafting.
+- Hybrid writing packet drafting is allowed, but the writing agent must confirm the final packet before drafting.
 - Never let `fast_model` directly write or approve `final.txt`.
 - Never let `fast_model` make Level 3-5 change decisions or protected-file edits.
 
@@ -110,23 +109,26 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 See `docs/WORKFLOWS.md` for the full workflow. Default round mode:
 
 1. **Prepare**: validate planning YAML, refresh `active_flow` / `rolling_plan`, compile round context, write `current_round.yml`.
-2. **Prebuild**: create all batch `brief.md`, `context_pack.md`, and concise `prompt.md` files before drafting.
+2. **Prebuild**: create all batch `writing_packet.md` files before drafting. Each packet includes audit context plus a concise Writing Card.
 3. **Continuous draft**: write all batch drafts back-to-back; between drafts only write `draft_handoff_note`. Do not run validator, merge canon, archive planning, or call QA between drafts.
 4. **Batch cold read and finalize**: run draft self-check, run `check_not_but.py --files draft.txt`, use cold-reader, revise drafts, then write `final.txt`.
-5. **Batch engineering merge**: write `review.md`, `summary.yml`, `canon_delta.yml`, `memory_update_plan.md`; merge current state into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
+5. **Batch engineering merge**: write `review.md`, `summary.yml`, `canon_delta.yml`, diff-only `memory_update_plan.md`; generate a merge preview, review it, then apply safe current-state updates into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
 6. **Post-merge QA**: run validator / `novel-qa phase: post_merge` after all state files are merged. Do not mark complete before this passes.
 
 Hard gates:
 
 - `reader_pass.md` must exist and pass before `final.txt`.
 - `canon_delta.yml` must include `state_sync` for affected current-state files.
+- `state_sync.status: needs_director_review` is not a completion state. Before post-merge QA, resolve every such target to `merged` / `updated` / `synced`, or `n/a` only when there was no substantive change.
+- Keep template headings stable in `writing_packet.md` and `review.md`; validator treats these headings as a machine-readable contract, not presentation text.
 - Changed character entries must update `last_updated` or `change_history`.
 - `active_flow.last_cut` must match the latest completed chapter.
 - `rolling_plan.yml` must only contain future unfinished chapters.
+- `planning/merge_previews/round_XXX.yml` must be generated before current-state files are applied; unresolved high-confidence pending operations block completion.
 
 ## 写作心法、TXT 格式和 draft self-check
 
-详见 `docs/WRITING_CRAFT.md`。`prompt.md` 必须从该文档和本章 context 中摘取适用约束，但不要全文复制。
+详见 `docs/WRITING_CRAFT.md`。`writing_packet.md` 的 Writing Card 必须从该文档和本章 context 中摘取适用约束，但不要全文复制。
 
 本 skill 内保留的硬门禁：
 
@@ -145,7 +147,7 @@ Hard gates:
 Cold-reader subagent 只接收：
 
 - `draft.txt`
-- `prompt.md`
+- `writing_packet.md` 中的 Writing Card
 - `book/style_memory.md` 中与文笔有关的部分
 - `style/samples.md`（如果有真实内容）
 - 1-2 句必要前情
@@ -172,6 +174,8 @@ Cold-reader subagent 只接收：
 ## 审查清单
 
 `review.md` 必须使用 `templates/project/chapters/ch001/review.md` 的结构，保持诊断性，不做自我表扬。它必须至少指出一个弱点或风险，并记录最终 QA / validator 结果。
+
+如果 `reader_pass.md` 曾输出 `revise required`，修稿后必须生成 `reader_recheck.md`，且 verdict 为 `pass` 后才能写 `final.txt`。
 
 不要在 skill 中复制审查清单；审查细则以模板、`docs/WRITING_CRAFT.md`、`docs/CANON_AND_SAFETY.md` 和 `skills/novel-review/SKILL.md` 为准。
 

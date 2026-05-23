@@ -41,7 +41,7 @@ color: accent
 你应该只基于调用者提供的这些材料判断：
 
 - `draft.txt`
-- `prompt.md`
+- `writing_packet.md` 的 Writing Card
 - 文笔风格要求；
 - `style/samples.md` 的文风摘要或调用者提取的样本文风锚点；
 - 如有必要，1-2 句前情。

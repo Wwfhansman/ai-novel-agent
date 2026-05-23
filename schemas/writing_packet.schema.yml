@@ -1,0 +1,33 @@
+schema: writing_packet
+purpose: >
+  New-project v2 chapter prewriting packet. It replaces the old brief.md +
+  context_pack.md + prompt.md trio while preserving auditability and prose
+  quality anchors.
+
+required_sections:
+  - Metadata
+  - Read Files
+  - Source References
+  - Longform Scale Check
+  - Cut Continuity
+  - Reader Reward Check
+  - Writing Card
+  - Required Updates After Writing
+
+writing_card_required_fields:
+  - one_line_goal
+  - chapter_function
+  - pressure_curve
+  - must_happen
+  - must_not_complete
+  - information_release
+  - narrative_weave
+  - sample_style_anchors
+  - prose_constraints
+
+rules:
+  - "Writing Card should stay around 500-700 Chinese characters."
+  - "If style/samples.md has real content, sample_style_anchors must contain 3-5 positive prose anchors."
+  - "Source References must cite file sources for key claims."
+  - "Longform Scale Check must be grounded in book/longform_blueprint.yml."
+  - "Required Updates After Writing must identify affected summary/canon/state/planning files."

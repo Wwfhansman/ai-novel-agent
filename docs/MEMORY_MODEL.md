@@ -138,11 +138,11 @@ chapters/ch001/
 文件：
 
 ```text
-brief.md
+writing_packet.md
 outline.md
-prompt.md
 draft.txt
 reader_pass.md
+reader_recheck.md
 final.txt
 memory_update_plan.md
 summary.yml
@@ -161,10 +161,10 @@ review.md
 - `final.txt`：正文细节。
 - `summary.yml`：这一章发生了什么。
 - `canon_delta.yml`：这一章改变了什么。
-- `brief.md`：从近期详细章纲抽取出的本章交接说明。
+- `writing_packet.md`：本章唯一写作前输入，合并证据包和正文 Writing Card。
 - `outline.md`：可选创作草稿，不是强制 scene beats。
-- `prompt.md`：正文生成前的短抬头纸。
 - `reader_pass.md`：draft 到 final 之间的冷读质量门。
+- `reader_recheck.md`：仅在 cold-reader 要求 revise 后，用于确认硬伤已修复。
 - `memory_update_plan.md`：final 后的记忆更新草案，不是正史，需由主控审核合并。
 
 ### 3.5 实体层
@@ -305,11 +305,13 @@ expired
 每章写完后，内容应被消化为：
 
 ```text
-prompt.md
+writing_packet.md
 → draft.txt
 → reader_pass.md
+→ reader_recheck.md（仅 revise required 后）
 → final.txt
 → memory_update_plan.md
+→ planning/merge_previews/round_XXX.yml
 → summary.yml
 → canon_delta.yml
 → entities update
@@ -325,7 +327,8 @@ prompt.md
 - `canon_delta.yml` 保存该章造成了什么变化。
 - `entities/`、`ledgers/` 保存合并后的当前权威状态。
 - `planning/active_flow.yml` 保存当前跨轮连续剧情流，避免三章一轮被误写成独立叙事块。
-- `planning/rolling_plan.yml` 保存刷新后的未来 6-15 章详细章纲，避免下一轮重复已经完成的剧情选择。
+- `planning/rolling_plan.yml` 保存刷新后的未来 6-10 章详细章纲，避免下一轮重复已经完成的剧情选择。
+- `planning/merge_previews/` 保存工程合并前的结构化变更预览。
 
 `canon_delta.yml` 不能替代当前状态文件。agent 冷启动时应以当前状态文件为准，再按需回看 delta 和正文。
 
@@ -339,7 +342,7 @@ prompt.md
 rolling_plan 全文读取，摘要输出
 completed_plan_log 按需审计
 future_backlog 只读相关远期点子
-详细章纲驱动剧情，但 context pack 不复制全文
+详细章纲驱动剧情，但 writing packet 不复制全文
 ```
 
 推荐默认读取：
@@ -357,7 +360,7 @@ future_backlog 只读相关远期点子
 - 本章涉及的动态账本条目
 - 本章任务
 
-每次读取结果必须写入 context pack。上下文编译不是隐性过程，但 context pack 是工作记忆，不是资料库全文副本。见 [上下文编译](CONTEXT_PACK.md)。
+每次读取结果必须写入 round context pack 或 chapter writing packet。上下文编译不是隐性过程，但 writing packet 是工作记忆，不是资料库全文副本。见 [上下文编译](CONTEXT_PACK.md)。
 
 ## 7. 正史边界
 

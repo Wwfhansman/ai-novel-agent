@@ -1,0 +1,67 @@
+---
+project: example-project
+round: round_001
+chapters:
+- ch001
+generated_at: '2026-05-23T05:49:33.399960+00:00'
+source_files:
+- chapters/ch001/canon_delta.yml
+- chapters/ch001/memory_update_plan.md
+operations:
+- op: append_change_history
+  target: entities/characters.yml
+  chapter: ch001
+  entity: char_lin_qi
+  value:
+    chapter: ch001
+    change: 从普通修灯人变成私下藏匿线索的人。
+  evidence: 'ch001 character_changes: 从普通修灯人变成私下藏匿线索的人。'
+  confidence: high
+  status: applied
+- op: set_last_updated
+  target: entities/characters.yml
+  chapter: ch001
+  entity: char_lin_qi
+  value: ch001
+  evidence: ch001 character_changes mentions char_lin_qi.
+  confidence: high
+  status: applied
+- op: archive_completed_chapter
+  target: planning/rolling_plan.yml
+  chapter: ch001
+  entity: 
+  value:
+    chapter: ch001
+    status: completed
+    actual_handoff:
+    - 巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？
+  evidence: ch001 has final canon_delta and is still in rolling_plan.
+  confidence: high
+  status: applied
+- op: update_active_flow_cut
+  target: planning/active_flow.yml
+  chapter: ch001
+  entity: current_flow.last_cut
+  value:
+    chapter: ch001
+    current_handoff:
+    - 巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？
+  evidence: ch001 actual_handoff from canon_delta.yml.
+  confidence: high
+  status: applied
+manual_review: []
+apply_log:
+- op: append_change_history
+  target: entities/characters.yml
+  entity: char_lin_qi
+  status: applied
+- op: set_last_updated
+  target: entities/characters.yml
+  entity: char_lin_qi
+  status: applied
+- op: archive_completed_chapter
+  chapter: ch001
+  status: applied
+- op: update_active_flow_cut
+  chapter: ch001
+  status: applied

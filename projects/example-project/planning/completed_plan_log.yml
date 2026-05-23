@@ -1,3 +1,63 @@
-archived_through: null
-entries: []
+---
+archived_through: ch001
+entries:
+- chapter: ch001
+  title: 旧灯芯
+  status: completed
+  macro_stage: part_001
+  scale_level: 街区
+  flow_id: arc_001_old_wick
+  flow_position: opening
+  chapter_function: investigation
+  pressure_curve: 低开例行 → 中段异常浮现 → 高压巡灯署逼近 → 交接
+  reader_question_flow:
+    enters_with: 为什么旧雾灯反复熄灭？
+    leaves_with: 巡灯署为什么急着回收旧灯芯？如果发现碎片少了一角会怎样？
+  synopsis: '大雾夜，林栖被叫去外环灯廊修一盏反复熄灭的旧雾灯。拆开铜罩、抽出旧灯芯的瞬间，她听见灯芯灰里响了一句不属于今夜的话——"别把灯交出去"。声音极轻，像从潮湿金属深处擦出来。巡灯署的人已经到了廊外，催她换芯。林栖压下心跳，把一片裂开的灯芯碎片藏进袖口，重新扣上铜罩。门被推开，领头的伸出手：所有拆下来的旧灯芯，立刻回收。
 
+'
+  core_advance:
+    one_sentence: 林栖发现旧灯芯里残留了一段陌生记忆，并私下藏起一片灯芯碎片。
+    must_happen:
+    - 建立林栖的修灯人日常工作。
+    - 让旧灯芯异常成为正史事件。
+    - 让巡灯署压力抵达灯廊，但不解释完整规则。
+    must_not_complete:
+    - 不要揭示父亲失踪的真相。
+    - 不要解释灯芯保存记忆的完整规则。
+    - 不要在这一章就点明巡灯署回收旧灯芯的真实动机。
+  information_release:
+    new_core_variables:
+    - 旧灯芯可以残留记忆碎片。
+    - 巡灯署正在紧急回收旧灯芯。
+    deferred:
+    - 为什么旧灯芯能保存记忆。
+    - 巡灯署回收旧灯芯的真实目的。
+    - 父亲是否接触过同类旧灯。
+  chapter_turn: 林栖发现旧灯芯残留陌生记忆，私下藏匿碎片——从此她的修灯工作不再安全。
+  side_yield:
+  - 修灯是一个有工具、有巡逻监督的市政职业，不是自由手艺。
+  - 同事关系从日常熟悉转为公事公办的压迫感。
+  - 林栖获得了一片巡灯署想控制却不知道已经缺失的灯芯碎片。
+  - 可复用伏笔：裂开的灯芯碎片、父亲的旧修灯刀。
+  叙事织入:
+    人物日常反应:
+    - 巡灯署的年轻助手一开始当这是普通维修，语气随意。
+    - 林栖紧张时会默数螺丝。
+    场景即时质感:
+    - 灯油渍、湿灯芯味、廊道潮气、铜罩冰凉、抹布粗糙。
+    关系温度波动:
+    - 日常的工作熟悉感在巡灯署抵达时突然变成审问般的压迫。
+    - 林栖抱怨雾灯只在领导醒着时坏，换来同事一个无奈的白眼。
+  density_control:
+    required_weave_beats: 3
+    allow_idle: true
+  planned_handoff: 巡灯署推开灯廊的门，领头的人伸出手，要林栖立刻交出刚拆下来的旧灯芯。
+  constraints:
+  - 不要揭示父亲失踪真相。
+  - 不要解释灯芯记忆系统的完整规则。
+  scale_pacing_constraints:
+  - 开篇阶段：仅限街区级异常，不要展开全市规则体系。
+  - 旧灯区是开篇地点，不是整个世界。
+  actual_handoff:
+  - 巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？

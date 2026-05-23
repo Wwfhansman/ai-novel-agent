@@ -43,7 +43,7 @@ deprecated_fields:
   source_plan:
     replacement: source
   source_flow:
-    replacement: planning/active_flow.yml referenced from context pack or notes
+    replacement: planning/active_flow.yml referenced from writing_packet or notes
   production_batch:
     replacement: chapters
   goals:

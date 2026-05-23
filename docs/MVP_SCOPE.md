@@ -61,7 +61,7 @@ novel-change
 - 动态账本按本批次涉及对象定向读取
 - 本章在连续剧情流中的承接、转折和交接
 
-每次编译必须产出标准化 `context_pack.md`。Context pack 是工作记忆，不是项目资料全文复制；MVP 可以不写自动编译程序，但不能省略 context pack artifact。
+每次编译必须产出标准化 artifact：轮次使用 round context pack，章节使用 `writing_packet.md`。Writing packet 是工作记忆，不是项目资料全文复制；MVP 可以不写自动编译程序，但不能省略该 artifact。
 
 ### 2.5 动态账本
 
@@ -105,7 +105,7 @@ MVP 支持项目级 `meta/model_policy.yml`：
 - 权限协作系统
 - 复杂可视化看板
 
-注意：上下文编译器的自动化代码可以暂不做，但 context pack 模板和人工/agent 生成流程属于 MVP。
+注意：上下文编译器的自动化代码可以暂不做，但 round context pack / writing packet 模板和人工/agent 生成流程属于 MVP。
 
 ## 4. 第一轮实验目标
 

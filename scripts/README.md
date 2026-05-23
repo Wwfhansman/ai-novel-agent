@@ -44,9 +44,10 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 - `final.txt` 是否因为误解 TXT 规则而写成少数巨大段落。
 - 是否存在超过 220 中文字的超长段落，或大量超过 160 字的长段落。
 - 章节结尾是否是主角复盘、计划、抽象短句、看夜色、吹灯等默认 AI 收束。
-- 每章是否具备必需文件：brief、context_pack、draft、final、review、summary、canon_delta。
-- 每章是否具备新流程质量门文件：prompt、reader_pass（缺失先作为 warning）。
+- 每章是否具备必需文件：writing_packet、draft、final、review、summary、canon_delta。
+- 每章是否具备质量门文件：reader_pass、memory_update_plan（缺失先作为 warning）。
 - reader_pass 是否阻止进入 final。
+- reader_pass 曾要求 revise 时，是否存在 reader_recheck 且结果为 pass。
 - reader_pass 是否记录冷读执行者（cold_reader_subagent / same_agent_fallback）。
 - reader_pass 是否包含局部润色建议。
 - review 是否与实际产物状态一致，不能仍写 summary/canon_delta/memory_update_plan 待生成。
@@ -54,12 +55,13 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 - review 中当前状态同步 checklist 不能仍未勾选；只写 canon_delta、不合入 entities/ledgers/planning 会被视为未完成。
 - canon_delta 中有实质状态变化时，`state_sync` 是否以 `merged` / `updated` / `synced` 确认已合入对应当前状态文件；`n/a` 不能用于非空变化字段。
 - `entities/characters.yml` 中发生实质变化的角色是否有 `last_updated` 或 `change_history` 指向对应章节。
-- memory_update_plan 是否保持草案身份，不能声称 archivist 或 director 已直接合并文件。
-- context pack 是否包含读取证据、reader reward、cut continuity 和写后更新清单。
+- memory_update_plan 是否保持草案身份、使用 diff-only 格式，不能声称 archivist 或 director 已直接合并文件。
+- writing_packet 是否包含读取证据、Writing Card、reader reward、cut continuity 和写后更新清单。
+- planning/merge_previews 是否仍有 high-confidence pending 操作。
 - review 是否包含 Reader Reward Check、TXT Format Check 和 Memory Update Check。
 - rolling_plan 是否仍堆积 completed 章节，是否与 completed_plan_log 重叠，是否缺少 completed_plan_log / future_backlog。
 - `active_flow.yml` 的 `last_cut.chapter` 是否落后于正在验证的章节批次。
-- `rolling_plan.yml` 是否超过 10000 字节，过大时提示压缩远期条目到 `future_backlog.yml`。
+- `rolling_plan.yml` 是否超过 20000 字节，过大时提示压缩远期条目到 `future_backlog.yml`。
 - `--check-protected-files` 是否能看到受保护文件的变更日志入口。
 - `rolling_plan.yml` / `current_round.yml` 是否残留 `bridge_to_next`、`continuity_from_previous`、`next_hook` 等旧字段。
 - `summary.yml` 是否仍使用 `next_hook`。
@@ -70,6 +72,6 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 
 - `new_project`：从 `templates/project/` 创建新小说项目。
 - `validate_project`：更完整的 schema 级必填字段校验。
-- `compile_context`：根据当前任务生成 context pack。
+- `compile_context`：根据当前任务生成 writing packet。
 - `export_novel`：拼接章节 `final.txt`。
 - `check_missing_updates`：检查章节写完后是否遗漏摘要、delta 或账本更新。

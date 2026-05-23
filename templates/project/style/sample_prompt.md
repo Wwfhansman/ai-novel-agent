@@ -2,7 +2,7 @@
 
 > 使用方式：把下面整段提示词复制给 AI，同时上传或粘贴你的对标小说 TXT。让 AI 按提示词输出一份「文笔风格模仿报告」。拿到报告后，把报告复制到 `style/samples.md`。
 >
-> 注意：`sample_prompt.md` 是工具模板，不应该作为写作风格样本读入 context pack。真正给写作 agent 参考的是 `style/samples.md`。
+> 注意：`sample_prompt.md` 是工具模板，不应该作为写作风格样本读入 writing packet。真正给写作 agent 参考的是 `style/samples.md`。
 
 ## 可复制提示词开始
 

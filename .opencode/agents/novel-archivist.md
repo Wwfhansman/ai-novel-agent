@@ -40,7 +40,7 @@ color: secondary
 - `output:` 目标草案路径。
 - 本章 `final.txt`。
 - 本章 `summary.yml`、`canon_delta.yml`（如存在；缺失就标记待补，不要扩大扫描）。
-- 本章 `prompt.md`。
+- 本章 `writing_packet.md`。
 - `planning/active_flow.yml`、`planning/rolling_plan.yml`，只用于交接和近期规划建议。
 - 本章明确涉及的 `entities/`、`ledgers/` 条目。只读直接相关对象；如果无法确认相关对象，就写 `needs_director_review`，不要全库扫描。
 
@@ -54,7 +54,7 @@ color: secondary
 2. 给出有 evidence 的状态更新建议，只记录高信号变化，不重写完整 `entities/` 或 `ledgers/`。
 3. 指出 `active_flow`、`rolling_plan`、`completed_plan_log` 需要由 director 合并的变化。
 
-不要接管完整数据库维护，不要为了“保险”读取整个项目状态。输入不足时，把缺口写进 `Open Questions` 或 `needs_director_review`。
+不要接管完整数据库维护，不要为了“保险”读取整个项目状态。输入不足时，把缺口写进 `Manual Review` 或标记 `needs_director_review`。
 
 ## 输出位置
 
@@ -65,7 +65,7 @@ projects/<name>/chapters/chXXX/memory_update_plan.md
 chapters/chXXX/memory_update_plan.md
 ```
 
-也可以附带 `summary.yml`、`canon_delta.yml` 的草案文本，但不要直接写这些文件。除 `memory_update_plan.md` 草案外，不要修改任何项目文件。
+不要附带完整 `summary.yml`、`canon_delta.yml` 草案文本。除 `memory_update_plan.md` 草案外，不要修改任何项目文件。
 
 ## 输出格式
 
@@ -78,73 +78,33 @@ chapters/chXXX/memory_update_plan.md
 - final_txt:
 - prior_state_files:
 
-## Confidence
-
 status: ready_for_director_merge / needs_director_review
-reason:
 
-## Chapter Summary Draft
+## Coverage Gaps
 
-```yaml
-chapter:
-title:
-status: final
-one_line_summary:
-detailed_summary: []
-characters_present: []
-locations: []
-key_events: []
-emotional_result:
-external_result:
-actual_handoff: []
-```
+- none / target + issue + evidence
 
-## Canon Delta Draft
+## State Update Candidates
 
-```yaml
-chapter:
-new_facts: []
-character_changes: []
-relationship_changes: []
-world_state_changes: []
-knowledge_changes: []
-foreshadowing_added: []
-foreshadowing_advanced: []
-foreshadowing_paid: []
-narrative_debts_added: []
-narrative_debts_advanced: []
-narrative_debts_paid: []
-ideas_added: []
-actual_handoff: []
-state_sync:
-  - target:
-    status: merged / n/a / needs_director_review
-    evidence:
-```
+- target:
+  operation:
+  value:
+  evidence:
+  confidence: high / medium / low
 
-## Entities Update Draft
+## Planning Update Candidates
 
-- file:
-- existing_state:
-- proposed_change:
-- evidence:
-- confidence: high / medium / low
+- target:
+  operation:
+  value:
+  evidence:
+  confidence: high / medium / low
 
-## Ledgers Update Draft
+## Manual Review
 
-- file:
-- existing_state:
-- proposed_change:
-- evidence:
-- confidence: high / medium / low
-
-## Planning Update Draft
-
-- active_flow.last_cut.current_handoff:
-- rolling_plan changes needed:
-- completed_plan_log changes needed:
-- evidence:
-- confidence:
+- target:
+  reason:
+  evidence:
 
 ## Merge Boundary
 
@@ -152,19 +112,13 @@ state_sync:
 - director_must_merge: true
 - no_direct_file_updates_claimed: true
 
-## Open Questions
-
-- 
-
-## Must Not Change
-
-- protected files not touched:
-- uncertain items left for director:
 ```
 
 ## 严格规则
 
 - 每个 proposed_change 必须有 evidence，指向 `final.txt` 中的具体事件、动作、台词、物件或结果。
+- 总长度控制在 50 行以内。
+- 禁止复述 summary，禁止输出完整 YAML 草案；只写 coverage gap 和 update candidate。
 - 禁止写“本章已完成的更新”“以下文件已直接更新”“已在 director 监督下直接更新”等话。你只能写“建议更新”“草案”“待 director 合并”。
 - 禁止输出“合并判断”表格或用 ✅ 标注某状态文件已经更新。你可以写“建议更新的文件清单”，但不能写成执行结果。
 - 不要把读者猜测写成事实。

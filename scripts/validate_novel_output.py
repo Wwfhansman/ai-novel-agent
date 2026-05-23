@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate AI Novel Agent chapter output for common failure modes.
 
-Checks: missing chapter artifacts, weak context packs, TXT blank lines,
+Checks: missing chapter artifacts, weak writing packets, TXT blank lines,
 paragraph density, reflective endings, short atmosphere endings, and stale
 planning fields.
 
@@ -76,8 +76,7 @@ REQUIRED_PLANNING_FIELDS = [
 ]
 
 REQUIRED_CHAPTER_FILES = [
-    "brief.md",
-    "context_pack.md",
+    "writing_packet.md",
     "draft.txt",
     "final.txt",
     "review.md",
@@ -86,24 +85,33 @@ REQUIRED_CHAPTER_FILES = [
 ]
 
 QUALITY_GATE_FILES = [
-    "prompt.md",
     "reader_pass.md",
     "memory_update_plan.md",
 ]
 
-REQUIRED_CONTEXT_SECTIONS = [
-    ("## Read Files", "## 读取文件"),
-    ("## Source References", "## 来源引用"),
-    ("## Longform Scale Check", "## 长篇规模检查"),
-    ("## Reader Reward Check", "## 读者回报检查"),
-    ("## Cut Continuity", "## 切分连续性"),
-    ("## Required Updates After Writing", "## 写完后必须更新的文件"),
+REQUIRED_WRITING_PACKET_SECTIONS = [
+    ("Read Files", "读取文件", "输入文件清单", "读过的文件"),
+    ("Source References", "来源引用", "来源文件", "证据来源"),
+    ("Longform Scale Check", "长篇规模检查", "规模检查"),
+    ("Reader Reward Check", "读者回报检查", "reader reward check", "读者体验"),
+    ("Cut Continuity", "切分连续性", "上一章承接", "连续性"),
+    ("Writing Card", "正文抬头纸", "写作卡"),
+    ("Required Updates After Writing", "写完后必须更新的文件", "写后必须更新", "写完后更新"),
+]
+
+WRITING_CARD_REQUIRED_MARKERS = [
+    ("chapter_function", "本章功能"),
+    ("pressure_curve", "压力曲线"),
+    ("must_happen", "必须发生"),
+    ("must_not_complete", "必须不完成"),
+    ("information_release", "信息释放"),
+    ("narrative_weave", "叙事织入"),
 ]
 
 REQUIRED_REVIEW_SECTIONS = [
-    ("## Reader Reward Check", "## 读者回报检查"),
-    ("## TXT Format Check", "## TXT 格式检查"),
-    ("## Memory Update Check", "## 记忆更新检查"),
+    ("Reader Reward Check", "读者回报检查", "读者体验"),
+    ("TXT Format Check", "TXT 格式检查", "正文质量", "格式"),
+    ("Memory Update Check", "记忆更新检查", "工程状态", "记忆工程卫生检查"),
 ]
 
 PROTECTED_FILES = [
@@ -142,11 +150,45 @@ MIN_PARAGRAPHS_BY_GENRE = {
 NORMAL_CHAPTER_CHAR_THRESHOLD = 1800
 GIANT_PARAGRAPH_CHARS = 220
 LONG_PARAGRAPH_CHARS = 160
+ROLLING_PLAN_SIZE_WARN_BYTES = 20000
 TITLE_PATTERN = re.compile(r"^第[一二三四五六七八九十百千万零〇两0-9]+章\s*\S+")
+HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s*(.+?)\s*$", re.MULTILINE)
 
 
 def nonblank(lines: list[str]) -> list[str]:
     return [line.strip() for line in lines if line.strip()]
+
+
+def _normalize_heading(text: str) -> str:
+    text = re.sub(r"[`*_：:（）()\[\]【】/／-]+", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip().lower()
+
+
+def _has_section(text: str, aliases: tuple[str, ...]) -> bool:
+    headings = [_normalize_heading(match.group(1)) for match in HEADING_PATTERN.finditer(text)]
+    normalized_aliases = [_normalize_heading(alias) for alias in aliases]
+    for heading in headings:
+        for alias in normalized_aliases:
+            if alias and alias in heading:
+                return True
+    return False
+
+
+def _section_label(aliases: tuple[str, ...]) -> str:
+    return " / ".join(aliases[:2])
+
+
+def _extract_section(text: str, aliases: tuple[str, ...]) -> str:
+    matches = list(HEADING_PATTERN.finditer(text))
+    normalized_aliases = [_normalize_heading(alias) for alias in aliases]
+    for index, match in enumerate(matches):
+        heading = _normalize_heading(match.group(1))
+        if any(alias and alias in heading for alias in normalized_aliases):
+            start = match.end()
+            end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+            return text[start:end].strip()
+    return ""
 
 
 def normalize_txt(path: Path) -> bool:
@@ -177,8 +219,8 @@ def _has_external_action_in_window(text: str) -> bool:
 
 
 def _guess_chapter_function(chapter_dir: Path) -> str | None:
-    """Try to read chapter_function from brief.md or summary.yml."""
-    for fname in ("brief.md", "summary.yml"):
+    """Try to read chapter_function from writing_packet.md or summary.yml."""
+    for fname in ("writing_packet.md", "summary.yml"):
         p = chapter_dir / fname
         if p.exists():
             text = p.read_text(encoding="utf-8")
@@ -342,16 +384,30 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
             )
 
     reader_pass = chapter_dir / "reader_pass.md"
+    reader_requested_revision = False
     if reader_pass.exists():
         text = reader_pass.read_text(encoding="utf-8")
-        if re.search(r"(是否允许进入\s*final|final verdict|verdict)\s*[:：]?\s*\n\s*revise required\b", text, re.IGNORECASE) or re.search(
-            r"^\s*(是否允许进入\s*final|final verdict|verdict)\s*[:：]\s*revise required\b",
-            text,
-            re.IGNORECASE | re.MULTILINE,
-        ):
-            errors.append(
-                f"READER_PASS_BLOCKED: {reader_pass} says revise required; revise draft before accepting final.txt."
+        reader_requested_revision = bool(
+            re.search(r"(是否允许进入\s*final|final verdict|verdict)\s*[:：]?\s*\n\s*revise required\b", text, re.IGNORECASE)
+            or re.search(
+                r"^\s*(是否允许进入\s*final|final verdict|verdict)\s*[:：]\s*revise required\b",
+                text,
+                re.IGNORECASE | re.MULTILINE,
             )
+        )
+        if reader_requested_revision:
+            recheck = chapter_dir / "reader_recheck.md"
+            if not recheck.exists():
+                errors.append(
+                    f"READER_PASS_BLOCKED: {reader_pass} records revise required and {recheck} is missing; "
+                    f"add {recheck} with verdict: pass after revising draft."
+                )
+            else:
+                recheck_text = recheck.read_text(encoding="utf-8")
+                if not re.search(r"(verdict|是否允许进入\s*final|结果)\s*[:：]?\s*(pass|通过)", recheck_text, re.IGNORECASE):
+                    errors.append(
+                        f"READER_RECHECK_NOT_PASS: {recheck} must record verdict: pass after fixing reader blockers."
+                    )
         if "最值得保留的一段" not in text and "Passage Worth Keeping" not in text:
             warnings.append(
                 f"READER_PASS_INCOMPLETE: {reader_pass} should identify a passage worth keeping."
@@ -384,6 +440,28 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 f"ARCHIVIST_DIRECT_MERGE_CLAIM: {memory_plan} claims files were directly updated. "
                 "memory_update_plan.md must remain a draft proposal; director merge status belongs in review.md."
             )
+        line_count = len([line for line in text.splitlines() if line.strip()])
+        if line_count > 60:
+            warnings.append(
+                f"MEMORY_PLAN_TOO_LONG: {memory_plan} has {line_count} nonblank lines. "
+                "v2 expects a diff-only plan around 50 lines; remove summary restatement and full YAML drafts."
+            )
+        for section_aliases in [
+            ("Coverage Gaps", "覆盖缺口"),
+            ("State Update Candidates", "状态更新候选"),
+            ("Planning Update Candidates", "规划更新候选"),
+            ("Manual Review", "人工复核"),
+            ("Merge Boundary", "合并边界"),
+        ]:
+            if not _has_section(text, section_aliases):
+                warnings.append(
+                    f"MEMORY_PLAN_SECTION_MISSING: {memory_plan} lacks {_section_label(section_aliases)}."
+                )
+        if re.search(r"```yaml|##\s*(Chapter Summary Draft|Canon Delta Draft)|detailed_summary\s*:|characters_present\s*:", text):
+            warnings.append(
+                f"MEMORY_PLAN_FULL_YAML_DRAFT: {memory_plan} appears to include full YAML drafts. "
+                "v2 archivist output should be diff-only candidates."
+            )
 
     project = chapter_dir.parent.parent
     samples = project / "style" / "samples.md"
@@ -392,22 +470,13 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
         sample_text = samples.read_text(encoding="utf-8").strip()
         samples_has_content = bool(sample_text) and "占位" not in sample_text and "暂无" not in sample_text
 
-    prompt = chapter_dir / "prompt.md"
-    if prompt.exists() and samples_has_content:
-        prompt_text = prompt.read_text(encoding="utf-8")
-        if "样本文风锚点" not in prompt_text and "sample" not in prompt_text.lower():
-            warnings.append(
-                f"SAMPLE_ANCHORS_MISSING: {prompt} should include 3-5 positive style anchors "
-                "from style/samples.md when samples are available."
-            )
-
-    context_pack = chapter_dir / "context_pack.md"
-    if context_pack.exists():
-        text = context_pack.read_text(encoding="utf-8")
-        for en_section, zh_section in REQUIRED_CONTEXT_SECTIONS:
-            if en_section not in text and zh_section not in text:
+    writing_packet = chapter_dir / "writing_packet.md"
+    if writing_packet.exists():
+        text = writing_packet.read_text(encoding="utf-8")
+        for section_aliases in REQUIRED_WRITING_PACKET_SECTIONS:
+            if not _has_section(text, section_aliases):
                 warnings.append(
-                    f"MISSING_CONTEXT_SECTION: {context_pack} lacks {en_section} / {zh_section}."
+                    f"MISSING_WRITING_PACKET_SECTION: {writing_packet} lacks {_section_label(section_aliases)}."
                 )
         if (
             "source:" not in text
@@ -417,18 +486,35 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
             and "来源" not in text
         ):
             warnings.append(
-                f"MISSING_SOURCE_REFS: {context_pack} must cite file sources for key claims."
+                f"MISSING_SOURCE_REFS: {writing_packet} must cite file sources for key claims."
             )
+        writing_card = _extract_section(text, ("Writing Card", "正文抬头纸", "写作卡"))
+        if not writing_card:
+            warnings.append(f"WRITING_CARD_MISSING: {writing_packet} must include a Writing Card section.")
+        else:
+            for en_marker, zh_marker in WRITING_CARD_REQUIRED_MARKERS:
+                if en_marker not in writing_card and zh_marker not in writing_card:
+                    warnings.append(
+                        f"WRITING_CARD_FIELD_MISSING: {writing_packet} Writing Card lacks {en_marker} / {zh_marker}."
+                    )
+            if samples_has_content and not re.search(r"(sample_style_anchors|样本.*(文风|风格|锚点)|文笔锚点|从样本提取|sample)", writing_card, re.IGNORECASE):
+                warnings.append(
+                    f"SAMPLE_ANCHORS_MISSING: {writing_packet} Writing Card should include 3-5 positive style anchors "
+                    "from style/samples.md when samples are available."
+                )
+    elif samples_has_content:
+        # The missing required file error is emitted above; keep this branch quiet.
+        pass
 
     review = chapter_dir / "review.md"
     if review.exists():
         text = review.read_text(encoding="utf-8")
-        for en_section, zh_section in REQUIRED_REVIEW_SECTIONS:
-            if en_section not in text and zh_section not in text:
+        for section_aliases in REQUIRED_REVIEW_SECTIONS:
+            if not _has_section(text, section_aliases):
                 warnings.append(
-                    f"MISSING_REVIEW_SECTION: {review} lacks {en_section} / {zh_section}."
+                    f"MISSING_REVIEW_SECTION: {review} lacks {_section_label(section_aliases)}."
                 )
-        if samples_has_content and "Sample Alignment Check" not in text and "样本文风对齐" not in text:
+        if samples_has_content and not _has_section(text, ("Sample Alignment Check", "样本文风对齐", "文风对齐")):
             warnings.append(
                 f"MISSING_REVIEW_SECTION: {review} lacks Sample Alignment Check / 样本文风对齐 "
                 "while style/samples.md has content."
@@ -461,6 +547,7 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
             r"-\s*\[\s*\]\s*`ledgers/`.*当前状态变化已同步",
             r"-\s*\[\s*\]\s*`planning/active_flow\.yml`.*已更新",
             r"-\s*\[\s*\]\s*`planning/rolling_plan\.yml`.*已刷新",
+            r"-\s*\[\s*\]\s*`planning/merge_previews/.*`.*",
         ]
         for pattern in unresolved_state_checks:
             if re.search(pattern, text):
@@ -484,6 +571,43 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
             if not has_handoff:
                 errors.append(f"MISSING_HANDOFF: {path} lacks a handoff field.")
 
+    return errors, warnings
+
+
+def validate_merge_previews(project: Path, chapters: list[str]) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    preview_dir = project / "planning" / "merge_previews"
+    if not preview_dir.exists():
+        if any((project / "chapters" / chapter / "memory_update_plan.md").exists() for chapter in chapters):
+            errors.append(
+                f"MERGE_PREVIEW_MISSING: {preview_dir} is missing. "
+                "Generate a merge preview before post-merge QA."
+            )
+        return errors, warnings
+    preview_texts: list[tuple[Path, str]] = []
+    for preview in sorted(preview_dir.glob("*.yml")):
+        text = preview.read_text(encoding="utf-8")
+        preview_texts.append((preview, text))
+        if "operations:" not in text:
+            warnings.append(f"MERGE_PREVIEW_INCOMPLETE: {preview} lacks operations.")
+        # Conservative text-level block detector: a high-confidence operation
+        # left pending after post-merge means the director has not closed the
+        # mechanical merge loop.
+        blocks = re.split(r"\n\s*-\s+op\s*:", "\n" + text)
+        for block in blocks[1:]:
+            if re.search(r"\bconfidence\s*:\s*high\b", block) and re.search(r"\bstatus\s*:\s*pending\b", block):
+                errors.append(
+                    f"MERGE_PREVIEW_PENDING_HIGH_CONFIDENCE: {preview} has a high-confidence pending operation. "
+                    "Apply it with scripts/round_state_merge.py apply or move it to manual_review with a reason."
+                )
+    if any((project / "chapters" / chapter / "memory_update_plan.md").exists() for chapter in chapters):
+        for chapter in chapters:
+            if not any(re.search(rf"(^|\n)\s*-\s*{re.escape(chapter)}\s*(\n|$)", text) for _, text in preview_texts):
+                errors.append(
+                    f"MERGE_PREVIEW_CHAPTER_MISSING: no merge preview in {preview_dir} lists {chapter}. "
+                    "Generate scripts/round_state_merge.py preview for the completed batch."
+                )
     return errors, warnings
 
 
@@ -535,11 +659,11 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
                 if not any(field in text for field in aliases):
                     warnings.append(f"MISSING_FLOW_FIELD: {path} lacks {' / '.join(aliases)}.")
             rp_size = len(text.encode("utf-8"))
-            if rp_size > 10000:
+            if rp_size > ROLLING_PLAN_SIZE_WARN_BYTES:
                 warnings.append(
                     f"ROLLING_PLAN_SIZE_LARGE: {path} is {rp_size} bytes. "
-                    "Keep rolling_plan.yml to the active 6-15 chapter window; compress far-future "
-                    "entries into planning/future_backlog.yml. Target is under 6000 bytes."
+                    "Keep rolling_plan.yml to the active 6-10 chapter window when possible; move "
+                    "far-future entries into planning/future_backlog.yml without thinning near-term prose-critical plans."
                 )
         if path.name == "rolling_plan.yml" and re.search(r"\bstatus\s*:\s*completed\b", text):
             errors.append(
@@ -749,6 +873,17 @@ def _target_is_confirmed(statuses: dict[str, str], target: str, *, allow_not_app
     return False
 
 
+def _is_unresolved_state_sync_status(status: str) -> bool:
+    return status.strip().lower() in {
+        "needs_director_review",
+        "needs_review",
+        "pending",
+        "todo",
+        "open",
+        "unmerged",
+    }
+
+
 def _iter_character_entries(characters_data: object) -> list[dict]:
     if isinstance(characters_data, dict):
         if isinstance(characters_data.get("characters"), list):
@@ -881,6 +1016,14 @@ def validate_state_drift(project: Path, chapters: list[str], lookback: int = 3) 
 
     for chapter, delta in recent_deltas:
         statuses = _state_sync_statuses(delta)
+        for target, status in sorted(statuses.items()):
+            if _is_unresolved_state_sync_status(status):
+                errors.append(
+                    f"UNRESOLVED_STATE_SYNC_REVIEW: {project / 'chapters' / chapter / 'canon_delta.yml'} "
+                    f"state_sync target {target} is still {status}. Resolve it before post-merge QA: "
+                    "merge the target current-state file and set status to merged/updated/synced, "
+                    "or set status: n/a only when the corresponding change is genuinely empty."
+                )
         for field, target in STATE_SYNC_TARGETS.items():
             if _is_substantive_change(delta.get(field)) and not _target_is_confirmed(statuses, target):
                 errors.append(
@@ -1139,6 +1282,9 @@ def main() -> int:
 
     if not args.skip_planning:
         errs, warns = validate_planning(project)
+        all_errors.extend(errs)
+        all_warnings.extend(warns)
+        errs, warns = validate_merge_previews(project, chapters)
         all_errors.extend(errs)
         all_warnings.extend(warns)
         all_errors.extend(_validate_active_flow_catches_up(project, chapters))

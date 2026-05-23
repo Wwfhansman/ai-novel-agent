@@ -33,13 +33,16 @@ color: warning
 ## 允许做
 
 - 检查章节必需文件是否存在。
-- 检查 `prompt.md`、`reader_pass.md` 是否存在。
+- 检查 `writing_packet.md`、`reader_pass.md` 是否存在。
+- 如果 `reader_pass.md` 曾给出 `revise required`，检查 `reader_recheck.md` 是否存在且 verdict 为 pass。
 - 检查 `reader_pass.md` 是否记录 `cold_reader_subagent` 或 `same_agent_fallback`。
 - 运行或解释 `scripts/validate_novel_output.py` 的结果。
 - 检查 TXT 空行、超长段落、结尾模式、禁用句式。
 - 检查 final 前是否已运行 draft 句式专项扫描：`check_not_but.py ... --files draft.txt`，且超限项已在 draft 阶段修复。
 - 检查 YAML 语法、重复 key 风险、旧字段残留。
 - 检查 `memory_update_plan.md` 是否保持草案身份，不能出现“合并判断”“已合并文件”“已在 director 监督下直接更新”等越界表述。
+- 检查 `memory_update_plan.md` 是否为 diff-only 格式，且没有复述 summary 或完整 YAML 草案。
+- 检查 `planning/merge_previews/round_XXX.yml` 是否已生成，且无 high-confidence pending 操作。
 - 检查 `review.md` 是否存在 post-merge QA 记录，且没有“summary/canon_delta/memory_update_plan 待生成”等过期状态。
 - 检查 `rolling_plan.yml` 是否只保留未来未完成章节，`completed_plan_log.yml` 是否归档已完成章节。
 - 检查 `active_flow.yml` 的 `last_cut.chapter` 是否至少追上本次验证的最后章节。
@@ -88,6 +91,10 @@ phase: pre_merge / post_merge
 - `rolling_plan.yml` 仍包含本章 completed 条目，或与 `completed_plan_log.yml` 重叠。
 - `active_flow.yml` 的 `last_cut.chapter` 落后于本次 post-merge QA 覆盖的最后章节。
 - `canon_delta.yml` 已记录人物、账本、世界或 planning 变化，但 `review.md` 仍未确认对应 `entities/`、`ledgers/`、`planning/` 当前状态同步，或仍有未勾选的当前状态同步项。
+- 任一 `canon_delta.yml` 的 `state_sync.status` 仍是 `needs_director_review` / `pending` / `todo` / `open` / `unmerged`。post-merge QA 只能接受 `merged` / `updated` / `synced`，或确实无变化时的 `n/a`。
+- `writing_packet.md` / `review.md` 把模板固定标题改成自由标题，导致 validator 无法识别必需 section。
 - `memory_update_plan.md` 声称已合并、已直接更新或包含“合并判断”。
+- `reader_pass.md` 曾要求 revise 但缺少 `reader_recheck.md` pass。
+- merge preview 仍有 high-confidence pending 操作。
 - `review.md` 的工程状态与实际文件冲突。
 - post-merge QA 后仍需要修改 `entities/`、`ledgers/`、`planning/`、`summary.yml` 或 `canon_delta.yml`。

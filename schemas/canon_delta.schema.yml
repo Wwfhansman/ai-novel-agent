@@ -66,7 +66,7 @@ fields:
     description: 本章 canon_delta 已合入哪些当前状态文件。validator 会用它防止只写变化日志、不更新 entities/ledgers/planning。
     item_fields: [target, status, evidence]
     allowed_status: [merged, updated, synced, n/a, needs_director_review]
-    note: "当对应变化字段非空时，状态必须是 merged / updated / synced；n/a 只允许用于本章无该类变化的目标。"
+    note: "当对应变化字段非空时，状态必须是 merged / updated / synced；n/a 只允许用于本章无该类变化的目标。needs_director_review 只允许作为合并前草案标记；post-merge QA 前必须闭环为 merged / updated / synced 或有依据的 n/a。"
     example:
       - target: entities/characters.yml
         status: merged

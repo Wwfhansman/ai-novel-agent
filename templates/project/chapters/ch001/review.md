@@ -1,13 +1,15 @@
 # 章节审查
 
+> 固定标题供 validator 识别。不要把 `## Reader Reward Check`、`## Sample Alignment Check`、`## TXT 格式检查`、`## 记忆更新检查`、`## Post-Merge QA / 最终 QA` 改名；可以在标题下追加中文说明。
+
 ## Final 前质量门
 
-- `prompt.md` 是否存在且控制在 500 字以内？
+- `writing_packet.md` 是否存在，且 `Writing Card` 控制在 500-700 字以内？
 - draft self-check 是否发现并修复了连续解释、连续任务执行、连续无动作/无对话/无感官输入的问题？
 - `python scripts/check_not_but.py <project> --chapters ch001 --files draft.txt` 是否在 final 前通过？如果超过 1 次，draft 如何改过？
 - 是否搜索并清除了正文里的工程/元引用（如 `ch00`、`上一章`、`本章`、`读者`、`章纲`、Markdown/YAML 痕迹）？
 - `reader_pass.md` 是否给出 `pass`？
-- 如果 `reader_pass.md` 曾给出 `revise required`，draft 如何改过？
+- 如果 `reader_pass.md` 曾给出 `revise required`，是否已有 `reader_recheck.md` 且 verdict 为 pass？
 - 本章最值得保留的一段是哪一段？
 
 ## 章纲贴合度
@@ -50,7 +52,7 @@
 ## Sample Alignment Check
 
 - 如果 `style/samples.md` 非空，本章是否贴近样本的句子节奏、段落手感、描写温度和对话语感？
-- `prompt.md` 是否写入了 3-5 条正向样本文风锚点，而不是只有禁止性规则？
+- `writing_packet.md` 的 `Writing Card` 是否写入了 3-5 条正向样本文风锚点，而不是只有禁止性规则？
 - 本章是否误迁移了样本人名、地名、剧情、专有设定或标志性桥段？
 - 如果文风偏离，final 前已如何局部修正？
 
@@ -95,7 +97,9 @@
 
 - [ ] `summary.yml` 已更新。
 - [ ] `canon_delta.yml` 已更新（含 actual_handoff）。
-- [ ] `canon_delta.yml` 已填写 `state_sync`，所有实质变化都指向对应当前状态文件或标注 N/A。
+- [ ] `memory_update_plan.md` 使用 diff-only 格式，未复述 summary，未声称已合并。
+- [ ] `planning/merge_previews/round_XXX.yml` 已生成并 review。
+- [ ] `canon_delta.yml` 已填写 `state_sync`，所有实质变化都指向对应当前状态文件或标注 N/A；不得残留 `needs_director_review`。
 - [ ] `entities/` 当前状态变化已同步（含 change_history）。
 - [ ] `ledgers/` 当前状态变化已同步。
 - [ ] `planning/active_flow.yml` 已更新 last_cut 和 current_handoff。
@@ -107,5 +111,6 @@
 - [ ] post-merge QA 在 director 合并全部记忆和 planning 更新之后运行。
 - [ ] 运行命令：`python scripts/validate_novel_output.py <project> --chapters ch001`
 - [ ] 结果：Validation passed / Validation passed with warnings / failed。
+- [ ] merge preview 中无未处理的 high-confidence pending 操作。
 - [ ] 如果有 warning，列出 warning 和处理理由。
 - [ ] post-merge QA 之后没有再修改 `entities/`、`ledgers/`、`planning/`、`summary.yml` 或 `canon_delta.yml`；如果改过，已重新运行 QA。

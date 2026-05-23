@@ -1,0 +1,66 @@
+schema: merge_preview
+purpose: >
+  Structured pre-merge review file generated before applying chapter state
+  updates. It lets the director review current-state changes before YAML files
+  are modified.
+
+fields:
+  project:
+    required: true
+  round:
+    required: true
+  chapters:
+    required: true
+    type: list
+  generated_at:
+    required: true
+  source_files:
+    required: true
+    type: list
+  operations:
+    required: true
+    type: list
+    item_fields:
+      op:
+        required: true
+        allowed:
+          - append_change_history
+          - set_last_updated
+          - add_named_entry
+          - update_named_entry_notes
+          - archive_completed_chapter
+          - update_active_flow_cut
+      target:
+        required: true
+      chapter:
+        required: false
+      entity:
+        required: false
+      value:
+        required: true
+      evidence:
+        required: true
+      confidence:
+        required: true
+        allowed: [high, medium, low]
+      status:
+        required: true
+        allowed: [pending, applied, skipped, manual_review]
+  manual_review:
+    required: true
+    type: list
+    item_fields:
+      target:
+        required: true
+      reason:
+        required: true
+      evidence:
+        required: false
+  apply_log:
+    required: false
+    type: list
+
+rules:
+  - "preview mode must not modify project state files."
+  - "apply mode may only apply confidence: high operations with status: pending and no conflict."
+  - "protected files, uncertain identities, and unresolved needs_director_review items must stay in manual_review."

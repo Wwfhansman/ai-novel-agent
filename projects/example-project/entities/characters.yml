@@ -1,42 +1,43 @@
+---
 characters:
-  - id: char_lin_qi
-    name: 林栖
-    role: protagonist
-    fixed_profile: 年轻修灯人，父亲三年前在主灯塔事故中失踪。
-    current_goal: 查明外环灯巷旧灯芯异常。
-    current_stance: 怀疑巡灯署隐瞒灯芯问题。
-    intent: 先修灯，再私下保留异常灯芯碎片。
-    knows:
-      - 父亲失踪与主灯塔事故有关。
-    misunderstands:
-      - 以为巡灯署只是怕事故曝光。
-    relationships:
-      - target: char_shen_yan
-        state: 未见面但即将对立
-    line_not_cross:
-      - 不会主动让雾灯城陷入夜雾风险。
-    last_seen: ch001
-    last_updated: ch001
-    change_history:
-      - chapter: ch001
-        change: 从普通修灯人变成私下藏匿线索的人。
-  - id: char_shen_yan
-    name: 沈砚
-    role: antagonist
-    fixed_profile: 巡灯署副署长，负责旧灯芯回收。
-    current_goal: 在主灯塔衰弱前回收所有异常灯芯。
-    current_stance: 认为林栖是不可控变量。
-    intent: 派人警告林栖交出旧灯芯。
-    knows:
-      - 旧灯芯可能保存被抹除的记忆。
-    misunderstands: []
-    relationships:
-      - target: char_lin_qi
-        state: 未公开接触
-    line_not_cross:
-      - 不会在市民面前承认主灯塔衰弱。
-    last_seen: null
-    last_updated: ch001
-    change_history:
-      - chapter: ch001
-        change: 巡灯署旧灯芯回收压力进入林栖视野，沈砚作为对立压力源建立。
+- id: char_lin_qi
+  name: 林栖
+  role: protagonist
+  fixed_profile: 年轻修灯人，父亲三年前在主灯塔事故中失踪。
+  current_goal: 查明外环灯巷旧灯芯异常。
+  current_stance: 怀疑巡灯署隐瞒灯芯问题。
+  intent: 先修灯，再私下保留异常灯芯碎片。
+  knows:
+  - 父亲失踪与主灯塔事故有关。
+  misunderstands:
+  - 以为巡灯署只是怕事故曝光。
+  relationships:
+  - target: char_shen_yan
+    state: 未见面但即将对立
+  line_not_cross:
+  - 不会主动让雾灯城陷入夜雾风险。
+  last_seen: ch001
+  last_updated: ch001
+  change_history:
+  - chapter: ch001
+    change: 从普通修灯人变成私下藏匿线索的人。
+- id: char_shen_yan
+  name: 沈砚
+  role: antagonist
+  fixed_profile: 巡灯署副署长，负责旧灯芯回收。
+  current_goal: 在主灯塔衰弱前回收所有异常灯芯。
+  current_stance: 认为林栖是不可控变量。
+  intent: 派人警告林栖交出旧灯芯。
+  knows:
+  - 旧灯芯可能保存被抹除的记忆。
+  misunderstands: []
+  relationships:
+  - target: char_lin_qi
+    state: 未公开接触
+  line_not_cross:
+  - 不会在市民面前承认主灯塔衰弱。
+  last_seen:
+  last_updated: ch001
+  change_history:
+  - chapter: ch001
+    change: 巡灯署旧灯芯回收压力进入林栖视野，沈砚作为对立压力源建立。

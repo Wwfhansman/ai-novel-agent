@@ -90,7 +90,7 @@ novel-change
 读取并刷新 active_flow 连续剧情流
 全文读取并刷新 rolling_plan 详细章纲
 根据本批次相关压力和债务回看关键旧章节
-生成 round context_pack.md
+生成 round context pack
 生成前文理解报告
 把本批次 3 章、状态和起止 flow 写入 current_round
 ```
@@ -98,12 +98,11 @@ novel-change
 ### 3.3 单章流程
 
 ```text
-读取本章 brief
+准备本章 writing packet
 → 读取 active_flow
 → 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
 → 检查上一章 actual_handoff
-→ 生成 chapter context_pack.md
-→ 生成 prompt.md（500 字以内的正文抬头纸）
+→ 生成 writing_packet.md（证据包 + Writing Card）
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
 → 可选生成自由写作 notes
@@ -115,7 +114,9 @@ novel-change
 → 运行 validator（诊断工具，不等于质量通过）
 → 生成 summary.yml
 → 生成 canon_delta.yml
-→ 生成 memory_update_plan.md 草案（如有 archivist，只能是草案）
+→ 生成 diff-only memory_update_plan.md 草案（如有 archivist，只能是草案）
+→ 生成 planning/merge_previews/round_XXX.yml 变更预览
+→ review merge preview，自动应用 high-confidence 无冲突项
 → 更新实体和动态账本
 → 更新 active_flow
 → 生成 actual_handoff，并同步 active_flow.last_cut.current_handoff
@@ -133,7 +134,7 @@ novel-change
 一轮准备：
   刷新 active_flow + rolling_plan
   → 生成 round context pack
-  → 预生成本批次 3 章 brief / context_pack / prompt
+  → 预生成本批次 3 章 writing_packet
 
 连续 draft：
   → 写 chXXX draft
@@ -148,7 +149,8 @@ novel-change
   → 批量运行 validator
 
 批量工程合并：
-  → 生成 summary.yml / canon_delta.yml / memory_update_plan.md
+  → 生成 summary.yml / canon_delta.yml / diff-only memory_update_plan.md
+  → 生成 merge preview → review → apply safe ops
   → 合并 entities / ledgers / volumes / planning（canon_delta 不能替代当前状态）
   → 归档 completed_plan_log，滑动 rolling_plan
   → post-merge QA
@@ -161,8 +163,8 @@ novel-change
 - `reader_pass.md` 仍必须在 `final.txt` 前完成，不能后置。
 - validator / QA 可以批量运行，但 post-merge QA 必须在全部状态文件合并后运行。
 - post-merge QA 前，`entities/`、`ledgers/`、`planning/active_flow.yml` 必须已经合入本章造成的当前状态变化；只写 `canon_delta.yml` 不能算完成。
-- 如果某章 draft 实际切口大幅改变下一章输入，必须停下刷新下一章 context_pack / prompt，再继续 draft。
-- `style/samples.md` 若非空，必须进入 prompt 的正向文风锚点，并进入 reader_pass / review 的样本文风对齐检查。
+- 如果某章 draft 实际切口大幅改变下一章输入，必须停下刷新下一章 writing_packet，再继续 draft。
+- `style/samples.md` 若非空，必须进入 Writing Card 的正向文风锚点，并进入 reader_pass / review 的样本文风对齐检查。
 
 ### 3.4 一轮结束流程
 
