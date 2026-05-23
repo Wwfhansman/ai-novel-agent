@@ -102,12 +102,13 @@ novel-change
 → 读取 active_flow
 → 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
 → 检查上一章 actual_handoff
-→ 生成 writing_packet.md（证据包 + Writing Card）
+→ 生成 writing_packet.md（证据包 + 分离 Chapter Design / Writing Execution 的 Writing Card）
+→ 完成 Pre-Draft Self Check：检查 time_span、ending_type、信息 enters_via 和场景瞬间
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
 → 可选生成自由写作 notes
 → 写 draft.txt
-→ draft self-check（连续解释/任务执行/无体温段落必须先重写）
+→ draft self-check（连续解释/任务执行/无体温段落/任务清单翻译必须先重写）
 → draft 句式专项扫描：check_not_but.py 必须在 draft 阶段通过
 → 生成 reader_pass.md（冷读质量门）
 → reader_pass 通过后写入 final.txt
@@ -142,7 +143,7 @@ novel-change
   → 立刻写下一章 draft
 
 批量冷读与 final：
-  → 批量运行 check_not_but.py 扫 draft；超限先改 draft
+  → 批量运行 check_not_but.py 扫 draft；not-but、三连否定、元叙述、箭头式认知总结先改 draft
   → cold-reader 并行审 3 章 draft
   → 根据 reader_pass 修 draft
   → reader_pass 通过后写 final.txt

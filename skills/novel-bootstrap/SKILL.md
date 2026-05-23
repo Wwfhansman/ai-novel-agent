@@ -77,7 +77,7 @@ Use `templates/project/` as the required output structure.
    - 写 `planning/active_flow.yml`：第一条连续剧情流、当前压力、灵活范围、结束条件、轮次边界不关闭 flow 的规则。
    - 写 `planning/rolling_plan.yml`：9-15 章详细章纲窗口。
    - 不要规划超过 15 章的详细章纲；远期点子、macro stage 转折点和暂不进入窗口的灵感放入 `planning/future_backlog.yml`。
-   - 每章应包含 300-800 字剧情简介，以及 `flow_id`、`flow_position`、`chapter_function`、`pressure_curve`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和约束。
+   - 每章应包含 300-800 字剧情简介，以及 `flow_id`、`flow_position`、`cross_chapter_event`、`starts_mid_action`、`ends_mid_action`、`chapter_function`、`pressure_curve.position_in_flow`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和约束。
    - `core_advance` 应命名一个主要外部推进和本章不完成的事项。`叙事织入` 应提供人物日常反应、场景即时质感、关系温度波动，防止正文变成任务清单式的执行报告。
    - `information_release` 通常每章限制在 1-2 个读者需要记住的核心新变量。
    - 写 `planning/current_round.yml` 作为生产批次追踪器，只记录本轮章节、状态和起止 flow，不复制章纲，不是独立规划权威。

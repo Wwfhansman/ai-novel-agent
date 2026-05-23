@@ -11,8 +11,13 @@ chapters:
   scale_level: 街区
   flow_id: arc_001_old_wick
   flow_position: pressure_rising
+  cross_chapter_event: 巡灯署回收旧灯芯的压力从 ch001 开始，ch002 扩大到登记簿，ch003 接入父亲线。
+  starts_mid_action: true
+  ends_mid_action: true
   chapter_function: investigation
-  pressure_curve: 中段官方压力 → 中段线索浮现 → 高压私人风险 → 交接
+  pressure_curve:
+    position_in_flow: rising_early
+    chapter_internal_motion: 官方压力进入 → 登记簿异样浮现 → 私人风险抬头 → 未闭合交接
   reader_question_flow:
     enters_with: 巡灯署会发现灯芯碎片少了一角吗？
     leaves_with: 登记簿的痕迹为什么指向父亲的旧工具箱？
@@ -64,8 +69,13 @@ chapters:
   scale_level: 街区
   flow_id: arc_001_old_wick
   flow_position: turn
+  cross_chapter_event: 巡灯署回收旧灯芯的压力在 ch003 接入父亲旧案，但不闭合旧案真相。
+  starts_mid_action: true
+  ends_mid_action: true
   chapter_function: reveal
-  pressure_curve: 低开私人物品 → 中段认知对接 → 高压试探 → 交接
+  pressure_curve:
+    position_in_flow: rising_middle
+    chapter_internal_motion: 私人物品进入 → 物证对接 → 官方试探压近 → 未闭合交接
   reader_question_flow:
     enters_with: 父亲的旧工具箱和旧灯芯之间有什么关联？
     leaves_with: 父亲修的最后一盏灯在哪里？林栖怎么保护手里的线索不被巡灯署发现？

@@ -50,7 +50,7 @@ Read:
 
 ## 必查项
 
-1. **Writing packet 有效性**：是否列出了读取文件、原因、关键收获、旧章节回看、不确定项、Writing Card 和必须更新项？
+1. **Writing packet 有效性**：是否列出了读取文件、原因、关键收获、旧章节回看、不确定项、分离 Chapter Design / Writing Execution 的 Writing Card、Pre-Draft Self Check 和必须更新项？
 
 2. **唯一事实来源一致性**：如果 summary、delta、entity state、ledger 和 planning 不一致，识别权威文件。
 
@@ -79,6 +79,8 @@ Read:
    - Check whether the chapter contains weave material around the core task: daily life, reactions, dialogue, world/system texture, relationship friction, scene objects, body/mood beats, wrong guesses, lightness, awkwardness, softness, or character habit.
    - Check whether the chapter tried to complete too many tasks, or whether it kept one primary advancement and left appropriate problems unfinished.
    - Check whether the chapter function and pressure curve vary naturally across chapters instead of repeating the same internal rhythm.
+   - Check whether `time_span`、`ending_type`、`position_in_flow` are preventing one-day-one-task containers rather than merely being filled in.
+   - Check whether each core information variable has `enters_via` and actually enters through scene, dialogue, object, cost, or reaction.
    - Check whether the chapter added more than 1-2 new core information variables without enough action/reaction to digest them.
    - Check whether rules, systems, institutions, power mechanics, or political facts were verified through event, cost, mistake, or reaction rather than only explained.
    - Check whether the ending collapses into protagonist recap, analysis, or next-step thinking.
@@ -106,7 +108,7 @@ Read:
    - 如果发现 YAML 错误或数据不一致 → 列入必须修复项，不是可接受的弱点。
 
 15. **文笔多样性**
-   - 检查最近 3 章正文是否存在高频重复句式（硬规则："不是X而是Y / 不是X，是Y"每章最多 1 次；超过即为必须修复。也检查连续段落以同一句式开头、大量"他/她做了A，然后做了B"的平铺直叙）。
+   - 检查最近 3 章正文是否存在高频重复句式（硬规则："不是X而是Y / 不是X，是Y"默认禁用，确需使用每章最多 1 次且 review 必须说明不可替代性；超过即为必须修复。也检查三连否定内心声明、元叙述、箭头/编号式认知总结、连续段落以同一句式开头、大量"他/她做了A，然后做了B"的平铺直叙）。
    - 句式重复不一定是单章问题——可能是模型默认腔。标记为风险并给出替换建议。
 
 ```text

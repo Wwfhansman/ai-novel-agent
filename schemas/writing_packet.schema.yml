@@ -12,21 +12,32 @@ required_sections:
   - Cut Continuity
   - Reader Reward Check
   - Writing Card
+  - Pre-Draft Self Check
   - Required Updates After Writing
 
 writing_card_required_fields:
   - one_line_goal
   - chapter_function
+  - time_span
+  - ending_type
   - pressure_curve
+  - position_in_flow
   - must_happen
   - must_not_complete
   - information_release
+  - enters_via
   - narrative_weave
+  - opening_sensory
+  - scene_moments
+  - ending_gesture
   - sample_style_anchors
   - prose_constraints
 
 rules:
-  - "Writing Card should stay around 500-700 Chinese characters."
+  - "Writing Card should stay compact, but must include both Chapter Design and Writing Execution."
+  - "Chapter Design records what must change; Writing Execution records writable sensory/action moments."
+  - "time_span and ending_type are cross-chapter pattern controls, not decorative labels."
+  - "information_release.new_core_variables must state enters_via; avoid protagonist-brain-summary as the default entry mode."
   - "If style/samples.md has real content, sample_style_anchors must contain 3-5 positive prose anchors."
   - "Source References must cite file sources for key claims."
   - "Longform Scale Check must be grounded in book/longform_blueprint.yml."

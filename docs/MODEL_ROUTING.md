@@ -63,7 +63,7 @@ fast_model: 快速、便宜、适合机械任务的模型
 以下任务可以先用 `fast_model` 产出草案，再由 `premium_model` 做最终判断：
 
 - round context pack 初稿。
-- chapter context pack 初稿。
+- chapter writing_packet 初稿。
 - 最近章节摘要压缩。
 - 动态账本候选更新。
 - review checklist 初稿。

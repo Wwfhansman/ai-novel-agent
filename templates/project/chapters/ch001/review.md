@@ -4,9 +4,12 @@
 
 ## Final 前质量门
 
-- `writing_packet.md` 是否存在，且 `Writing Card` 控制在 500-700 字以内？
+- `writing_packet.md` 是否存在，且 `Writing Card` 保持紧凑、没有变成资料复述？
+- `Writing Card` 是否填写 time_span、ending_type、position_in_flow，并把 Chapter Design 和 Writing Execution 分开？
+- `Pre-Draft Self Check` 是否在 draft 前完成，而不是 final 后补写？
 - draft self-check 是否发现并修复了连续解释、连续任务执行、连续无动作/无对话/无感官输入的问题？
-- `python scripts/check_not_but.py <project> --chapters ch001 --files draft.txt` 是否在 final 前通过？如果超过 1 次，draft 如何改过？
+- `python scripts/check_not_but.py <project> --chapters ch001 --files draft.txt` 是否在 final 前通过？如果出现 not-but、三连否定、元叙述或箭头式认知总结，draft 如何改过？
+- not_but_justification: N/A（如果正文保留 1 次 not-but，写明为什么不能改成动作、对话、物件或后果。）
 - 是否搜索并清除了正文里的工程/元引用（如 `ch00`、`上一章`、`本章`、`读者`、`章纲`、Markdown/YAML 痕迹）？
 - `reader_pass.md` 是否给出 `pass`？
 - 如果 `reader_pass.md` 曾给出 `revise required`，是否已有 `reader_recheck.md` 且 verdict 为 pass？
@@ -36,8 +39,10 @@
 
 - 本章功能：crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / building / transition / face_slap / breakthrough / auction / showing_off / competition / dungeon_rule
 - 用了什么压力曲线？压力是否被延迟、释放或转移——而不只是"完成"？
+- 本章在 flow 中的位置是什么？是否避免把 rising_middle 写成章内完整收束？
 - 本章承接和留下的读者疑问是什么？
 - 本章新增核心信息变量是否超过 1-2 个？
+- 每个核心信息是否写明 enters_via，并通过对话、动作、代价、物件或场景反应进入？
 - Side yield 是否进入长期记忆？
 - 规则/系统/制度/功法如果出现——是否通过事件、代价、误用或反应验证，而不只是解释？
 
@@ -59,6 +64,7 @@
 ## 结尾检查
 
 - 是否避免了主角复盘/分析/"下一步"思考？
+- ending_type 是什么？如果是 next_step_decision，为什么不可替代？
 - 结尾是否通过行动、代价、到场、暴露、压力、关系变化或信息可见性变化在世界中留下运动？
 - 如果最后一段是短句氛围收束——有没有具体内容支撑？
 

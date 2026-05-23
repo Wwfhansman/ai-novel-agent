@@ -1,7 +1,7 @@
 ---
 description: 中文网文冷读责编，只审读者体验、文笔、节奏、人物体温和对白自然度
 mode: subagent
-model: opencode-go/deepseek-v4-flash
+model: deepseek/deepseek-v4-flash
 reasoningEffort: medium
 temperature: 0.35
 permission:
@@ -41,7 +41,7 @@ color: accent
 你应该只基于调用者提供的这些材料判断：
 
 - `draft.txt`
-- `writing_packet.md` 的 Writing Card
+- `writing_packet.md` 的 Writing Card，尤其是 `time_span`、`ending_type`、`position_in_flow`、`scene_moments`、`ending_gesture`
 - 文笔风格要求；
 - `style/samples.md` 的文风摘要或调用者提取的样本文风锚点；
 - 如有必要，1-2 句前情。
@@ -93,4 +93,6 @@ pass / revise required
 
 - 如果找不到值得保留的一段，必须输出 `revise required`。
 - 如果连续解释、计划、推理、任务执行明显压过人物和场景，输出 `revise required`。
+- 如果正文把 Chapter Design 逐条翻译成任务报告，或结尾落成"主角决定下一步"，输出 `revise required` 或明确要求局部重写。
+- 如果核心信息主要靠主角脑内总结或旁白解释进入，而不是通过对话、动作、代价、物件或场景反应进入，至少标记为高风险。
 - 如果只是小问题，可输出 `pass`，但仍要指出下一章应避免的风险。

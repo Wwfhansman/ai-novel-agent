@@ -85,7 +85,7 @@
 
 ## 本批次章纲摘录
 
-从 `planning/rolling_plan.yml` 摘录本批次 3 章的 synopsis、chapter_function、pressure_curve、planned_handoff。
+从 `planning/rolling_plan.yml` 摘录本批次 3 章的 synopsis、chapter_function、cross_chapter_event、starts_mid_action、ends_mid_action、pressure_curve.position_in_flow、planned_handoff。
 
 不复制滚动章纲全文。只摘本批次相关内容和影响本批次选择的后续约束。
 

@@ -64,8 +64,12 @@ STALE_PLANNING_PATTERNS = [
 REQUIRED_PLANNING_FIELDS = [
     ("macro_stage",),
     ("scale_level",),
+    ("cross_chapter_event",),
+    ("starts_mid_action",),
+    ("ends_mid_action",),
     ("chapter_function",),
     ("pressure_curve",),
+    ("position_in_flow",),
     ("reader_question_flow",),
     ("core_advance",),
     ("information_release",),
@@ -96,16 +100,24 @@ REQUIRED_WRITING_PACKET_SECTIONS = [
     ("Reader Reward Check", "读者回报检查", "reader reward check", "读者体验"),
     ("Cut Continuity", "切分连续性", "上一章承接", "连续性"),
     ("Writing Card", "正文抬头纸", "写作卡"),
+    ("Pre-Draft Self Check", "写前自检", "draft 前自检", "pre draft self check"),
     ("Required Updates After Writing", "写完后必须更新的文件", "写后必须更新", "写完后更新"),
 ]
 
 WRITING_CARD_REQUIRED_MARKERS = [
     ("chapter_function", "本章功能"),
+    ("time_span", "时间跨度"),
+    ("ending_type", "结尾类型"),
     ("pressure_curve", "压力曲线"),
+    ("position_in_flow", "大弧位置"),
     ("must_happen", "必须发生"),
     ("must_not_complete", "必须不完成"),
     ("information_release", "信息释放"),
+    ("enters_via", "进入方式"),
     ("narrative_weave", "叙事织入"),
+    ("opening_sensory", "开头感官"),
+    ("scene_moments", "场景瞬间"),
+    ("ending_gesture", "结尾动作"),
 ]
 
 REQUIRED_REVIEW_SECTIONS = [
@@ -189,6 +201,29 @@ def _extract_section(text: str, aliases: tuple[str, ...]) -> str:
             end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
             return text[start:end].strip()
     return ""
+
+
+def _extract_markdown_field(text: str, field: str) -> str:
+    pattern = re.compile(rf"^\s*[-*]?\s*{re.escape(field)}\s*:\s*(.*?)\s*$", re.MULTILINE)
+    match = pattern.search(text)
+    if not match:
+        return ""
+    value = match.group(1).strip().strip('"').strip("'")
+    value = re.sub(r"\s*#.*$", "", value).strip()
+    return value
+
+
+def _read_writing_packet_fields(project: Path, chapter: str) -> dict[str, str]:
+    path = project / "chapters" / chapter / "writing_packet.md"
+    if not path.exists():
+        return {}
+    text = path.read_text(encoding="utf-8")
+    card = _extract_section(text, ("Writing Card", "正文抬头纸", "写作卡")) or text
+    return {
+        "time_span": _extract_markdown_field(card, "time_span"),
+        "ending_type": _extract_markdown_field(card, "ending_type"),
+        "position_in_flow": _extract_markdown_field(card, "position_in_flow"),
+    }
 
 
 def normalize_txt(path: Path) -> bool:
@@ -502,6 +537,18 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                     f"SAMPLE_ANCHORS_MISSING: {writing_packet} Writing Card should include 3-5 positive style anchors "
                     "from style/samples.md when samples are available."
                 )
+            if "Chapter Design" not in writing_card and "设计面" not in writing_card:
+                warnings.append(
+                    f"WRITING_CARD_DESIGN_BLOCK_MISSING: {writing_packet} should separate Chapter Design from prose execution."
+                )
+            if "Writing Execution" not in writing_card and "执行面" not in writing_card:
+                warnings.append(
+                    f"WRITING_CARD_EXECUTION_BLOCK_MISSING: {writing_packet} should include writable scene moments, not only task goals."
+                )
+            if re.search(r"new_core_variables\s*:\s*(?!\n\s*-)", writing_card) and "enters_via" not in writing_card:
+                warnings.append(
+                    f"INFORMATION_ENTRY_MODE_MISSING: {writing_packet} should state enters_via for each core variable."
+                )
     elif samples_has_content:
         # The missing required file error is emitted above; keep this branch quiet.
         pass
@@ -608,6 +655,58 @@ def validate_merge_previews(project: Path, chapters: list[str]) -> tuple[list[st
                     f"MERGE_PREVIEW_CHAPTER_MISSING: no merge preview in {preview_dir} lists {chapter}. "
                     "Generate scripts/round_state_merge.py preview for the completed batch."
                 )
+    return errors, warnings
+
+
+def validate_cross_chapter_patterns(project: Path, chapters: list[str]) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    ordered = sorted(chapters, key=_chapter_sort_key)
+    fields = [(chapter, _read_writing_packet_fields(project, chapter)) for chapter in ordered]
+
+    next_step_chain = [
+        chapter for chapter, data in fields
+        if data.get("ending_type", "").strip().lower().startswith("next_step_decision")
+    ]
+    if len(next_step_chain) >= 3:
+        errors.append(
+            "NARRATIVE_CONTAINER_LOOP: three or more checked chapters use ending_type=next_step_decision "
+            f"({', '.join(next_step_chain)}). Cut at action, arrival, interruption, or cost instead."
+        )
+
+    one_day_chain = [
+        chapter for chapter, data in fields
+        if data.get("time_span", "").strip() in {"一天", "一日", "one_day", "1 day", "1day"}
+    ]
+    if len(one_day_chain) >= 3:
+        warnings.append(
+            "SINGLE_DAY_CHAPTER_CHAIN: three or more checked chapters use time_span=一天 "
+            f"({', '.join(one_day_chain)}). Verify the story is not becoming one-day-one-task containers."
+        )
+
+    flat_positions = [
+        chapter for chapter, data in fields
+        if data.get("position_in_flow", "").strip().lower() in {"opening", "aftermath_trough"}
+    ]
+    if len(flat_positions) >= 3:
+        warnings.append(
+            "FLOW_POSITION_LOOP: checked chapters mostly sit at opening/aftermath positions "
+            f"({', '.join(flat_positions)}). Verify the active flow is actually escalating."
+        )
+
+    chapters_with_not_but_over_limit: list[str] = []
+    for chapter in ordered:
+        final_txt = project / "chapters" / chapter / "final.txt"
+        if final_txt.exists():
+            flat = final_txt.read_text(encoding="utf-8").replace("\n", "")
+            if len(NOT_BUT_PATTERN.findall(flat)) > MAX_NOT_BUT_PER_CHAPTER:
+                chapters_with_not_but_over_limit.append(chapter)
+    if len(chapters_with_not_but_over_limit) >= 2:
+        errors.append(
+            "BATCH_OVERUSED_CONTRAST_NEGATION: more than one checked chapter exceeds the not-but limit "
+            f"({', '.join(chapters_with_not_but_over_limit)}). Fix draft/final before post-merge QA."
+        )
+
     return errors, warnings
 
 
@@ -1223,7 +1322,39 @@ REPETITIVE_SENTENCE_PATTERNS = [
 ]
 
 NOT_BUT_PATTERN = re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)")
+TRIPLE_NEGATED_INNER_STATE_PATTERN = re.compile(
+    r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}"
+    r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}"
+    r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫)"
+)
+META_ORIGINAL_TEXT_PATTERN = re.compile(r"原书中|在原书里|按照原著|原著里|原文中")
+ARROW_OR_NUMBERED_COGNITION_PATTERN = re.compile(
+    r"(?:她|他|我|主角).{0,18}(?:想|判断|意识到|明白|确定).{0,24}(?:->|→|⇒|=>|第一|第二|第三|其一|其二)"
+)
 MAX_NOT_BUT_PER_CHAPTER = 1
+
+
+def _has_contrast_negation_justification(review_text: str) -> bool:
+    """Require a filled justification, not just an unanswered review prompt."""
+    empty_values = {"", "n/a", "na", "none", "无", "没有", "未使用", "不适用"}
+    for raw_line in review_text.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if not re.search(r"(not[-_ ]?but|不是X而是Y|不是X，是Y|不是.*而是|不是.*，是)", line, re.IGNORECASE):
+            continue
+        if re.search(r"\bnot_but_justification\s*:", line, re.IGNORECASE):
+            value = re.sub(r"^[-*]\s*", "", line)
+            value = re.sub(r"(?i)^not_but_justification\s*:\s*", "", value).strip()
+            value = re.sub(r"\s*[（(].*?[）)]\s*$", "", value).strip()
+            if value.lower() not in empty_values:
+                return True
+            continue
+        if "是否" in line or line.endswith(("?", "？")):
+            continue
+        if re.search(r"(保留|使用).{0,30}(因为|用于|体现|必须|不可替代|对比价值)", line):
+            return True
+    return False
 
 
 def _check_prose_patterns(path: Path) -> tuple[list[str], list[str]]:
@@ -1242,6 +1373,27 @@ def _check_prose_patterns(path: Path) -> tuple[list[str], list[str]]:
             "This sentence shape is reserved for one deliberate contrast per chapter. "
             "Rewrite the rest as direct observation, action, dialogue, image, or consequence."
         )
+    elif not_but_count == 1:
+        review = path.parent / "review.md"
+        review_text = review.read_text(encoding="utf-8") if review.exists() else ""
+        if not _has_contrast_negation_justification(review_text):
+            warnings.append(
+                f"CONTRAST_NEGATION_JUSTIFICATION_MISSING: {path} uses one not-but contrast. "
+                "This is allowed only when review.md states why the contrast is not replaceable."
+            )
+
+    hard_patterns = [
+        (TRIPLE_NEGATED_INNER_STATE_PATTERN, "TRIPLE_NEGATED_INNER_STATE", "三连否定声明内心状态"),
+        (META_ORIGINAL_TEXT_PATTERN, "META_ORIGINAL_TEXT", "原书/原著元叙述"),
+        (ARROW_OR_NUMBERED_COGNITION_PATTERN, "ARROW_OR_NUMBERED_COGNITION", "箭头/编号式认知总结"),
+    ]
+    for pattern, code, label in hard_patterns:
+        count = len(pattern.findall(flat))
+        if count:
+            errors.append(
+                f"{code}: {path} contains {count} {label} pattern(s). "
+                "Move the information into action, dialogue, consequence, or scene texture."
+            )
 
     for pattern, label in REPETITIVE_SENTENCE_PATTERNS:
         count = len(re.findall(pattern, flat))
@@ -1285,6 +1437,9 @@ def main() -> int:
         all_errors.extend(errs)
         all_warnings.extend(warns)
         errs, warns = validate_merge_previews(project, chapters)
+        all_errors.extend(errs)
+        all_warnings.extend(warns)
+        errs, warns = validate_cross_chapter_patterns(project, chapters)
         all_errors.extend(errs)
         all_warnings.extend(warns)
         all_errors.extend(_validate_active_flow_catches_up(project, chapters))

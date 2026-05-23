@@ -47,6 +47,15 @@ fields:
         required: true
         allowed: [opening, pressure_rising, turn, fallout, payoff, transition]
         purpose: Position inside the flow, not inside the three-chapter round.
+      cross_chapter_event:
+        required: true
+        purpose: Event that spans chapter boundaries; use N/A only when this chapter is deliberately standalone.
+      starts_mid_action:
+        required: true
+        purpose: Whether the chapter opens inside an already-moving action/pressure rather than resetting to a new day/task.
+      ends_mid_action:
+        required: true
+        purpose: Whether the chapter cuts while the event remains in motion rather than closing with a next-step decision.
       chapter_function:
         required: true
         purpose: Web-novel chapter function, such as crisis, face_slap, investigation, building, relationship, aftermath, transition, or project-specific equivalent.
@@ -55,7 +64,14 @@ fields:
         purpose: 300-800 Chinese characters of story content, not scene beats.
       pressure_curve:
         required: true
-        purpose: How pressure rises, delays, releases, or transfers across the chapter.
+        fields:
+          position_in_flow:
+            required: true
+            allowed: [opening, rising_early, rising_middle, peak, aftermath_trough]
+            purpose: Where this chapter sits in the larger active flow.
+          chapter_internal_motion:
+            required: true
+            purpose: The chapter's local motion inside the larger flow; it does not need to close the whole event.
       reader_question_flow:
         required: true
         fields:

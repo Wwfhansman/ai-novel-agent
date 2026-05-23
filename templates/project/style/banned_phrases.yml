@@ -7,3 +7,12 @@ avoid_patterns:
   - "大纲式平铺直叙"
   - "大量一行短段"
   - "只观察问题、不发生冲突"
+machine_checked_patterns:
+  - id: contrast_negation
+    description: "不是X而是Y / 不是X，是Y 默认禁用；确需使用必须在 review.md 说明不可替代性。"
+  - id: triple_negated_inner_state
+    description: "禁止用三连否定声明人物内心，如没有分析、没有想、没有评估。"
+  - id: meta_original_text
+    description: "禁止原书中、在原书里、按照原著等元叙述。"
+  - id: arrow_or_numbered_cognition
+    description: "禁止用箭头、编号或报告式句子总结人物认知过程。"

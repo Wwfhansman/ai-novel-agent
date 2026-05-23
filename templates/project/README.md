@@ -21,7 +21,7 @@ Core rules:
 - `planning/current_round.yml` is only a production-batch tracker, not a story unit or second chapter plan.
 - `canon_delta.yml` is a chapter change log, not the current-state table.
 - A `writing_packet.md` must be generated before chapter prose drafting.
-- Writing packets must include `Longform Scale Check` and a concise `Writing Card`.
+- Writing packets must include `Longform Scale Check`, `Pre-Draft Self Check`, and a concise design/execution `Writing Card`.
 - `meta/model_policy.yml` decides which tasks may use a fast model and which require a premium model or human confirmation.
 - TXT prose uses one blank line after the title and no blank lines between ordinary body paragraphs, while still keeping normal paragraphing.
 

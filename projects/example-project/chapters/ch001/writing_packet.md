@@ -47,9 +47,15 @@
 
 ## Writing Card
 
+**Chapter Design**
+
 - one_line_goal: 林栖修理三号灯时听见旧灯芯里的陌生声音，并私藏碎片。
 - chapter_function: opening / mystery
-- pressure_curve: 雾夜日常维修 → 灯芯异常 → 巡灯署回收施压 → 她藏下碎片。
+- time_span: 半夜
+- ending_type: action_cut
+- pressure_curve:
+  - position_in_flow: opening
+  - chapter_internal_motion: 雾夜日常维修 → 灯芯异常 → 巡灯署回收施压 → 私藏动作切断。
 - must_happen:
   - 林栖触碰灯芯灰，听见“别把灯交出去”。
   - 巡灯署领头人回收旧灯芯。
@@ -58,17 +64,45 @@
   - 不解释声音身份。
   - 不解释巡灯署真实目的。
 - information_release:
-  - new_core_variables: 旧灯芯异常；巡灯署回收。
+  - new_core_variables:
+    - info: 旧灯芯异常。
+      enters_via: 林栖触碰灯芯灰时听见陌生声音。
+      forbidden_entry_modes:
+        - 主角脑内总结
+        - 旁白式陈述
+    - info: 巡灯署回收旧灯芯。
+      enters_via: 巡灯署领头人现场到场并收走灯芯。
+      forbidden_entry_modes:
+        - 旁白式制度解释
   - deferred_information: 碎片划痕含义；声音主人。
 - narrative_weave:
   - 人物日常反应: 数螺丝压住紧张。
   - 场景即时质感: 大雾、焦油、湿灯芯、铜罩热度。
   - 关系温度波动: 林栖与巡灯署从日常协作转入隐瞒。
+
+**Writing Execution**
+
+- opening_sensory: 雾、焦油味、铜灯罩的余热先进入，不用设定开场。
+- scene_moments:
+  - 林栖数螺丝，试图把异常当成普通故障。
+  - 巡灯署的人伸手要灯芯，铜盒盖子压住灯灰。
+  - 碎片滑进袖口，贴着脉搏发凉。
+- ending_gesture: 碎片在袖口里贴住脉搏，声音被雾压回去。
 - sample_style_anchors:
   - 暂无真实样本文风时，以项目 style_memory 为准。
 - prose_constraints:
   - 不把设定解释成报告。
   - 让异常通过物件和动作出现。
+  - 禁止默认使用"不是X而是Y / 不是X，是Y"。
+  - 禁止元叙述和箭头式认知总结。
+
+## Pre-Draft Self Check
+
+- time_span_check: 本章只覆盖一个雾夜，不默认写成一天一章。
+- ending_type_check: 结尾停在私藏动作，不写成"她决定下一步"。
+- information_entry_check: 两个核心信息都通过现场动作进入。
+- weave_insertion_check: 数螺丝、雾和铜灯罩用于降低任务清单感。
+- scene_not_checklist_check: 正文围绕三个可写瞬间展开，不逐条翻译 must_happen。
 
 ## Required Updates After Writing
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Locate overused Chinese "不是X而是Y / 不是X，是Y" prose patterns.
+"""Locate overused explanation-heavy Chinese prose patterns.
 
 This helper is intentionally read-only. It lists candidate positions so the
 writing agent can revise them in one pass before final.txt. It exits non-zero
@@ -17,7 +17,36 @@ from pathlib import Path
 #   不是……而是……
 #   不是……，是…… / 不是……。是……
 # Avoid "是不是", "岂不是", and "不是A，也不是B".
-NOT_BUT_PATTERN = re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)")
+SCAN_PATTERNS = [
+    (
+        "contrast_negation",
+        re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)"),
+        "不是X而是Y / 不是X，是Y",
+    ),
+    (
+        "triple_negated_inner_state",
+        re.compile(
+            r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}"
+            r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}"
+            r"没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫)"
+        ),
+        "三连否定声明内心状态",
+    ),
+    (
+        "meta_original_text",
+        re.compile(r"原书中|在原书里|按照原著|原著里|原文中"),
+        "原书/原著元叙述",
+    ),
+    (
+        "arrow_cognition",
+        re.compile(
+            r"(?:她|他|我|主角).{0,18}"
+            r"(?:想|判断|意识到|明白|确定).{0,24}"
+            r"(?:->|→|⇒|=>|第一|第二|第三|其一|其二)"
+        ),
+        "箭头/编号式认知总结",
+    ),
+]
 
 
 def _line_col(text: str, index: int) -> tuple[int, int]:
@@ -35,15 +64,28 @@ def _context(line: str, start_col: int, match_len: int, width: int = 28) -> str:
     return f"{prefix}{line[start:end]}{suffix}"
 
 
-def find_candidates(path: Path) -> list[tuple[int, int, str, str]]:
+def find_candidates(path: Path) -> list[tuple[str, str, int, int, str, str]]:
     text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
     lines = text.splitlines()
-    results: list[tuple[int, int, str, str]] = []
+    flat_chars: list[str] = []
+    flat_index_to_text_index: list[int] = []
+    for index, char in enumerate(text):
+        if char != "\n":
+            flat_index_to_text_index.append(index)
+            flat_chars.append(char)
+    flat = "".join(flat_chars)
+    results: list[tuple[str, str, int, int, str, str]] = []
 
-    for match in NOT_BUT_PATTERN.finditer(text):
-        line_no, col = _line_col(text, match.start())
-        line_text = lines[line_no - 1] if line_no - 1 < len(lines) else ""
-        results.append((line_no, col, match.group(0), _context(line_text, col, len(match.group(0)))))
+    for pattern_id, pattern, label in SCAN_PATTERNS:
+        search_text = flat if pattern_id == "triple_negated_inner_state" else text
+        for match in pattern.finditer(search_text):
+            source_index = match.start()
+            if search_text is flat:
+                source_index = flat_index_to_text_index[match.start()]
+            line_no, col = _line_col(text, source_index)
+            line_text = lines[line_no - 1] if line_no - 1 < len(lines) else ""
+            context = _context(line_text, col, len(match.group(0)))
+            results.append((pattern_id, label, line_no, col, match.group(0), context))
     return results
 
 
@@ -89,12 +131,22 @@ def main() -> int:
     for path in files:
         candidates = find_candidates(path)
         total += len(candidates)
+        by_pattern: dict[str, int] = {}
+        for pattern_id, *_rest in candidates:
+            by_pattern[pattern_id] = by_pattern.get(pattern_id, 0) + 1
         print(f"{path}: {len(candidates)} candidate(s), limit {args.limit}")
-        for line_no, col, match_text, context in candidates:
+        for pattern_id, label, line_no, col, match_text, context in candidates:
+            print(f"  [{pattern_id}] {label}")
             print(f"  L{line_no}:C{col}: {context}")
             print(f"    match: {match_text}")
-        if len(candidates) > args.limit:
-            print(f"  needs review: revise or justify {len(candidates) - args.limit} candidate(s)")
+        contrast_over_limit = by_pattern.get("contrast_negation", 0) > args.limit
+        hard_hits = sum(count for pattern_id, count in by_pattern.items() if pattern_id != "contrast_negation")
+        if contrast_over_limit or hard_hits:
+            if contrast_over_limit:
+                extra = by_pattern.get("contrast_negation", 0) - args.limit
+                print(f"  needs review: revise or justify {extra} contrast candidate(s)")
+            if hard_hits:
+                print(f"  needs review: revise {hard_hits} hard-banned explanation pattern(s)")
             over_limit += 1
         print()
 

@@ -34,6 +34,9 @@ Use these planning layers:
 - `planning/active_flow.yml`, `planning/rolling_plan.yml`, and `planning/current_round.yml` must be valid YAML before drafting.
 - Do not translate a plan, synopsis, outline, or checklist directly into prose.
 - Do not treat one chapter or one round as a complete narrative box.
+- `writing_packet.md` must separate `Chapter Design` from `Writing Execution`: design fields say what changes; execution fields give sensory openings, scene moments, and ending gesture.
+- Every Writing Card must include `time_span`, `ending_type`, and `position_in_flow`. Consecutive chapters must not default to one-day tasks ending in next-step decisions.
+- Every core information release must state `enters_via`; if the only path is protagonist brain-summary or narrator explanation, redesign the scene before drafting.
 - Round boundaries are production boundaries, not story boundaries. Do not make ch003/ch006/ch009 feel like cleanup, recap, reset, or phase closure unless `planning/active_flow.yml` and `planning/rolling_plan.yml` explicitly say the story has earned payoff.
 - 如果上一章的 `canon_delta.yml` 中有 `actual_handoff`，本章开头必须承接，除非在 `writing_packet.md` 和 review 中记录了有理有据的切换理由。
 - 承接后，在本章的 `writing_packet.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
@@ -53,7 +56,7 @@ Use these planning layers:
 
 Use working-memory context: keep whole-book promise, current volume goal, active flow, long-form scale, and rolling plan in mind; read entity/ledger entries by relevance; reread old chapter originals only when a concrete trigger exists.
 
-Budgets: round context pack 3000-5000 Chinese characters; chapter `writing_packet.md` 1000-2500 Chinese characters, with the Writing Card around 500-700. Read `rolling_plan.yml` in full each round, but summarize only the batch chapters, adjacent chapters, and later constraints that affect this task.
+Budgets: round context pack 3000-5000 Chinese characters; chapter `writing_packet.md` 1000-2500 Chinese characters, with a compact Writing Card. Read `rolling_plan.yml` in full each round, but summarize only the batch chapters, adjacent chapters, and later constraints that affect this task.
 
 ## Read First
 
@@ -101,7 +104,7 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 - move completed plans to `planning/completed_plan_log.yml`;
 - move distant or over-capacity plans to `planning/future_backlog.yml`;
 - keep each chapter synopsis around 300-800 Chinese characters;
-- include `chapter_function`, `pressure_curve`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `叙事织入`, and `planned_handoff`;
+- include `cross_chapter_event`, `starts_mid_action`, `ends_mid_action`, `chapter_function`, `pressure_curve.position_in_flow`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `叙事织入`, and `planned_handoff`;
 - treat rolling plan as story-content planning, not an intra-chapter prose template.
 
 ## Round Workflow
@@ -109,7 +112,7 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 See `docs/WORKFLOWS.md` for the full workflow. Default round mode:
 
 1. **Prepare**: validate planning YAML, refresh `active_flow` / `rolling_plan`, compile round context, write `current_round.yml`.
-2. **Prebuild**: create all batch `writing_packet.md` files before drafting. Each packet includes audit context plus a concise Writing Card.
+2. **Prebuild**: create all batch `writing_packet.md` files before drafting. Each packet includes audit context, a design/execution Writing Card, and `Pre-Draft Self Check`.
 3. **Continuous draft**: write all batch drafts back-to-back; between drafts only write `draft_handoff_note`. Do not run validator, merge canon, archive planning, or call QA between drafts.
 4. **Batch cold read and finalize**: run draft self-check, run `check_not_but.py --files draft.txt`, use cold-reader, revise drafts, then write `final.txt`.
 5. **Batch engineering merge**: write `review.md`, `summary.yml`, `canon_delta.yml`, diff-only `memory_update_plan.md`; generate a merge preview, review it, then apply safe current-state updates into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
@@ -120,7 +123,7 @@ Hard gates:
 - `reader_pass.md` must exist and pass before `final.txt`.
 - `canon_delta.yml` must include `state_sync` for affected current-state files.
 - `state_sync.status: needs_director_review` is not a completion state. Before post-merge QA, resolve every such target to `merged` / `updated` / `synced`, or `n/a` only when there was no substantive change.
-- Keep template headings stable in `writing_packet.md` and `review.md`; validator treats these headings as a machine-readable contract, not presentation text.
+- Keep template headings stable in `writing_packet.md` and `review.md`; validator treats these headings as a machine-readable contract, not presentation text. Do not rename `Writing Card` or `Pre-Draft Self Check`.
 - Changed character entries must update `last_updated` or `change_history`.
 - `active_flow.last_cut` must match the latest completed chapter.
 - `rolling_plan.yml` must only contain future unfinished chapters.
@@ -134,9 +137,10 @@ Hard gates:
 
 - `draft.txt` 必须先完成 draft self-check，才能进入 `reader_pass.md`。
 - `python scripts/check_not_but.py <project> --chapters <batch chapters> --files draft.txt` 是 final 前硬门禁。
+- `check_not_but.py` 同时扫描 not-but、三连否定内心声明、元叙述和箭头/编号式认知总结；出现后先改 draft。
 - `draft.txt` 和 `final.txt` 必须遵守 TXT 格式：标题后一空行，正文普通段落之间不空行，多数段落 40-160 字，超过 220 字视为格式失败。
 - 结尾必须留下外部运动交接，避免空泛反思式收束。
-- “不是X而是Y / 不是X，是Y”每章最多 1 次。
+- “不是X而是Y / 不是X，是Y”默认禁用；确需使用时每章最多 1 次，且必须在 review 中说明不可替代性。
 
 ## Draft Self-Check And Cold Reader Gate
 

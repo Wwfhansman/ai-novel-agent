@@ -1,7 +1,7 @@
 ---
 description: AI Novel Agent 机械 QA，检查 validator、TXT/YAML 格式和质量门漏项，不写正文不改剧情
 mode: subagent
-model: opencode-go/deepseek-v4-flash
+model: deepseek/deepseek-v4-flash
 reasoningEffort: medium
 temperature: 0.1
 permission:
@@ -34,11 +34,13 @@ color: warning
 
 - 检查章节必需文件是否存在。
 - 检查 `writing_packet.md`、`reader_pass.md` 是否存在。
+- 检查 `writing_packet.md` 是否包含 `Pre-Draft Self Check`，且 Writing Card 有 `time_span`、`ending_type`、`position_in_flow`、`opening_sensory`、`scene_moments`、`ending_gesture`。
+- 检查 `information_release` 的核心变量是否写明 `enters_via`；如果只靠主角脑内总结或旁白解释传达，标记为质量风险。
 - 如果 `reader_pass.md` 曾给出 `revise required`，检查 `reader_recheck.md` 是否存在且 verdict 为 pass。
 - 检查 `reader_pass.md` 是否记录 `cold_reader_subagent` 或 `same_agent_fallback`。
 - 运行或解释 `scripts/validate_novel_output.py` 的结果。
 - 检查 TXT 空行、超长段落、结尾模式、禁用句式。
-- 检查 final 前是否已运行 draft 句式专项扫描：`check_not_but.py ... --files draft.txt`，且超限项已在 draft 阶段修复。
+- 检查 final 前是否已运行 draft 句式专项扫描：`check_not_but.py ... --files draft.txt`，且 not-but、三连否定、元叙述、箭头/编号式认知总结已在 draft 阶段修复。
 - 检查 YAML 语法、重复 key 风险、旧字段残留。
 - 检查 `memory_update_plan.md` 是否保持草案身份，不能出现“合并判断”“已合并文件”“已在 director 监督下直接更新”等越界表述。
 - 检查 `memory_update_plan.md` 是否为 diff-only 格式，且没有复述 summary 或完整 YAML 草案。
@@ -93,6 +95,7 @@ phase: pre_merge / post_merge
 - `canon_delta.yml` 已记录人物、账本、世界或 planning 变化，但 `review.md` 仍未确认对应 `entities/`、`ledgers/`、`planning/` 当前状态同步，或仍有未勾选的当前状态同步项。
 - 任一 `canon_delta.yml` 的 `state_sync.status` 仍是 `needs_director_review` / `pending` / `todo` / `open` / `unmerged`。post-merge QA 只能接受 `merged` / `updated` / `synced`，或确实无变化时的 `n/a`。
 - `writing_packet.md` / `review.md` 把模板固定标题改成自由标题，导致 validator 无法识别必需 section。
+- 连续章节都写成 `time_span: 一天` + `ending_type: next_step_decision`，形成章节容器循环。
 - `memory_update_plan.md` 声称已合并、已直接更新或包含“合并判断”。
 - `reader_pass.md` 曾要求 revise 但缺少 `reader_recheck.md` pass。
 - merge preview 仍有 high-confidence pending 操作。

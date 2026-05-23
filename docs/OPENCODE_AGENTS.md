@@ -12,7 +12,7 @@
 `novel-cold-reader` 和 `novel-qa` 当前配置为：
 
 ```yaml
-model: opencode-go/deepseek-v4-flash
+model: deepseek/deepseek-v4-flash
 ```
 
 `novel-archivist` 当前配置为更强一点的：
@@ -21,7 +21,7 @@ model: opencode-go/deepseek-v4-flash
 model: opencode-go/deepseek-v4-pro
 ```
 
-OpenCode 的模型写法是 `provider/model-id`。OpenCode Go 官方套餐的 provider 机器名是 `opencode-go`，不是 `opencode`，也不是带空格的 `OpenCode Go`。
+OpenCode 的模型写法是 `provider/model-id`。请以 `/models` 输出为准；如果你的提供商 ID 不同，同步修改 README 和 `.opencode/agents/*.md` 中的 `model:` 行。
 
 如果你使用 OpenCode Go 套餐，先确认可用模型：
 

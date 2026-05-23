@@ -56,7 +56,8 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 - canon_delta 中有实质状态变化时，`state_sync` 是否以 `merged` / `updated` / `synced` 确认已合入对应当前状态文件；`n/a` 不能用于非空变化字段。
 - `entities/characters.yml` 中发生实质变化的角色是否有 `last_updated` 或 `change_history` 指向对应章节。
 - memory_update_plan 是否保持草案身份、使用 diff-only 格式，不能声称 archivist 或 director 已直接合并文件。
-- writing_packet 是否包含读取证据、Writing Card、reader reward、cut continuity 和写后更新清单。
+- writing_packet 是否包含读取证据、Writing Card、Pre-Draft Self Check、reader reward、cut continuity 和写后更新清单。
+- Writing Card 是否包含 time_span、ending_type、position_in_flow、enters_via、opening_sensory、scene_moments、ending_gesture。
 - planning/merge_previews 是否仍有 high-confidence pending 操作。
 - review 是否包含 Reader Reward Check、TXT Format Check 和 Memory Update Check。
 - rolling_plan 是否仍堆积 completed 章节，是否与 completed_plan_log 重叠，是否缺少 completed_plan_log / future_backlog。
@@ -66,7 +67,9 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 - `rolling_plan.yml` / `current_round.yml` 是否残留 `bridge_to_next`、`continuity_from_previous`、`next_hook` 等旧字段。
 - `summary.yml` 是否仍使用 `next_hook`。
 - 项目内 YAML 文件是否可解析；关键状态文件是否存在重复 key。
-- 正文是否超过"不是X而是Y / 不是X，是Y"每章最多 1 次的硬限制。
+- 正文是否超过"不是X而是Y / 不是X，是Y"每章最多 1 次的硬限制；如保留 1 次，review 是否说明不可替代性。
+- 正文是否出现三连否定内心声明、原书/原著元叙述、箭头/编号式认知总结。
+- 批次内是否连续使用 `ending_type: next_step_decision` 或 `time_span: 一天`。
 
 未来还可以添加：
 

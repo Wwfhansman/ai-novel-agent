@@ -2,4 +2,12 @@ banned_phrases: []
 avoid_patterns:
   - "旁人连续惊呼"
   - "开篇大段世界观讲解"
-
+machine_checked_patterns:
+  - id: contrast_negation
+    description: "不是X而是Y / 不是X，是Y 默认禁用；确需使用必须在 review.md 说明不可替代性。"
+  - id: triple_negated_inner_state
+    description: "禁止用三连否定声明人物内心。"
+  - id: meta_original_text
+    description: "禁止原书/原著元叙述。"
+  - id: arrow_or_numbered_cognition
+    description: "禁止箭头/编号式认知总结。"

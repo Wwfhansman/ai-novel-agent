@@ -20,6 +20,9 @@ color: primary
 - 维护 `planning/active_flow.yml`、`planning/rolling_plan.yml`、`book/longform_blueprint.yml` 之间的一致性。
 - 生成或确认 `planning/context_packs/round_XXX_context_pack.md`。
 - 生成每章 `chapters/chXXX/writing_packet.md`；它合并证据包和正文 Writing Card。
+- `writing_packet.md` 的 Writing Card 必须分成 `Chapter Design` 和 `Writing Execution`：前者写变化目标，后者写 opening_sensory、scene_moments、ending_gesture，避免把章纲直接翻译成正文。
+- 每章 Writing Card 必须填写 `time_span`、`ending_type`、`position_in_flow`；`information_release` 的核心变量必须写 `enters_via`。
+- `Pre-Draft Self Check` 必须在写 draft 前完成。若 ending_type 仍是 `next_step_decision`、信息只能靠主角脑内总结进入，先改 packet，不要开始写正文。
 - 当 `style/samples.md` 非空时，把 3-5 条正向样本文风锚点压入每章 `writing_packet.md` 的 Writing Card，并要求 cold-reader/review 检查样本文风对齐。
 - 默认先预生成本批次 3 章的 `writing_packet.md`，再连续写 draft；章间只允许使用非正史的 `draft_handoff_note` 保持 prose 承接。
 - 在 draft 完成后调用 `novel-cold-reader` 生成 `reader_pass.md`。
@@ -36,7 +39,7 @@ color: primary
 - `writing_packet.md` 是唯一写作前输入；其中 `Writing Card` 是正文抬头纸。
 - `draft.txt` 不能直接晋升 `final.txt`。必须先完成 draft self-check 和 `reader_pass.md`。
 - 连续 draft 模式不能跳过 final 前的 `reader_pass.md`，也不能用 `draft_handoff_note` 替代 `actual_handoff`。
-- `check_not_but.py` 必须在 draft 阶段运行；"不是X而是Y / 不是X，是Y" 超过 1 次时，先改 `draft.txt`，不要等 `final.txt` 和 canon 文件生成后返工。
+- `check_not_but.py` 必须在 draft 阶段运行；not-but、三连否定内心声明、元叙述、箭头/编号式认知总结都要先改 `draft.txt`，不要等 `final.txt` 和 canon 文件生成后返工。
 - `reader_pass.md` 默认由 `novel-cold-reader` 生成；同 agent 冷读只是 fallback。
 - validator 是诊断工具，不是文笔质量门。
 - pre-merge QA 只能说明正文和初始产物暂时可用；post-merge QA 才是工程完成门禁。
@@ -50,7 +53,7 @@ Phase 1 — 准备：
 - 读取必要的 `entities/`、`ledgers/`、`planning/`。
 - 写 round context pack。
 - 一次性生成 3 章 `writing_packet.md`。
-- `writing_packet.md` 和 `review.md` 必须使用模板固定标题。不要把 `Writing Card`、`Reader Reward Check`、`TXT 格式检查`、`记忆更新检查`、`Source References` 等标题改成自由命名；validator 依赖这些标题做机器检查。
+- `writing_packet.md` 和 `review.md` 必须使用模板固定标题。不要把 `Writing Card`、`Pre-Draft Self Check`、`Reader Reward Check`、`TXT 格式检查`、`记忆更新检查`、`Source References` 等标题改成自由命名；validator 依赖这些标题做机器检查。
 
 Phase 2 — 连续 draft：
 

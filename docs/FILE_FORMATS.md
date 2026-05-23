@@ -119,9 +119,17 @@ chapters/ch001/
 - `Cut Continuity`
 - `Reader Reward Check`
 - `Writing Card`
+- `Pre-Draft Self Check`
 - `Required Updates After Writing`
 
-`Writing Card` 是正文抬头纸，控制在 500-700 中文字以内。它必须包含：本章一句话目标、chapter_function、pressure_curve、must_happen、must_not_complete、1-2 个信息释放点、叙事织入、3-5 条样本文风锚点和必须避开的模型腔。
+`Writing Card` 是正文抬头纸，应保持紧凑，但不能重新变成任务清单。它必须分成：
+
+- `Chapter Design`：本章一句话目标、chapter_function、time_span、ending_type、pressure_curve.position_in_flow、must_happen、must_not_complete、information_release、narrative_weave。
+- `Writing Execution`：opening_sensory、scene_moments、ending_gesture、sample_style_anchors、prose_constraints。
+
+`information_release.new_core_variables` 必须写 `enters_via`。如果一个核心信息只能靠主角脑内总结或旁白陈述进入，说明场景设计还没完成，应先改 writing packet 再写 draft。
+
+`time_span` 和 `ending_type` 是跨章模式控制字段。连续章节不要默认写成“一天一章”，也不要连续用 `next_step_decision` 结尾；结尾优先停在 action_cut、arrival、reveal_interrupted、cost_landing 或可说明的 custom。
 
 `writing_packet.md` 是工作输入，不是资料库全文复制。读了什么、为什么读、关键结论和来源引用必须可审计；但正文写作时主要盯住 `Writing Card`。
 
@@ -295,7 +303,7 @@ actual_handoff:
 - 每章 `synopsis` 应控制在 300-800 字。不要为了压缩牺牲正文质量。如果 `rolling_plan.yml` 膨胀到超过 20000 字节，validator 会发出 `ROLLING_PLAN_SIZE_LARGE` warning。
 - `future_backlog.yml` 存储远期重要节拍、尚未进入 6-15 章窗口的灵感和 macro stage 转折点预期。
 
-它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`chapter_function`、`pressure_curve`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和限制。
+它不只是任务清单。每章应有 300-800 字剧情简介，并说明 `flow_id`、`flow_position`、`cross_chapter_event`、`starts_mid_action`、`ends_mid_action`、`chapter_function`、`pressure_curve.position_in_flow`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和限制。
 
 每章应尽量只有一个核心外部推进，并明确 `must_not_complete`。`叙事织入` 用来保留人物、世界、系统和社会结构周围的织入材料：生活细节、人物反应、对话摩擦、关系温度、世界/制度/规则质感、场景物件、轻微误读、停顿、尴尬、柔软、小幽默或人物习惯。正文可以有无直接剧情功能的段落，只要它们增强人物和场景的自然感。
 

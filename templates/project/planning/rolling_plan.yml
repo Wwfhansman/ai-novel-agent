@@ -12,9 +12,14 @@ chapter_shape_template:
   scale_level: ""
   flow_id: ""
   flow_position: "opening / pressure_rising / turn / fallout / payoff / transition"
+  cross_chapter_event: "如果本章属于跨章事件，写明事件从哪章开始、预计哪章见结果；如果不是，填 N/A。"
+  starts_mid_action: false
+  ends_mid_action: true
   chapter_function: "crisis / cultivation / travel / trade / social_conflict / reveal / aftermath / investigation / operation / relationship / building / transition / face_slap / breakthrough / auction / showing_off / competition / dungeon_rule"
   synopsis: "300-800 字剧情简介，写故事内容而不是场景节拍清单。"
-  pressure_curve: "描述压力如何在章内上升、延迟、释放或转移。例如：低开例行 → 中段异常浮现 → 高压逼近 → 交接。"
+  pressure_curve:
+    position_in_flow: "opening / rising_early / rising_middle / peak / aftermath_trough"
+    chapter_internal_motion: "描述本章在大事件中的局部运动，例如：信息进入 → 碎片碰撞 → 未闭合。不要默认写成章内完整闭环。"
   reader_question_flow:
     enters_with: "本章承接什么读者疑问？"
     leaves_with: "本章留下什么具体新疑问？"

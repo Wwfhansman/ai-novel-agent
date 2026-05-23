@@ -178,7 +178,7 @@ chapters/ch001/writing_packet.md
 
 ```text
 round context pack: 3000-5000 中文字
-chapter writing_packet: 1000-2500 中文字；Writing Card 500-700 中文字
+chapter writing_packet: 1000-2500 中文字；Writing Card 保持紧凑，分离 Chapter Design / Writing Execution
 ```
 
 ## 6. 质量检查清单
