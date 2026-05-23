@@ -155,3 +155,19 @@ review: resolve knowledge_state conflict after ch012
 - 在公共仓库只保留 `projects/example-project/`，真实项目使用本地私有分支或独立工作区。
 
 不要一边忽略真实小说文件，一边指望公共仓库的 Git checkpoint 能回滚小说内容。用于创作安全带的 Git 必须跟踪实际小说项目文件。
+
+## 10. 受保护文件修改可见性检查
+
+MVP 阶段无法只靠 validator 完全阻止 agent 修改受保护文件。系统采用“确认流程 + 可见性检查”增加摩擦力：
+
+1. **修改前确认**：修改受保护文件前必须进入 `novel-change`，输出 Change Summary，并由用户确认。
+2. **变更记录**：修改必须记录到 `ledgers/decision_log.yml` 或 `meta/session_log.md`。
+3. **Validator 辅助**：运行：
+
+```bash
+python scripts/validate_novel_output.py <project> --check-protected-files
+```
+
+该检查会确认项目存在变更日志入口，并提示日志是否缺少 `Change Summary`、`novel-change` 或 protected-file 相关记录。它是可见性检查，不是完整的技术隔离。
+
+如果项目使用 Git，受保护文件修改前建议创建 checkpoint，修改后的 commit message 使用 `change:` 前缀。

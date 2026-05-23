@@ -76,7 +76,21 @@ OpenCode 的模型写法是 `provider/model-id`。OpenCode Go 官方套餐的 pr
 ```text
 @novel-cold-reader 请冷读 projects/<name>/chapters/chXXX/draft.txt
 @novel-qa phase: pre_merge，请检查 projects/<name> chXXX 的质量门和 validator
-@novel-archivist 请基于 projects/<name>/chapters/chXXX/final.txt 生成 memory_update_plan.md 草案
+@novel-archivist
+project: projects/<name>
+chapter: chXXX
+output: projects/<name>/chapters/chXXX/memory_update_plan.md
+
+只读取：
+- chapters/chXXX/final.txt
+- chapters/chXXX/summary.yml
+- chapters/chXXX/canon_delta.yml
+- chapters/chXXX/prompt.md
+- planning/active_flow.yml
+- planning/rolling_plan.yml
+- 本章明确涉及的 entities/ledgers 条目
+
+写入 memory_update_plan.md 草案。不要修改其他文件。
 @novel-qa phase: post_merge，请在 director 合并 summary/canon_delta/entities/ledgers/planning/volume 后检查 projects/<name> chXXX
 ```
 
@@ -84,7 +98,17 @@ OpenCode 的模型写法是 `provider/model-id`。OpenCode Go 官方套餐的 pr
 
 `novel-cold-reader` 可以给局部润色建议，但只站在读者视角指出断句、描写、对话呼吸、转场和句式重复问题；它不接管正文改写，也不检查工程文件。
 
-`novel-archivist` 只能输出草案。它不能声称“已直接更新文件”或“已在 director 监督下合并”。真正合并后，由 `novel-director` 在 `review.md` 的工程同步段记录最终状态。
+如果 `style/samples.md` 非空，`novel-director` 应把本章样本文风锚点交给 `novel-cold-reader`。冷读需要检查句子节奏、段落手感、描写温度、对话语感和情绪处理是否贴近样本，但不能迁移样本素材。
+
+`novel-archivist` 只能输出草案，或直接写入 `projects/<name>/chapters/chXXX/memory_update_plan.md` 草案。权限同时兼容仓库根下的 `chapters/chXXX/memory_update_plan.md`。它不能声称“已直接更新文件”或“已在 director 监督下合并”，也不能直接修改 summary、canon_delta、entities、ledgers 或 planning。真正合并后，由 `novel-director` 在 `review.md` 的工程同步段记录最终状态。
+
+调用 archivist 时要保持短输入：不要粘贴完整字段说明，不要要求它读取全量 entities、全量 ledgers、上一章全部文件或 volume state，除非本章有明确冲突必须对照。director 在 archivist 返回后必须确认草案已落盘：
+
+```bash
+test -s projects/<name>/chapters/chXXX/memory_update_plan.md
+```
+
+如果文件缺失或为空，先检查 subagent 返回值，再决定写入返回草案或用更短输入重试。
 
 `novel-qa` 必须区分 `phase: pre_merge` 和 `phase: post_merge`。pre-merge QA 只是预检查；post-merge QA 必须在 director 合并 `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/`、`planning/` 之后运行。只有 post-merge QA 通过，本章才能标记完成。
 

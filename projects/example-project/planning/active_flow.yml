@@ -12,9 +12,10 @@ current_flow:
     - "巡灯署为什么急着回收特定时期的旧灯？"
     - "林栖的父亲是否拆过同类旧灯？"
   last_cut:
-    chapter: null
-    last_visible_moment: null
-    current_handoff: null
+    chapter: ch001
+    last_visible_moment: "巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊。"
+    current_handoff:
+      - "巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？"
   end_conditions:
     - "林栖确认旧灯芯、父亲旧工具和巡灯署回收行动之间存在同一条因果链。"
     - "巡灯署压力从例行回收升级为针对林栖个人的可见行动。"

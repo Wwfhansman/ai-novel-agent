@@ -373,11 +373,13 @@ Use skills/novel-write to continue projects/my-novel.
 - 写下一个生产批次，默认 3 章。
 - 遵守 meta/model_policy.yml：正文、active_flow、rolling_plan、canon 最终合并必须由 premium_model 或人类确认。
 - fast_model 只可用于 YAML 检查、TXT 空行修复、脚本报错整理、session log、diff 摘要等低风险任务。
-- 先编译 round context pack，再逐章编译 chapter context pack，并为每章生成 500 字以内的 prompt.md 抬头纸。
+- 默认使用连续 draft 批量流程：先编译 round context pack，再一次性预生成本批次 3 章 brief/context_pack/prompt，然后连续写 3 章 draft。
+- 章 draft 之间只写 3-5 行 `draft_handoff_note` 供下一章承接；它不是正史，不做 validator、summary、canon_delta 或状态合并。
 - 每轮必须全文读取 planning/rolling_plan.yml，但 context pack 只摘录本批次、相邻章节和影响本批次的后续约束。
 - round context pack 控制在 3000-5000 中文字；chapter context pack 控制在 1000-2500 中文字。
 - 人物、物品、伏笔、债务、knowledge_state、world_state 按本章涉及对象定向读取，不要整份复述。
 - 每章都必须从上一章的 actual_handoff 或 active_flow 的外部压力中长出来。
+- 连续 draft 完成后再批量冷读、批量修 draft、批量写 final、批量工程合并。逐章完成全流程只在我明确要求或剧情切口变动太大时使用。
 - 每章都必须在 brief/context_pack 中写清楚：
   - chapter_function 和 pressure_curve：本章功能与压力曲线。
   - reader_question_flow：本章承接和留下的读者疑问。
@@ -388,6 +390,7 @@ Use skills/novel-write to continue projects/my-novel.
   - 叙事织入：至少 3 个不直接解决任务、但让人物、场景、世界或系统自然生长的织入节拍。
   - density_control：限制主要任务数和新信息节点数。
 - 每章写 draft 前必须生成 `prompt.md`：只放本章即时写作约束，不超过 500 字。
+- 如果 `style/samples.md` 非空，prompt 必须写入 3-5 条正向样本文风锚点，覆盖句子节奏、段落手感、描写温度、对话语感或情绪处理；不要迁移样本素材。
 - draft 不能直接晋升 final。必须先完成 draft self-check 和 `reader_pass.md` 冷读质量门；`reader_pass.md` 优先由独立 cold-reader subagent 生成。
 - 如果 reader_pass 找不到值得保留的一段，或结论是 `revise required`，必须先重写 draft 局部，不能写 final。
 - reader_pass 必须包含局部润色建议，用读者视角指出断句僵硬、描写不自然、对话像信息交换、转场突兀或句式重复的问题。它可以给短句级替换方向，但不整段代写、不改变剧情事实。
@@ -403,7 +406,8 @@ Use skills/novel-write to continue projects/my-novel.
 - 如果连续两段都在解释规则、势力、计划、推理或功法系统，下一段必须是行动、反应、对话、误读、冲突、感官质感、代价或场景移动。
 - 结尾避免主角总结、分析、决定下一步。
 - 结尾必须留下具体的交接——规划中称为 planned_handoff，写完后在 canon_delta 中记录 actual_handoff。
-- 每章写完必须运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
+- 在 cold-reader/final 前运行 `python scripts/check_not_but.py projects/my-novel --chapters chXXX chYYY chZZZ --files draft.txt`。任何章节超限都必须先改 draft，不能等 summary/canon_delta 合并后再返工。
+- 每章 final 后必须运行 validator；连续 draft 模式下可以在 3 章 final 都完成后批量运行：`python scripts/validate_novel_output.py projects/my-novel --chapters chXXX --fix-format`。
 - `Validation passed` 只说明格式和诊断规则通过，不等于文笔质量通过；质量门是 draft self-check 和 reader_pass。
 - 如果脚本报告 reflective ending、short atmosphere ending、protagonist thought ending，必须重写结尾后重新运行。
 - 写完每章后更新 summary.yml、canon_delta.yml、entities、ledgers、volumes、planning/active_flow.yml、planning/rolling_plan.yml。

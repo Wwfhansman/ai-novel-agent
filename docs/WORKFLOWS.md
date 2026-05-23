@@ -109,6 +109,7 @@ novel-change
 → 可选生成自由写作 notes
 → 写 draft.txt
 → draft self-check（连续解释/任务执行/无体温段落必须先重写）
+→ draft 句式专项扫描：check_not_but.py 必须在 draft 阶段通过
 → 生成 reader_pass.md（冷读质量门）
 → reader_pass 通过后写入 final.txt
 → 运行 validator（诊断工具，不等于质量通过）
@@ -123,6 +124,45 @@ novel-change
 → post-merge QA：合并全部状态文件后运行 validator / novel-qa
 → post-merge QA 通过后，本章才算完成
 ```
+
+### 3.3.1 默认批量生产流程
+
+为了减少 prose 模式和工程模式在章间反复切换，默认采用批量节奏。逐章完成全流程只用于调试、用户明确要求，或连续模式因剧情切口大幅变化而不安全时。
+
+```text
+一轮准备：
+  刷新 active_flow + rolling_plan
+  → 生成 round context pack
+  → 预生成本批次 3 章 brief / context_pack / prompt
+
+连续 draft：
+  → 写 chXXX draft
+  → 写 3-5 行 draft_handoff_note（非正史，仅供下一章 draft 承接）
+  → 立刻写下一章 draft
+
+批量冷读与 final：
+  → 批量运行 check_not_but.py 扫 draft；超限先改 draft
+  → cold-reader 并行审 3 章 draft
+  → 根据 reader_pass 修 draft
+  → reader_pass 通过后写 final.txt
+  → 批量运行 validator
+
+批量工程合并：
+  → 生成 summary.yml / canon_delta.yml / memory_update_plan.md
+  → 合并 entities / ledgers / volumes / planning（canon_delta 不能替代当前状态）
+  → 归档 completed_plan_log，滑动 rolling_plan
+  → post-merge QA
+```
+
+边界：
+
+- `draft_handoff_note` 不是 canon，不能替代 `actual_handoff`。
+- `check_not_but.py` 是 final 前门禁；不要等 summary/canon_delta 已生成后才改正文句式。
+- `reader_pass.md` 仍必须在 `final.txt` 前完成，不能后置。
+- validator / QA 可以批量运行，但 post-merge QA 必须在全部状态文件合并后运行。
+- post-merge QA 前，`entities/`、`ledgers/`、`planning/active_flow.yml` 必须已经合入本章造成的当前状态变化；只写 `canon_delta.yml` 不能算完成。
+- 如果某章 draft 实际切口大幅改变下一章输入，必须停下刷新下一章 context_pack / prompt，再继续 draft。
+- `style/samples.md` 若非空，必须进入 prompt 的正向文风锚点，并进入 reader_pass / review 的样本文风对齐检查。
 
 ### 3.4 一轮结束流程
 

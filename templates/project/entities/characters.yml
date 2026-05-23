@@ -1,3 +1,2 @@
 characters: []
-notes: "人物当前状态以本文件为权威来源。章节 delta 只记录变化，不能替代本文件。"
-
+notes: "人物当前状态以本文件为权威来源。章节 delta 只记录变化，不能替代本文件。人物发生实质变化时，对应条目必须更新 last_updated 或 change_history。"

@@ -180,6 +180,22 @@ fields:
       Relevant chapter entries and later constraints from planning/rolling_plan.yml.
       The full rolling plan should be read before a round, but not copied in full.
 
+  sample_style_anchors:
+    required: false
+    type: list
+    purpose: >
+      Positive prose anchors extracted from style/samples.md when it is non-empty:
+      sentence rhythm, paragraph feel, description temperature, dialogue texture,
+      or emotional handling. Must not include sample names, settings, plot material,
+      proprietary terms, or signature scenes.
+
+  draft_handoff_note:
+    required: false
+    purpose: >
+      Temporary non-canon note used only during continuous draft mode. It records
+      the provisional visible cut, object/action/consequence, and next draft pickup.
+      It must be reconciled into actual_handoff after final text is accepted.
+
   current_round_tracker:
     required: true
     purpose: Production-batch chapter list, status, and flow edges from current_round.yml; detailed chapter planning remains in rolling_plan.yml.

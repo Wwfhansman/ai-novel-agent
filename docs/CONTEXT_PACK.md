@@ -73,6 +73,7 @@ Old Chapter Lookback Extract: 每个旧章节只摘必要事实或短摘录
 - 如果超过预算，优先删复述、背景说明和低相关账本内容，不删 handoff、active_flow、rolling_plan 本章信息、禁止事项和写后更新清单。
 - 如果使用模型切换，context pack 必须记录 `model_routing`，并说明 final prose 和 canon 更新由谁做质量门禁。
 - `source_refs` 不计入铺陈，不需要长引文，但必须能说明关键结论来自哪个文件。
+- 如果 `style/samples.md` 非空，context pack 应记录本章采用哪些样本文风锚点，但只提取语言方法，不复制样本内容。
 
 ## 4. 两级 Context Pack
 
@@ -154,6 +155,7 @@ chapters/ch001/context_pack.md
 - 本章世界压力
 - 本章 reader reward check
 - 本章风格和 TXT 格式约束，包括段落密度
+- 如果 `style/samples.md` 非空，本章要提取 3-5 条正向样本文风锚点，并同步压缩到 `prompt.md`
 - 本章禁止事项
 - 本章写作风险
 - 本章结束后必须更新的文件
@@ -165,6 +167,8 @@ chapters/ch001/context_pack.md
 信息密度约束必须明确：一般章节只让读者记住 1-2 个核心新变量。规则、制度、功法、政治事实、推理结论等信息，应通过事件验证、误用代价、人物反应、冲突或场景动作进入正文，不要连续多段解释。
 
 不要把 chapter context pack 写成固定 scene beats 模板。它是写作输入记录，不是正文结构脚手架。
+
+为控制篇幅，伏笔、信息可见性、世界压力和账本条目只列本章实际相关内容。无相关内容时写 `none`，不要为了完整感复制整份账本。
 
 ## 5. 读取策略
 

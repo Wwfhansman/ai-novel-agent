@@ -4,6 +4,8 @@
 
 - `prompt.md` 是否存在且控制在 500 字以内？
 - draft self-check 是否发现并修复了连续解释、连续任务执行、连续无动作/无对话/无感官输入的问题？
+- `python scripts/check_not_but.py <project> --chapters ch001 --files draft.txt` 是否在 final 前通过？如果超过 1 次，draft 如何改过？
+- 是否搜索并清除了正文里的工程/元引用（如 `ch00`、`上一章`、`本章`、`读者`、`章纲`、Markdown/YAML 痕迹）？
 - `reader_pass.md` 是否给出 `pass`？
 - 如果 `reader_pass.md` 曾给出 `revise required`，draft 如何改过？
 - 本章最值得保留的一段是哪一段？
@@ -44,6 +46,13 @@
 - 制造了什么新期待？
 - 外部代价/杠杆变化/揭示/关系变化是什么？
 - 什么画面/台词/动作/物件是难忘的？
+
+## Sample Alignment Check
+
+- 如果 `style/samples.md` 非空，本章是否贴近样本的句子节奏、段落手感、描写温度和对话语感？
+- `prompt.md` 是否写入了 3-5 条正向样本文风锚点，而不是只有禁止性规则？
+- 本章是否误迁移了样本人名、地名、剧情、专有设定或标志性桥段？
+- 如果文风偏离，final 前已如何局部修正？
 
 ## 结尾检查
 
@@ -86,10 +95,12 @@
 
 - [ ] `summary.yml` 已更新。
 - [ ] `canon_delta.yml` 已更新（含 actual_handoff）。
+- [ ] `canon_delta.yml` 已填写 `state_sync`，所有实质变化都指向对应当前状态文件或标注 N/A。
 - [ ] `entities/` 当前状态变化已同步（含 change_history）。
 - [ ] `ledgers/` 当前状态变化已同步。
 - [ ] `planning/active_flow.yml` 已更新 last_cut 和 current_handoff。
 - [ ] `planning/rolling_plan.yml` 已刷新。
+- [ ] 未把 `canon_delta.yml` 当作当前状态替代品；如本章无相关 state 变化，已明确标注 N/A。
 
 ## Post-Merge QA / 最终 QA
 

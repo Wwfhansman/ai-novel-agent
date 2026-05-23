@@ -14,6 +14,7 @@ fields:
     type: list
     description: 人物状态变化；写完后必须同步到 entities/characters.yml。
     item_fields: [character, change]
+    note: "条目必须包含 character/name/id 之一，便于 validator 对照 entities/characters.yml 的 last_updated/change_history。"
   relationship_changes:
     required: true
     type: list
@@ -59,6 +60,20 @@ fields:
     required: true
     type: list
     description: 本章最终实际留下的外部压力、未完成动作、关系变化、物件、信息差或可见后果；下一章必须承接，不能只是“主角决定下一步”。
+  state_sync:
+    required: true
+    type: list
+    description: 本章 canon_delta 已合入哪些当前状态文件。validator 会用它防止只写变化日志、不更新 entities/ledgers/planning。
+    item_fields: [target, status, evidence]
+    allowed_status: [merged, updated, synced, n/a, needs_director_review]
+    note: "当对应变化字段非空时，状态必须是 merged / updated / synced；n/a 只允许用于本章无该类变化的目标。"
+    example:
+      - target: entities/characters.yml
+        status: merged
+        evidence: "顾长宁 current_status / change_history 已同步到 ch012。"
+      - target: ledgers/world_state.yml
+        status: n/a
+        evidence: "本章无外部世界状态变化。"
   handoff_to_next_chapter:
     required: false
     deprecated: true

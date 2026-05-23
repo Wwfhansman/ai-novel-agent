@@ -11,4 +11,7 @@ knowledge_items:
       partial_reveal: ch001-ch002
       full_reveal: volume_001_mid
     protection: normal
-
+    last_updated: ch001
+change_history:
+  - chapter: ch001
+    change: 林栖初步接触旧灯芯异常，巡灯署隐瞒态度进入信息可见性。

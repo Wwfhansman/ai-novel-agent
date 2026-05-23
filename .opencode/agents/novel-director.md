@@ -20,6 +20,8 @@ color: primary
 - 维护 `planning/active_flow.yml`、`planning/rolling_plan.yml`、`book/longform_blueprint.yml` 之间的一致性。
 - 生成或确认 `planning/context_packs/round_XXX_context_pack.md`。
 - 生成每章 `chapters/chXXX/context_pack.md` 和 500 字以内的 `chapters/chXXX/prompt.md`。
+- 当 `style/samples.md` 非空时，把 3-5 条正向样本文风锚点压入每章 `prompt.md`，并要求 cold-reader/review 检查样本文风对齐。
+- 默认先预生成本批次 3 章的 brief/context_pack/prompt，再连续写 draft；章间只允许使用非正史的 `draft_handoff_note` 保持 prose 承接。
 - 在 draft 完成后调用 `novel-cold-reader` 生成 `reader_pass.md`。
 - 在 final 生成后可以调用 `novel-qa` 做预检查，但这不是完成门禁。
 - 在 final 确认后调用 `novel-archivist` 生成 `memory_update_plan.md` 和记忆更新草案。
@@ -33,9 +35,42 @@ color: primary
 - `planning/current_round.yml` 只是生产批次追踪器，不复制章纲。
 - `context_pack.md` 是证据包，`prompt.md` 是正文抬头纸。
 - `draft.txt` 不能直接晋升 `final.txt`。必须先完成 draft self-check 和 `reader_pass.md`。
+- 连续 draft 模式不能跳过 final 前的 `reader_pass.md`，也不能用 `draft_handoff_note` 替代 `actual_handoff`。
+- `check_not_but.py` 必须在 draft 阶段运行；"不是X而是Y / 不是X，是Y" 超过 1 次时，先改 `draft.txt`，不要等 `final.txt` 和 canon 文件生成后返工。
 - `reader_pass.md` 默认由 `novel-cold-reader` 生成；同 agent 冷读只是 fallback。
 - validator 是诊断工具，不是文笔质量门。
 - pre-merge QA 只能说明正文和初始产物暂时可用；post-merge QA 才是工程完成门禁。
+- 修改受保护文件前必须进入 `novel-change`：输出 Change Summary，记录到 `ledgers/decision_log.yml` 或 `meta/session_log.md`，必要时创建 checkpoint，并在用户确认后才能修改。受保护文件包括 `book/constitution.md`、`book/longform_blueprint.yml`、`book/reader_model.yml`、`book/style_memory.md` 核心规则、卷目标、主角核心欲望/底线和终局级秘密。
+- 受保护文件修改后运行 `python scripts/validate_novel_output.py <project> --check-protected-files`，确认变更记录可见。
+
+## 批量生产流程（默认）
+
+Phase 1 — 准备：
+
+- 读取必要的 `entities/`、`ledgers/`、`planning/`。
+- 写 round context pack。
+- 一次性生成 3 章 `brief.md`、`context_pack.md`、`prompt.md`。
+
+Phase 2 — 连续 draft：
+
+- `chXXX draft` → `draft_handoff_note` → 下一章 draft。
+- 章间不冷读、不 validator、不合并 YAML、不归档 planning，保持 prose 温度。
+- 3 章 draft 全部完成后进入 Phase 3。
+
+Phase 3 — 批量冷读 + 修文：
+
+- 并行调用 `novel-cold-reader`。
+- 批量运行 `check_not_but.py --files draft.txt`。
+- 统一根据 cold-reader 和机械扫描修 `draft.txt`。
+- `reader_pass.md` 通过后写 `final.txt`，再批量运行 validator / pre-merge QA。
+
+Phase 4 — 批量工程合并：
+
+- 写 `review.md`、`summary.yml`、`canon_delta.yml`。
+- 调用 `novel-archivist` 生成 `memory_update_plan.md` 草案，并检查落盘。
+- 合并 `entities/`、`ledgers/`、`volumes/`、`planning/`。
+- 归档 `completed_plan_log.yml`，滑动 `rolling_plan.yml`。
+- post-merge QA 通过后才能标记完成。
 
 ## 子 agent 调用边界
 
@@ -46,7 +81,7 @@ color: primary
 - `draft.txt`
 - `prompt.md`
 - `book/style_memory.md` 中与文笔有关的部分
-- `style/samples.md` 如果有真实内容
+- `style/samples.md` 如果有真实内容，并说明本章应检查的样本文风锚点
 - 1-2 句必要前情
 
 不要提供 rolling_plan、账本、summary、canon_delta 或 validator 输出。
@@ -72,16 +107,41 @@ color: primary
 
 ### novel-archivist
 
-只用于 final 确认后的记忆数据库更新草案。调用时提供：
+只用于 final 确认后的记忆数据库更新草案。调用必须短而结构化，不要把完整输出格式、全字段分类说明或全量状态文件列表塞进 prompt。
 
-- 本章 `final.txt`
-- 本章 `prompt.md`、`reader_pass.md`
-- 上一章 `summary.yml`、`canon_delta.yml`
-- 本章涉及的 `entities/`、`ledgers/`
-- `planning/active_flow.yml`、`planning/rolling_plan.yml`
-- 当前卷 state（如存在）
+推荐调用格式：
 
-`novel-archivist` 不直接改文件，只输出 `chapters/chXXX/memory_update_plan.md` 和 YAML 草案。你必须审核后再合并。
+```text
+@novel-archivist
+project: projects/<name>
+chapter: chXXX
+output: projects/<name>/chapters/chXXX/memory_update_plan.md
+
+只读取：
+- chapters/chXXX/final.txt
+- chapters/chXXX/summary.yml
+- chapters/chXXX/canon_delta.yml
+- chapters/chXXX/prompt.md
+- planning/active_flow.yml
+- planning/rolling_plan.yml
+- 本章明确涉及的 entities/ledgers 条目
+
+写入 memory_update_plan.md 草案。不要修改其他文件。
+```
+
+不要要求 archivist 读取 `reader_pass.md`、上一章 summary/delta、全量 entities、全量 ledgers 或 volume state，除非本章有明确冲突必须对照。archivist 的职责是：检查 summary/delta 覆盖、提出有证据的状态更新建议、指出 active_flow/rolling_plan/completed_plan_log 需要合并的变化；不是重写数据库。
+
+`novel-archivist` 可以直接写入 `projects/<name>/chapters/chXXX/memory_update_plan.md` 草案，或返回可写入的草案文本。它不能直接修改 `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/`、`planning/` 或受保护文件。你必须审核后再合并。
+
+archivist 返回后必须检查草案是否实际落盘：
+
+```bash
+test -s projects/<name>/chapters/chXXX/memory_update_plan.md
+```
+
+如果文件缺失或为空，先检查 subagent 返回值里是否有完整草案；有则写入目标路径，没有则用更短输入重新调用。不要因为 agent “看起来完成了”就继续合并。
+
+合并前还要确认 `memory_update_plan.md` 至少包含 `status:`、evidence 和 draft-only 边界；缺失时先修正或标记 `needs_director_review`。
 
 如果 archivist 标记 `needs_director_review`，不要静默合并。
 
@@ -89,6 +149,7 @@ color: primary
 
 - `review.md` 不得仍写 summary、canon_delta、memory_update_plan 待生成。
 - `memory_update_plan.md` 必须保持草案身份，不得声称自己已直接更新文件。
+- `canon_delta.yml` 只是变化日志，不能替代当前状态。涉及人物、账本、世界或 planning 的变化必须合入 `entities/`、`ledgers/`、`planning/`；无变化时在 `review.md` 明确标注 N/A。
 - `rolling_plan.yml` 只保留未来未完成章节；已完成章节只留在 `completed_plan_log.yml`。
 - `current_window` 必须从第一章未完成章节开始。
 - 合并结果写入 `review.md` 的工程同步段，而不是改写 archivist 草案为“已完成”报告。

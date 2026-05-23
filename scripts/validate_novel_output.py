@@ -14,6 +14,7 @@ bounds instead of a single hard minimum.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -103,6 +104,14 @@ REQUIRED_REVIEW_SECTIONS = [
     ("## Reader Reward Check", "## 读者回报检查"),
     ("## TXT Format Check", "## TXT 格式检查"),
     ("## Memory Update Check", "## 记忆更新检查"),
+]
+
+PROTECTED_FILES = [
+    "book/constitution.md",
+    "book/longform_blueprint.yml",
+    "book/reader_model.yml",
+    "book/style_memory.md",
+    "book/endgame_hypotheses.yml",
 ]
 
 # Genre-aware paragraph density minimums.
@@ -376,6 +385,22 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 "memory_update_plan.md must remain a draft proposal; director merge status belongs in review.md."
             )
 
+    project = chapter_dir.parent.parent
+    samples = project / "style" / "samples.md"
+    samples_has_content = False
+    if samples.exists():
+        sample_text = samples.read_text(encoding="utf-8").strip()
+        samples_has_content = bool(sample_text) and "占位" not in sample_text and "暂无" not in sample_text
+
+    prompt = chapter_dir / "prompt.md"
+    if prompt.exists() and samples_has_content:
+        prompt_text = prompt.read_text(encoding="utf-8")
+        if "样本文风锚点" not in prompt_text and "sample" not in prompt_text.lower():
+            warnings.append(
+                f"SAMPLE_ANCHORS_MISSING: {prompt} should include 3-5 positive style anchors "
+                "from style/samples.md when samples are available."
+            )
+
     context_pack = chapter_dir / "context_pack.md"
     if context_pack.exists():
         text = context_pack.read_text(encoding="utf-8")
@@ -403,6 +428,11 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 warnings.append(
                     f"MISSING_REVIEW_SECTION: {review} lacks {en_section} / {zh_section}."
                 )
+        if samples_has_content and "Sample Alignment Check" not in text and "样本文风对齐" not in text:
+            warnings.append(
+                f"MISSING_REVIEW_SECTION: {review} lacks Sample Alignment Check / 样本文风对齐 "
+                "while style/samples.md has content."
+            )
         stale_markers = [
             (chapter_dir / "memory_update_plan.md", r"memory_update_plan\.md\s*(尚未生成|未生成|待.*生成|将在.*生成)"),
             (chapter_dir / "summary.yml", r"summary\.yml\s*(⏳|尚未生成|未生成|待.*生成)"),
@@ -425,6 +455,20 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 f"POST_MERGE_QA_MISSING: {review} must record the final post-merge QA/validator result. "
                 "Run QA after director merges memory and planning updates; pre-merge QA is not enough."
             )
+        unresolved_state_checks = [
+            r"-\s*\[\s*\]\s*`canon_delta\.yml`.*state_sync",
+            r"-\s*\[\s*\]\s*`entities/`.*当前状态变化已同步",
+            r"-\s*\[\s*\]\s*`ledgers/`.*当前状态变化已同步",
+            r"-\s*\[\s*\]\s*`planning/active_flow\.yml`.*已更新",
+            r"-\s*\[\s*\]\s*`planning/rolling_plan\.yml`.*已刷新",
+        ]
+        for pattern in unresolved_state_checks:
+            if re.search(pattern, text):
+                errors.append(
+                    f"UNRESOLVED_STATE_SYNC_CHECKLIST: {review} still has unchecked current-state "
+                    "sync items. Do not pass post-merge QA with canon_delta.yml updated but "
+                    "entities/ledgers/planning left stale. Mark the item done or explicitly note N/A."
+                )
 
     # Handoff checks — accept both old and new field names
     for fname, label in [("summary.yml", "summary"), ("canon_delta.yml", "canon_delta")]:
@@ -490,6 +534,13 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
             for aliases in REQUIRED_PLANNING_FIELDS:
                 if not any(field in text for field in aliases):
                     warnings.append(f"MISSING_FLOW_FIELD: {path} lacks {' / '.join(aliases)}.")
+            rp_size = len(text.encode("utf-8"))
+            if rp_size > 10000:
+                warnings.append(
+                    f"ROLLING_PLAN_SIZE_LARGE: {path} is {rp_size} bytes. "
+                    "Keep rolling_plan.yml to the active 6-15 chapter window; compress far-future "
+                    "entries into planning/future_backlog.yml. Target is under 6000 bytes."
+                )
         if path.name == "rolling_plan.yml" and re.search(r"\bstatus\s*:\s*completed\b", text):
             errors.append(
                 f"COMPLETED_PLAN_NOT_ARCHIVED: {path} contains completed chapters. "
@@ -610,6 +661,285 @@ def _validate_planning_state_uniqueness(project: Path) -> list[str]:
     return errors
 
 
+def _validate_active_flow_catches_up(project: Path, chapters: list[str]) -> list[str]:
+    """Check that active_flow.last_cut is not behind the validated batch."""
+    errors: list[str] = []
+    active_flow = project / "planning" / "active_flow.yml"
+    if not active_flow.exists() or not chapters:
+        return errors
+
+    requested = [_chapter_sort_key(chapter) for chapter in chapters]
+    requested = [chapter_no for chapter_no in requested if chapter_no >= 0]
+    if not requested:
+        return errors
+
+    text = active_flow.read_text(encoding="utf-8")
+    block_match = re.search(r"(?ms)^\s*last_cut\s*:\s*\n(?P<block>(?:^\s+.*(?:\n|$))+)", text)
+    if not block_match:
+        errors.append(
+            f"ACTIVE_FLOW_LAST_CUT_MISSING: {active_flow} lacks last_cut. "
+            "Each completed chapter must update active_flow.last_cut with the actual handoff."
+        )
+        return errors
+
+    chapter_match = re.search(r"chapter\s*:\s*[\"']?(ch\d+)", block_match.group("block"))
+    if not chapter_match:
+        return errors
+
+    last_cut_no = _chapter_sort_key(chapter_match.group(1))
+    latest_validated_no = max(requested)
+    if last_cut_no >= 0 and last_cut_no < latest_validated_no:
+        errors.append(
+            f"ACTIVE_FLOW_LAST_CUT_STALE: {active_flow} last_cut.chapter is "
+            f"{chapter_match.group(1)}, but validation includes ch{latest_validated_no:03d}. "
+            "Merge each chapter's actual_handoff into active_flow.last_cut before post-merge QA."
+        )
+    return errors
+
+
+STATE_SYNC_TARGETS = {
+    "character_changes": "entities/characters.yml",
+    "relationship_changes": "entities/characters.yml",
+    "world_state_changes": "ledgers/world_state.yml",
+    "knowledge_changes": "ledgers/knowledge_state.yml",
+}
+
+
+def _is_substantive_change(value: object) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, list):
+        return any(_is_substantive_change(item) for item in value)
+    if isinstance(value, dict):
+        return bool(value)
+    if isinstance(value, str):
+        return bool(value.strip()) and value.strip().lower() not in {"none", "n/a", "na", "无"}
+    return bool(value)
+
+
+def _state_sync_statuses(delta: dict) -> dict[str, str]:
+    """Return target file -> sync status from canon_delta structured markers."""
+    statuses: dict[str, str] = {}
+    raw = delta.get("state_sync") or delta.get("state_targets") or []
+    if isinstance(raw, dict):
+        raw = [
+            {"target": target, "status": status}
+            for target, status in raw.items()
+        ]
+    if not isinstance(raw, list):
+        return statuses
+    for item in raw:
+        if isinstance(item, str):
+            statuses[item] = "merged"
+        elif isinstance(item, dict):
+            target = item.get("target") or item.get("file") or item.get("path")
+            status = item.get("status") or item.get("sync_status") or "merged"
+            if target:
+                statuses[str(target)] = str(status)
+    return statuses
+
+
+def _target_is_confirmed(statuses: dict[str, str], target: str, *, allow_not_applicable: bool = False) -> bool:
+    accepted = {"merged", "updated", "synced"}
+    if allow_not_applicable:
+        accepted |= {"n/a", "na", "not_applicable", "none"}
+    for seen_target, status in statuses.items():
+        if target == seen_target or target.endswith(seen_target) or seen_target.endswith(target):
+            return status.strip().lower() in accepted
+    return False
+
+
+def _iter_character_entries(characters_data: object) -> list[dict]:
+    if isinstance(characters_data, dict):
+        if isinstance(characters_data.get("characters"), list):
+            return [item for item in characters_data["characters"] if isinstance(item, dict)]
+        return [
+            {"id": key, **value}
+            for key, value in characters_data.items()
+            if isinstance(key, str) and isinstance(value, dict)
+        ]
+    if isinstance(characters_data, list):
+        return [item for item in characters_data if isinstance(item, dict)]
+    return []
+
+
+def _extract_changed_character_ids(changes: object) -> set[str]:
+    names: set[str] = set()
+    if not isinstance(changes, list):
+        return names
+    for change in changes:
+        if isinstance(change, dict):
+            value = change.get("character") or change.get("name") or change.get("id")
+            if value:
+                names.add(str(value))
+        elif isinstance(change, str) and change.strip():
+            names.add(change.strip())
+    return names
+
+
+def _entry_matches_character(entry: dict, name: str) -> bool:
+    candidates = {
+        str(entry.get("id") or ""),
+        str(entry.get("name") or ""),
+        str(entry.get("character") or ""),
+    }
+    return name in candidates
+
+
+def _entry_mentions_chapter(entry: dict, chapter: str) -> bool:
+    for field in ("last_updated", "last_seen", "updated_at", "chapter"):
+        value = entry.get(field)
+        if value is not None and chapter in str(value):
+            return True
+    history = entry.get("change_history") or entry.get("history") or []
+    if isinstance(history, list):
+        for item in history:
+            if isinstance(item, dict) and chapter in str(item.get("chapter") or item.get("at") or item.get("source") or ""):
+                return True
+            if isinstance(item, str) and chapter in item:
+                return True
+    return False
+
+
+def _normalize_handoff(value: object) -> str:
+    if isinstance(value, list):
+        return " ".join(str(item) for item in value)
+    if isinstance(value, dict):
+        return " ".join(str(item) for item in value.values())
+    return str(value or "")
+
+
+def validate_state_drift(project: Path, chapters: list[str], lookback: int = 3) -> tuple[list[str], list[str]]:
+    """Check structured markers proving recent canon deltas reached current state.
+
+    This deliberately avoids pretending to understand every prose change.
+    The hard gate is structural: changed canon_delta fields must declare their
+    current-state targets, and character entries should carry a recent update
+    marker (`last_updated` or `change_history`) for changed characters.
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    def load_yaml(path: Path) -> object:
+        try:
+            import yaml  # type: ignore[import-not-found]
+            return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        except ImportError:
+            ruby = shutil.which("ruby")
+            if not ruby:
+                raise RuntimeError("NO_YAML_PARSER")
+            ruby_code = "require 'yaml'; require 'json'; puts JSON.generate(YAML.load_file(ARGV[0]))"
+            result = subprocess.run(
+                [ruby, "-e", ruby_code, str(path)],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            if result.returncode != 0:
+                detail = (result.stderr or result.stdout).strip().splitlines()
+                raise RuntimeError(detail[0] if detail else "unknown YAML parse error")
+            return json.loads(result.stdout) if result.stdout.strip() else {}
+
+    if chapters:
+        selected = sorted(set(chapters), key=_chapter_sort_key)[-lookback:]
+    else:
+        chapter_root = project / "chapters"
+        selected = sorted((p.name for p in chapter_root.glob("ch*") if p.is_dir()), key=_chapter_sort_key)[-lookback:]
+
+    recent_deltas: list[tuple[str, dict]] = []
+    for chapter in selected:
+        delta_path = project / "chapters" / chapter / "canon_delta.yml"
+        if not delta_path.exists():
+            continue
+        try:
+            data = load_yaml(delta_path)
+        except RuntimeError as exc:
+            if str(exc) == "NO_YAML_PARSER":
+                warnings.append(
+                    "STATE_DRIFT_SKIPPED: PyYAML is not installed and ruby is not available; "
+                    "structured state drift checks were skipped."
+                )
+                return errors, warnings
+            errors.append(f"CANON_DELTA_PARSE_ERROR: {delta_path}: {exc}")
+            continue
+        except Exception as exc:  # pragma: no cover - parser-specific detail
+            errors.append(f"CANON_DELTA_PARSE_ERROR: {delta_path}: {exc}")
+            continue
+        if isinstance(data, dict):
+            recent_deltas.append((chapter, data))
+
+    if not recent_deltas:
+        return errors, warnings
+
+    characters_data: object | None = None
+    characters_path = project / "entities" / "characters.yml"
+    if characters_path.exists():
+        try:
+            characters_data = load_yaml(characters_path)
+        except Exception as exc:  # pragma: no cover - parser-specific detail
+            errors.append(f"STATE_FILE_PARSE_ERROR: {characters_path}: {exc}")
+
+    for chapter, delta in recent_deltas:
+        statuses = _state_sync_statuses(delta)
+        for field, target in STATE_SYNC_TARGETS.items():
+            if _is_substantive_change(delta.get(field)) and not _target_is_confirmed(statuses, target):
+                errors.append(
+                    f"STATE_SYNC_TARGET_MISSING: {project / 'chapters' / chapter / 'canon_delta.yml'} "
+                    f"has non-empty {field}, but state_sync does not confirm merge to {target}. "
+                    "Add state_sync with status: merged/updated/synced after updating the current state file. "
+                    "status: n/a is only valid when the corresponding change field is empty."
+                )
+
+        if characters_data is not None:
+            entries = _iter_character_entries(characters_data)
+            changed_chars = _extract_changed_character_ids(delta.get("character_changes"))
+            for char_name in sorted(changed_chars):
+                matches = [entry for entry in entries if _entry_matches_character(entry, char_name)]
+                if not matches:
+                    errors.append(
+                        f"CHARACTER_STATE_ENTRY_MISSING: {chapter} changes {char_name}, "
+                        f"but {characters_path} has no matching id/name entry."
+                    )
+                    continue
+                if not any(_entry_mentions_chapter(entry, chapter) for entry in matches):
+                    errors.append(
+                        f"CHARACTER_STATE_STALE: {chapter} changes {char_name}, but the matching "
+                        f"entry in {characters_path} has no last_updated/change_history marker for {chapter}."
+                    )
+
+    active_flow_path = project / "planning" / "active_flow.yml"
+    latest_chapter, latest_delta = recent_deltas[-1]
+    if active_flow_path.exists():
+        try:
+            active_flow_data = load_yaml(active_flow_path)
+        except Exception as exc:  # pragma: no cover - parser-specific detail
+            errors.append(f"STATE_FILE_PARSE_ERROR: {active_flow_path}: {exc}")
+            active_flow_data = {}
+        current_flow = active_flow_data.get("current_flow", {}) if isinstance(active_flow_data, dict) else {}
+        last_cut = current_flow.get("last_cut", {}) if isinstance(current_flow, dict) else {}
+        if isinstance(last_cut, dict):
+            af_ch = str(last_cut.get("chapter") or "")
+            if af_ch and _chapter_sort_key(af_ch) < _chapter_sort_key(latest_chapter):
+                errors.append(
+                    f"ACTIVE_FLOW_HANDOFF_BEHIND: {active_flow_path} last_cut.chapter={af_ch}, "
+                    f"but latest checked canon_delta is {latest_chapter}."
+                )
+            delta_handoff = _normalize_handoff(latest_delta.get("actual_handoff") or latest_delta.get("handoff_to_next_chapter"))
+            active_handoff = _normalize_handoff(last_cut.get("current_handoff"))
+            if delta_handoff and active_handoff:
+                delta_items = latest_delta.get("actual_handoff") or []
+                if isinstance(delta_items, list):
+                    overlap = any(str(item).strip() and str(item).strip() in active_handoff for item in delta_items)
+                    if not overlap:
+                        warnings.append(
+                            f"ACTIVE_FLOW_HANDOFF_TEXT_MISMATCH: {active_flow_path} last_cut.current_handoff "
+                            f"does not directly include any full actual_handoff item from {latest_chapter}. "
+                            "This can be an intentional summary, but verify it preserves the same external handoff."
+                        )
+
+    return errors, warnings
+
+
 def validate_project_yaml(project: Path) -> tuple[list[str], list[str]]:
     """Validate YAML syntax for project files when a local parser is available."""
     errors: list[str] = []
@@ -652,6 +982,37 @@ def validate_project_yaml(project: Path) -> tuple[list[str], list[str]]:
             message = (result.stderr or result.stdout).strip().splitlines()
             detail = message[0] if message else "unknown YAML parse error"
             errors.append(f"YAML_PARSE_ERROR: {yf}: {detail}")
+    return errors, warnings
+
+
+def validate_protected_files(project: Path) -> tuple[list[str], list[str]]:
+    """Best-effort visibility check for protected-file change logging."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    protected_present = [path for path in PROTECTED_FILES if (project / path).exists()]
+    if not protected_present:
+        return errors, warnings
+
+    decision_log = project / "ledgers" / "decision_log.yml"
+    session_log = project / "meta" / "session_log.md"
+    if not decision_log.exists() and not session_log.exists():
+        warnings.append(
+            f"NO_CHANGE_LOG: Protected files exist ({', '.join(protected_present)}) but neither "
+            f"{decision_log} nor {session_log} exists. Protected-file changes must go through "
+            "novel-change and record a Change Summary."
+        )
+        return errors, warnings
+
+    log_text = ""
+    for path in (decision_log, session_log):
+        if path.exists():
+            log_text += "\n" + path.read_text(encoding="utf-8", errors="ignore")
+    if not re.search(r"(Change Summary|novel-change|受保护|protected|change:)", log_text, re.IGNORECASE):
+        warnings.append(
+            "PROTECTED_CHANGE_LOG_WEAK: A decision/session log exists, but it does not mention "
+            "Change Summary / novel-change / protected-file handling. This is advisory; verify "
+            "any protected-file edits were explicitly approved."
+        )
     return errors, warnings
 
 
@@ -718,7 +1079,7 @@ REPETITIVE_SENTENCE_PATTERNS = [
     (r"没有.{0,10}(害怕|紧张|恐惧|担心|犹豫|迟疑)", "没有害怕/紧张/恐惧/担心..."),
 ]
 
-NOT_BUT_PATTERN = re.compile(r"不是.{0,30}(而是|是)")
+NOT_BUT_PATTERN = re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)")
 MAX_NOT_BUT_PER_CHAPTER = 1
 
 
@@ -756,6 +1117,9 @@ def main() -> int:
     parser.add_argument("--chapters", nargs="*", help="Chapter ids to validate, e.g. ch011 ch012")
     parser.add_argument("--fix-format", action="store_true", help="Remove blank body lines from final.txt")
     parser.add_argument("--skip-planning", action="store_true", help="Skip planning-memory checks")
+    parser.add_argument("--skip-state-drift", action="store_true", help="Skip structured state drift checks")
+    parser.add_argument("--drift-lookback", type=int, default=3, help="Number of recent chapters to check for state drift")
+    parser.add_argument("--check-protected-files", action="store_true", help="Check protected-file change log visibility")
     parser.add_argument("--skip-artifacts", action="store_true", help="Skip chapter artifact/context/review checks")
     parser.add_argument("--strict", action="store_true", help="Treat warnings as errors")
     args = parser.parse_args()
@@ -768,15 +1132,25 @@ def main() -> int:
         print(f"Project not found: {project}", file=sys.stderr)
         return 2
 
-    if not args.skip_planning:
-        errs, warns = validate_planning(project)
-        all_errors.extend(errs)
-        all_warnings.extend(warns)
-
     chapters = args.chapters
     if not chapters:
         chapter_root = project / "chapters"
         chapters = sorted(p.name for p in chapter_root.glob("ch*") if p.is_dir())[-3:]
+
+    if not args.skip_planning:
+        errs, warns = validate_planning(project)
+        all_errors.extend(errs)
+        all_warnings.extend(warns)
+        all_errors.extend(_validate_active_flow_catches_up(project, chapters))
+        if not args.skip_state_drift:
+            errs, warns = validate_state_drift(project, chapters, lookback=args.drift_lookback)
+            all_errors.extend(errs)
+            all_warnings.extend(warns)
+
+    if args.check_protected_files:
+        errs, warns = validate_protected_files(project)
+        all_errors.extend(errs)
+        all_warnings.extend(warns)
 
     for chapter in chapters:
         chapter_dir = project / "chapters" / chapter

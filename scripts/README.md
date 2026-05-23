@@ -14,6 +14,30 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012
 python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012 ch013 --fix-format
 ```
 
+状态漂移检查默认随 planning 检查启用：
+
+```powershell
+python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012 ch013
+python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --drift-lookback 5
+python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --skip-state-drift
+```
+
+受保护文件修改可见性检查：
+
+```powershell
+python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --check-protected-files
+```
+
+定位 `"不是X而是Y / 不是X，是Y"` 候选句式：
+
+```powershell
+python scripts/check_not_but.py projects/my-novel --chapters ch011 ch012 ch013 --files draft.txt
+python scripts/check_not_but.py projects/my-novel --chapters ch011 ch012 ch013
+python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
+```
+
+`check_not_but.py` 只列出位置和上下文，不改正文。候选数超过 `--limit` 时返回失败码，因此可以作为 `draft.txt` → `reader_pass.md` / `final.txt` 之间的硬门禁。它的用途是让 agent 一次性看完整章候选位置，集中判断保留哪一处、改掉哪些，避免 summary/canon_delta 合并后才回头改正文。
+
 脚本会检查：
 
 - `final.txt` 正文段落之间是否错误空行。
@@ -27,10 +51,16 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch011 ch012
 - reader_pass 是否包含局部润色建议。
 - review 是否与实际产物状态一致，不能仍写 summary/canon_delta/memory_update_plan 待生成。
 - review 是否记录 post-merge QA / 最终 QA 结果；只在合并后跑过的 validator 才算完成门禁。
+- review 中当前状态同步 checklist 不能仍未勾选；只写 canon_delta、不合入 entities/ledgers/planning 会被视为未完成。
+- canon_delta 中有实质状态变化时，`state_sync` 是否以 `merged` / `updated` / `synced` 确认已合入对应当前状态文件；`n/a` 不能用于非空变化字段。
+- `entities/characters.yml` 中发生实质变化的角色是否有 `last_updated` 或 `change_history` 指向对应章节。
 - memory_update_plan 是否保持草案身份，不能声称 archivist 或 director 已直接合并文件。
 - context pack 是否包含读取证据、reader reward、cut continuity 和写后更新清单。
 - review 是否包含 Reader Reward Check、TXT Format Check 和 Memory Update Check。
 - rolling_plan 是否仍堆积 completed 章节，是否与 completed_plan_log 重叠，是否缺少 completed_plan_log / future_backlog。
+- `active_flow.yml` 的 `last_cut.chapter` 是否落后于正在验证的章节批次。
+- `rolling_plan.yml` 是否超过 10000 字节，过大时提示压缩远期条目到 `future_backlog.yml`。
+- `--check-protected-files` 是否能看到受保护文件的变更日志入口。
 - `rolling_plan.yml` / `current_round.yml` 是否残留 `bridge_to_next`、`continuity_from_previous`、`next_hook` 等旧字段。
 - `summary.yml` 是否仍使用 `next_hook`。
 - 项目内 YAML 文件是否可解析；关键状态文件是否存在重复 key。

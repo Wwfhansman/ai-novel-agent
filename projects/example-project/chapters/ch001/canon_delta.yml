@@ -28,3 +28,16 @@ narrative_debts_paid: []
 ideas_added: []
 actual_handoff:
   - "巡灯署领头人收走旧灯芯，林栖袖口里藏着碎片走出灯廊——领头人是否察觉了缺失？"
+state_sync:
+  - target: entities/characters.yml
+    status: merged
+    evidence: "char_lin_qi change_history 已记录 ch001；char_shen_yan 当前目标和立场维持可承接。"
+  - target: ledgers/world_state.yml
+    status: merged
+    evidence: "巡灯署回收旧灯芯、外环灯巷危机已同步到 world_state。"
+  - target: ledgers/knowledge_state.yml
+    status: merged
+    evidence: "旧灯芯秘密的可见性已同步到 knowledge_state。"
+  - target: planning/active_flow.yml
+    status: merged
+    evidence: "active_flow.last_cut 已同步本章 actual_handoff。"

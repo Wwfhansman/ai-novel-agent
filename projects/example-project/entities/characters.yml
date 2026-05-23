@@ -15,7 +15,11 @@ characters:
         state: 未见面但即将对立
     line_not_cross:
       - 不会主动让雾灯城陷入夜雾风险。
-    last_seen: null
+    last_seen: ch001
+    last_updated: ch001
+    change_history:
+      - chapter: ch001
+        change: 从普通修灯人变成私下藏匿线索的人。
   - id: char_shen_yan
     name: 沈砚
     role: antagonist
@@ -32,4 +36,7 @@ characters:
     line_not_cross:
       - 不会在市民面前承认主灯塔衰弱。
     last_seen: null
-
+    last_updated: ch001
+    change_history:
+      - chapter: ch001
+        change: 巡灯署旧灯芯回收压力进入林栖视野，沈砚作为对立压力源建立。

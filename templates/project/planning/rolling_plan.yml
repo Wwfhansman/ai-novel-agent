@@ -1,6 +1,7 @@
 current_window: ""
 status: draft
 source_of_truth: "近期章纲权威来源。仅保留未来窗口（6-15章），已完成的归档至 planning/completed_plan_log.yml，远期点子放入 planning/future_backlog.yml。"
+capacity_warning: "活跃窗口目标不超过 15 章条目或 6000 字节。超过时：已完成条目立即归档至 completed_plan_log.yml，最远端条目压缩移入 future_backlog.yml。validator 会在超过 10000 字节时发出 warning。"
 chapters: []
 notes: "在此填入 6-15 章详细章纲。每章应有 300-800 字剧情简介。一章只推进一个核心外部事件，保留叙事织入，避免正文变成任务清单的文学化执行。"
 chapter_shape_template:

@@ -12,3 +12,16 @@ narrative_debts_advanced: []
 narrative_debts_paid: []
 ideas_added: []
 actual_handoff: []
+state_sync:
+  - target: entities/characters.yml
+    status: n/a
+    evidence: "本章若有人物/关系变化，写完后改为 merged，并在人物条目 last_updated/change_history 标记本章。"
+  - target: ledgers/world_state.yml
+    status: n/a
+    evidence: "本章若有世界状态变化，写完后改为 merged。"
+  - target: ledgers/knowledge_state.yml
+    status: n/a
+    evidence: "本章若有信息可见性变化，写完后改为 merged。"
+  - target: planning/active_flow.yml
+    status: n/a
+    evidence: "本章写完后同步 actual_handoff 到 active_flow.last_cut。"

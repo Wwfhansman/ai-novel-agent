@@ -18,4 +18,7 @@ active_crises:
   - 主灯塔光度下降
   - 外环雾灯反复熄灭
 consequences: []
-
+last_updated: ch001
+change_history:
+  - chapter: ch001
+    change: 巡灯署启动旧灯芯回收，外环灯巷异常进入当前世界压力。

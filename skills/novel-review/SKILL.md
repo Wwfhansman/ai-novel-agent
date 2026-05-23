@@ -15,6 +15,7 @@ Read:
 - `docs/CONTEXT_PACK.md`
 - `docs/MEMORY_MODEL.md`
 - `docs/WORKFLOWS.md`
+- `docs/WRITING_CRAFT.md`
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
 - `style/samples.md`（如有内容，审查时对照检查文笔是否偏离项目风格）
@@ -62,6 +63,8 @@ Read:
 6. **世界状态**：检查势力/资源/危机/公共压力是否对最近章节做出反应。
 
 7. **风格与类型对齐**：对照 `book/constitution.md`、`book/reader_model.yml`、`book/style_memory.md`。
+   - 如果 `style/samples.md` 非空，检查 `prompt.md` 是否提取了 3-5 条正向样本文风锚点，`reader_pass.md` 是否检查样本文风对齐，正文是否贴近样本的句子节奏、段落手感、描写温度、对话语感和情绪处理。
+   - 样本只允许提供语言方法；如果正文迁移了样本人名、地名、剧情、专有设定或标志性桥段，必须标记为污染风险。
 
 8. **长篇规模控制**：检查 `book/longform_blueprint.yml` 是否存在且为最新、当前章节是否属于预期宏观阶段、世界级名称和势力是否保持预期规模。标记规模缩水。
 
@@ -70,6 +73,7 @@ Read:
 10. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
 
 11. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
+   - 写作心法、TXT 格式、结尾规则和 draft self-check 详见 `docs/WRITING_CRAFT.md`；审查时按其中规则清单对照。
    - Treat validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.
    - Check whether the chapter contains weave material around the core task: daily life, reactions, dialogue, world/system texture, relationship friction, scene objects, body/mood beats, wrong guesses, lightness, awkwardness, softness, or character habit.
