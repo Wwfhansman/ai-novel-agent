@@ -112,8 +112,8 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 See `docs/WORKFLOWS.md` for the full workflow. Default round mode:
 
 1. **Prepare**: validate planning YAML, refresh `active_flow` / `rolling_plan`, compile round context, write `current_round.yml`.
-2. **Prebuild**: create all batch `writing_packet.md` files before drafting. Each packet includes audit context, a design/execution Writing Card, and `Pre-Draft Self Check`.
-3. **Continuous draft**: write all batch drafts back-to-back; between drafts only write `draft_handoff_note`. Do not run validator, merge canon, archive planning, or call QA between drafts.
+2. **Prebuild**: use `novel-planner` when available to create all batch `writing_packet.md` files before drafting. Each packet includes audit context, a design/execution Writing Card, and `Pre-Draft Self Check`.
+3. **Continuous draft**: use `novel-writer` when available to write all batch drafts back-to-back; between drafts only write `draft_handoff_note`. Do not run validator, merge canon, archive planning, or call QA between drafts.
 4. **Batch cold read and finalize**: run draft self-check, run `check_not_but.py --files draft.txt`, use cold-reader, revise drafts, then write `final.txt`.
 5. **Batch engineering merge**: write `review.md`, `summary.yml`, `canon_delta.yml`, diff-only `memory_update_plan.md`; generate a merge preview, review it, then apply safe current-state updates into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
 6. **Post-merge QA**: run validator / `novel-qa phase: post_merge` after all state files are merged. Do not mark complete before this passes.
@@ -124,10 +124,15 @@ Hard gates:
 - `canon_delta.yml` must include `state_sync` for affected current-state files.
 - `state_sync.status: needs_director_review` is not a completion state. Before post-merge QA, resolve every such target to `merged` / `updated` / `synced`, or `n/a` only when there was no substantive change.
 - Keep template headings stable in `writing_packet.md` and `review.md`; validator treats these headings as a machine-readable contract, not presentation text. Do not rename `Writing Card` or `Pre-Draft Self Check`.
+- `writing_packet.md` must keep the full template heading contract: `Read Files`, `Source References`, `Longform Scale Check`, `Cut Continuity`, `Reader Reward Check`, `Writing Card`, `Pre-Draft Self Check`, and `Required Updates After Writing`. A dense packet with renamed headings is still invalid.
+- If `style/samples.md` has real content, round context and every Writing Card must include concrete positive sample anchors. Do not write "samples.md is empty" unless the file was actually checked and is empty/placeholding.
+- Do not include examples that violate `prose_constraints` inside `opening_sensory`, `scene_moments`, `voice_examples`, or `sample_style_anchors`; writer will imitate examples more strongly than abstract bans.
 - Changed character entries must update `last_updated` or `change_history`.
 - `active_flow.last_cut` must match the latest completed chapter.
 - `rolling_plan.yml` must only contain future unfinished chapters.
 - `planning/merge_previews/round_XXX.yml` must be generated before current-state files are applied; unresolved high-confidence pending operations block completion.
+- `planning/merge_previews/round_XXX.yml` must not be a template placeholder. If it says `project: template` or only lists `ch001` for a three-chapter round, regenerate it.
+- `memory_update_plan.md` is per chapter. Do not satisfy ch002/ch003 by pointing to ch001's batch memory plan.
 
 ## 写作心法、TXT 格式和 draft self-check
 
@@ -136,6 +141,8 @@ Hard gates:
 本 skill 内保留的硬门禁：
 
 - `draft.txt` 必须先完成 draft self-check，才能进入 `reader_pass.md`。
+- `novel-planner` 可负责 `writing_packet.md` 草案和 rolling_plan 局部细化建议；它不能写正文、不能合并 canon/state/planning。
+- `novel-writer` 可负责 `draft.txt`、根据 `reader_pass.md` 修稿、以及质量门通过后的 `final.txt`；它不能修改 summary/canon/state/planning。
 - `python scripts/check_not_but.py <project> --chapters <batch chapters> --files draft.txt` 是 final 前硬门禁。
 - `check_not_but.py` 同时扫描 not-but、三连否定内心声明、元叙述和箭头/编号式认知总结；出现后先改 draft。
 - `draft.txt` 和 `final.txt` 必须遵守 TXT 格式：标题后一空行，正文普通段落之间不空行，多数段落 40-160 字，超过 220 字视为格式失败。

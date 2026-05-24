@@ -42,6 +42,7 @@ planning/context_packs/round_XXX_context_pack.md
 
 - 本批次范围，不是 round 级剧情目标。
 - 文件读取清单和 source refs。
+- `Director Directive`：本轮必须推进什么、必须保持未闭合什么、不可触碰什么、writer 可自由发挥到哪里。
 - 当前 active_flow、rolling_plan、长篇尺度和当前卷目标。
 - 最近剧情理解和必要全文回看。
 - 本批次 3 章的功能、压力曲线、信息释放、读者回报和风险。
@@ -70,9 +71,9 @@ chapters/chXXX/writing_packet.md
 `Writing Card` 是正文生成时的抬头纸。它必须把设计面和执行面分开：
 
 - `Chapter Design`：one_line_goal、chapter_function、time_span、ending_type、pressure_curve.position_in_flow、must_happen / must_not_complete、information_release、narrative_weave。
-- `Writing Execution`：opening_sensory、scene_moments、ending_gesture、sample_style_anchors、prose_constraints。
+- `Writing Execution`：opening_sensory、voice_examples、foreshadowing_weight、relationship_temperature、body_scene_texture、dialogue_mode、scene_moments、ending_gesture、sample_style_anchors、prose_constraints。
 
-它不是任务清单。正文写作时优先盯住 `Writing Execution` 的可写瞬间；`Chapter Design` 用来防止跑偏，不用逐条翻译。
+它不是任务清单。正文写作时优先盯住 `Writing Execution` 的可写瞬间、人物语感、伏笔分量、关系温度、身体/场景质感和对话模式；`Chapter Design` 用来防止跑偏，不用逐条翻译。
 
 `information_release` 的核心变量必须写 `enters_via`。如果只能靠主角脑内总结传达，说明场景还没设计好。
 

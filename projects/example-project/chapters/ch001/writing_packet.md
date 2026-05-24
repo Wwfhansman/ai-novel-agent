@@ -83,6 +83,13 @@
 **Writing Execution**
 
 - opening_sensory: 雾、焦油味、铜灯罩的余热先进入，不用设定开场。
+- voice_examples:
+  - 林栖说话短，紧张时先报工具名或工序名，不直接说害怕。
+  - 巡灯署领头人语气客气，但句子里不给选择。
+- foreshadowing_weight: 旧灯芯碎片是第一章最重的物件伏笔；写它时要有冷、贴脉搏、不能交出的重量。
+- relationship_temperature: 林栖与巡灯署从熟悉的维修协作滑向隐瞒和防备。
+- body_scene_texture: 手指沾灰、铜罩余热、袖口贴住脉搏的凉意承担紧张感。
+- dialogue_mode: 表面例行问答，实际是机构压力下的试探。
 - scene_moments:
   - 林栖数螺丝，试图把异常当成普通故障。
   - 巡灯署的人伸手要灯芯，铜盒盖子压住灯灰。

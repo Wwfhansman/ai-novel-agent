@@ -72,6 +72,17 @@ arc_001 covers ch001-ch003: discovery, pressure, and first personal clue.
 - What must not be resolved merely because the batch ends: the patrol motive, the full old-wick rule, and the father's status.
 - Flow end conditions: the wick, father tool, and patrol recovery action become one visible causal chain; patrol pressure escalates into targeted action.
 
+## Director Directive
+
+- Must advance this round: Lin Qi moves from routine repair into an old-wick anomaly with institutional pressure attached.
+- Must stay open: patrol motive, full old-wick rule, father truth, and Archive Bureau scope.
+- Protected / endgame material: do not reveal father_truth or the citywide lamp network mechanism.
+- Key voice constraints: Lin Qi notices physical repair details before abstract explanations; patrol speech should stay procedural and pressuring.
+- Foreshadowing / object weight: cracked wick fragment, maintenance log, and father's repair knife must feel dangerous rather than decorative.
+- Relationship temperature: Lin Qi is isolated but competent; external pressure should expose who treats her as a worker versus a suspect.
+- Writer freedom: local gestures, lamp-shop texture, street weather, and minor bystander reactions may be invented if they do not solve the mystery.
+- Forbidden patterns: no batch-summary ending, no lecture on lamp rules, no direct father-truth reveal.
+
 ## Recent Chapter Understanding
 
 No written chapters yet.

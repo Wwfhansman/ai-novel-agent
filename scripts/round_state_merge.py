@@ -99,6 +99,22 @@ def _normalize_list(value: Any) -> list[str]:
     return [str(value)]
 
 
+def extract_handoff(delta: dict[str, Any]) -> dict[str, Any]:
+    """Return the chapter's canonical outbound handoff across schema variants."""
+    raw = delta.get("actual_handoff") or delta.get("handoff_to_next_chapter")
+    last_visible_moment = delta.get("last_visible_moment")
+
+    handoff_block = delta.get("handoff")
+    if isinstance(handoff_block, dict):
+        raw = raw or handoff_block.get("current_handoff") or handoff_block.get("actual_handoff")
+        last_visible_moment = last_visible_moment or handoff_block.get("last_visible_moment")
+
+    return {
+        "current_handoff": raw or [],
+        "last_visible_moment": last_visible_moment,
+    }
+
+
 def iter_character_entries(data: Any) -> list[dict[str, Any]]:
     if isinstance(data, dict) and isinstance(data.get("characters"), list):
         return [item for item in data["characters"] if isinstance(item, dict)]
@@ -233,10 +249,13 @@ def build_preview(project: Path, round_id: str, chapters: list[str]) -> dict[str
     rolling_path = project / "planning" / "rolling_plan.yml"
     rolling = load_yaml(rolling_path)
     rolling_chapters = rolling.get("chapters") if isinstance(rolling, dict) else []
+    completed_path = project / "planning" / "completed_plan_log.yml"
+    completed = load_yaml(completed_path)
     if isinstance(rolling_chapters, list):
         rolling_ids = {str(item.get("chapter")) for item in rolling_chapters if isinstance(item, dict)}
         for chapter, delta in deltas:
             if chapter in rolling_ids:
+                handoff = extract_handoff(delta)
                 operations.append({
                     "op": "archive_completed_chapter",
                     "target": "planning/rolling_plan.yml",
@@ -245,33 +264,63 @@ def build_preview(project: Path, round_id: str, chapters: list[str]) -> dict[str
                     "value": {
                         "chapter": chapter,
                         "status": "completed",
-                        "actual_handoff": delta.get("actual_handoff") or [],
+                        "actual_handoff": handoff["current_handoff"],
                     },
                     "evidence": f"{chapter} has final canon_delta and is still in rolling_plan.",
                     "confidence": "high",
                     "status": "pending",
                 })
 
+    completed_entries = completed.get("entries") if isinstance(completed, dict) else []
+    if isinstance(completed_entries, list):
+        for chapter, delta in deltas:
+            handoff = extract_handoff(delta)
+            for entry in completed_entries:
+                if not isinstance(entry, dict) or entry.get("chapter") != chapter:
+                    continue
+                if _normalize_list(entry.get("actual_handoff")) != _normalize_list(handoff["current_handoff"]):
+                    operations.append({
+                        "op": "update_completed_plan_handoff",
+                        "target": "planning/completed_plan_log.yml",
+                        "chapter": chapter,
+                        "entity": None,
+                        "value": {
+                            "actual_handoff": handoff["current_handoff"],
+                        },
+                        "evidence": f"{chapter} handoff from canon_delta.yml differs from completed_plan_log.yml.",
+                        "confidence": "high",
+                        "status": "pending",
+                    })
+                break
+
     if deltas:
         latest_chapter, latest_delta = deltas[-1]
         active_flow = load_yaml(project / "planning" / "active_flow.yml")
         current_flow = active_flow.get("current_flow", {}) if isinstance(active_flow, dict) else {}
         last_cut = current_flow.get("last_cut", {}) if isinstance(current_flow, dict) else {}
-        expected_handoff = latest_delta.get("actual_handoff") or []
+        expected = extract_handoff(latest_delta)
+        expected_handoff = expected["current_handoff"]
         if not (
             isinstance(last_cut, dict)
             and last_cut.get("chapter") == latest_chapter
             and _normalize_list(last_cut.get("current_handoff")) == _normalize_list(expected_handoff)
+            and (
+                not expected.get("last_visible_moment")
+                or last_cut.get("last_visible_moment") == expected.get("last_visible_moment")
+            )
         ):
+            value = {
+                "chapter": latest_chapter,
+                "current_handoff": expected_handoff,
+            }
+            if expected.get("last_visible_moment"):
+                value["last_visible_moment"] = expected["last_visible_moment"]
             operations.append({
                 "op": "update_active_flow_cut",
                 "target": "planning/active_flow.yml",
                 "chapter": latest_chapter,
                 "entity": "current_flow.last_cut",
-                "value": {
-                    "chapter": latest_chapter,
-                    "current_handoff": expected_handoff,
-                },
+                "value": value,
                 "evidence": f"{latest_chapter} actual_handoff from canon_delta.yml.",
                 "confidence": "high",
                 "status": "pending",
@@ -373,6 +422,16 @@ def apply_preview(project: Path, preview_path: Path) -> dict[str, Any]:
                             completed_data["entries"].append(archived)
                         completed_data["archived_through"] = chapter
                     changed_paths.update({rolling_path, completed_path})
+            op["status"] = "applied"
+            apply_log.append({"op": name, "chapter": chapter, "status": "applied"})
+        elif name == "update_completed_plan_handoff":
+            chapter = op.get("chapter")
+            if isinstance(completed_data, dict) and isinstance(completed_data.get("entries"), list):
+                for entry in completed_data["entries"]:
+                    if isinstance(entry, dict) and entry.get("chapter") == chapter:
+                        entry["actual_handoff"] = (op.get("value") or {}).get("actual_handoff", [])
+                        changed_paths.add(completed_path)
+                        break
             op["status"] = "applied"
             apply_log.append({"op": name, "chapter": chapter, "status": "applied"})
         elif name == "update_active_flow_cut":

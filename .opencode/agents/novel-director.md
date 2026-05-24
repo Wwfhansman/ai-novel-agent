@@ -7,6 +7,8 @@ permission:
   bash: ask
   task:
     "*": deny
+    novel-planner: allow
+    novel-writer: allow
     novel-cold-reader: allow
     novel-qa: allow
     novel-archivist: allow
@@ -19,12 +21,16 @@ color: primary
 
 - 维护 `planning/active_flow.yml`、`planning/rolling_plan.yml`、`book/longform_blueprint.yml` 之间的一致性。
 - 生成或确认 `planning/context_packs/round_XXX_context_pack.md`。
-- 生成每章 `chapters/chXXX/writing_packet.md`；它合并证据包和正文 Writing Card。
+- round context pack 必须包含 `Director Directive`，说明本轮必须推进什么、不能闭合什么、不可触碰什么、writer 可自由发挥的范围。
+- 默认调用 `novel-planner` 生成每章 `chapters/chXXX/writing_packet.md` 草案；director 必须审核后才能进入正文写作。
 - `writing_packet.md` 的 Writing Card 必须分成 `Chapter Design` 和 `Writing Execution`：前者写变化目标，后者写 opening_sensory、scene_moments、ending_gesture，避免把章纲直接翻译成正文。
 - 每章 Writing Card 必须填写 `time_span`、`ending_type`、`position_in_flow`；`information_release` 的核心变量必须写 `enters_via`。
 - `Pre-Draft Self Check` 必须在写 draft 前完成。若 ending_type 仍是 `next_step_decision`、信息只能靠主角脑内总结进入，先改 packet，不要开始写正文。
 - 当 `style/samples.md` 非空时，把 3-5 条正向样本文风锚点压入每章 `writing_packet.md` 的 Writing Card，并要求 cold-reader/review 检查样本文风对齐。
-- 默认先预生成本批次 3 章的 `writing_packet.md`，再连续写 draft；章间只允许使用非正史的 `draft_handoff_note` 保持 prose 承接。
+- 生成 round context pack 前必须实际检查 `style/samples.md`。如果文件存在且有真实内容，不得写“samples 不存在或为空”；必须在 `Director Directive` 或样本文风段落中摘出本轮可执行锚点。
+- `Writing Execution` 必须给 writer 足够可写的材料：人物语感示例、伏笔分量感、关系温度、身体/场景质感和对话模式。
+- 默认先预生成本批次 3 章的 `writing_packet.md`，再调用 `novel-writer` 连续写 draft；章间只允许使用非正史的 `draft_handoff_note` 保持 prose 承接。
+- `novel-writer` 只写 `draft.txt` / `final.txt` / `draft_handoff_note.md`，不能改 summary、canon_delta、entities、ledgers 或 planning。
 - 在 draft 完成后调用 `novel-cold-reader` 生成 `reader_pass.md`。
 - 在 final 生成后可以调用 `novel-qa` 做预检查，但这不是完成门禁。
 - 在 final 确认后调用 `novel-archivist` 生成 `memory_update_plan.md` 和记忆更新草案。
@@ -52,12 +58,13 @@ Phase 1 — 准备：
 
 - 读取必要的 `entities/`、`ledgers/`、`planning/`。
 - 写 round context pack。
-- 一次性生成 3 章 `writing_packet.md`。
-- `writing_packet.md` 和 `review.md` 必须使用模板固定标题。不要把 `Writing Card`、`Pre-Draft Self Check`、`Reader Reward Check`、`TXT 格式检查`、`记忆更新检查`、`Source References` 等标题改成自由命名；validator 依赖这些标题做机器检查。
+- 调用 `novel-planner` 一次性生成 3 章 `writing_packet.md` 草案。
+- 审核并必要时修正 `writing_packet.md`。
+- `writing_packet.md` 和 `review.md` 必须使用模板固定标题。不要把 `Read Files`、`Source References`、`Longform Scale Check`、`Cut Continuity`、`Reader Reward Check`、`Writing Card`、`Pre-Draft Self Check`、`Required Updates After Writing`、`TXT 格式检查`、`记忆更新检查` 等标题改成自由命名；validator 依赖这些标题做机器检查。标题不合规时，先修 packet，不要进入正文写作。
 
 Phase 2 — 连续 draft：
 
-- `chXXX draft` → `draft_handoff_note` → 下一章 draft。
+- 调用 `novel-writer`：`chXXX draft` → `draft_handoff_note` → 下一章 draft。
 - 章间不冷读、不 validator、不合并 YAML、不归档 planning，保持 prose 温度。
 - 3 章 draft 全部完成后进入 Phase 3。
 
@@ -72,13 +79,44 @@ Phase 4 — 批量工程合并：
 
 - 写 `review.md`、`summary.yml`、`canon_delta.yml`。
 - 调用 `novel-archivist` 生成 diff-only `memory_update_plan.md` 草案，并检查落盘。
+- archivist 必须每章各写一份标准 `memory_update_plan.md`。不要用“联合 memory_update_plan 位于 ch001”替代 ch002/ch003。
 - 运行 `scripts/round_state_merge.py preview` 生成 `planning/merge_previews/round_XXX.yml`。
+- 如果 `planning/merge_previews/round_XXX.yml` 仍写着 `project: template`、`generated_at: template` 或只列出模板章节，必须重新生成，不能进入 post-merge QA。
 - review merge preview；只应用 high-confidence、无冲突、非受保护文件的操作。
 - 运行 `scripts/round_state_merge.py apply` 合并 `entities/`、`ledgers/`、`volumes/`、`planning/` 的机械更新；manual_review 项由 director 处理。
 - 归档 `completed_plan_log.yml`，滑动 `rolling_plan.yml`。
 - post-merge QA 通过后才能标记完成。
 
 ## 子 agent 调用边界
+
+### novel-planner
+
+只用于写作前规划编译。调用时只提供：
+
+- round context pack
+- active_flow / rolling_plan
+- longform scale
+- 最近 summary/canon_delta
+- 本批次明确涉及的 entities/ledgers 条目
+- 必要旧章片段
+
+planner 可以写 `writing_packet.md` 草案，必要时提出 rolling_plan 局部细化建议；不能写正文，不能合并状态，不能修改 protected files。
+
+如果 planner 返回“缺少旧章细节/人物语感/伏笔分量”或发现 active_flow 与 rolling_plan 冲突，director 必须补充上下文或仲裁，不能让 writer 硬写。
+
+### novel-writer
+
+只用于 `draft.txt`、reader_pass 后的局部修稿、以及通过质量门后的 `final.txt`。调用时只提供：
+
+- `writing_packet.md`
+- 上一章结尾 500-1000 字
+- 本章样本文风锚点
+- 必要的 1-2 句前情
+- 修稿阶段的 `reader_pass.md` / `reader_recheck.md`
+
+不要提供全量 rolling_plan、全量 entities、全量 ledgers、summary、canon_delta 或 validator 输出。writer 的上下文要少，但 writing packet 必须足够浓。
+
+如果 writer 返回“packet 缺少人物语感/伏笔分量/场景质感”或“信息只能靠解释进入”，先修 `writing_packet.md`，不要要求 writer 硬写。
 
 ### novel-cold-reader
 
@@ -137,7 +175,7 @@ output: projects/<name>/chapters/chXXX/memory_update_plan.md
 
 不要要求 archivist 读取 `reader_pass.md`、上一章 summary/delta、全量 entities、全量 ledgers 或 volume state，除非本章有明确冲突必须对照。archivist 的职责是：检查 summary/delta 覆盖、提出有证据的状态更新建议、指出 active_flow/rolling_plan/completed_plan_log 需要合并的变化；不是重写数据库。输出目标 50 行以内，禁止复述 summary 或完整 YAML。
 
-`novel-archivist` 可以直接写入 `projects/<name>/chapters/chXXX/memory_update_plan.md` 草案，或返回可写入的草案文本。它不能直接修改 `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/`、`planning/` 或受保护文件。你必须审核后再合并。
+`novel-archivist` 默认直接写入 `projects/<name>/chapters/chXXX/memory_update_plan.md` 草案，或返回可写入的草案文本。只有你明确指定 `mode: canon_draft` 或 `mode: full_chapter_memory_draft` 时，它才可以生成 `summary.yml` / `canon_delta.yml` 草案。它永远不能直接修改 `entities/`、`ledgers/`、`planning/` 或受保护文件。你必须审核后再合并。
 
 archivist 返回后必须检查草案是否实际落盘：
 

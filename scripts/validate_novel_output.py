@@ -104,6 +104,10 @@ REQUIRED_WRITING_PACKET_SECTIONS = [
     ("Required Updates After Writing", "写完后必须更新的文件", "写后必须更新", "写完后更新"),
 ]
 
+REQUIRED_ROUND_CONTEXT_PACK_SECTIONS = [
+    ("Director Directive", "导演指令", "本轮导演指令"),
+]
+
 WRITING_CARD_REQUIRED_MARKERS = [
     ("chapter_function", "本章功能"),
     ("time_span", "时间跨度"),
@@ -116,6 +120,11 @@ WRITING_CARD_REQUIRED_MARKERS = [
     ("enters_via", "进入方式"),
     ("narrative_weave", "叙事织入"),
     ("opening_sensory", "开头感官"),
+    ("voice_examples", "人物语感"),
+    ("foreshadowing_weight", "伏笔分量"),
+    ("relationship_temperature", "关系温度"),
+    ("body_scene_texture", "身体场景质感"),
+    ("dialogue_mode", "对话模式"),
     ("scene_moments", "场景瞬间"),
     ("ending_gesture", "结尾动作"),
 ]
@@ -164,7 +173,7 @@ GIANT_PARAGRAPH_CHARS = 220
 LONG_PARAGRAPH_CHARS = 160
 ROLLING_PLAN_SIZE_WARN_BYTES = 20000
 TITLE_PATTERN = re.compile(r"^第[一二三四五六七八九十百千万零〇两0-9]+章\s*\S+")
-HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s*(.+?)\s*$", re.MULTILINE)
+HEADING_PATTERN = re.compile(r"^\s{0,3}(#{1,6})\s*(.+?)\s*$", re.MULTILINE)
 
 
 def nonblank(lines: list[str]) -> list[str]:
@@ -178,7 +187,7 @@ def _normalize_heading(text: str) -> str:
 
 
 def _has_section(text: str, aliases: tuple[str, ...]) -> bool:
-    headings = [_normalize_heading(match.group(1)) for match in HEADING_PATTERN.finditer(text)]
+    headings = [_normalize_heading(match.group(2)) for match in HEADING_PATTERN.finditer(text)]
     normalized_aliases = [_normalize_heading(alias) for alias in aliases]
     for heading in headings:
         for alias in normalized_aliases:
@@ -195,10 +204,15 @@ def _extract_section(text: str, aliases: tuple[str, ...]) -> str:
     matches = list(HEADING_PATTERN.finditer(text))
     normalized_aliases = [_normalize_heading(alias) for alias in aliases]
     for index, match in enumerate(matches):
-        heading = _normalize_heading(match.group(1))
+        heading = _normalize_heading(match.group(2))
         if any(alias and alias in heading for alias in normalized_aliases):
+            level = len(match.group(1))
             start = match.end()
-            end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+            end = len(text)
+            for next_match in matches[index + 1:]:
+                if len(next_match.group(1)) <= level:
+                    end = next_match.start()
+                    break
             return text[start:end].strip()
     return ""
 
@@ -460,6 +474,11 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
     memory_plan = chapter_dir / "memory_update_plan.md"
     if memory_plan.exists():
         text = memory_plan.read_text(encoding="utf-8")
+        if re.search(r"(联合|batch|combined).{0,30}memory_update_plan|memory_update_plan\s*位于|../ch\d+/memory_update_plan\.md", text, re.IGNORECASE):
+            errors.append(
+                f"BATCH_MEMORY_PLAN_POINTER_UNSUPPORTED: {memory_plan} points to a shared memory plan. "
+                "Each completed chapter must have its own diff-only memory_update_plan.md with evidence and merge candidates."
+            )
         if not re.search(r"status\s*:\s*(ready_for_director_merge|needs_director_review)", text):
             warnings.append(
                 f"MEMORY_PLAN_STATUS_MISSING: {memory_plan} should record status: "
@@ -508,11 +527,15 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
     writing_packet = chapter_dir / "writing_packet.md"
     if writing_packet.exists():
         text = writing_packet.read_text(encoding="utf-8")
+        missing_packet_sections: list[str] = []
         for section_aliases in REQUIRED_WRITING_PACKET_SECTIONS:
             if not _has_section(text, section_aliases):
-                warnings.append(
-                    f"MISSING_WRITING_PACKET_SECTION: {writing_packet} lacks {_section_label(section_aliases)}."
-                )
+                missing_packet_sections.append(_section_label(section_aliases))
+        if missing_packet_sections:
+            errors.append(
+                f"WRITING_PACKET_TEMPLATE_BROKEN: {writing_packet} lacks required machine-readable sections: "
+                f"{', '.join(missing_packet_sections)}. Use the template headings exactly before drafting."
+            )
         if (
             "source:" not in text
             and "Source:" not in text
@@ -525,7 +548,7 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
             )
         writing_card = _extract_section(text, ("Writing Card", "正文抬头纸", "写作卡"))
         if not writing_card:
-            warnings.append(f"WRITING_CARD_MISSING: {writing_packet} must include a Writing Card section.")
+            errors.append(f"WRITING_CARD_MISSING: {writing_packet} must include a Writing Card section.")
         else:
             for en_marker, zh_marker in WRITING_CARD_REQUIRED_MARKERS:
                 if en_marker not in writing_card and zh_marker not in writing_card:
@@ -545,9 +568,32 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
                 warnings.append(
                     f"WRITING_CARD_EXECUTION_BLOCK_MISSING: {writing_packet} should include writable scene moments, not only task goals."
                 )
+            writer_material_fields = [
+                "voice_examples",
+                "foreshadowing_weight",
+                "relationship_temperature",
+                "body_scene_texture",
+                "dialogue_mode",
+            ]
+            missing_writer_material = [field for field in writer_material_fields if field not in writing_card]
+            if missing_writer_material:
+                warnings.append(
+                    f"WRITER_CONTEXT_THIN: {writing_packet} Writing Card lacks writer-specific prose material: "
+                    f"{', '.join(missing_writer_material)}."
+                )
             if re.search(r"new_core_variables\s*:\s*(?!\n\s*-)", writing_card) and "enters_via" not in writing_card:
                 warnings.append(
                     f"INFORMATION_ENTRY_MODE_MISSING: {writing_packet} should state enters_via for each core variable."
+                )
+            prose_input = re.split(r"\n\s*-\s*prose_constraints\s*:", writing_card, maxsplit=1)[0]
+            if re.search(r"禁止.*不是X.*是Y|not-but", writing_card, re.IGNORECASE) and re.search(
+                r"(opening_sensory|scene_moments|voice_examples|sample_style_anchors|开头感官|场景瞬间|人物语感|样本).{0,300}不是.{0,12}(而是|，是|。是)",
+                prose_input,
+                re.DOTALL,
+            ):
+                errors.append(
+                    f"WRITING_PACKET_CONSTRAINT_CONFLICT: {writing_packet} bans not-but contrast but includes "
+                    "not-but examples in prose input fields. Remove the example before calling writer."
                 )
     elif samples_has_content:
         # The missing required file error is emitted above; keep this branch quiet.
@@ -635,7 +681,14 @@ def validate_merge_previews(project: Path, chapters: list[str]) -> tuple[list[st
     preview_texts: list[tuple[Path, str]] = []
     for preview in sorted(preview_dir.glob("*.yml")):
         text = preview.read_text(encoding="utf-8")
+        if chapters and not _artifact_relevant_to_chapters(text, chapters):
+            continue
         preview_texts.append((preview, text))
+        if re.search(r"(?m)^\s*project\s*:\s*template\s*$", text) or re.search(r"(?m)^\s*generated_at\s*:\s*template\s*$", text):
+            errors.append(
+                f"MERGE_PREVIEW_TEMPLATE_PLACEHOLDER: {preview} is still the template placeholder. "
+                "Regenerate it with scripts/round_state_merge.py preview for the real project and round."
+            )
         if "operations:" not in text:
             warnings.append(f"MERGE_PREVIEW_INCOMPLETE: {preview} lacks operations.")
         # Conservative text-level block detector: a high-confidence operation
@@ -648,6 +701,12 @@ def validate_merge_previews(project: Path, chapters: list[str]) -> tuple[list[st
                     f"MERGE_PREVIEW_PENDING_HIGH_CONFIDENCE: {preview} has a high-confidence pending operation. "
                     "Apply it with scripts/round_state_merge.py apply or move it to manual_review with a reason."
                 )
+        manual_review_match = re.search(r"(?ms)^manual_review\s*:\s*\n(?P<block>(?:^\s*-\s+.*(?:\n|$))+)", text)
+        if manual_review_match:
+            errors.append(
+                f"MERGE_PREVIEW_MANUAL_REVIEW_UNRESOLVED: {preview} still has manual_review items. "
+                "Resolve or explicitly move them to the chapter review before post-merge QA."
+            )
     if any((project / "chapters" / chapter / "memory_update_plan.md").exists() for chapter in chapters):
         for chapter in chapters:
             if not any(re.search(rf"(^|\n)\s*-\s*{re.escape(chapter)}\s*(\n|$)", text) for _, text in preview_texts):
@@ -710,9 +769,10 @@ def validate_cross_chapter_patterns(project: Path, chapters: list[str]) -> tuple
     return errors, warnings
 
 
-def validate_planning(project: Path) -> tuple[list[str], list[str]]:
+def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
+    chapters = chapters or []
 
     errs, warns = validate_project_yaml(project)
     errors.extend(errs)
@@ -769,6 +829,28 @@ def validate_planning(project: Path) -> tuple[list[str], list[str]]:
                 f"COMPLETED_PLAN_NOT_ARCHIVED: {path} contains completed chapters. "
                 "Move finished chapter plan entries to planning/completed_plan_log.yml "
                 "and keep rolling_plan.yml as the future window."
+            )
+
+    context_pack_dir = project / "planning" / "context_packs"
+    samples = project / "style" / "samples.md"
+    samples_has_content = False
+    if samples.exists():
+        sample_text = samples.read_text(encoding="utf-8").strip()
+        samples_has_content = bool(sample_text) and "占位" not in sample_text and "暂无" not in sample_text
+    for path in sorted(context_pack_dir.glob("round_*_context_pack.md")):
+        text = path.read_text(encoding="utf-8")
+        if chapters and not _artifact_relevant_to_chapters(text, chapters):
+            continue
+        for section_aliases in REQUIRED_ROUND_CONTEXT_PACK_SECTIONS:
+            if not _has_section(text, section_aliases):
+                warnings.append(
+                    f"ROUND_CONTEXT_DIRECTIVE_MISSING: {path} lacks {_section_label(section_aliases)}. "
+                    "Planner needs explicit round-level boundaries before generating writing_packet.md."
+                )
+        if samples_has_content and re.search(r"samples\.md\s*(不存在|为空|不存在或为空)|不使用样本文风锚点", text):
+            errors.append(
+                f"ROUND_CONTEXT_SAMPLE_MISMATCH: {path} says style/samples.md is missing or empty, "
+                f"but {samples} contains real content. Extract sample anchors before calling planner/writer."
             )
 
     errors.extend(_validate_planning_state_uniqueness(project))
@@ -851,6 +933,15 @@ def _validate_planning_state_uniqueness(project: Path) -> list[str]:
     rolling_text = rolling.read_text(encoding="utf-8")
     completed_text = completed.read_text(encoding="utf-8")
     rolling_chapters = _extract_rolling_plan_chapters(rolling_text)
+    chapter_counts: dict[str, int] = {}
+    for chapter, _status in rolling_chapters:
+        chapter_counts[chapter] = chapter_counts.get(chapter, 0) + 1
+    duplicates = sorted((chapter for chapter, count in chapter_counts.items() if count > 1), key=_chapter_sort_key)
+    if duplicates:
+        errors.append(
+            f"ROLLING_PLAN_DUPLICATE_CHAPTER: {rolling} contains duplicate entries for "
+            f"{', '.join(duplicates)}. Keep exactly one planning entry per future chapter."
+        )
     rolling_ids = {chapter for chapter, _status in rolling_chapters}
     completed_ids = _extract_archived_chapters(completed_text)
     overlap = sorted(rolling_ids & completed_ids, key=_chapter_sort_key)
@@ -1043,6 +1134,44 @@ def _normalize_handoff(value: object) -> str:
     return str(value or "")
 
 
+def _mentions_any_chapter(text: str, chapters: list[str]) -> bool:
+    if not chapters:
+        return True
+    return any(re.search(rf"(?<![A-Za-z0-9_]){re.escape(chapter)}(?![A-Za-z0-9_])", text) for chapter in chapters)
+
+
+def _artifact_chapters(text: str) -> set[str]:
+    chapters: set[str] = set()
+    cover_match = re.search(r"(?m)^\s*[-*]?\s*覆盖章节[：:]\s*(.+)$", text)
+    if cover_match:
+        chapters.update(re.findall(r"ch\d{3,}", cover_match.group(1)))
+
+    yaml_match = re.search(r"(?ms)^chapters\s*:\s*\n(?P<block>(?:^\s*-\s*ch\d{3,}.*(?:\n|$))+)", text)
+    if yaml_match:
+        chapters.update(re.findall(r"(?m)^\s*-\s*(ch\d{3,})\b", yaml_match.group("block")))
+    return chapters
+
+
+def _artifact_relevant_to_chapters(text: str, chapters: list[str]) -> bool:
+    if not chapters:
+        return True
+    artifact_chapters = _artifact_chapters(text)
+    if artifact_chapters:
+        return bool(artifact_chapters.intersection(chapters))
+    return _mentions_any_chapter(text, chapters)
+
+
+def _extract_delta_handoff(delta: dict) -> tuple[object, object]:
+    """Read outbound handoff from both legacy and newer canon_delta shapes."""
+    handoff = delta.get("actual_handoff") or delta.get("handoff_to_next_chapter")
+    last_visible_moment = delta.get("last_visible_moment")
+    block = delta.get("handoff")
+    if isinstance(block, dict):
+        handoff = handoff or block.get("current_handoff") or block.get("actual_handoff")
+        last_visible_moment = last_visible_moment or block.get("last_visible_moment")
+    return handoff, last_visible_moment
+
+
 def validate_state_drift(project: Path, chapters: list[str], lookback: int = 3) -> tuple[list[str], list[str]]:
     """Check structured markers proving recent canon deltas reached current state.
 
@@ -1166,10 +1295,21 @@ def validate_state_drift(project: Path, chapters: list[str], lookback: int = 3) 
                     f"ACTIVE_FLOW_HANDOFF_BEHIND: {active_flow_path} last_cut.chapter={af_ch}, "
                     f"but latest checked canon_delta is {latest_chapter}."
                 )
-            delta_handoff = _normalize_handoff(latest_delta.get("actual_handoff") or latest_delta.get("handoff_to_next_chapter"))
+            raw_delta_handoff, delta_last_visible_moment = _extract_delta_handoff(latest_delta)
+            delta_handoff = _normalize_handoff(raw_delta_handoff)
             active_handoff = _normalize_handoff(last_cut.get("current_handoff"))
+            if delta_handoff and not active_handoff:
+                errors.append(
+                    f"ACTIVE_FLOW_HANDOFF_EMPTY: {active_flow_path} last_cut.current_handoff is empty, "
+                    f"but {latest_chapter} canon_delta has an outbound handoff."
+                )
+            if delta_last_visible_moment and last_cut.get("last_visible_moment") != delta_last_visible_moment:
+                errors.append(
+                    f"ACTIVE_FLOW_LAST_VISIBLE_MOMENT_STALE: {active_flow_path} last_cut.last_visible_moment "
+                    f"does not match {latest_chapter} canon_delta handoff."
+                )
             if delta_handoff and active_handoff:
-                delta_items = latest_delta.get("actual_handoff") or []
+                delta_items = raw_delta_handoff or []
                 if isinstance(delta_items, list):
                     overlap = any(str(item).strip() and str(item).strip() in active_handoff for item in delta_items)
                     if not overlap:
@@ -1433,7 +1573,7 @@ def main() -> int:
         chapters = sorted(p.name for p in chapter_root.glob("ch*") if p.is_dir())[-3:]
 
     if not args.skip_planning:
-        errs, warns = validate_planning(project)
+        errs, warns = validate_planning(project, chapters)
         all_errors.extend(errs)
         all_warnings.extend(warns)
         errs, warns = validate_merge_previews(project, chapters)

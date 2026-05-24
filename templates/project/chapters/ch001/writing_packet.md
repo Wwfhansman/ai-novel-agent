@@ -76,6 +76,12 @@
 **Writing Execution**
 
 - opening_sensory:
+- voice_examples:
+  -
+- foreshadowing_weight:
+- relationship_temperature:
+- body_scene_texture:
+- dialogue_mode:
 - scene_moments:
   -
   -

@@ -159,6 +159,15 @@ fields:
     required: true
     purpose: Current cross-round pressure/event chain from planning/active_flow.yml.
 
+  director_directive:
+    required: true
+    purpose: >
+      Round-level creative boundary for planner and writer: what this round must
+      advance, what must stay open, protected/endgame material that cannot be
+      touched, key voice/foreshadowing/relationship constraints, writer freedom,
+      and forbidden patterns. This belongs inside the round context pack; do not
+      create a separate round_directive file.
+
   recent_chapter_understanding:
     required: true
     purpose: Understanding from recent chapter summaries.

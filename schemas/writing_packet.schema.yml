@@ -28,6 +28,11 @@ writing_card_required_fields:
   - enters_via
   - narrative_weave
   - opening_sensory
+  - voice_examples
+  - foreshadowing_weight
+  - relationship_temperature
+  - body_scene_texture
+  - dialogue_mode
   - scene_moments
   - ending_gesture
   - sample_style_anchors
@@ -36,6 +41,7 @@ writing_card_required_fields:
 rules:
   - "Writing Card should stay compact, but must include both Chapter Design and Writing Execution."
   - "Chapter Design records what must change; Writing Execution records writable sensory/action moments."
+  - "Writing Execution must carry enough prose material for novel-writer: voice_examples, foreshadowing_weight, relationship_temperature, body_scene_texture, and dialogue_mode."
   - "time_span and ending_type are cross-chapter pattern controls, not decorative labels."
   - "information_release.new_core_variables must state enters_via; avoid protagonist-brain-summary as the default entry mode."
   - "If style/samples.md has real content, sample_style_anchors must contain 3-5 positive prose anchors."

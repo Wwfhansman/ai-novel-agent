@@ -20,7 +20,7 @@ from pathlib import Path
 SCAN_PATTERNS = [
     (
         "contrast_negation",
-        re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)"),
+        re.compile(r"(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;！？!?\s」』”\"']+[「『“\"']?是)"),
         "不是X而是Y / 不是X，是Y",
     ),
     (
@@ -47,6 +47,8 @@ SCAN_PATTERNS = [
         "箭头/编号式认知总结",
     ),
 ]
+
+FLATTENED_SCAN_PATTERNS = {"contrast_negation", "triple_negated_inner_state"}
 
 
 def _line_col(text: str, index: int) -> tuple[int, int]:
@@ -77,7 +79,7 @@ def find_candidates(path: Path) -> list[tuple[str, str, int, int, str, str]]:
     results: list[tuple[str, str, int, int, str, str]] = []
 
     for pattern_id, pattern, label in SCAN_PATTERNS:
-        search_text = flat if pattern_id == "triple_negated_inner_state" else text
+        search_text = flat if pattern_id in FLATTENED_SCAN_PATTERNS else text
         for match in pattern.finditer(search_text):
             source_index = match.start()
             if search_text is flat:

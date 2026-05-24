@@ -102,12 +102,13 @@ novel-change
 → 读取 active_flow
 → 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
 → 检查上一章 actual_handoff
-→ 生成 writing_packet.md（证据包 + 分离 Chapter Design / Writing Execution 的 Writing Card）
+→ 调用 novel-planner 生成 writing_packet.md 草案（证据包 + 分离 Chapter Design / Writing Execution 的 Writing Card）
+→ director 审核并修正 writing_packet.md
 → 完成 Pre-Draft Self Check：检查 time_span、ending_type、信息 enters_via 和场景瞬间
 → 生成本章理解
 → 确认本章叙事债、伏笔、信息可见性、角色意图、世界压力
 → 可选生成自由写作 notes
-→ 写 draft.txt
+→ 调用 novel-writer 写 draft.txt（如环境不支持 subagent，director fallback 并记录原因）
 → draft self-check（连续解释/任务执行/无体温段落/任务清单翻译必须先重写）
 → draft 句式专项扫描：check_not_but.py 必须在 draft 阶段通过
 → 生成 reader_pass.md（冷读质量门）
@@ -135,10 +136,11 @@ novel-change
 一轮准备：
   刷新 active_flow + rolling_plan
   → 生成 round context pack
-  → 预生成本批次 3 章 writing_packet
+  → 确认 style/samples.md 是否有真实内容，并把样本文风锚点写入 round context pack
+  → 预生成本批次 3 章 writing_packet（必须保留模板固定标题）
 
 连续 draft：
-  → 写 chXXX draft
+  → novel-writer 写 chXXX draft
   → 写 3-5 行 draft_handoff_note（非正史，仅供下一章 draft 承接）
   → 立刻写下一章 draft
 
@@ -150,8 +152,8 @@ novel-change
   → 批量运行 validator
 
 批量工程合并：
-  → 生成 summary.yml / canon_delta.yml / diff-only memory_update_plan.md
-  → 生成 merge preview → review → apply safe ops
+  → 逐章生成 summary.yml / canon_delta.yml / diff-only memory_update_plan.md
+  → 生成真实 merge preview（不得是 template 占位）→ review → apply safe ops
   → 合并 entities / ledgers / volumes / planning（canon_delta 不能替代当前状态）
   → 归档 completed_plan_log，滑动 rolling_plan
   → post-merge QA
@@ -166,6 +168,9 @@ novel-change
 - post-merge QA 前，`entities/`、`ledgers/`、`planning/active_flow.yml` 必须已经合入本章造成的当前状态变化；只写 `canon_delta.yml` 不能算完成。
 - 如果某章 draft 实际切口大幅改变下一章输入，必须停下刷新下一章 writing_packet，再继续 draft。
 - `style/samples.md` 若非空，必须进入 Writing Card 的正向文风锚点，并进入 reader_pass / review 的样本文风对齐检查。
+- `writing_packet.md` 的固定标题是机器协议，不是排版建议。`Read Files`、`Source References`、`Longform Scale Check`、`Cut Continuity`、`Reader Reward Check`、`Writing Card`、`Pre-Draft Self Check`、`Required Updates After Writing` 缺一项都应先修 packet。
+- `memory_update_plan.md` 必须逐章存在。批量联合草案可以作为 director 辅助材料，但不能替代每章的标准草案文件。
+- merge preview 如果仍是 `project: template` / `generated_at: template`，说明没有真实生成，不能进入 post-merge QA。
 
 ### 3.4 一轮结束流程
 
