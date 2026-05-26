@@ -32,11 +32,55 @@ Level 5: Work DNA change requiring reboot-level handling
 
 Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 
+## Mid-Story Idea Intake
+
+Treat every user mid-story post as an intake item first, not canon by default.
+
+Classify the requested change into one of these buckets before editing files:
+
+```text
+candidate_idea: interesting but not committed; store in `ledgers/idea_pool.yml`.
+future_setup: likely useful later; store in `ledgers/foreshadowing.yml` or future backlog.
+near_term_plan: affects the next 6-15 chapters; update `planning/rolling_plan.yml`.
+current_flow_change: affects the current scene chain or immediate handoff; update `planning/active_flow.yml`.
+current_state_change: changes present-time character/world/knowledge state; update `entities/` or `ledgers/`.
+protected_change: touches protected book/volume/core-character/secret files; require Change Summary and checkpoint.
+retcon: contradicts existing `final.txt`; require explicit user approval before rewriting canon.
+```
+
+Do not promote a user idea directly into canon just because it is appealing. First decide whether it is a candidate, setup, plan change, current-state change, protected change, or retcon.
+
+## Continuity and Handoff Rules
+
+Respect the current continuity authorities:
+
+- `planning/active_flow.yml` is the authority for the current cross-round scene chain.
+- `planning/rolling_plan.yml` is the authority for the next 6-15 chapter plan.
+- `planning/current_round.yml` is only a production excerpt, not the long-term plan authority.
+- `final.txt` remains the authority for already written prose facts.
+- `summary.yml` summarizes what happened in a chapter.
+- `canon_delta.yml` records what changed in a chapter; it is not the current-state table.
+
+Do not mix up handoff fields:
+
+```text
+planned_handoff: expected handoff in `rolling_plan.yml`.
+actual_handoff: actual handoff after writing, stored in `summary.yml` / `canon_delta.yml`.
+current_handoff: latest actual handoff, represented by `active_flow.yml` → `last_cut`.
+```
+
+When a change affects upcoming continuity:
+
+- If it changes what should happen soon, update `rolling_plan.yml`.
+- If it changes the immediate ongoing pressure, scene chain, last cut, or next opening, update `active_flow.yml`.
+- If it only affects the current production batch, update `current_round.yml` after the authorities above are correct.
+- If it changes current character/world/knowledge state, merge it into the relevant `entities/` or `ledgers/` file; do not leave it only in `canon_delta.yml`.
+
 ## 工作流
 
 1. **重述变更请求**
    - 识别精确的用户意图。
-   - 判断它属于正史 / 提案 / 未确认灵感。
+   - 判断它属于 candidate_idea / future_setup / near_term_plan / current_flow_change / current_state_change / protected_change / retcon。
 
 2. **分级影响**
    - 分配 Level 1-5。
@@ -51,7 +95,8 @@ Only Level 5, or explicit user request, should route to `novel-bootstrap`.
 
 5. **提出接入方案**
    - 提供一个推荐路径，有需要时给出备选。
-   - 判断写入 `idea_pool` / `foreshadowing` / `planning` / `entities` / 受保护文件。
+   - 判断写入 `idea_pool` / `foreshadowing` / `active_flow` / `rolling_plan` / `entities` / `ledgers` / 受保护文件。
+   - 明确是否影响 `planned_handoff`、`actual_handoff` 或 `current_handoff`；不要把三者混写。
 
 6. **只应用安全变更**
    - 受保护文件：修改前输出 diff 摘要、建立 checkpoint、要求确认。

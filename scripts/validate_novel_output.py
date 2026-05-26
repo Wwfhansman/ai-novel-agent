@@ -61,6 +61,19 @@ STALE_PLANNING_PATTERNS = [
     r"想下一步",
 ]
 
+BACKGROUND_PLACEHOLDER_PATTERNS = [
+    r"待命名",
+    r"自行命名",
+    r"writer\s*自行",
+    r"某宗门",
+    r"某长老",
+    r"某师兄",
+    r"某管事",
+    r"background[_ -]?placeholder",
+    r"背景占位",
+    r"\bTBD\b",
+]
+
 REQUIRED_PLANNING_FIELDS = [
     ("macro_stage",),
     ("scale_level",),
@@ -77,6 +90,7 @@ REQUIRED_PLANNING_FIELDS = [
     ("side_yield",),
     ("planned_handoff",),
     ("叙事织入", "narrative_weave"),
+    ("background_dependencies", "背景依赖", "背景落库"),
 ]
 
 REQUIRED_CHAPTER_FILES = [
@@ -98,6 +112,7 @@ REQUIRED_WRITING_PACKET_SECTIONS = [
     ("Source References", "来源引用", "来源文件", "证据来源"),
     ("Longform Scale Check", "长篇规模检查", "规模检查"),
     ("Reader Reward Check", "读者回报检查", "reader reward check", "读者体验"),
+    ("Background Use Audit", "背景使用审计", "背景审计", "背景落库检查"),
     ("Cut Continuity", "切分连续性", "上一章承接", "连续性"),
     ("Writing Card", "正文抬头纸", "写作卡"),
     ("Pre-Draft Self Check", "写前自检", "draft 前自检", "pre draft self check"),
@@ -106,6 +121,7 @@ REQUIRED_WRITING_PACKET_SECTIONS = [
 
 REQUIRED_ROUND_CONTEXT_PACK_SECTIONS = [
     ("Director Directive", "导演指令", "本轮导演指令"),
+    ("Background Completion Audit", "背景补全审计", "背景完整性审计", "背景落库检查"),
 ]
 
 WRITING_CARD_REQUIRED_MARKERS = [
@@ -527,6 +543,12 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
     writing_packet = chapter_dir / "writing_packet.md"
     if writing_packet.exists():
         text = writing_packet.read_text(encoding="utf-8")
+        for pattern in BACKGROUND_PLACEHOLDER_PATTERNS:
+            if re.search(pattern, text, re.IGNORECASE):
+                errors.append(
+                    f"BACKGROUND_PLACEHOLDER: {writing_packet} contains unresolved background placeholder matching /{pattern}/. "
+                    "Complete and store reusable background in entities/ or ledgers before drafting."
+                )
         missing_packet_sections: list[str] = []
         for section_aliases in REQUIRED_WRITING_PACKET_SECTIONS:
             if not _has_section(text, section_aliases):
@@ -550,11 +572,17 @@ def validate_chapter_artifacts(chapter_dir: Path) -> tuple[list[str], list[str]]
         if not writing_card:
             errors.append(f"WRITING_CARD_MISSING: {writing_packet} must include a Writing Card section.")
         else:
-            for en_marker, zh_marker in WRITING_CARD_REQUIRED_MARKERS:
-                if en_marker not in writing_card and zh_marker not in writing_card:
+            for marker_aliases in WRITING_CARD_REQUIRED_MARKERS:
+                if not any(marker in writing_card for marker in marker_aliases):
                     warnings.append(
-                        f"WRITING_CARD_FIELD_MISSING: {writing_packet} Writing Card lacks {en_marker} / {zh_marker}."
+                        f"WRITING_CARD_FIELD_MISSING: {writing_packet} Writing Card lacks {' / '.join(marker_aliases)}."
                     )
+            background_audit = _extract_section(text, ("Background Use Audit", "背景使用审计", "背景审计", "背景落库检查"))
+            if background_audit and re.search(r"missing_background\s*:\s*(?!\s*(#|$|\n\s*(-\s*)?$))", background_audit):
+                errors.append(
+                    f"BACKGROUND_AUDIT_UNRESOLVED: {writing_packet} lists missing_background. "
+                    "Resolve background into entities/ledgers or route to novel-change before drafting."
+                )
             if samples_has_content and not re.search(r"(sample_style_anchors|样本.*(文风|风格|锚点)|文笔锚点|从样本提取|sample)", writing_card, re.IGNORECASE):
                 warnings.append(
                     f"SAMPLE_ANCHORS_MISSING: {writing_packet} Writing Card should include 3-5 positive style anchors "
@@ -808,6 +836,12 @@ def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple
             errors.append(f"MISSING_PLANNING: {path}")
             continue
         text = path.read_text(encoding="utf-8")
+        for pattern in BACKGROUND_PLACEHOLDER_PATTERNS:
+            if re.search(pattern, text, re.IGNORECASE):
+                errors.append(
+                    f"BACKGROUND_PLACEHOLDER: {path} contains unresolved background placeholder matching /{pattern}/. "
+                    "Complete and store reusable background in entities/ or ledgers before planning/drafting."
+                )
         for pattern in STALE_PLANNING_PATTERNS:
             if re.search(pattern, text):
                 errors.append(
@@ -841,6 +875,12 @@ def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple
         text = path.read_text(encoding="utf-8")
         if chapters and not _artifact_relevant_to_chapters(text, chapters):
             continue
+        for pattern in BACKGROUND_PLACEHOLDER_PATTERNS:
+            if re.search(pattern, text, re.IGNORECASE):
+                errors.append(
+                    f"BACKGROUND_PLACEHOLDER: {path} contains unresolved background placeholder matching /{pattern}/. "
+                    "Resolve background before sending packets to planner/writer."
+                )
         for section_aliases in REQUIRED_ROUND_CONTEXT_PACK_SECTIONS:
             if not _has_section(text, section_aliases):
                 warnings.append(

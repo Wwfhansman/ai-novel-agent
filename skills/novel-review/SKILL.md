@@ -70,9 +70,16 @@ Read:
 
 9. **详细章纲对齐**：检查 `active_flow.yml` 是否存在且与上一章兼容、`rolling_plan.yml` 是否足够驱动正文、是否只包含未来窗口章节、已完成章纲是否归档、远期点子是否在 `future_backlog.yml`。
 
-10. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
+10. **执行层设定充足度**：检查前 9-15 章写作所需的人物、地点、势力、职位、制度事件和关键物品是否已经命名并落入 `entities/` 或 `ledgers/`。
+   - `entities/factions.yml` 不应只有伞概念；当前卷核心组织必须有正式名称、内部结构、代表人物、资源、目标、对主角态度。
+   - `entities/locations.yml` 不应只有世界/大域/城市骨架；早期正文发生的宗门、驻地、房舍、考核场、交易地、禁地等必须有名称和可写场景质感。
+   - `entities/characters.yml` 应包含前 9-15 章会出场的导师/长老/管事/同辈竞争者/潜在盟友/压力源；不能只在 rolling_plan 中出现职能占位名。
+   - `rolling_plan.yml` 不得出现“待命名”“自行命名”“writer 自行”“某宗门”“某长老”“某师兄”“某管事”“TBD”等占位。
+   - 如果 rolling_plan 需要某个实体但实体库没有，标记为必须修复；writer 不应在写正文时做设定决策。
 
-11. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
+11. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
+
+12. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
    - 写作心法、TXT 格式、结尾规则和 draft self-check 详见 `docs/WRITING_CRAFT.md`；审查时按其中规则清单对照。
    - Treat validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.
@@ -87,19 +94,17 @@ Read:
    - 检查交接是否来自外部运动，而不只是主角的内心决定。
    - 检查 `final.txt` 标题后是否只有一空行、正文段落之间是否无空行。
 
-12. **读者回报**
+13. **读者回报**
    - 检查每章是否在 review 或 writing_packet 中有 Reader Reward Check。
    - 检查回报是否出现在实际正文中，而不只是计划中。
    - 标记只推进设定却没有 payoff/揭示/代价/杠杆变化/关系变化/难忘小说素材的章节。
 
-13. **模型路由**
+14. **模型路由**
    - 检查 `meta/model_policy.yml` 是否存在。
    - 检查 writing_packet / round context pack / session log 中是否记录了多模型使用情况。
    - 标记任何看起来只由 fast/cheap 模型完成的正文、active_flow、rolling_plan、受保护文件修改或正史合并。
 
-## 输出格式
-
-14. **记忆工程卫生**
+15. **记忆工程卫生**
    - 检查所有 YAML 文件是否有重复 key（YAML 解析器静默覆盖，不会报错）。
    - 检查 `entities/characters.yml` 中每个有实质性变化的角色的 `change_history` 是否有条目。
    - 检查 `ledgers/narrative_debts.yml`、`ledgers/foreshadowing.yml` 中状态字段的拼写一致性（`paid`/`partiall_paid` 等）。
@@ -107,9 +112,11 @@ Read:
    - 检查 `canon_delta.yml` 和 `summary.yml` 的 `actual_handoff` 是否存在、是否与 `active_flow.yml` 的 `last_cut.current_handoff` 一致。
    - 如果发现 YAML 错误或数据不一致 → 列入必须修复项，不是可接受的弱点。
 
-15. **文笔多样性**
+16. **文笔多样性**
    - 检查最近 3 章正文是否存在高频重复句式（硬规则："不是X而是Y / 不是X，是Y"默认禁用，确需使用每章最多 1 次且 review 必须说明不可替代性；超过即为必须修复。也检查三连否定内心声明、元叙述、箭头/编号式认知总结、连续段落以同一句式开头、大量"他/她做了A，然后做了B"的平铺直叙）。
    - 句式重复不一定是单章问题——可能是模型默认腔。标记为风险并给出替换建议。
+
+## 输出格式
 
 ```text
 审查摘要

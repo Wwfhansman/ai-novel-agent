@@ -89,6 +89,8 @@ novel-change
 按本批次涉及对象定向读取动态账本
 读取并刷新 active_flow 连续剧情流
 全文读取并刷新 rolling_plan 详细章纲
+审查本批次和未来 3-6 章背景依赖：人物、势力、地点、物品、职位、制度规则、历史来历、资源来源、传闻和力量体系是否已落入 entities/ledgers
+如发现缺口，先生成 Background Completion Pack 并补入 entities/ledgers；涉及受保护事实则进入 novel-change
 根据本批次相关压力和债务回看关键旧章节
 生成 round context pack
 生成前文理解报告
@@ -101,6 +103,8 @@ novel-change
 准备本章 writing packet
 → 读取 active_flow
 → 从已全文读取的 rolling_plan 中摘取本章、相邻章节和必要后续约束
+→ 生成 Background Use Audit：列出本章会进入正文的背景、权威来源、缺口和 writer 可微调范围
+→ 如果 Background Use Audit 有未解决缺口，停止写作，先补 entities/ledgers 或进入 novel-change
 → 检查上一章 actual_handoff
 → 调用 novel-planner 生成 writing_packet.md 草案（证据包 + 分离 Chapter Design / Writing Execution 的 Writing Card）
 → director 审核并修正 writing_packet.md

@@ -83,6 +83,21 @@ arc_001 covers ch001-ch003: discovery, pressure, and first personal clue.
 - Writer freedom: local gestures, lamp-shop texture, street weather, and minor bystander reactions may be invented if they do not solve the mystery.
 - Forbidden patterns: no batch-summary ending, no lecture on lamp rules, no direct father-truth reveal.
 
+## Background Completion Audit
+
+| Background | Type | Used In | Authority | Status | Gap / Handling |
+| --- | --- | --- | --- | --- | --- |
+| Lin Qi | character | ch001-ch003 | entities/characters.yml | complete | Use current intent; do not alter core desire. |
+| Patrol agency / Archive Bureau pressure | faction | ch001-ch003 | entities/factions.yml / ledgers/world_state.yml | complete for opening | Motive remains partially hidden. |
+| Outer ring lamp corridor | location | ch001-ch003 | entities/locations.yml | complete for local scenes | Add local texture only. |
+| Old wick fragment | item | ch001-ch003 | entities/items.yml / ledgers/foreshadowing.yml | complete for opening | Full rule deferred. |
+| Father's repair knife/toolbox | item/history | ch003 | entities/items.yml / ledgers/narrative_debts.yml | complete for clue use | Father's truth protected. |
+
+- Completed and stored: opening-level people, institution pressure, lamp corridor, wick fragment, father-tool clue.
+- Writer may improvise: weather, object texture, incidental worker gestures, short bystander reactions.
+- Writer must not invent: patrol motive, father truth, citywide lamp mechanism, new named institutions.
+- Routed to novel-change: none.
+
 ## Recent Chapter Understanding
 
 No written chapters yet.

@@ -37,6 +37,8 @@ Use these planning layers:
 - `writing_packet.md` must separate `Chapter Design` from `Writing Execution`: design fields say what changes; execution fields give sensory openings, scene moments, and ending gesture.
 - Every Writing Card must include `time_span`, `ending_type`, and `position_in_flow`. Consecutive chapters must not default to one-day tasks ending in next-step decisions.
 - Every core information release must state `enters_via`; if the only path is protagonist brain-summary or narrator explanation, redesign the scene before drafting.
+- Background is a first-class writing asset. Any person, faction, place, item, institution, rule, historical cause, resource, technique, public rumor, or relationship network that affects action, dialogue, conflict, movement, identity, cost, or reader expectation must exist in `entities/` or `ledgers/` before drafting.
+- Writer may add local sensory texture and harmless incidental details, but must not invent named factions, locations, major roles, institutional rules, power costs, historical grievances, resource sources, or recurring objects during prose drafting.
 - Round boundaries are production boundaries, not story boundaries. Do not make ch003/ch006/ch009 feel like cleanup, recap, reset, or phase closure unless `planning/active_flow.yml` and `planning/rolling_plan.yml` explicitly say the story has earned payoff.
 - 如果上一章的 `canon_delta.yml` 中有 `actual_handoff`，本章开头必须承接，除非在 `writing_packet.md` 和 review 中记录了有理有据的切换理由。
 - 承接后，在本章的 `writing_packet.md` 和 `planning/rolling_plan.yml` 条目中体现该交接。
@@ -107,12 +109,46 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 - include `cross_chapter_event`, `starts_mid_action`, `ends_mid_action`, `chapter_function`, `pressure_curve.position_in_flow`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `叙事织入`, and `planned_handoff`;
 - treat rolling plan as story-content planning, not an intra-chapter prose template.
 
+## Background Completion Gate
+
+Run this gate whenever refreshing `active_flow.yml`, sliding or expanding `rolling_plan.yml`, creating a round context pack, or generating a chapter `writing_packet.md`.
+
+1. **Scan upcoming use**
+   - Inspect the batch chapters and the next 3-6 chapters in `rolling_plan.yml`.
+   - List all people, factions, places, roles/titles, institutions, rules, power-system elements, recurring items, historical causes, resources, rumors, debts, and foreshadowing that will enter scenes or constrain action.
+
+2. **Verify storage**
+   - Stable background must be in `entities/`: characters, factions, locations, items, power system.
+   - Dynamic background must be in `ledgers/`: world pressure, knowledge visibility, narrative debts, foreshadowing, rumors, decisions.
+   - `rolling_plan.yml` may reference and schedule background, but it must not be the only place where reusable background exists.
+   - `writing_packet.md` may summarize chapter-relevant background, but it must cite the source file and must not invent missing background.
+
+3. **Complete missing background before planning proceeds**
+   - If a planned chapter needs an unnamed or underdefined entity, pause planning and create a compact Background Completion Pack.
+   - Write the completed background into the proper `entities/` or `ledgers/` file before it appears in `rolling_plan.yml` or `writing_packet.md`.
+   - It is acceptable to add narrowly scoped background just before writing, but it must be recorded first, then referenced by the packet, then used by writer.
+   - If the missing background would alter protected book/volume/core-character/endgame facts, route to `novel-change`.
+
+4. **Minimum usable background**
+   - A faction needs: name, scale, hierarchy or internal structure, goal, resources, representative people, current action, attitude to protagonist, usable scene texture.
+   - A location needs: name, scale, placement, sensory texture, social function, who controls it, what pressure or opportunity it creates.
+   - A recurring character needs: name, role, current intent, relationship to protagonist, faction tie, speaking/action tendency, what they can change.
+   - A rule/system event needs: host or enforcer, venue, participant scale, public rule, hidden rule, reward/cost, loophole or pressure point.
+   - A power-system element needs: current stage meaning, test method, cost, failure mode, visible sign, what characters misunderstand about it.
+
+5. **Do not pass the gate with placeholders**
+   - Remove or resolve placeholders such as `待命名`, `自行命名`, `writer 自行`, `某宗门`, `某长老`, `某师兄`, `某管事`, `暂定`, `placeholder`, `TBD`, or equivalent.
+   - Generic labels are allowed only for genuinely nameless extras who do not recur and do not affect canon.
+   - If an entity can affect future state, give it a stable name or ID and store it.
+
 ## Round Workflow
 
 See `docs/WORKFLOWS.md` for the full workflow. Default round mode:
 
 1. **Prepare**: validate planning YAML, refresh `active_flow` / `rolling_plan`, compile round context, write `current_round.yml`.
+   - During refresh, run the Background Completion Gate. Do not generate round context until missing background for the batch and near-future window is resolved or explicitly routed to `novel-change`.
 2. **Prebuild**: use `novel-planner` when available to create all batch `writing_packet.md` files before drafting. Each packet includes audit context, a design/execution Writing Card, and `Pre-Draft Self Check`.
+   - Each packet must include a Background Use Audit with source references. If the audit has unresolved missing background, stop before drafting.
 3. **Continuous draft**: use `novel-writer` when available to write all batch drafts back-to-back; between drafts only write `draft_handoff_note`. Do not run validator, merge canon, archive planning, or call QA between drafts.
 4. **Batch cold read and finalize**: run draft self-check, run `check_not_but.py --files draft.txt`, use cold-reader, revise drafts, then write `final.txt`.
 5. **Batch engineering merge**: write `review.md`, `summary.yml`, `canon_delta.yml`, diff-only `memory_update_plan.md`; generate a merge preview, review it, then apply safe current-state updates into `entities/`, `ledgers/`, `volumes/`, and `planning/`.
@@ -125,6 +161,8 @@ Hard gates:
 - `state_sync.status: needs_director_review` is not a completion state. Before post-merge QA, resolve every such target to `merged` / `updated` / `synced`, or `n/a` only when there was no substantive change.
 - Keep template headings stable in `writing_packet.md` and `review.md`; validator treats these headings as a machine-readable contract, not presentation text. Do not rename `Writing Card` or `Pre-Draft Self Check`.
 - `writing_packet.md` must keep the full template heading contract: `Read Files`, `Source References`, `Longform Scale Check`, `Cut Continuity`, `Reader Reward Check`, `Writing Card`, `Pre-Draft Self Check`, and `Required Updates After Writing`. A dense packet with renamed headings is still invalid.
+- `writing_packet.md` must include `Background Use Audit`. It must list chapter-critical entities/background, source files, missing or newly completed background, and writer freedom boundaries.
+- `planning/rolling_plan.yml` chapter entries must include `background_dependencies` or equivalent explicit references for reusable people/factions/locations/items/rules used by the chapter.
 - If `style/samples.md` has real content, round context and every Writing Card must include concrete positive sample anchors. Do not write "samples.md is empty" unless the file was actually checked and is empty/placeholding.
 - Do not include examples that violate `prose_constraints` inside `opening_sensory`, `scene_moments`, `voice_examples`, or `sample_style_anchors`; writer will imitate examples more strongly than abstract bans.
 - Changed character entries must update `last_updated` or `change_history`.
@@ -219,6 +257,6 @@ Protected or confirmation-required:
 
 ## Failure Handling
 
-Stop before drafting if planning YAML is invalid, source-of-truth files conflict, `longform_blueprint` / `active_flow` / `rolling_plan` are missing or stale, required prior files are missing, or the chapter depends on an unconfirmed idea as canon.
+Stop before drafting if planning YAML is invalid, source-of-truth files conflict, `longform_blueprint` / `active_flow` / `rolling_plan` are missing or stale, required prior files are missing, the chapter depends on an unconfirmed idea as canon, or the chapter needs background that has not been completed and stored in `entities/` or `ledgers/`.
 
 Stop before finalizing if the draft reads like an outline/report, behaves as an isolated chapter box, ends on empty reflection, lacks external handoff, violates TXT format, lacks required artifacts, fails validator, or leaves current state / active_flow / rolling_plan stale.

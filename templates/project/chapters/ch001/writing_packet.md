@@ -43,6 +43,18 @@
 - external_change:
 - memorable_image_or_action:
 
+## Background Use Audit
+
+> 本章会进入正文或约束行动/对白/冲突/移动/身份/代价的背景，必须先在 `entities/` 或 `ledgers/` 中有记录。本节只摘取与本章有关的可写结论，不复制资料库全文。
+
+| 背景项 | 类型 | 权威来源 | 本章用途 | writer 可微调 | writer 禁止发明 |
+| --- | --- | --- | --- | --- | --- |
+
+- newly_completed_background:
+- missing_background:   # 必须为空；若不为空，停止写 draft，先补 entities/ledgers 或进入 novel-change。
+- local_texture_allowed:
+- hard_background_limits:
+
 ## Writing Card
 
 > 正文写作时只看这一段也必须够用。保持紧凑，但必须把设计面和执行面分开。

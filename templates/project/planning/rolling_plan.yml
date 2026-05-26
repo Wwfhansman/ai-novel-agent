@@ -30,6 +30,16 @@ chapter_shape_template:
   information_release:
     new_core_variables: []
     deferred: []
+  background_dependencies:
+    characters: []
+    factions: []
+    locations: []
+    items: []
+    power_system: []
+    ledgers: []
+    required_new_background: []
+    completion_status: "complete / needs_background_completion / routed_to_novel_change"
+    notes: "本章会用到的可复用背景必须已落入 entities/ 或 ledgers/；不得把待命名实体留给 writer。"
   chapter_turn: "本章造成的不可逆外部变化（含外部状态变化）。"
   side_yield: []
   叙事织入:

@@ -39,6 +39,26 @@ chapters:
     deferred:
     - 谁在清理痕迹。
     - 那个时期发生了什么。
+  background_dependencies:
+    characters:
+    - 林栖
+    - 沈砚
+    factions:
+    - 巡灯署
+    locations:
+    - 外环灯巷
+    - 档案室
+    items:
+    - 旧灯芯碎片
+    - 登记簿
+    - 父亲旧工具箱
+    power_system: []
+    ledgers:
+    - ledgers/world_state.yml
+    - ledgers/knowledge_state.yml
+    required_new_background: []
+    completion_status: complete
+    notes: 巡灯署、外环灯巷、旧灯芯碎片和父亲工具箱均已有示例级定义；正文可补局部质感，不可改机构动机。
   chapter_turn: 林栖发现登记簿被人提前篡改，确认回收不是例行公事，而是定向清理。
   side_yield:
   - 登记簿、印章、回收流程展示了机构如何控制记忆物品。
@@ -97,6 +117,27 @@ chapters:
     deferred:
     - 西角塔发生了什么。
     - 父亲是否还活着。
+  background_dependencies:
+    characters:
+    - 林栖
+    - 沈砚
+    factions:
+    - 巡灯署
+    locations:
+    - 外环灯巷
+    - 西角旧塔
+    items:
+    - 旧灯芯碎片
+    - 父亲修灯刀
+    - 旧工具箱
+    power_system: []
+    ledgers:
+    - ledgers/narrative_debts.yml
+    - ledgers/foreshadowing.yml
+    - ledgers/knowledge_state.yml
+    required_new_background: []
+    completion_status: complete
+    notes: 西角旧塔只作为未揭示地点压力出现；正文不得补全旧案真相。
   chapter_turn: 父亲的修灯刀与旧灯芯碎片的物证关联被确认，旧案变成新危机。
   side_yield:
   - 工具登记制度把私人维修行为与机构档案连接起来。

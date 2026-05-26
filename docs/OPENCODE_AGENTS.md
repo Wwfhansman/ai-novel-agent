@@ -107,11 +107,11 @@ output: projects/<name>/chapters/chXXX/memory_update_plan.md
 
 正常生产时建议让 `novel-director` 调用它们，而不是手动反复切换。
 
-`novel-planner` 只负责写作前规划编译。它可以生成 `writing_packet.md` 草案，必要时提出 `rolling_plan.yml` 局部细化建议；它不能写正文、不能改 summary/canon、不能合并状态。planner 发现缺少人物语感、伏笔分量或旧章证据时，应返回缺口清单，而不是猜。
+`novel-planner` 只负责写作前规划编译。它可以生成 `writing_packet.md` 草案，必要时提出 `rolling_plan.yml` 局部细化建议；它不能写正文、不能改 summary/canon、不能合并状态。planner 发现缺少人物语感、伏笔分量、旧章证据或可复用背景落库时，应返回缺口清单，而不是猜。可复用背景包括会影响行动、对白、冲突、移动、身份、代价或后续期待的人物、势力、地点、职位、制度规则、功法代价、历史来历、资源来源、传闻和关键物品。
 
 `novel-writer` 只负责 `draft.txt`、根据 `reader_pass.md` 修 draft，以及质量门通过后的 `final.txt`。它不能修改 `summary.yml`、`canon_delta.yml`、`entities/`、`ledgers/` 或 `planning/`。调用时不要给全量 rolling_plan、账本或 validator 输出；writer 应主要读 `writing_packet.md`、上一章结尾、样本文风锚点和必要前情。
 
-如果 `novel-writer` 返回 packet 缺少人物语感、伏笔分量、关系温度、身体/场景质感或对话模式，director 应先修 `writing_packet.md`，不要让 writer 硬写。
+如果 `novel-writer` 返回 packet 缺少人物语感、伏笔分量、关系温度、身体/场景质感、对话模式或背景硬边界，director 应先修 `writing_packet.md`，必要时先补 `entities/` / `ledgers/`，不要让 writer 硬写。
 
 `novel-cold-reader` 可以给局部润色建议，但只站在读者视角指出断句、描写、对话呼吸、转场和句式重复问题；它不接管正文改写，也不检查工程文件。
 

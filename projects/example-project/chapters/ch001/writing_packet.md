@@ -45,6 +45,20 @@
 - external_change: 林栖从普通修灯人变成私藏线索的人。
 - memorable_image_or_action: 碎片滑进袖口，贴着脉搏发凉。
 
+## Background Use Audit
+
+| 背景项 | 类型 | 权威来源 | 本章用途 | writer 可微调 | writer 禁止发明 |
+| --- | --- | --- | --- | --- | --- |
+| 林栖 | character | entities/characters.yml | 修灯人主角，执行私藏动作 | 小动作、维修习惯 | 核心欲望和父亲线真相 |
+| 巡灯署 | faction | entities/factions.yml / ledgers/world_state.yml | 现场回收旧灯芯，形成机构压力 | 现场人员姿态 | 真实动机和上级秘密 |
+| 外环灯巷 | location | entities/locations.yml | 雾夜修灯现场 | 雾、金属、灯油质感 | 扩大成全城规则解释 |
+| 旧灯芯碎片 | item | entities/items.yml / foreshadowing.yml | 异常声音和私藏证据 | 触感、温度、袖口动作 | 碎片完整规则 |
+
+- newly_completed_background: none
+- missing_background: # none
+- local_texture_allowed: 雾、灯油味、铜罩余热、巡灯署靴声、路人短反应。
+- hard_background_limits: 不解释巡灯署真实目的，不揭示声音身份，不补全旧灯芯规则。
+
 ## Writing Card
 
 **Chapter Design**
