@@ -136,65 +136,20 @@ agent 对话不是正史。
 
 ## 5. 上下文编译规则
 
-上下文编译必须产出文件，而不是只作为 agent 的内部思考。
+上下文编译规则以 [CONTEXT_PACK.md](CONTEXT_PACK.md) 为准。
 
-推荐位置：
+关键开发原则：
 
-```text
-planning/context_packs/round_001_context_pack.md
-chapters/ch001/writing_packet.md
-```
-
-每轮开始读取：
-
-- 创作宪法
-- 全书摘要
-- 已完成卷摘要
-- 当前卷纲和状态
-- 当前 arc
-- 当前 active_flow
-- `planning/rolling_plan.yml` 全文
-- 最近 12-15 章摘要
-- 最近 1-3 章全文，按连续性需要决定
-- 本批次涉及的动态账本条目
-- 触发条件命中的关键旧章节原文
-
-每章开始读取：
-
-- 本章 writing_packet 生成所需来源
-- active_flow 中的当前 pressure 和 handoff
-- 上章全文
-- 上章 canon_delta.yml 的 actual_handoff
-- 最近 3-5 章 summary.yml
-- 本章出场人物状态
-- 本章相关叙事债
-- 本章相关伏笔
-- 本章信息可见性
-- 本章世界压力
-
-读取完成后，agent 必须把读取清单、读取原因、关键结论、回看旧章节和不确定项写入 round context pack 或 chapter writing packet。不要把读过的文件全文复制进去。
-
-推荐预算：
-
-```text
-round context pack: 3000-5000 中文字
-chapter writing_packet: 1000-2500 中文字；Writing Card 保持紧凑，分离 Chapter Design / Writing Execution
-```
+- 上下文编译必须产出文件，而不是只作为 agent 的内部思考。
+- round context pack 和 chapter writing packet 是可审计的写作输入记录。
+- 不要把项目资料库全文复制进 packet；只摘取本轮/本章需要的操作结论。
+- 背景补全和落库门禁见 [WORKFLOWS.md](WORKFLOWS.md) 与 [novel-write skill](../skills/novel-write/SKILL.md)。
 
 ## 6. 质量检查清单
 
-每章审稿至少检查：
+质量检查以 [WRITING_CRAFT.md](WRITING_CRAFT.md)、[CANON_AND_SAFETY.md](CANON_AND_SAFETY.md)、[novel-review skill](../skills/novel-review/SKILL.md) 和 `scripts/validate_novel_output.py` 为准。
 
-- 本章是否有明确事件。
-- 主角是否主动行动。
-- 冲突是否推进。
-- 是否有读者反馈。
-- 是否新增、推进或偿还叙事债。
-- 角色行为是否符合意图。
-- 信息可见性是否正确。
-- 世界状态是否有反应。
-- 伏笔是否处理得当。
-- 结尾是否把外部压力交给下一章，而不是主角复盘或 round 总结。
+开发时只需确认：新增流程是否有人工审查入口、可机检部分是否进入 validator、写后状态是否合并到 `entities/` / `ledgers/` / `planning/`。
 
 ## 7. 未来脚本
 
@@ -242,24 +197,13 @@ MVP 阶段避免过早工程化：
 
 ## 9. Git Checkpoint 规则
 
-MVP 阶段建议使用 Git 作为回滚工具。
+Git checkpoint 规则以 [CANON_AND_SAFETY.md](CANON_AND_SAFETY.md) 为准。MVP 阶段仍建议在每轮生产批次、受保护文件修改和大规模变更前后建立可回滚点。
 
-推荐节奏：
+## 10. 文档语言规范
 
-```text
-每轮三章生产批次开始前 checkpoint
-每轮三章生产批次结束后 commit
-修改受保护文件前 checkpoint
-大规模变更后 commit
-```
-
-推荐提交信息：
-
-```text
-checkpoint: before round 003
-write: complete round 003 chapters 007-009
-change: promote idea_014 into volume 001 outline
-review: resolve knowledge_state conflict after ch012
-```
-
-Git 不属于未来商业产品的必需形态，但对 MVP 的文件数据库实验是基础安全带。
+- 规则正文和说明使用中文。
+- 文件名、字段名、目录名、CLI 命令保持英文原样。
+- YAML 字段值：中文叙述内容用中文，枚举值用英文。
+- Python 代码注释使用英文。
+- Skill / agent frontmatter 使用英文。
+- `docs/` 下新增文档优先使用 `UPPER_CASE.md` 命名；已有文件不强制重命名。

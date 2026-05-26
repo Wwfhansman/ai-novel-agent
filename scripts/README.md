@@ -28,6 +28,18 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --ski
 python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --check-protected-files
 ```
 
+模板/validator smoke test：
+
+```powershell
+python scripts/smoke_test.py
+```
+
+`smoke_test.py` 会从 `templates/project/` 创建临时项目，注入最小章节数据，运行 `validate_novel_output.py`，并和 `scripts/golden/smoke_test.out` 比对输出。重构 validator 或模板后，如果输出变化是预期的，更新 golden：
+
+```powershell
+python scripts/smoke_test.py --update-golden
+```
+
 定位 `"不是X而是Y / 不是X，是Y"` 候选句式：
 
 ```powershell

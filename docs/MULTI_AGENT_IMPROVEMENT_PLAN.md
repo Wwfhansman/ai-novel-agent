@@ -1,5 +1,7 @@
 # 多 Agent 改进规划方案
 
+> 历史文档，仅供参考。多 agent 的当前执行边界以 `docs/OPENCODE_AGENTS.md`、`skills/*/SKILL.md` 和 `docs/RULE_INDEX.md` 为准。
+
 本文档规划 AI Novel Agent 从“主控 agent 承担大多数工作”升级为“专属强 agent 协作流水线”的路线。核心目标不是增加 agent 数量，而是降低心智切换、减少上下文污染，并保持长篇小说的连续性、文风稳定性和正史一致性。
 
 ## 1. 结论
