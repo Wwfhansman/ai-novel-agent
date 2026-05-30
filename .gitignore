@@ -11,6 +11,7 @@
 /exports/
 /dist/
 /tmp/
+/planning/
 .deepseek/
 __pycache__/
 **/__pycache__/

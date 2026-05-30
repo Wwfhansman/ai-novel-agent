@@ -84,30 +84,51 @@ def seed_minimal_chapter(project: Path) -> None:
         "    current_handoff: 墙外脚步停下。\n"
         "completed_flows: []\n",
     )
+    rolling_chapters = []
+    pacing_modes = ["expansion", "pressure", "relationship", "mystery", "payoff", "recovery"]
+    for offset, mode in enumerate(pacing_modes, start=2):
+        chapter_id = f"ch{offset:03d}"
+        rolling_chapters.append(
+            f"- chapter: {chapter_id}\n"
+            "  status: planned\n"
+            "  macro_stage: smoke\n"
+            "  scale_level: room\n"
+            "  cross_chapter_event: smoke handoff\n"
+            "  starts_mid_action: true\n"
+            "  ends_mid_action: true\n"
+            "  chapter_function: investigation\n"
+            "  pressure_curve:\n"
+            "    position_in_flow: opening\n"
+            "  reader_question_flow: {}\n"
+            "  core_advance: {}\n"
+            "  information_release: {}\n"
+            "  architecture_role:\n"
+            f"    pacing_mode: {mode}\n"
+            "    world_expansion: smoke world layer\n"
+            "    protagonist_growth_budget: no power growth\n"
+            "    information_reveal: surface clue only\n"
+            "    side_thread_touch:\n"
+            "      - smoke thread\n"
+            "    offscreen_pressure:\n"
+            "      - smoke pressure\n"
+            "    recurring_assets:\n"
+            "      - smoke asset\n"
+            "    must_not_resolve:\n"
+            "      - smoke mystery\n"
+            "    writable_scene_seed: smoke scene trigger\n"
+            "  chapter_turn: smoke turn\n"
+            "  side_yield: []\n"
+            "  planned_handoff: smoke handoff\n"
+            "  叙事织入: {}\n"
+            "  background_dependencies: {}\n"
+        )
     write(
         project / "planning" / "rolling_plan.yml",
-        "current_window: ch002-ch002\n"
+        "current_window: ch002-ch007\n"
         "status: active\n"
         "source_of_truth: smoke test\n"
         "chapters:\n"
-        "- chapter: ch002\n"
-        "  status: planned\n"
-        "  macro_stage: smoke\n"
-        "  scale_level: room\n"
-        "  cross_chapter_event: smoke handoff\n"
-        "  starts_mid_action: true\n"
-        "  ends_mid_action: true\n"
-        "  chapter_function: investigation\n"
-        "  pressure_curve:\n"
-        "    position_in_flow: opening\n"
-        "  reader_question_flow: {}\n"
-        "  core_advance: {}\n"
-        "  information_release: {}\n"
-        "  chapter_turn: smoke turn\n"
-        "  side_yield: []\n"
-        "  planned_handoff: smoke handoff\n"
-        "  叙事织入: {}\n"
-        "  background_dependencies: {}\n",
+        + "".join(rolling_chapters),
     )
     write(
         project / "planning" / "merge_previews" / "round_001.yml",

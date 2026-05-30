@@ -20,6 +20,8 @@ Never let the round size decide the story shape. A narrative flow may span 2, 5,
 Use these planning layers:
 
 - `book/longform_blueprint.yml`: protected whole-book scale, macro stage, progression budget, and reveal pacing authority.
+- `planning/story_architecture.yml`: current volume/stage story architecture, pacing/growth/information-release operating plan.
+- `planning/thread_board.yml`: active side-thread lifecycle, off-screen actions, and conflict-network board.
 - `planning/active_flow.yml`: current continuous story pressure and latest actual handoff; may span rounds.
 - `planning/rolling_plan.yml`: detailed 6-15 chapter future window; completed entries move to `completed_plan_log.yml`, distant entries to `future_backlog.yml`.
 - `planning/current_round.yml`: lightweight production tracker only; never a second chapter plan.
@@ -53,6 +55,7 @@ Use these planning layers:
 - Every round context pack and chapter writing packet must include a `Longform Scale Check`.
 - If `style/samples.md` contains real project style guidance, treat it as a positive prose anchor, not an optional appendix. Extract 3-5 chapter-specific style anchors into each `writing_packet.md` Writing Card, and ask the cold reader/review to check sample alignment.
 - Do not silently change target length, macro stages, world scale, faction scale, power pacing, or secret reveal windows. Route those changes to `novel-change`.
+- If `rolling_plan.yml` has fewer than 4 future chapters, lacks `architecture_role`, or the next window is visibly a task chain with no world expansion / side-thread touch / growth budget, stop normal writing prep and run `novel-architect` or ask the user/director to do so before drafting.
 
 ## Context Budget Policy
 
@@ -70,6 +73,7 @@ Read once per session or when uncertain:
 - `book/chapter_rhythm_guide.md`（本章类型对应的节奏模板）
 - `style/rewrite_rules.md`, `style/samples.md`
 - `planning/active_flow.yml`, `planning/rolling_plan.yml`, `planning/current_round.yml` if it exists
+- `planning/story_architecture.yml`, `planning/thread_board.yml` if they exist
 - `meta/model_policy.yml` if it exists
 
 Do not paste these files into context packs or writing packets. Extract only the operational conclusions needed for the current task.
@@ -107,6 +111,7 @@ Use `templates/project/planning/rolling_plan.yml` and `docs/FILE_FORMATS.md` for
 - move distant or over-capacity plans to `planning/future_backlog.yml`;
 - keep each chapter synopsis around 300-800 Chinese characters;
 - include `cross_chapter_event`, `starts_mid_action`, `ends_mid_action`, `chapter_function`, `pressure_curve.position_in_flow`, `reader_question_flow`, `core_advance`, `information_release`, `side_yield`, `叙事织入`, and `planned_handoff`;
+- include `architecture_role` with pacing mode, world expansion, protagonist growth budget, information reveal boundary, side-thread touch, off-screen pressure, recurring assets, must-not-resolve, and a writable scene seed;
 - treat rolling plan as story-content planning, not an intra-chapter prose template.
 
 ## Background Completion Gate
@@ -146,6 +151,7 @@ Run this gate whenever refreshing `active_flow.yml`, sliding or expanding `rolli
 See `docs/WORKFLOWS.md` for the full workflow. Default round mode:
 
 1. **Prepare**: validate planning YAML, refresh `active_flow` / `rolling_plan`, compile round context, write `current_round.yml`.
+   - If the future window is empty/thin or the story is shrinking, run `novel-architect` first: compile `architect_context_pack`, generate a development pack, director-review accepted updates, then refresh rolling_plan.
    - During refresh, run the Background Completion Gate. Do not generate round context until missing background for the batch and near-future window is resolved or explicitly routed to `novel-change`.
 2. **Prebuild**: use `novel-planner` when available to create all batch `writing_packet.md` files before drafting. Each packet includes audit context, a design/execution Writing Card, and `Pre-Draft Self Check`.
    - Each packet must include a Background Use Audit with source references. If the audit has unresolved missing background, stop before drafting.
@@ -163,6 +169,7 @@ Hard gates:
 - `writing_packet.md` must keep the full template heading contract: `Read Files`, `Source References`, `Longform Scale Check`, `Cut Continuity`, `Reader Reward Check`, `Writing Card`, `Pre-Draft Self Check`, and `Required Updates After Writing`. A dense packet with renamed headings is still invalid.
 - `writing_packet.md` must include `Background Use Audit`. It must list chapter-critical entities/background, source files, missing or newly completed background, and writer freedom boundaries.
 - `planning/rolling_plan.yml` chapter entries must include `background_dependencies` or equivalent explicit references for reusable people/factions/locations/items/rules used by the chapter.
+- `planning/rolling_plan.yml` chapter entries should include `architecture_role`; missing architecture fields mean planner/writer must not invent world-expansion, growth, or side-thread logic.
 - If `style/samples.md` has real content, round context and every Writing Card must include concrete positive sample anchors. Do not write "samples.md is empty" unless the file was actually checked and is empty/placeholding.
 - Do not include examples that violate `prose_constraints` inside `opening_sensory`, `scene_moments`, `voice_examples`, or `sample_style_anchors`; writer will imitate examples more strongly than abstract bans.
 - Changed character entries must update `last_updated` or `change_history`.
@@ -180,6 +187,7 @@ Hard gates:
 
 - `draft.txt` 必须先完成 draft self-check，才能进入 `reader_pass.md`。
 - `novel-planner` 可负责 `writing_packet.md` 草案和 rolling_plan 局部细化建议；它不能写正文、不能合并 canon/state/planning。
+- `novel-architect` 可负责 `planning/development_packs/dev_XXX.md` 和未来 10-30 章故事开发建议；它不能写正文、不能合并 canon/state/planning。
 - `novel-writer` 可负责 `draft.txt`、根据 `reader_pass.md` 修稿、以及质量门通过后的 `final.txt`；它不能修改 summary/canon/state/planning。
 - `python scripts/check_not_but.py <project> --chapters <batch chapters> --files draft.txt` 是 final 前硬门禁。
 - `check_not_but.py` 同时扫描 not-but、三连否定内心声明、元叙述和箭头/编号式认知总结；出现后先改 draft。
@@ -191,7 +199,7 @@ Hard gates:
 
 在写 `final.txt` 之前，必须先完成 draft self-check 和 `reader_pass.md`。这两步是质量门，不是事后总结。
 
-`reader_pass.md` 默认由独立 cold-reader subagent 生成。该 subagent 的身份是同类型中文网文资深责编，只看读者体验、文笔自然度、节奏松紧、人物体温、对白是否像人说话，以及局部断句、描写、转场是否僵硬。不要检查 YAML、账本或工程完整性。输出必须短，通常 300-800 字。
+`reader_pass.md` 默认由独立 cold-reader subagent 生成。该 subagent 的身份是同类型中文网文资深责编，只看读者体验、文笔自然度、节奏松紧、人物体温、对白是否像人说话，以及局部断句、短句堆叠、破折号密度、描写、转场是否僵硬。不要检查 YAML、账本或工程完整性。输出必须短，通常 300-800 字。
 
 Cold-reader subagent 只接收：
 
@@ -214,11 +222,12 @@ Cold-reader subagent 只接收：
 0. reader：`cold_reader_subagent` / `same_agent_fallback`。
 1. 最值得保留的一段：如果没有，写"没有"。
 2. 最生硬的 3 处。
-3. 局部润色建议：3-5 条，针对断句僵硬、描写不自然、对话像信息交换、转场突兀或句式重复。可以给短句级替换方向，但不要整段代写，不要改变剧情事实。
-4. 必须重写的 1-2 个局部。
-5. 是否允许进入 final：`pass` / `revise required`。
+3. 叙述自然性与断句流畅性：判断短句、句号、破折号、省略号和段落切分是否服务情绪/动作/喜剧节奏；如果出现莫名短句连打、机械断句、破折号堆叠或同类顿挫连续重复，必须指出具体位置。
+4. 局部润色建议：3-5 条，针对断句僵硬、短句堆叠、破折号过密、描写不自然、对话像信息交换、转场突兀或句式重复。可以给短句级替换方向，但不要整段代写，不要改变剧情事实。
+5. 必须重写的 1-2 个局部。
+6. 是否允许进入 final：`pass` / `revise required`。
 
-如果输出 `revise required`，或"最值得保留的一段"为"没有"，必须重写 draft 后再重新冷读。
+如果输出 `revise required`、"最值得保留的一段"为"没有"，或冷读认为断句/短句/破折号问题已经影响阅读流畅性，必须重写 draft 后再重新冷读。
 
 ## 审查清单
 

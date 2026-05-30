@@ -68,6 +68,16 @@
 - pressure_curve:
   - position_in_flow: opening / rising_early / rising_middle / peak / aftermath_trough
   - chapter_internal_motion: 信息进入 → 碎片碰撞 → 未闭合
+- architecture_role:
+  - pacing_mode: pressure / payoff / expansion / recovery / relationship / mystery
+  - world_expansion:
+  - protagonist_growth_budget:
+  - information_reveal:
+  - side_thread_touch:
+  - offscreen_pressure:
+  - recurring_assets:
+  - must_not_resolve:
+  - writable_scene_seed:
 - must_happen:
   - 
 - must_not_complete:
@@ -116,6 +126,9 @@
 - time_span_check:
 - ending_type_check:
 - information_entry_check:
+- architecture_role_check:
+- world_expansion_check:
+- growth_budget_check:
 - weave_insertion_check:
 - scene_not_checklist_check:
 

@@ -30,6 +30,16 @@ chapter_shape_template:
   information_release:
     new_core_variables: []
     deferred: []
+  architecture_role:
+    pacing_mode: "pressure / payoff / expansion / recovery / relationship / mystery"
+    world_expansion: "本章让世界打开、深化或重新运转的具体层面；如果无，说明原因。"
+    protagonist_growth_budget: "本章允许的成长类型和上限，例如：不突破，只获得资源线索。"
+    information_reveal: "本章允许释放的信息边界；不得覆盖 knowledge_state 中锁定的信息。"
+    side_thread_touch: []
+    offscreen_pressure: []
+    recurring_assets: []
+    must_not_resolve: []
+    writable_scene_seed: "给 writer 可直接写成场景的冲突触发点。"
   background_dependencies:
     characters: []
     factions: []

@@ -68,18 +68,20 @@ Read:
 
 8. **长篇规模控制**：检查 `book/longform_blueprint.yml` 是否存在且为最新、当前章节是否属于预期宏观阶段、世界级名称和势力是否保持预期规模。标记规模缩水。
 
-9. **详细章纲对齐**：检查 `active_flow.yml` 是否存在且与上一章兼容、`rolling_plan.yml` 是否足够驱动正文、是否只包含未来窗口章节、已完成章纲是否归档、远期点子是否在 `future_backlog.yml`。
+9. **编剧层健康度**：检查 `planning/story_architecture.yml`、`planning/thread_board.yml` 是否存在并与当前卷匹配。若最近章节出现世界缩小、连续任务推进、主角成长过密、支线沉默过久或 `rolling_plan.yml` 只剩 0-3 章，建议先运行 `novel-architect`，不要直接进入下一轮写作。
 
-10. **执行层设定充足度**：检查前 9-15 章写作所需的人物、地点、势力、职位、制度事件和关键物品是否已经命名并落入 `entities/` 或 `ledgers/`。
+10. **详细章纲对齐**：检查 `active_flow.yml` 是否存在且与上一章兼容、`rolling_plan.yml` 是否足够驱动正文、是否只包含未来窗口章节、已完成章纲是否归档、远期点子是否在 `future_backlog.yml`。检查每个未来章节是否有 `architecture_role`：节奏模式、世界扩张、主角成长预算、信息释放边界、支线触碰、off-screen 压力和可写场景触发点。
+
+11. **执行层设定充足度**：检查前 9-15 章写作所需的人物、地点、势力、职位、制度事件和关键物品是否已经命名并落入 `entities/` 或 `ledgers/`。
    - `entities/factions.yml` 不应只有伞概念；当前卷核心组织必须有正式名称、内部结构、代表人物、资源、目标、对主角态度。
    - `entities/locations.yml` 不应只有世界/大域/城市骨架；早期正文发生的宗门、驻地、房舍、考核场、交易地、禁地等必须有名称和可写场景质感。
    - `entities/characters.yml` 应包含前 9-15 章会出场的导师/长老/管事/同辈竞争者/潜在盟友/压力源；不能只在 rolling_plan 中出现职能占位名。
    - `rolling_plan.yml` 不得出现“待命名”“自行命名”“writer 自行”“某宗门”“某长老”“某师兄”“某管事”“TBD”等占位。
    - 如果 rolling_plan 需要某个实体但实体库没有，标记为必须修复；writer 不应在写正文时做设定决策。
 
-11. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
+12. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
 
-12. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
+13. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
    - 写作心法、TXT 格式、结尾规则和 draft self-check 详见 `docs/WRITING_CRAFT.md`；审查时按其中规则清单对照。
    - Treat validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.

@@ -1,0 +1,15 @@
+offscreen_actions: []
+
+conflict_network: []
+
+threads: []
+
+maintenance:
+  active_statuses:
+    - seeded
+    - dormant
+    - rising
+    - intersecting
+    - payoff
+  archive_status: aftermath
+  completed_threads_log: "planning/completed_threads_log.yml"

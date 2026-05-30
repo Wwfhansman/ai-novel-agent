@@ -59,6 +59,27 @@ REQUIRED_ROUND_CONTEXT_PACK_SECTIONS = [
     ("Background Completion Audit", "背景补全审计", "背景完整性审计", "背景落库检查"),
 ]
 
+ARCHITECTURE_ROLE_FIELDS = [
+    "architecture_role",
+    "pacing_mode",
+    "world_expansion",
+    "protagonist_growth_budget",
+    "information_reveal",
+    "side_thread_touch",
+    "offscreen_pressure",
+    "recurring_assets",
+    "writable_scene_seed",
+]
+
+GROWTH_EVENT_PATTERNS = [
+    r"突破",
+    r"升级",
+    r"晋升",
+    r"进阶",
+    r"power[_ -]?up",
+    r"breakthrough",
+]
+
 ROLLING_PLAN_SIZE_WARN_BYTES = 20000
 
 
@@ -213,6 +234,16 @@ def _extract_rolling_plan_chapters(text: str) -> list[tuple[str, str | None]]:
     return chapters
 
 
+def _extract_rolling_plan_chapter_blocks(text: str) -> list[tuple[str, str]]:
+    blocks: list[tuple[str, str]] = []
+    matches = list(re.finditer(r"^\s*-\s*chapter\s*:\s*[\"']?(ch\d+)[\"']?", text, re.MULTILINE))
+    for index, match in enumerate(matches):
+        chapter = match.group(1)
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        blocks.append((chapter, text[match.start():end]))
+    return blocks
+
+
 def _extract_archived_chapters(text: str) -> set[str]:
     return set(re.findall(r"^\s*-\s*chapter\s*:\s*[\"']?(ch\d+)[\"']?", text, re.MULTILINE))
 
@@ -269,6 +300,134 @@ def _validate_planning_state_uniqueness(project: Path) -> list[str]:
     return errors
 
 
+def _extract_architecture_field(block: str, field: str) -> str:
+    pattern = re.compile(rf"^\s*{re.escape(field)}\s*:\s*[\"']?([^\"'\n#]*)", re.MULTILINE)
+    match = pattern.search(block)
+    return match.group(1).strip() if match else ""
+
+
+def _is_empty_architecture_value(block: str, field: str) -> bool:
+    lines = block.splitlines()
+    for index, line in enumerate(lines):
+        match = re.match(rf"^(\s*){re.escape(field)}\s*:\s*(.*)$", line)
+        if not match:
+            continue
+        indent = len(match.group(1))
+        value = re.sub(r"\s+#.*$", "", match.group(2)).strip()
+        if value and value.lower() not in {"[]", "{}", "n/a", "na", "none", "无"}:
+            return False
+        for next_line in lines[index + 1:]:
+            if not next_line.strip() or next_line.lstrip().startswith("#"):
+                continue
+            next_indent = len(next_line) - len(next_line.lstrip(" "))
+            stripped = next_line.strip()
+            if next_indent < indent:
+                break
+            if next_indent == indent and not stripped.startswith("- "):
+                break
+            if stripped not in {"[]", "{}"}:
+                return False
+        return True
+    return True
+
+
+def _validate_architecture_files(project: Path) -> list[str]:
+    warnings: list[str] = []
+    planning = project / "planning"
+    expected = [
+        planning / "story_architecture.yml",
+        planning / "thread_board.yml",
+        planning / "completed_threads_log.yml",
+    ]
+    for path in expected:
+        if not path.exists():
+            warnings.append(
+                f"MISSING_STORY_ARCHITECTURE_FILE: {path} is missing. "
+                "Projects should include story architecture files before running novel-architect."
+            )
+    if not (planning / "development_packs").exists():
+        warnings.append(
+            f"MISSING_DEVELOPMENT_PACK_DIR: {planning / 'development_packs'} is missing. "
+            "novel-architect writes development packs there."
+        )
+    return warnings
+
+
+def _validate_rolling_architecture(project: Path) -> list[str]:
+    warnings: list[str] = []
+    rolling = project / "planning" / "rolling_plan.yml"
+    if not rolling.exists():
+        return warnings
+    text = rolling.read_text(encoding="utf-8")
+    blocks = _extract_rolling_plan_chapter_blocks(text)
+    if not blocks:
+        warnings.append(
+            f"ROLLING_PLAN_EMPTY: {rolling} has no future chapter blocks. "
+            "Run novel-architect before the next writing round to develop the next 6-15 chapters."
+        )
+        return warnings
+    if len(blocks) < 4:
+        warnings.append(
+            f"ROLLING_PLAN_WINDOW_THIN: {rolling} has only {len(blocks)} future chapter block(s). "
+            "Run novel-architect before the next round so the writer is not planning from the last remaining chapter."
+        )
+
+    missing_architecture: list[str] = []
+    thin_world: list[str] = []
+    thin_threads: list[str] = []
+    growth_chapters: list[str] = []
+    pacing_modes: list[tuple[str, str]] = []
+
+    for chapter, block in blocks:
+        missing_fields = [field for field in ARCHITECTURE_ROLE_FIELDS if field not in block]
+        if missing_fields:
+            missing_architecture.append(f"{chapter}({', '.join(missing_fields[:4])})")
+        if "architecture_role" in block:
+            mode = _extract_architecture_field(block, "pacing_mode").lower()
+            if mode:
+                pacing_modes.append((chapter, mode))
+            if _is_empty_architecture_value(block, "world_expansion"):
+                thin_world.append(chapter)
+            if _is_empty_architecture_value(block, "side_thread_touch"):
+                thin_threads.append(chapter)
+            growth_value = _extract_architecture_field(block, "protagonist_growth_budget")
+            if any(re.search(pattern, growth_value, re.IGNORECASE) for pattern in GROWTH_EVENT_PATTERNS):
+                growth_chapters.append(chapter)
+
+    if missing_architecture:
+        warnings.append(
+            f"ROLLING_PLAN_ARCHITECTURE_ROLE_MISSING: {rolling} has chapter entries without complete "
+            f"architecture_role fields: {', '.join(missing_architecture[:6])}. "
+            "Run novel-architect or fill pacing/world/growth/thread constraints before generating writing packets."
+        )
+    if len(thin_world) >= 3:
+        warnings.append(
+            f"ROLLING_PLAN_WORLD_EXPANSION_THIN: {rolling} has {len(thin_world)} chapters with empty "
+            f"world_expansion ({', '.join(thin_world[:8])}). This risks world shrinkage."
+        )
+    if len(thin_threads) >= 4:
+        warnings.append(
+            f"ROLLING_PLAN_SIDE_THREADS_THIN: {rolling} has {len(thin_threads)} chapters with empty "
+            f"side_thread_touch ({', '.join(thin_threads[:8])}). This risks protagonist-only task flow."
+        )
+    if len(growth_chapters) > max(2, len(blocks) // 3):
+        warnings.append(
+            f"ROLLING_PLAN_GROWTH_TOO_DENSE: {rolling} marks frequent protagonist growth in "
+            f"{', '.join(growth_chapters[:8])}. Check story_architecture growth_budget before drafting."
+        )
+
+    for i in range(len(pacing_modes) - 2):
+        trio = pacing_modes[i:i + 3]
+        if trio[0][1] and trio[0][1] == trio[1][1] == trio[2][1]:
+            warnings.append(
+                f"ROLLING_PLAN_PACING_LOOP: {rolling} has three consecutive chapters with "
+                f"pacing_mode={trio[0][1]} ({', '.join(ch for ch, _mode in trio)}). "
+                "Check rhythm budget before drafting."
+            )
+            break
+    return warnings
+
+
 def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -277,6 +436,7 @@ def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple
     errs, warns = validate_project_yaml(project)
     errors.extend(errs)
     warnings.extend(warns)
+    warnings.extend(_validate_architecture_files(project))
 
     longform = project / "book" / "longform_blueprint.yml"
     if not longform.exists():
@@ -330,6 +490,7 @@ def validate_planning(project: Path, chapters: list[str] | None = None) -> tuple
                     "Keep rolling_plan.yml to the active 6-10 chapter window when possible; move "
                     "far-future entries into planning/future_backlog.yml without thinning near-term prose-critical plans."
                 )
+            warnings.extend(_validate_rolling_architecture(project))
         if path.name == "rolling_plan.yml" and re.search(r"\bstatus\s*:\s*completed\b", text):
             errors.append(
                 f"COMPLETED_PLAN_NOT_ARCHIVED: {path} contains completed chapters. "

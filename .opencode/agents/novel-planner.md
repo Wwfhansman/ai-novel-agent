@@ -26,6 +26,7 @@ color: secondary
 - 根据 round context pack 和 `planning/rolling_plan.yml` 生成 `chapters/chXXX/writing_packet.md` 草案。
 - 确认 `Writing Card` 分成 `Chapter Design` 和 `Writing Execution`。
 - 确认 `time_span`、`ending_type`、`position_in_flow` 不会把章节写成封闭容器。
+- 把 `rolling_plan.yml` 的 `architecture_role` 编译进 Writing Card：节奏模式、世界扩张、主角成长预算、信息释放边界、支线触碰、off-screen 压力、复用资产和可写场景触发点。
 - 确认 `information_release.new_core_variables` 都有 `enters_via`。
 - 给 writer 足够可写的材料：`voice_examples`、`foreshadowing_weight`、`relationship_temperature`、`body_scene_texture`、`dialogue_mode`、`scene_moments`、`ending_gesture`。
 - 必要时对本批次 `rolling_plan.yml` 条目提出局部细化建议，但不能改变 active flow 方向。
@@ -91,6 +92,12 @@ color: secondary
 - `time_span`
 - `ending_type`
 - `pressure_curve.position_in_flow`
+- `architecture_role.pacing_mode`
+- `architecture_role.world_expansion`
+- `architecture_role.protagonist_growth_budget`
+- `architecture_role.information_reveal`
+- `architecture_role.side_thread_touch`
+- `architecture_role.writable_scene_seed`
 - `must_happen`
 - `must_not_complete`
 - `information_release.enters_via`

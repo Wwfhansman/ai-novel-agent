@@ -91,10 +91,14 @@ Use `templates/project/` as the required output structure.
    - `idea_pool.yml` 与正史分离。
 
 8. **初始化规划**
+   - 写 `planning/story_architecture.yml`：当前卷的编剧控制台，操作化 `longform_blueprint.yml` 的规模、节奏、成长和信息释放边界。
+   - 写 `planning/thread_board.yml`：前 9-15 章会播种或浮现的支线、off-screen 行动和结构性冲突网络。
+   - 创建 `planning/development_packs/` 和 `planning/completed_threads_log.yml`。
    - 写 `planning/active_flow.yml`：第一条连续剧情流、当前压力、灵活范围、结束条件、轮次边界不关闭 flow 的规则。
    - 写 `planning/rolling_plan.yml`：9-15 章详细章纲窗口。
    - 不要规划超过 15 章的详细章纲；远期点子、macro stage 转折点和暂不进入窗口的灵感放入 `planning/future_backlog.yml`。
-   - 每章应包含 300-800 字剧情简介，以及 `flow_id`、`flow_position`、`cross_chapter_event`、`starts_mid_action`、`ends_mid_action`、`chapter_function`、`pressure_curve.position_in_flow`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和约束。
+   - 每章应包含 300-800 字剧情简介，以及 `flow_id`、`flow_position`、`cross_chapter_event`、`starts_mid_action`、`ends_mid_action`、`chapter_function`、`pressure_curve.position_in_flow`、`architecture_role`、`reader_question_flow`、`core_advance`、`information_release`、`chapter_turn`、`side_yield`、`叙事织入`、`density_control`、`planned_handoff` 和约束。
+   - `architecture_role` 必须说明本章的节奏模式、世界扩张、主角成长预算、信息释放边界、支线触碰、off-screen 压力、复用资产、不可解决事项和可写场景触发点。
    - `core_advance` 应命名一个主要外部推进和本章不完成的事项。`叙事织入` 应提供人物日常反应、场景即时质感、关系温度波动，防止正文变成任务清单式的执行报告。
    - `information_release` 通常每章限制在 1-2 个读者需要记住的核心新变量。
    - `rolling_plan.yml` 中出现的组织、地点、人物、职位、制度事件和关键物品，必须能在 `entities/` 或 `ledgers/` 中找到对应定义；不得出现“待命名”“由 writer 自行命名”“某宗门”“某长老”“某师兄”“某管事”等占位表达。

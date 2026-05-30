@@ -96,6 +96,7 @@ projects/my-novel/
 - 初始实体库
 - 初始动态账本
 - 第一条 active_flow 连续剧情流
+- 当前卷 story architecture 和 thread board
 - 近期 9-15 章详细章纲
 
 ### 4.2 Context Compiler
@@ -104,13 +105,14 @@ Context Compiler 是 MVP 的核心模块。
 
 MVP 阶段不一定实现为代码，但必须实现为标准化 artifact。每轮写作前，agent 必须产出 round context pack；每章写作前必须产出 `writing_packet.md`，记录读取清单、读取原因、关键理解、旧章节回看、风险、写后更新清单，并内置正文 `Writing Card`。draft 到 final 之间必须产出 `reader_pass.md`。
 
-Context Compiler 的目标是生成工作记忆，不是复制整个项目数据库。`planning/rolling_plan.yml` 每轮必须全文读取，但 round context pack / chapter writing packet 只摘录本批次、本章相邻内容和影响当前写作的后续约束。人物、物品、债务、伏笔和世界状态按本章涉及对象定向读取。
+Context Compiler 的目标是生成工作记忆，不是复制整个项目数据库。`planning/rolling_plan.yml` 每轮必须全文读取，但 architect context pack / round context pack / chapter writing packet 只摘录对应任务需要的操作结论。人物、物品、债务、伏笔和世界状态按本章或本次开发涉及对象定向读取。
 
 职责：
 
 - 选择本批次要读的文件。
 - 选择本章要读的文件。
 - 全文读取未来 `rolling_plan.yml`，但摘要输出。
+- 当运行 `novel-architect` 时，编译 `planning/context_packs/architect_context_pack_XXX.md`。
 - 决定是否回看旧章节原文。
 - 控制 context pack / writing packet 体量。
 - 输出写作前理解报告。
@@ -120,6 +122,7 @@ Context Compiler 的目标是生成工作记忆，不是复制整个项目数据
 
 ```text
 planning/context_packs/round_001_context_pack.md
+planning/context_packs/architect_context_pack_001.md
 chapters/ch001/writing_packet.md
 chapters/ch001/reader_pass.md
 ```
@@ -135,6 +138,7 @@ chapters/ch001/reader_pass.md
 ```text
 刷新 active_flow 连续剧情流
 → 刷新 rolling_plan 详细章纲
+→ 如 rolling_plan 耗尽或故事变窄，先运行 novel-architect 开发未来窗口
 → 读取上下文
 → 承接上一章 actual_handoff
 → 生成本章理解

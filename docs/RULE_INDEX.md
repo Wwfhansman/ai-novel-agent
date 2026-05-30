@@ -12,6 +12,11 @@
 | active_flow / rolling_plan 权威关系 | `docs/CANON_AND_SAFETY.md` | Planning authority |
 | handoff 字段语义 | `docs/CANON_AND_SAFETY.md` | actual_handoff / planned_handoff / current_handoff |
 | Background Completion Gate | `skills/novel-write/SKILL.md` | Background Completion Gate |
+| 编剧层 / Story Architect | `docs/STORY_ARCHITECTURE.md` | 三层边界 / 核心能力 |
+| 编剧层文件边界 | `docs/STORY_ARCHITECTURE.md` | 与现有文件的所有权边界 |
+| 支线生命周期 | `docs/STORY_ARCHITECTURE.md` | thread_board 维护责任 |
+| 编剧层上下文包 | `docs/STORY_ARCHITECTURE.md` | 上下文包机制 |
+| architect context pack 脚本 | `scripts/README.md` | compile_architect_context |
 | 背景落库审查 | `skills/novel-review/SKILL.md` | 执行层设定充足度 |
 | 开书执行层设定包 | `skills/novel-bootstrap/SKILL.md` | 建立第一卷执行层设定包 |
 | Context Pack 结构 | `docs/CONTEXT_PACK.md` | Round Context Pack |

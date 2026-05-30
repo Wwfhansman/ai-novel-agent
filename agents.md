@@ -14,15 +14,19 @@ python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch00
 
 # 跳过规划检查（仅检查 TXT 格式和章节文件完整性）
 python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch001 --skip-planning
+
+# 编译编剧层上下文包；旧项目可用 --init-missing 补齐编剧层文件
+python3 scripts/compile_architect_context.py projects/<project-name> --init-missing
 ```
 
 ## 核心架构
 
-### 四个 Skill
+### 五个 Skill
 
 | Skill | 用途 | 触发条件 |
 |-------|------|---------|
 | `novel-bootstrap` | 从 seed 初始化新书 | 项目为空 / 用户明确开新书 / 要求重启作品 DNA |
+| `novel-architect` | 编剧层：世界运营、卷节奏、支线、未来 10-30 章剧情开发 | rolling_plan 接近耗尽 / 世界缩小 / 支线断供 / 主角成长过快 / 用户要求开发后续剧情 |
 | `novel-write` | 日常写作，默认每轮 3 章 | 继续写作、写下一章 |
 | `novel-review` | 冷启动审查、质量检查、连续性验证 | 每轮结束后 / 用户要求检查质量 / 长篇出现跑偏迹象 |
 | `novel-change` | 中途新点子、设定调整、变更管理 | 用户想加反转/改设定/调人物关系/改大纲 |
@@ -69,11 +73,15 @@ projects/<novel-name>/
     idea_pool.yml                 # 灵感池（未进入正史的可能性）
     decision_log.yml              # 重大决策记录
   planning/                       # 规划层
+    story_architecture.yml        # 编剧层控制台：当前卷节奏、成长、信息释放、世界扩张
+    thread_board.yml              # 活跃支线、off-screen 行动、冲突网络
     active_flow.yml               # 当前跨轮连续剧情流 ★唯一连续性权威
     rolling_plan.yml              # 未来 6-15 章详细章纲 ★唯一近期规划权威
     current_round.yml             # 本批次生产追踪（轻量，不复制章纲）
     completed_plan_log.yml        # 已完成章纲归档
+    completed_threads_log.yml     # 已完成支线归档
     future_backlog.yml            # 远期点子
+    development_packs/            # novel-architect 开发包（建议快照，不是正史）
     context_packs/                # 轮次上下文编译
   style/                          # 风格层
     rewrite_rules.md              # 改写规则
@@ -98,6 +106,8 @@ projects/<novel-name>/
 | 谁知道什么 | `ledgers/knowledge_state.yml` | 信息差 |
 | 读者期待债 | `ledgers/narrative_debts.yml` | 全局债务 |
 | 当前连续剧情流 | `planning/active_flow.yml` | 跨轮连续性的权威 |
+| 当前卷编剧控制 | `planning/story_architecture.yml` | 当前卷节奏、成长、信息释放计划；不覆盖 longform_blueprint |
+| 活跃支线调度 | `planning/thread_board.yml` | 支线生命周期和 off-screen 行动计划 |
 | 近期未来计划 | `planning/rolling_plan.yml` | 6-15 章详细章纲 |
 | 本批次执行计划 | `planning/current_round.yml` | 只是生产摘录 |
 | 长篇规模递进 | `book/longform_blueprint.yml` | ★受保护 |
@@ -112,10 +122,11 @@ projects/<novel-name>/
 ### 日常写作（一轮 3 章）
 ```
 1. 读取 book/longform_blueprint.yml + planning/active_flow.yml + planning/rolling_plan.yml
-2. 刷新 active_flow + rolling_plan
-3. 生成 round context pack（3000-5000 字）
-4. 生成 current_round.yml（仅记录本批次章节列表）
-5. 逐章：
+2. 如果 rolling_plan 接近耗尽、世界缩小、支线断供或成长过快，先运行 novel-architect 生成 development_pack 并刷新后续窗口
+3. 刷新 active_flow + rolling_plan
+4. 生成 round context pack（3000-5000 字）
+5. 生成 current_round.yml（仅记录本批次章节列表）
+6. 逐章：
    a. 写 brief.md + context_pack.md（1000-2500 字）
    b. 写 draft.txt → 审稿 → final.txt
    c. 写 review.md

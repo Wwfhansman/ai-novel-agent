@@ -28,6 +28,14 @@ python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --ski
 python scripts/validate_novel_output.py projects/my-novel --chapters ch013 --check-protected-files
 ```
 
+编译编剧层上下文包：
+
+```powershell
+python scripts/compile_architect_context.py projects/my-novel --init-missing
+```
+
+该脚本会在缺失时补齐 `story_architecture.yml`、`thread_board.yml`、`completed_threads_log.yml` 和 `development_packs/`，并生成 `planning/context_packs/architect_context_pack_XXX.md`，供 `novel-architect` 开发未来 10-30 章使用。
+
 模板/validator smoke test：
 
 ```powershell
@@ -73,6 +81,8 @@ python scripts/check_not_but.py projects/my-novel/chapters/ch011/final.txt
 - planning/merge_previews 是否仍有 high-confidence pending 操作。
 - review 是否包含 Reader Reward Check、TXT Format Check 和 Memory Update Check。
 - rolling_plan 是否仍堆积 completed 章节，是否与 completed_plan_log 重叠，是否缺少 completed_plan_log / future_backlog。
+- 编剧层文件 `story_architecture.yml`、`thread_board.yml`、`completed_threads_log.yml` 和 `development_packs/` 是否存在。
+- `rolling_plan.yml` 是否缺少 `architecture_role`，是否只剩过薄未来窗口，是否连续同一 `pacing_mode`，是否缺少世界扩张/支线触碰/成长预算。
 - `active_flow.yml` 的 `last_cut.chapter` 是否落后于正在验证的章节批次。
 - `rolling_plan.yml` 是否超过 20000 字节，过大时提示压缩远期条目到 `future_backlog.yml`。
 - `--check-protected-files` 是否能看到受保护文件的变更日志入口。

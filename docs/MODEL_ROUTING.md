@@ -39,6 +39,8 @@ fast_model: 快速、便宜、适合机械任务的模型
 - `book/constitution.md`、核心读者承诺、主角核心欲望的创建或修改。
 - `planning/active_flow.yml` 的创建、重构和关键转折判断。
 - `planning/rolling_plan.yml` 的创建、扩写和重大调整。
+- `planning/story_architecture.yml` 和 `planning/thread_board.yml` 的创建、重构和战略判断。
+- `planning/development_packs/` 中未来 10-30 章世界运营、支线、信息释放和成长预算设计。
 - 每章正文 `draft.txt` 的初稿。
 - 每章正文 `final.txt` 的文学性修订。
 - 章节结尾重写，尤其是解决割裂、复盘式结尾、短句氛围结尾。
@@ -82,6 +84,7 @@ fast_model: 快速、便宜、适合机械任务的模型
 
 ```text
 premium_model:
+  当 rolling_plan 接近耗尽或世界变窄时，运行 novel-architect / story development
   读取 rolling_plan 全文
   刷新 active_flow
   刷新/扩写 rolling_plan

@@ -39,6 +39,24 @@ chapters:
     deferred:
     - 谁在清理痕迹。
     - 那个时期发生了什么。
+  architecture_role:
+    pacing_mode: pressure
+    world_expansion: 巡灯署基层回收流程和档案室规则第一次正面进入。
+    protagonist_growth_budget: 不获得能力成长，只获得登记簿篡改这一信息收益。
+    information_reveal: 只确认回收令有定向清理意味，不揭示巡灯署真实目的。
+    side_thread_touch:
+    - old_wick_voice
+    - father_old_case
+    offscreen_pressure:
+    - 巡灯署正在清理特定时期维修记录。
+    recurring_assets:
+    - 登记簿
+    - 巡灯署回收令
+    - 父亲旧工具箱
+    must_not_resolve:
+    - 谁改了登记簿
+    - 巡灯署真实目的
+    writable_scene_seed: 林栖在档案室被客气地要求交出记录，老文书按流程盖印，真正的压迫来自程序正确。
   background_dependencies:
     characters:
     - 林栖
@@ -117,6 +135,24 @@ chapters:
     deferred:
     - 西角塔发生了什么。
     - 父亲是否还活着。
+  architecture_role:
+    pacing_mode: mystery
+    world_expansion: 父亲旧案从私人记忆变成街区机构可追查的公共风险。
+    protagonist_growth_budget: 不突破、不掌握规则，只获得物证关联并承担暴露风险。
+    information_reveal: 只释放修灯刀与旧灯芯碎片的物证关联，不确认父亲生死。
+    side_thread_touch:
+    - father_old_case
+    - west_corner_tower
+    offscreen_pressure:
+    - 巡灯署开始试探西角旧塔。
+    recurring_assets:
+    - 父亲修灯刀
+    - 西角旧塔
+    - 旧工具箱
+    must_not_resolve:
+    - 西角塔事件全貌
+    - 父亲是否还活着
+    writable_scene_seed: 林栖对照刀痕和碎片划痕时，巡灯署的人像闲聊一样问起父亲最后修过的塔。
   background_dependencies:
     characters:
     - 林栖
@@ -162,4 +198,179 @@ chapters:
   scale_pacing_constraints:
   - 父亲线只能变成个人层面的压力，不要变成全面揭示。
   - 当前规模仍限于旧灯区。
+- chapter: ch004
+  title: 西角旧塔
+  status: planned
+  macro_stage: part_001
+  scale_level: 街区
+  flow_id: arc_001_old_wick
+  flow_position: pressure_rising
+  cross_chapter_event: 父亲旧案压力延伸到西角旧塔，但不揭示旧案真相。
+  starts_mid_action: true
+  ends_mid_action: true
+  chapter_function: investigation
+  pressure_curve:
+    position_in_flow: rising_middle
+    chapter_internal_motion: 旧塔地点进入 → 巡灯署痕迹出现 → 林栖被迫撤离
+  reader_question_flow: {}
+  synopsis: 林栖绕到西角旧塔外，只看见被新封条压住的旧维修痕迹。她不能进去，只能从塔脚的旧编号和巡灯署新脚印判断，有人比她早一步来过。
+  core_advance:
+    one_sentence: 西角旧塔从传闻变成当前可见压力点。
+    must_happen: []
+    must_not_complete: []
+  information_release:
+    new_core_variables:
+    - 西角旧塔已被巡灯署重新封控。
+    deferred: []
+  architecture_role:
+    pacing_mode: expansion
+    world_expansion: 西角旧塔作为旧灯区边缘功能地点进入。
+    protagonist_growth_budget: 不成长，只获得地点线索。
+    information_reveal: 只显示封控状态，不解释旧塔事件。
+    side_thread_touch:
+    - west_corner_tower
+    offscreen_pressure:
+    - 巡灯署已提前封控旧塔。
+    recurring_assets:
+    - 西角旧塔
+    must_not_resolve:
+    - 旧塔事件全貌
+    writable_scene_seed: 林栖摸到新封条边缘的湿浆，知道有人刚刚来过。
+  chapter_turn: 林栖确认西角旧塔被重新封控。
+  side_yield: []
+  叙事织入: {}
+  density_control: {}
+  planned_handoff: 新封条上留着未干的印泥。
+- chapter: ch005
+  title: 印泥
+  status: planned
+  macro_stage: part_001
+  scale_level: 街区
+  flow_id: arc_001_old_wick
+  flow_position: turn
+  cross_chapter_event: 旧塔封条接回登记簿篡改线。
+  starts_mid_action: true
+  ends_mid_action: true
+  chapter_function: reveal
+  pressure_curve:
+    position_in_flow: peak
+    chapter_internal_motion: 印泥对比 → 人物误判 → 新嫌疑浮现
+  reader_question_flow: {}
+  synopsis: 林栖把封条印泥和档案室印泥对上，发现不是同一枚官印。问题从巡灯署整体转向一个更具体的执行者。
+  core_advance:
+    one_sentence: 林栖发现封条印泥与档案室印泥不一致。
+    must_happen: []
+    must_not_complete: []
+  information_release:
+    new_core_variables:
+    - 封控西角旧塔的人未必是正常档案流程中的同一批人。
+    deferred: []
+  architecture_role:
+    pacing_mode: mystery
+    world_expansion: 巡灯署内部流程出现分叉。
+    protagonist_growth_budget: 信息收益，不获得权力或能力。
+    information_reveal: 只露出执行链异常，不指出具体人。
+    side_thread_touch:
+    - 巡灯署内部执行链
+    offscreen_pressure:
+    - 有人绕开正常档案印章。
+    recurring_assets:
+    - 官印
+    - 印泥
+    must_not_resolve:
+    - 谁绕开流程
+    writable_scene_seed: 林栖在灯下比较两种印泥，旧印泥发涩，新印泥有未散的松香味。
+  chapter_turn: 巡灯署压力从整体机构变成内部执行链疑点。
+  side_yield: []
+  叙事织入: {}
+  density_control: {}
+  planned_handoff: 沈砚认出新印泥只在内库使用。
+- chapter: ch006
+  title: 内库
+  status: planned
+  macro_stage: part_001
+  scale_level: 街区
+  flow_id: arc_001_old_wick
+  flow_position: fallout
+  cross_chapter_event: 印泥线把压力引向巡灯署内库。
+  starts_mid_action: true
+  ends_mid_action: true
+  chapter_function: social_conflict
+  pressure_curve:
+    position_in_flow: aftermath_trough
+    chapter_internal_motion: 人情求助 → 拒绝 → 条件交换
+  reader_question_flow: {}
+  synopsis: 林栖试图从沈砚那里问内库规矩，沈砚不敢明说，只用一件小差事交换一句提醒：内库的人不走普通回收账。
+  core_advance:
+    one_sentence: 沈砚透露内库与普通回收账不同。
+    must_happen: []
+    must_not_complete: []
+  information_release:
+    new_core_variables:
+    - 巡灯署内库拥有独立流程。
+    deferred: []
+  architecture_role:
+    pacing_mode: relationship
+    world_expansion: 巡灯署内库作为更深一层制度进入视野。
+    protagonist_growth_budget: 关系收益，不获得实力成长。
+    information_reveal: 只露出内库独立流程，不解释权限结构。
+    side_thread_touch:
+    - 沈砚的立场
+    offscreen_pressure:
+    - 内库线正在压过普通回收线。
+    recurring_assets:
+    - 内库
+    - 沈砚
+    must_not_resolve:
+    - 沈砚到底站哪边
+    writable_scene_seed: 沈砚在茶摊上不说答案，只把杯沿转了半圈，让林栖自己看杯底刻着的内库小印。
+  chapter_turn: 林栖得知内库流程存在。
+  side_yield: []
+  叙事织入: {}
+  density_control: {}
+  planned_handoff: 林栖接下沈砚的小差事，必须进一次旧灯仓。
+- chapter: ch007
+  title: 旧灯仓
+  status: planned
+  macro_stage: part_001
+  scale_level: 街区
+  flow_id: arc_001_old_wick
+  flow_position: pressure_rising
+  cross_chapter_event: 内库线通过旧灯仓变成可接触的行动压力。
+  starts_mid_action: true
+  ends_mid_action: true
+  chapter_function: operation
+  pressure_curve:
+    position_in_flow: rising_middle
+    chapter_internal_motion: 进入旧灯仓 → 发现缺位 → 被脚步声打断
+  reader_question_flow: {}
+  synopsis: 林栖进入旧灯仓寻找内库小印相关的灯具，却发现一排本该报废的旧灯少了一盏。仓外脚步声靠近，她必须在藏起记录还是带走灯牌之间做选择。
+  core_advance:
+    one_sentence: 旧灯仓缺失的一盏灯证明有人仍在调用报废灯具。
+    must_happen: []
+    must_not_complete: []
+  information_release:
+    new_core_variables:
+    - 报废旧灯被人继续调用。
+    deferred: []
+  architecture_role:
+    pacing_mode: pressure
+    world_expansion: 旧灯仓的报废制度和实物账进入。
+    protagonist_growth_budget: 行动代价，不成长。
+    information_reveal: 只露出缺灯事实，不解释谁取走。
+    side_thread_touch:
+    - 旧灯仓缺灯
+    offscreen_pressure:
+    - 有人仍在调用报废灯具。
+    recurring_assets:
+    - 旧灯仓
+    - 报废灯牌
+    must_not_resolve:
+    - 缺失旧灯去向
+    writable_scene_seed: 林栖在灯牌架前发现空位，仓外脚步声已经停在门口。
+  chapter_turn: 报废灯具仍被调用的事实进入当前危机。
+  side_yield: []
+  叙事织入: {}
+  density_control: {}
+  planned_handoff: 仓外脚步声停在门口。
 notes: 示例仅为展示协议。已完成章纲应归档至 planning/completed_plan_log.yml，远期点子归入 planning/future_backlog.yml。

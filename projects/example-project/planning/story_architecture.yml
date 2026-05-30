@@ -1,0 +1,83 @@
+current_volume:
+  id: vol_001
+  intended_end_state: "林栖从普通修灯人变成掌握旧灯芯异常线索的人，但只触及巡灯署压力的街区层表面。"
+  world_layer_to_open:
+    - 外环灯巷的维修秩序
+    - 巡灯署的回收流程
+    - 父亲旧案的物证入口
+  protagonist_end_state:
+    power_ceiling: "只获得异常线索，不掌握系统能力。"
+    identity: "仍是底层修灯人。"
+    resources:
+      - 旧灯芯碎片
+      - 父亲旧工具箱线索
+    relationships:
+      - 与巡灯署从日常协作转为隐瞒
+    knowledge:
+      - 知道回收令不是普通例行事务
+  must_not_resolve_yet:
+    - 声音身份
+    - 巡灯署真实目的
+    - 父亲生死和西角塔真相
+  required_payoffs:
+    - ch003 让父亲工具与旧灯芯碎片产生物证关联
+  required_new_debts:
+    - 巡灯署为何清理特定时期记录
+
+pacing_budget:
+  window: ch001-ch003
+  chapter_type_targets:
+    pressure: "1-2"
+    payoff: "0-1"
+    expansion: "1"
+    relationship: "0-1"
+    recovery: "0"
+    mystery: "2-3"
+  hard_limits:
+    max_consecutive_same_type: 2
+    max_growth_events_per_10ch: 0
+  actual_usage:
+    pressure: 1
+    payoff: 0
+    expansion: 1
+    relationship: 0
+    recovery: 0
+    mystery: 2
+
+information_release_plan:
+  allowed_now:
+    - 旧灯芯存在异常声音
+    - 巡灯署回收不是普通例行公事
+    - 父亲工具与旧灯芯碎片有物证关联
+  surface_only:
+    - 巡灯署真实动机
+    - 西角塔旧案
+  locked_until:
+    - 声音身份
+    - 父亲生死
+  reveal_windows:
+    - "ch002-ch003: 只让读者知道父亲线接入当前危机。"
+
+scale_execution:
+  blueprint_source: "book/longform_blueprint.yml"
+  current_scope: "旧灯区 / 街区"
+  next_scope: "巡灯署基层流程"
+  old_scope_continues_as: "林栖的生活基本盘和风险来源"
+
+growth_budget:
+  recent_growth_events: []
+  next_allowed_growth_type: "信息与物证收益，不允许能力突破。"
+  blocked_growth_types:
+    - 系统能力解释
+    - 直接掌控旧灯芯
+  required_costs_or_delays:
+    - 私藏碎片带来巡灯署追查风险
+
+anti_shrinkage_rules:
+  - "每章至少让巡灯署、灯巷制度、父亲旧案或街区人情中的一个外部变量推进。"
+  - "林栖不能连续获得能力收益；早期收益只能是信息、物证或风险。"
+
+last_architect_run:
+  development_pack: ""
+  architect_context_pack: ""
+  updated_at_chapter: ch001

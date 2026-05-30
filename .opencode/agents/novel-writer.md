@@ -2,7 +2,7 @@
 description: 中文长篇小说正文作者，只根据 writing_packet 写 draft/final，不改工程状态
 mode: subagent
 model: opencode-go/deepseek-v4-pro
-reasoningEffort: high
+reasoningEffort: medium
 temperature: 0.65
 permission:
   read: allow

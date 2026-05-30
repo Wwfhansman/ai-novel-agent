@@ -70,6 +70,22 @@
 - pressure_curve:
   - position_in_flow: opening
   - chapter_internal_motion: 雾夜日常维修 → 灯芯异常 → 巡灯署回收施压 → 私藏动作切断。
+- architecture_role:
+  - pacing_mode: mystery
+  - world_expansion: 外环灯巷的夜间维修秩序和巡灯署现场回收流程进入正文。
+  - protagonist_growth_budget: 不获得能力成长，只获得异常线索并承担私藏风险。
+  - information_reveal: 只释放旧灯芯有陌生声音、巡灯署正在回收旧灯芯，不解释规则和身份。
+  - side_thread_touch:
+    - old_wick_voice
+  - offscreen_pressure:
+    - 巡灯署已在执行旧灯芯回收。
+  - recurring_assets:
+    - 旧灯芯碎片
+    - 巡灯署回收铜盒
+  - must_not_resolve:
+    - 声音身份
+    - 巡灯署真实目的
+  - writable_scene_seed: 林栖在雾夜修灯时听见灯芯灰里的声音，巡灯署随后按流程回收旧灯芯，她只能在铜盒合上前藏下一角碎片。
 - must_happen:
   - 林栖触碰灯芯灰，听见“别把灯交出去”。
   - 巡灯署领头人回收旧灯芯。
@@ -122,6 +138,9 @@
 - time_span_check: 本章只覆盖一个雾夜，不默认写成一天一章。
 - ending_type_check: 结尾停在私藏动作，不写成"她决定下一步"。
 - information_entry_check: 两个核心信息都通过现场动作进入。
+- architecture_role_check: 本章承担 mystery/opening，不解释规则，只让世界压力进场。
+- world_expansion_check: 展示外环灯巷维修秩序和巡灯署回收流程。
+- growth_budget_check: 林栖只获得物证线索，不获得能力突破。
 - weave_insertion_check: 数螺丝、雾和铜灯罩用于降低任务清单感。
 - scene_not_checklist_check: 正文围绕三个可写瞬间展开，不逐条翻译 must_happen。
 

@@ -1,0 +1,60 @@
+current_volume:
+  id: ""
+  intended_end_state: ""
+  world_layer_to_open: []
+  protagonist_end_state:
+    power_ceiling: ""
+    identity: ""
+    resources: []
+    relationships: []
+    knowledge: []
+  must_not_resolve_yet: []
+  required_payoffs: []
+  required_new_debts: []
+
+pacing_budget:
+  window: ""
+  chapter_type_targets:
+    pressure: ""
+    payoff: ""
+    expansion: ""
+    relationship: ""
+    recovery: ""
+    mystery: ""
+  hard_limits:
+    max_consecutive_same_type: 2
+    max_growth_events_per_10ch: 2
+  actual_usage:
+    pressure: 0
+    payoff: 0
+    expansion: 0
+    relationship: 0
+    recovery: 0
+    mystery: 0
+
+information_release_plan:
+  allowed_now: []
+  surface_only: []
+  locked_until: []
+  reveal_windows: []
+
+scale_execution:
+  blueprint_source: "book/longform_blueprint.yml"
+  current_scope: ""
+  next_scope: ""
+  old_scope_continues_as: ""
+
+growth_budget:
+  recent_growth_events: []
+  next_allowed_growth_type: ""
+  blocked_growth_types: []
+  required_costs_or_delays: []
+
+anti_shrinkage_rules:
+  - "连续两章只围绕主角眼前任务后，下一章必须引入外部世界变量、支线浮现或配角独立行动。"
+  - "连续两次主角获得实力收益后，下一次收益应转为信息、关系、资源、代价或误判。"
+
+last_architect_run:
+  development_pack: ""
+  architect_context_pack: ""
+  updated_at_chapter: ""

@@ -15,8 +15,12 @@ Core rules:
 - Current state lives in `entities/`, `ledgers/`, and `planning/`.
 - Whole-book scale lives in `book/longform_blueprint.yml`; it is protected.
 - Current continuous story motion lives in `planning/active_flow.yml`.
+- Current volume/stage story architecture lives in `planning/story_architecture.yml`.
+- Active side threads, off-screen actions, and conflict network live in `planning/thread_board.yml`.
 - Near-future detailed synopsis lives in `planning/rolling_plan.yml`.
+- Story development packs live in `planning/development_packs/` and are recommendation snapshots, not canon by themselves.
 - Completed chapter plans move to `planning/completed_plan_log.yml`.
+- Completed thread lifecycles move to `planning/completed_threads_log.yml`.
 - Distant future ideas live in `planning/future_backlog.yml`.
 - `planning/current_round.yml` is only a production-batch tracker, not a story unit or second chapter plan.
 - `canon_delta.yml` is a chapter change log, not the current-state table.

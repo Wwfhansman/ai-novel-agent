@@ -2,10 +2,11 @@
 
 ## 1. Skill 划分
 
-MVP 使用 4 个核心 skill：
+当前使用 5 个核心 skill：
 
 ```text
 novel-bootstrap
+novel-architect
 novel-write
 novel-review
 novel-change
@@ -89,6 +90,8 @@ novel-change
 按本批次涉及对象定向读取动态账本
 读取并刷新 active_flow 连续剧情流
 全文读取并刷新 rolling_plan 详细章纲
+如果 rolling_plan 接近耗尽、未来窗口变薄、世界缩小、支线断供或主角成长过密，先编译 architect_context_pack 并调用 novel-architect 生成 development_pack
+director 审核 development_pack，并把接受内容写入 story_architecture / thread_board / entities / ledgers / future_backlog / rolling_plan
 审查本批次和未来 3-6 章背景依赖：人物、势力、地点、物品、职位、制度规则、历史来历、资源来源、传闻和力量体系是否已落入 entities/ledgers
 如发现缺口，先生成 Background Completion Pack 并补入 entities/ledgers；涉及受保护事实则进入 novel-change
 根据本批次相关压力和债务回看关键旧章节
@@ -139,6 +142,7 @@ novel-change
 ```text
 一轮准备：
   刷新 active_flow + rolling_plan
+  → 如 rolling_plan 只剩 0-3 章或未来窗口缺少世界扩张/支线/成长预算，先运行 novel-architect
   → 生成 round context pack
   → 确认 style/samples.md 是否有真实内容，并把样本文风锚点写入 round context pack
   → 预生成本批次 3 章 writing_packet（必须保留模板固定标题）

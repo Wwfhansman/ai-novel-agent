@@ -1,0 +1,39 @@
+offscreen_actions:
+  - actor: 巡灯署
+    goal: "回收并清理特定时期的旧灯芯维修痕迹。"
+    current_move: "以例行回收名义进入外环灯巷。"
+    resources:
+      - 回收令
+      - 登记簿权限
+    constraint: "不能公开承认回收针对父亲旧案。"
+    expected_surface_chapter: ch002
+    if_protagonist_does_nothing: "登记簿被带走，父亲线索从公共记录中消失。"
+
+conflict_network:
+  - parties:
+      - 林栖
+      - 巡灯署
+    conflict_type: secret
+    structural_cause: "巡灯署掌握回收流程，林栖掌握一枚未交出的碎片。"
+    current_balance: "巡灯署有制度优势，林栖有物证但不能公开。"
+    protagonist_effect: "私藏碎片使回收流程无法完全闭合。"
+
+threads:
+  - id: old_wick_voice
+    status: rising
+    seeded_in: ch001
+    last_touched: ch001
+    silence_count: 0
+    next_surface: ch002-ch003
+    intersection_plan: "通过登记簿篡改和父亲工具箱接入父亲旧案。"
+    payoff_window: ch003
+
+maintenance:
+  active_statuses:
+    - seeded
+    - dormant
+    - rising
+    - intersecting
+    - payoff
+  archive_status: aftermath
+  completed_threads_log: "planning/completed_threads_log.yml"
