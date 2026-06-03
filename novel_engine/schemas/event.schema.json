@@ -13,6 +13,13 @@
         "character_changed",
         "relationship_changed",
         "knowledge_changed",
+        "faction_introduced",
+        "faction_changed",
+        "location_introduced",
+        "location_changed",
+        "item_introduced",
+        "power_introduced",
+        "power_changed",
         "world_state_changed",
         "item_moved",
         "debt_opened",
@@ -73,6 +80,72 @@
         "level": {"type": "string", "enum": ["unknown", "hinted", "suspects", "partial", "knows", "knows_truth"]}
       },
       "required": ["kind", "topic", "holder", "level"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "faction_introduced"},
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "scale": {"type": "string"},
+        "goal": {"type": "string"},
+        "attitude_to_protagonist": {"type": "string"}
+      },
+      "required": ["kind", "id", "name"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "faction_changed"},
+        "id": {"type": "string"},
+        "change": {"type": "string"},
+        "set": {"type": "object"}
+      },
+      "required": ["kind", "id", "change"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "location_introduced"},
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "scale": {"type": "string"},
+        "controlled_by": {"type": "string"}
+      },
+      "required": ["kind", "id", "name"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "location_changed"},
+        "id": {"type": "string"},
+        "change": {"type": "string"},
+        "set": {"type": "object"}
+      },
+      "required": ["kind", "id", "change"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "item_introduced"},
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "holder": {"type": "string"}
+      },
+      "required": ["kind", "id", "name"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "power_introduced"},
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "stage_meaning": {"type": "string"}
+      },
+      "required": ["kind", "id", "name"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "power_changed"},
+        "id": {"type": "string"},
+        "change": {"type": "string"},
+        "set": {"type": "object"}
+      },
+      "required": ["kind", "id", "change"]
     },
     {
       "properties": {"kind": {"const": "world_state_changed"}, "text": {"type": "string"}},

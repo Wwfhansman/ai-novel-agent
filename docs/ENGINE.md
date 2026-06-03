@@ -38,8 +38,11 @@ projects/<novel>/
 | `character_changed` | id, change | 追加 change_history，可选 `set:` 覆盖字段 |
 | `relationship_changed` | a, b, to | 双向设置关系状态 |
 | `knowledge_changed` | topic, holder, level | 设置信息可见性 `visibility[holder]=level` |
-| `world_state_changed` | text | 追加世界状态变化 |
-| `item_moved` | item, to | 更新道具持有者 |
+| `faction_introduced` / `faction_changed` | id, name / id, change | 势力实体 → `entities/factions.yml` |
+| `location_introduced` / `location_changed` | id, name / id, change | 地点实体 → `entities/locations.yml` |
+| `power_introduced` / `power_changed` | id, name / id, change | 力量体系 → `entities/power_system.yml` |
+| `item_introduced` / `item_moved` | id, name / item, to | 道具实体/持有者 → `entities/items.yml` |
+| `world_state_changed` | text | 追加世界状态变化 → `ledgers/world_state.yml` |
 | `debt_opened` / `debt_advanced` / `debt_paid` | id | 债务生命周期 |
 | `foreshadow_planted` / `_advanced` / `_paid` | id | 伏笔生命周期 |
 | `note` | text | 自由文本，附到 scope 或全局，不入机器状态 |

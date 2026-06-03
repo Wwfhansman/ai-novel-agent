@@ -76,24 +76,22 @@ commit（门禁通过 → 物化派生 entities/ledgers）
 
 模型路由按角色分（见 [模型路由](docs/MODEL_ROUTING.md)）：正文、剧情方向、canon 决策用强模型；机械诊断可用轻量模型。
 
-## 事实来源
+## 事实来源（引擎模型）
 
 冲突时按这个顺序判断：
 
 ```text
-chapters/chXXX/final.txt          正文事实最高权威
-chapters/chXXX/summary.yml        本章发生了什么
-chapters/chXXX/canon_delta.yml    本章造成了什么变化
-entities/*.yml                    人物、势力、地点、物品当前状态
-ledgers/*.yml                     伏笔、叙事债、信息差、世界状态
-planning/active_flow.yml          当前连续剧情流
-planning/rolling_plan.yml         未来近期章纲
+chapters/chXXX/final.txt          正文事实最高权威（原文细节）
+events/chXXX.yml                  本章造成的 canon 变化（append-only 正史）
+entities/*.yml + ledgers/*.yml    当前状态——★由 events 派生（commit 物化），不手写
+planning/rolling_plan.yml         未来近期章纲（编剧层维护）
 agent 对话                         临时工作台，不是正史
 ```
 
-`canon_delta.yml` 是变化日志，不是当前状态总表。
-`active_flow.yml` 是跨章连续性的权威。
-`rolling_plan.yml` 只保留未来窗口，完成章节进入 `completed_plan_log.yml`。
+- **`events/` 是变化的权威**；当前状态是它的投影，不存在独立的"当前状态权威"需要手工同步。
+- `entities/`、`ledgers/` 是**派生产物**：`commit` 从 events 算出来写盘，手工改会被覆盖。
+- 进入每章的状态由 `kit` / `context` 从 events 现算，不靠对话记忆。
+- 旧项目里的 `summary.yml` / `canon_delta.yml` 仍可作为人类可读记录，但**引擎以 `events/` 为准**。
 
 ## 怎么用（在 agent 工作台里，对它说话就行）
 
@@ -134,61 +132,27 @@ python3 scripts/compile_architect_context.py projects/my-novel --init-missing
 
 ## 写作规则摘要
 
-- 每轮默认 3 章，但轮次只是生产批次，不是叙事单位。
 - 当近期规划变薄、世界缩小、支线断供或主角成长过密时，先运行 `novel-architect`，不要让 writer 临时发明关键背景。
-- 每章写前必须有 `writing_packet.md`。
-- `writing_packet.md` 必须包含 `Chapter Design` 和 `Writing Execution`。
-- `Writing Execution` 要提供可写材料：人物语感、伏笔分量、关系温度、身体/场景质感、对话模式、scene moments、ending gesture。
-- 正文先写 `draft.txt`，冷读和修订后再进入 `final.txt`。
-- `final.txt` 是正史正文，不能用草稿或 review 替代。
-- 章末不能靠主角复盘、总结、决定下一步收尾；要留下具体动作、后果、物件、关系变化或信息差。
-- 写完后必须更新 `summary.yml`、`canon_delta.yml` 和当前状态文件。
-- post-merge QA 必须在状态文件合并之后运行。
+- 每章用 `kit` 取 entering-state + 逐场规格再写，不靠对话记忆。
+- 正文场景级写：先写够感官/情绪/织入，`one_change` 只是小料；章末留外部动作交接，不靠主角复盘收尾。
+- `final.txt` 是正史正文。本章 canon 变化记进 `events/chNNN.yml`（机械变化用类型化事件，叙事性用 note）。
+- 写完跑 `check`（schema+完整性+健康+结构+记漏）→ 通过后 `commit` 物化派生状态。
+- 不手写 `entities/`、`ledgers/`——它们由 `commit` 从 events 派生。
 
-## 项目文件说明
-
-章节目录：
+## 项目文件说明（引擎模型）
 
 ```text
+events/                  ★正史：append-only 事件日志
+  bootstrap.yml          初始人物/势力/地点/物品/债务/伏笔/信息差
+  chXXX.yml              本章造成的 canon 变化
 chapters/chXXX/
-  writing_packet.md        写作输入包
-  draft.txt                草稿
-  final.txt                正史正文
-  reader_pass.md           冷读反馈
-  review.md                审查记录
-  summary.yml              本章发生了什么
-  canon_delta.yml          本章造成了什么变化
-  memory_update_plan.md    记忆更新草案
-```
-
-规划目录：
-
-```text
-planning/
-  story_architecture.yml           编剧层控制台：当前卷节奏、成长、信息释放、世界扩张
-  thread_board.yml                 支线调度与冲突网络
-  active_flow.yml                  当前连续剧情流
-  rolling_plan.yml                 未来近期章纲
-  current_round.yml                当前生产批次追踪
-  completed_plan_log.yml           已完成章纲归档
-  completed_threads_log.yml        已收束支线归档
-  development_packs/               编剧层开发包（建议快照，不是正史）
-  context_packs/                   轮次上下文
-  merge_previews/                  状态合并预览
-```
-
-长期记忆：
-
-```text
-entities/characters.yml            人物当前状态
-entities/factions.yml              势力当前状态
-entities/locations.yml             地点状态
-entities/items.yml                 道具状态
-ledgers/narrative_debts.yml        读者期待债
-ledgers/foreshadowing.yml          伏笔
-ledgers/knowledge_state.yml        谁知道什么
-ledgers/world_state.yml            外部世界状态
-ledgers/decision_log.yml           重大决策
+  final.txt              正史正文
+  _kit/                  kit 生成的逐场写作套件（prompt/缝合/events 模板/步骤）
+entities/ + ledgers/     ★派生产物（commit 物化）：characters/factions/locations/items/
+                         power_system + narrative_debts/foreshadowing/knowledge_state/world_state
+planning/                编剧层（手维护）：rolling_plan / story_architecture / thread_board /
+                         development_packs / context_packs / future_backlog
+book/ style/ meta/       全书设定、文风、模型路由（开书时由 novel-bootstrap 建）
 ```
 
 ## 文档入口

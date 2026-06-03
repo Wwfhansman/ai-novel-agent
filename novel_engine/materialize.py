@@ -69,11 +69,36 @@ def materialize(state: State) -> dict[str, dict]:
             entry["last_updated"] = meta["last_updated"]
         knowledge_items.append(entry)
 
+    def _entities(store: dict) -> list[dict]:
+        out = []
+        for eid, entry in store.items():
+            row = {"id": eid}
+            for key, value in entry.items():
+                if key == "id" or value in (None, [], {}):
+                    continue
+                row[key] = value
+            out.append(row)
+        return out
+
+    items = []
+    for iid, item in state.items.items():
+        row = {"id": iid, "name": item.get("name", iid)}
+        if item.get("holder"):
+            row["holder"] = item["holder"]
+        if item.get("last_moved"):
+            row["last_moved"] = item["last_moved"]
+        items.append(row)
+
     return {
         "entities/characters.yml": {"characters": characters},
+        "entities/factions.yml": {"factions": _entities(state.factions)},
+        "entities/locations.yml": {"locations": _entities(state.locations)},
+        "entities/items.yml": {"items": items},
+        "entities/power_system.yml": {"power_system": _entities(state.power)},
         "ledgers/narrative_debts.yml": {"debts": debts},
         "ledgers/foreshadowing.yml": {"foreshadowing": foreshadowing},
         "ledgers/knowledge_state.yml": {"knowledge_items": knowledge_items},
+        "ledgers/world_state.yml": {"changes": state.world_state},
     }
 
 

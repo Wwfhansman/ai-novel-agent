@@ -43,6 +43,31 @@ def build_bootstrap_events(project: Path) -> list[dict]:
             ev.setdefault("name", str(item["id"]))
             events.append(ev)
 
+    # factions / locations / items / power: introduce everything present at bootstrap.
+    for filename, listkey, kind, attrs in (
+        ("factions.yml", "factions", "faction_introduced", ("scale", "goal", "attitude_to_protagonist", "resources", "current_action")),
+        ("locations.yml", "locations", "location_introduced", ("scale", "controlled_by", "texture", "function")),
+        ("items.yml", "items", "item_introduced", ("holder",)),
+        ("power_system.yml", "power_system", "power_introduced", ("stage_meaning", "cost", "test_method")),
+    ):
+        data = load_yaml(project / "entities" / filename)
+        if not isinstance(data, dict):
+            continue
+        entries = data.get(listkey)
+        if not isinstance(entries, list):
+            # power_system.yml may be a dict of named elements; coerce.
+            entries = [{"id": k, **(v if isinstance(v, dict) else {"name": str(v)})} for k, v in data.items()] \
+                if listkey == "power_system" else []
+        for item in _as_list(entries):
+            if not isinstance(item, dict) or not item.get("id"):
+                continue
+            ev = {"kind": kind, "chapter": "bootstrap", "id": str(item["id"])}
+            for key in attrs:
+                if item.get(key) is not None:
+                    ev[key] = item[key]
+            ev["name"] = str(item.get("name") or item["id"])
+            events.append(ev)
+
     debts = load_yaml(project / "ledgers" / "narrative_debts.yml")
     if isinstance(debts, dict):
         for item in _as_list(debts.get("debts")):

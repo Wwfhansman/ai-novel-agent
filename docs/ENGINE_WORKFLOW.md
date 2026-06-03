@@ -66,6 +66,7 @@ python -m novel_engine commit  <project>   # 物化派生状态（此后 entitie
 
 ## 与旧工具的关系
 
-- `scripts/round_state_merge.py`、`scripts/validate_novel_output.py` 对**未迁移**项目仍然有效。
+- 旧校验/合并脚本（`validate_novel_output.py`、`round_state_merge.py`、`check_not_but.py`）**已删除**，由引擎取代：`check`（校验+门禁）、`commit`（合并+物化）、`patterns`/`txt`（文风/格式）。未迁移的旧项目也应先 `migrate` 上引擎再用。
+- `scripts/` 现在只剩 `compile_architect_context.py`（编剧层上下文包）。
 - 项目一旦 `commit` 过（entities/ledgers 变成派生产物），就以引擎门禁为准，不要再手工编辑 entities/ledgers——手工改动会在下次 `commit` 被覆盖。
 - 仍需 LLM 的部分：写正文、世界活体**生成**、冷读裁决。引擎只负责状态、门禁和度量。

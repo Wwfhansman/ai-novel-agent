@@ -30,6 +30,9 @@ from .events import Event
 @dataclass
 class State:
     characters: dict[str, dict] = field(default_factory=dict)
+    factions: dict[str, dict] = field(default_factory=dict)
+    locations: dict[str, dict] = field(default_factory=dict)
+    power: dict[str, dict] = field(default_factory=dict)
     debts: dict[str, dict] = field(default_factory=dict)
     foreshadowing: dict[str, dict] = field(default_factory=dict)
     knowledge: dict[str, dict] = field(default_factory=dict)
@@ -40,6 +43,9 @@ class State:
     def to_dict(self) -> dict[str, Any]:
         return {
             "characters": self.characters,
+            "factions": self.factions,
+            "locations": self.locations,
+            "power": self.power,
             "debts": self.debts,
             "foreshadowing": self.foreshadowing,
             "knowledge": self.knowledge,
@@ -47,6 +53,24 @@ class State:
             "facts": self.facts,
             "world_state": self.world_state,
         }
+
+
+# Generic entity (faction/location/power) introduce/change reducers.
+def _entity_introduce(store: dict, d: dict, chapter: str, attrs: tuple[str, ...]) -> None:
+    entry = store.setdefault(d["id"], {"id": d["id"], "change_history": []})
+    for key in ("name", *attrs):
+        if key in d:
+            entry[key] = d[key]
+    entry.setdefault("introduced_in", chapter)
+    entry["last_updated"] = chapter
+
+
+def _entity_change(store: dict, d: dict, chapter: str) -> None:
+    entry = store.setdefault(d["id"], {"id": d["id"], "change_history": []})
+    entry.setdefault("change_history", []).append({"chapter": chapter, "change": d["change"]})
+    for key, value in (d.get("set") or {}).items():
+        entry[key] = value
+    entry["last_updated"] = chapter
 
 
 def _touch_character(state: State, char_id: str, chapter: str) -> dict:
@@ -99,6 +123,28 @@ def _apply(state: State, event: Event) -> None:
         vis = state.knowledge.setdefault(topic, {})
         vis[d["holder"]] = d["level"]
         vis.setdefault("_meta", {})["last_updated"] = chapter
+
+    elif kind == "faction_introduced":
+        _entity_introduce(state.factions, d, chapter, ("scale", "goal", "attitude_to_protagonist", "resources", "current_action"))
+    elif kind == "faction_changed":
+        _entity_change(state.factions, d, chapter)
+
+    elif kind == "location_introduced":
+        _entity_introduce(state.locations, d, chapter, ("scale", "controlled_by", "texture", "function"))
+    elif kind == "location_changed":
+        _entity_change(state.locations, d, chapter)
+
+    elif kind == "power_introduced":
+        _entity_introduce(state.power, d, chapter, ("stage_meaning", "cost", "test_method"))
+    elif kind == "power_changed":
+        _entity_change(state.power, d, chapter)
+
+    elif kind == "item_introduced":
+        entry = state.items.setdefault(d["id"], {"id": d["id"]})
+        entry["name"] = d.get("name", d["id"])
+        if d.get("holder"):
+            entry["holder"] = d["holder"]
+        entry["introduced_in"] = entry.get("introduced_in", chapter)
 
     elif kind == "item_moved":
         state.items[d["item"]] = {"holder": d["to"], "last_moved": chapter}

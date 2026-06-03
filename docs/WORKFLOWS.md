@@ -1,5 +1,7 @@
 # 工作流设计
 
+> ⚠️ **历史文档（旧 skill 流程）。** 写作的**默认流程是引擎流程**，见 [引擎化写作流程](ENGINE_WORKFLOW.md) 与 [确定性正史内核](ENGINE.md)。本文提到的 `novel-write`、`novel-planner`、`novel-writer` 已删除，`check_not_but.py` / `validate_novel_output.py` / `round_state_merge.py` 已被引擎命令取代。下面内容仅作历史参考，以及编剧层（`novel-architect`）/审查（`novel-review`）的背景说明。开书/写作/记忆请勿照本文的旧多 agent 流程执行。
+
 ## 1. Skill 划分
 
 当前使用 5 个核心 skill：

@@ -32,6 +32,7 @@ def check_integrity(
     characters: set[str] = set(known_characters or set())
     debt_status: dict[str, str] = {debt: "open" for debt in (known_debts or set())}
     foreshadow_status: dict[str, str] = {fid: "planted" for fid in (known_foreshadowing or set())}
+    entities: dict[str, set[str]] = {"faction": set(), "location": set(), "power": set()}
 
     def loc(event: Event) -> str:
         return f"{event.chapter} ({event.source})"
@@ -57,6 +58,14 @@ def check_integrity(
                     errors.append(
                         f"UNKNOWN_CHARACTER: {loc(event)} sets a relationship for {who} before it was introduced."
                     )
+
+        elif kind in ("faction_introduced", "location_introduced", "power_introduced"):
+            entities[kind.split("_")[0]].add(d["id"])
+
+        elif kind in ("faction_changed", "location_changed", "power_changed"):
+            etype = kind.split("_")[0]
+            if d["id"] not in entities[etype]:
+                errors.append(f"UNKNOWN_{etype.upper()}: {loc(event)} changes {etype} {d['id']} before it was introduced.")
 
         elif kind == "knowledge_changed":
             holder = d["holder"]

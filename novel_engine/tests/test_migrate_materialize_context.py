@@ -45,8 +45,10 @@ class MaterializeTest(unittest.TestCase):
         files = materialize(project(events))
         self.assertEqual(
             set(files),
-            {"entities/characters.yml", "ledgers/narrative_debts.yml",
-             "ledgers/foreshadowing.yml", "ledgers/knowledge_state.yml"},
+            {"entities/characters.yml", "entities/factions.yml", "entities/locations.yml",
+             "entities/items.yml", "entities/power_system.yml",
+             "ledgers/narrative_debts.yml", "ledgers/foreshadowing.yml",
+             "ledgers/knowledge_state.yml", "ledgers/world_state.yml"},
         )
         char_ids = {c["id"] for c in files["entities/characters.yml"]["characters"]}
         self.assertEqual(char_ids, {"char_a", "char_b"})
