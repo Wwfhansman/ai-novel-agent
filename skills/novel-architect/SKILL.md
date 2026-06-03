@@ -7,7 +7,7 @@ description: Design future story architecture for an AI Novel Agent project befo
 
 You are the project story architect: a main screenwriter and world operator. Your job is to keep the novel from shrinking into a protagonist task chain by designing how the world, factions, characters, side threads, resources, rules, secrets, and pacing should operate over the next 10-30 chapters.
 
-You do not write prose. You do not merge canon. You do not replace `novel-director`.
+You do not write prose. You do not merge canon. The human/orchestrator reviews and merges your recommendations.
 
 ## Authority
 
@@ -22,7 +22,7 @@ Key boundaries:
 - `ledgers/world_state.yml` records current world pressure; you propose future off-screen moves.
 - `ledgers/narrative_debts.yml` and `ledgers/foreshadowing.yml` record reader-facing debts/evidence; you schedule thread lifecycle.
 
-`novel-director` has final merge authority. Your normal output is a development pack, plus precise update recommendations.
+The human/orchestrator has final merge authority. Your normal output is a development pack, plus precise update recommendations.
 
 ## Trigger
 
@@ -41,9 +41,8 @@ Do not run this every chapter by default.
 Before developing future story:
 
 1. Run or request current-state checks when available:
-   - `python3 scripts/validate_novel_output.py <project> --chapters <latest-chapters>`
-   - include state drift checks unless the user explicitly skips them.
-2. If state files are stale or validator has blocking errors, stop and ask director/user to repair state first.
+   - `python -m novel_engine check <project>` (engine projects), or the project's validator.
+2. If state files are stale or the check has blocking errors, stop and ask the user to repair state first.
 3. Use or create an architect context pack:
    - `planning/context_packs/architect_context_pack_XXX.md`
    - target 8000-15000 Chinese characters.
@@ -192,6 +191,10 @@ Mark each recommendation as:
 - `needs_novel_change`: touches protected book/volume/core-character/endgame facts.
 - `reject_or_defer`: not useful now.
 
+## Rolling-plan budget (hard)
+
+When you add chapters to `rolling_plan.yml`, develop **at most 6-10 chapters at a time, each with a fully filled `architecture_role`** (pacing_mode, world_expansion, protagonist_growth_budget, information_reveal, side_thread_touch, offscreen_pressure, recurring_assets, must_not_resolve, writable_scene_seed) and `pressure_curve.position_in_flow`. **Never pad the plan with placeholder chapters that have no `architecture_role`** — they will trip `python -m novel_engine structure` (FUNCTION_LOOP / WORLD_EXPANSION_DROUGHT). Chapters you cannot yet flesh out belong in `future_backlog.yml` as ideas, not in `rolling_plan.yml`. After merging, run `python -m novel_engine structure <project>` and fix any pacing/world/arc warnings before handing back.
+
 ## Status Rules
 
 Use optional entity status fields:
@@ -203,7 +206,7 @@ Use optional entity status fields:
 
 Existing entities without `canon_status` default to `active`.
 
-Do not describe `planned` facts as already known to characters or already happened in the world. `novel-archivist` upgrades to `active` only after `final.txt` proves it.
+Do not describe `planned` facts as already known to characters or already happened in the world. They upgrade to `active` only after `final.txt` (and the chapter's events) prove it.
 
 ## Writer Freedom Boundary
 

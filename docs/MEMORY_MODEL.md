@@ -360,7 +360,7 @@ future_backlog 只读相关远期点子
 - 本章涉及的动态账本条目
 - 本章任务
 
-每次读取结果必须写入 round context pack 或 chapter writing packet。上下文编译不是隐性过程，但 writing packet 是工作记忆，不是资料库全文副本。见 [上下文编译](CONTEXT_PACK.md)。
+每次读取结果必须写入 round context pack 或 chapter writing packet。上下文编译不是隐性过程，但 writing packet 是工作记忆，不是资料库全文副本。引擎流程下，进入每章的状态由引擎从 events 派生（见 [引擎化写作流程](ENGINE_WORKFLOW.md) 与 [确定性正史内核](ENGINE.md)）。
 
 ## 7. 正史边界
 

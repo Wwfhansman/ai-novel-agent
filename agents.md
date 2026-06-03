@@ -4,19 +4,21 @@
 
 AI Novel Agent 是一套面向长篇小说创作的 agent-native 写作框架。它不是应用、不是 SaaS、不是"一键生成小说"的工具——而是一套基于文件系统的创作操作系统。每本小说是一个独立项目目录，项目文件是正史和长期记忆，agent 对话只是临时工作台。
 
-## 常用命令
+**新版本以 `novel_engine` 为生产主干（默认）。** 正史是事件日志 `events/`，当前状态由事件**派生**（`entities/ledgers` 不手写、构造上不漂），写作走场景级、收尾走 `check`/`commit`。引擎与旧 `scripts/` 以绞杀榕方式并存：未迁移的旧项目仍可用旧 skill 流程。详见 [`docs/ENGINE.md`](docs/ENGINE.md) 与 [`docs/ENGINE_WORKFLOW.md`](docs/ENGINE_WORKFLOW.md)。
+
+## 常用命令（引擎为默认）
 
 ```bash
-# 校验章节输出
-python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch001
-python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch001 --fix-format
-python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch001 --strict
+# 新书：故事 DNA 就绪后种初始事件 → 门禁 → 逐章生产
+python -m novel_engine init   projects/<name>                  # 种 events/bootstrap.yml（初始人物/债务/伏笔/信息差）
+python -m novel_engine check  projects/<name>                  # 统一门禁：schema + 引用/时序 + 健康 + 结构
+python -m novel_engine kit    projects/<name> --chapter chNNN  # 一章生产套件（逐场 prompt + 缝合 + events 模板 + 步骤）
+python -m novel_engine commit projects/<name>                  # 门禁通过 → 物化派生 entities/ledgers
+python -m novel_engine structure projects/<name>               # 追读性/防缩水报告
+python -m novel_engine migrate projects/<name>                 # 旧项目(已写章节)一次性转成 events/
 
-# 跳过规划检查（仅检查 TXT 格式和章节文件完整性）
-python3 scripts/validate_novel_output.py projects/<project-name> --chapters ch001 --skip-planning
-
-# 编译编剧层上下文包；旧项目可用 --init-missing 补齐编剧层文件
-python3 scripts/compile_architect_context.py projects/<project-name> --init-missing
+# 编剧层上下文包（architect 用）
+python3 scripts/compile_architect_context.py projects/<name> --init-missing
 ```
 
 ## 核心架构
@@ -25,11 +27,13 @@ python3 scripts/compile_architect_context.py projects/<project-name> --init-miss
 
 | Skill | 用途 | 触发条件 |
 |-------|------|---------|
-| `novel-bootstrap` | 从 seed 初始化新书 | 项目为空 / 用户明确开新书 / 要求重启作品 DNA |
+| `novel-bootstrap` | 从 seed 初始化新书的故事 DNA（宪法/蓝图/初始实体/第一卷章纲） | 项目为空 / 用户明确开新书 / 要求重启作品 DNA |
+| `novel-engine-write` | **默认写作流程**：场景级正文 + events 正史 + check/commit 门禁 | 日常写作、写下一章 |
 | `novel-architect` | 编剧层：世界运营、卷节奏、支线、未来 10-30 章剧情开发 | rolling_plan 接近耗尽 / 世界缩小 / 支线断供 / 主角成长过快 / 用户要求开发后续剧情 |
-| `novel-write` | 日常写作，默认每轮 3 章 | 继续写作、写下一章 |
 | `novel-review` | 冷启动审查、质量检查、连续性验证 | 每轮结束后 / 用户要求检查质量 / 长篇出现跑偏迹象 |
 | `novel-change` | 中途新点子、设定调整、变更管理 | 用户想加反转/改设定/调人物关系/改大纲 |
+
+写作用 `novel-engine-write`（新书 `novel-bootstrap` 生成故事 DNA 后跑 `init` 再写）。`novel-architect` 编剧层、`novel-change` 变更管理仍是引擎未覆盖的层，按需使用。
 
 ### 小说项目结构
 
@@ -51,21 +55,26 @@ projects/<novel-name>/
     volume_threads.yml
     volume_debts.yml
   arcs/                           # 章群层——3-10 章小事件链
-  chapters/ch001/                 # 章节层——这章发生了什么、改变了什么
-    brief.md                      # 写作前交接说明
-    context_pack.md               # 本章上下文编译（读取了什么、关键结论）★写作前必生成
-    draft.txt                     # 草稿
+  events/                         # ★引擎正史——append-only 事件日志（当前状态由它派生）
+    bootstrap.yml                 # 初始人物/债务/伏笔/信息差（新书 init 生成）
+    ch001.yml                     # 本章造成的 canon 变化（类型化事件 + note）
+  chapters/ch001/                 # 章节层——正文与产物
     final.txt                     # 终稿（正史正文）★唯一正文权威
-    review.md                     # 审查报告
+    _kit/                         # kit 生成的生产套件（逐场 prompt/缝合/events 模板/步骤）
+    writing_packet.md             # 写作输入包（旧流程）
+    reader_pass.md                # 冷读质量门（旧流程）
+    draft.txt                     # 草稿
+    review.md                     # 审查报告（旧流程）
     summary.yml                   # 章节摘要
-    canon_delta.yml               # 章节变化记录（不是当前状态总表）
+    canon_delta.yml               # 章节变化记录（旧流程；引擎下由 events 取代）
   entities/                       # 实体层——人物/势力/地点/物品当前状态
+                                  # ★引擎下为派生产物（commit 物化），不要手写
     characters.yml
     factions.yml
     locations.yml
     items.yml
     power_system.yml
-  ledgers/                        # 动态账本——故事中的活变量
+  ledgers/                        # 动态账本——故事中的活变量（★引擎下同为派生产物）
     narrative_debts.yml           # 叙事债务（读者正在等待什么）
     foreshadowing.yml             # 伏笔
     knowledge_state.yml           # 信息可见性（谁知道什么）
@@ -96,12 +105,15 @@ projects/<novel-name>/
 
 ### 唯一事实来源（冲突时按此判断）
 
+引擎项目（有 `events/`）：正史是 `events/`，当前状态由其派生；下表的 `entities/ledgers` 为**派生产物**（由 `commit` 物化，不手写）。旧项目仍按下表手写。
+
 | 事实类型 | 权威来源 | 说明 |
 |---------|---------|------|
 | 已发生的正文事实 | `final.txt` | 原文细节以 final.txt 为准 |
+| 某章造成了什么变化（引擎） | `events/chNNN.yml` | append-only 事件日志，当前状态由它派生 |
 | 某章发生了什么 | `summary.yml` | 冲突时回看 final.txt |
-| 某章造成了什么变化 | `canon_delta.yml` | 变更日志，不代表当前最终状态 |
-| 人物当前状态 | `entities/characters.yml` | 当前目标/立场/关系/意图 |
+| 某章造成了什么变化（旧流程） | `canon_delta.yml` | 变更日志，不代表当前最终状态 |
+| 人物当前状态 | `entities/characters.yml` | 当前目标/立场/关系/意图（引擎下派生） |
 | 当前世界局势 | `ledgers/world_state.yml` | 主角之外的外部系统 |
 | 谁知道什么 | `ledgers/knowledge_state.yml` | 信息差 |
 | 读者期待债 | `ledgers/narrative_debts.yml` | 全局债务 |
@@ -114,25 +126,35 @@ projects/<novel-name>/
 
 ## 核心工作流
 
-### 新书启动
+### 默认：引擎流程（新版本）
+
+**开新书：**
 ```
-用户 seed → novel-bootstrap → 初始化全项目文件 → 生成 9-15 章滚动章纲
+1. 故事 DNA   novel-bootstrap 从 seed 生成（或 cp -r templates/project 手填）
+2. 种事件     python -m novel_engine init <project>      → events/bootstrap.yml
+3. 门禁       python -m novel_engine check <project>     → 确认初始状态干净
+4. 逐章生产   见下
 ```
 
-### 日常写作（一轮 3 章）
+**逐章生产（引擎默认）：**
 ```
-1. 读取 book/longform_blueprint.yml + planning/active_flow.yml + planning/rolling_plan.yml
-2. 如果 rolling_plan 接近耗尽、世界缩小、支线断供或成长过快，先运行 novel-architect 生成 development_pack 并刷新后续窗口
-3. 刷新 active_flow + rolling_plan
-4. 生成 round context pack（3000-5000 字）
-5. 生成 current_round.yml（仅记录本批次章节列表）
-6. 逐章：
-   a. 写 brief.md + context_pack.md（1000-2500 字）
-   b. 写 draft.txt → 审稿 → final.txt
-   c. 写 review.md
-   d. 生成 summary.yml + canon_delta.yml
-   e. 更新 entities/ + ledgers/ + planning/
-6. 滑动 rolling_plan.yml 未来窗口
+1. 套件   python -m novel_engine kit <project> --chapter chNNN   → chapters/chNNN/_kit/
+2. 写     按 _kit/scene_prompts.md 逐场写（经历优先；one_change 小、可空；出口切外部动作）
+3. 缝合   按 _kit/stitch_prompt.md 连成整章 → chapters/chNNN/final.txt
+4. 自检   python -m novel_engine txt / patterns chapters/chNNN/final.txt
+5. 事件   按 _kit/events.template.yml 把本章 canon 变化写进 events/chNNN.yml（类型化事件 + note）
+6. 门禁   python -m novel_engine check <project>
+7. 提交   python -m novel_engine commit <project>        → 物化派生 entities/ledgers
+```
+不要手写 `entities/ledgers`（引擎下是派生产物，commit 会覆盖）；canon 变化只记成 events。
+旧项目（已写章节、无 events/）先 `shadow → migrate → check → commit` 搬上引擎。
+
+### 旧流程（fallback，未迁移项目）
+```
+新书：用户 seed → novel-bootstrap → 初始化全项目文件 → 9-15 章滚动章纲
+日常：刷新 active_flow + rolling_plan → round context pack → 逐章 writing_packet.md
+      → draft.txt → reader_pass.md → final.txt → review.md → summary.yml + canon_delta.yml
+      → 手工更新 entities/ + ledgers/ + planning/ → 滑动 rolling_plan
 ```
 
 ### 交接字段语义（重要）
@@ -170,7 +192,7 @@ projects/<novel-name>/
 - 每章 1-2 个读者必须记住的新核心变量，其余延后到后续章节。
 - 规则/制度/功法通过事件、代价、误用或反应验证，不连续多段旁白解释。
 
-### 受保护文件（novel-write 不能静默修改）
+### 受保护文件（写作时不能静默修改）
 - `book/constitution.md`、`book/longform_blueprint.yml`、`book/reader_model.yml`
 - `book/style_memory.md` 核心规则
 - 主角核心欲望和底线（`entities/characters.yml`）
@@ -187,8 +209,9 @@ projects/<novel-name>/
 
 ## 注意事项
 
+- **默认走引擎**：项目有 `events/` 即用 `novel-engine-write`；写正文前用 `kit`/`context` 取引擎解析的 entering-state，不要手抄全量文件。`entities/ledgers` 是派生产物，canon 变化只记进 `events/`。
 - **轮次是生产批次，不是叙事单位**。active_flow 可以跨越多轮，不要在每轮第三章强行总结或收束。
-- **context_pack.md 必须在写正文前生成**。它是可审计的写作输入记录，不是项目资料库的全文复制。
+- **写正文前必须有可审计的写作输入**。引擎下是 `kit` 生成的 entering-state + 场景规格；旧流程下是 `writing_packet.md`。两者都不是项目资料库的全文复制。
 - **example-project 是协议示范**，不是真实小说。它的风格文件（samples.md）是占位模板，它的章节（最后只有 ~2100 字）只展示格式。真实项目不要复用其中人名、地名、剧情。
 - **不要用模板/examples/docs 中的人名、地名、势力名、道具名和剧情素材**——这些属于反污染规则。
 - **校验脚本是诊断工具，不是写作警察**——warning 不等于必须重写，但 error 必须修。

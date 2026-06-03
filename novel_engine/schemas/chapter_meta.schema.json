@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Chapter Structural Record",
+  "description": "Per-chapter structural metadata the structure engine analyzes for read-pull and anti-shrink signals: pacing, chapter shape, tension position, world expansion, growth budget, side-thread touch. Production metadata, not canon — distinct from events.",
+  "type": "object",
+  "required": ["chapter"],
+  "properties": {
+    "chapter": {"type": "string"},
+    "pacing_mode": {"type": "string"},
+    "chapter_function": {"type": "string"},
+    "position_in_flow": {"type": "string"},
+    "time_span": {"type": "string"},
+    "tension": {"type": "number", "description": "1-5 escalation proxy; may be derived from position_in_flow."},
+    "world_expansion": {"type": "boolean", "description": "Does this chapter widen the world?"},
+    "protagonist_growth": {"type": "boolean", "description": "Does the protagonist gain power/rank this chapter?"},
+    "side_threads": {"type": "array", "items": {"type": "string"}},
+    "offscreen_pressure": {"type": "boolean", "description": "Do off-screen actors move this chapter?"},
+    "scene_types": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,30 @@
+chapter: ch001
+events:
+  - kind: character_introduced
+    id: char_a
+    name: 甲
+    role: protagonist
+    current_goal: 在城里活下去
+  - kind: character_introduced
+    id: char_b
+    name: 乙
+    role: antagonist
+  - kind: fact_added
+    text: 入夜后城里开始下雨。
+  - kind: relationship_changed
+    a: char_a
+    b: char_b
+    to: 敌对
+    change: 一次街口冲突后结怨。
+  - kind: debt_opened
+    id: debt_001
+    description: 读者想知道甲的真实来历。
+    urgency: high
+    payoff_window: ch002-ch004
+  - kind: foreshadow_planted
+    id: f_001
+    content: 巷口墙上有一道旧刻痕。
+  - kind: knowledge_changed
+    topic: k_secret
+    holder: reader
+    level: hinted

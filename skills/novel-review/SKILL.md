@@ -12,9 +12,9 @@ Use this skill to inspect whether a project can be safely continued by a fresh a
 Read:
 
 - `docs/CANON_AND_SAFETY.md`
-- `docs/CONTEXT_PACK.md`
 - `docs/MEMORY_MODEL.md`
 - `docs/WORKFLOWS.md`
+- `docs/ENGINE.md`（引擎项目的状态/门禁）
 - `docs/WRITING_CRAFT.md`
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
@@ -81,9 +81,9 @@ Read:
 
 12. **跨轮 flow 连续性**：检查每章是否从上一章外部交接打开或记录了有理据的转换、批次末章是否因故事赚到了收束而非因批次结束才收束。
 
-13. **正文与 TXT 格式**：运行 `python scripts/validate_novel_output.py <project> --chapters <reviewed chapters>`。
-   - 写作心法、TXT 格式、结尾规则和 draft self-check 详见 `docs/WRITING_CRAFT.md`；审查时按其中规则清单对照。
-   - Treat validator failures as required fixes, not suggestions.
+13. **正文与 TXT 格式**：引擎项目运行 `python -m novel_engine check <project>`（状态/完整性/结构）+ `python -m novel_engine txt <chapter>/final.txt` 和 `patterns`（格式/AI 腔）。
+   - 写作心法、TXT 格式、结尾规则详见 `docs/WRITING_CRAFT.md`；审查时按其中规则清单对照。
+   - Treat check/validator failures as required fixes, not suggestions.
    - Check whether the chapter reads like fiction rather than a task report.
    - Check whether the chapter contains weave material around the core task: daily life, reactions, dialogue, world/system texture, relationship friction, scene objects, body/mood beats, wrong guesses, lightness, awkwardness, softness, or character habit.
    - Check whether the chapter tried to complete too many tasks, or whether it kept one primary advancement and left appropriate problems unfinished.

@@ -15,12 +15,11 @@ AI Novel Agent 是一套面向长篇小说创作的 agent-native 写作框架。
 
 ```text
 ai-novel-agent/
-  .opencode/agents/          OpenCode 多 agent 配置
-  skills/                    agent 工作流：开书、编剧、写作、审查、变更
-  scripts/                   校验、句式扫描、状态合并工具
+  novel_engine/              ★引擎核心：状态投影、门禁、生产套件、度量（默认主干）
+  skills/                    LLM 工作流：开书、写作、编剧、审查、变更
   templates/                 新小说项目模板
-  schemas/                   writing_packet / context_pack 结构约束
-  docs/                      架构、流程、格式和安全规则
+  scripts/                   compile_architect_context（编剧层上下文包，引擎未覆盖）
+  docs/                      ENGINE / ENGINE_WORKFLOW + 编剧/安全/写作心法
   projects/
     example-project/         脱敏示例项目
 ```
@@ -40,90 +39,42 @@ projects/<novel-name>/
 
 ## 核心流程
 
-```text
-book / entities / ledgers / planning
-        │
-        ▼
-architect context pack → development_pack
-        │
-        ▼
-story_architecture / thread_board / rolling_plan 刷新
-        │
-        ▼
-round context pack
-        │
-        ▼
-writing_packet.md
-        │
-        ▼
-draft.txt → cold read → revise
-        │
-        ▼
-final.txt
-        │
-        ▼
-summary.yml + canon_delta.yml + memory_update_plan.md
-        │
-        ▼
-round_state_merge.py preview/apply
-        │
-        ▼
-entities / ledgers / active_flow / rolling_plan 更新
-        │
-        ▼
-post-merge QA
-```
-
-写作被分成两个闭环：
-
-- **正文闭环**：`writing_packet.md → draft.txt → reader_pass.md → final.txt`
-- **记忆闭环**：`final.txt → summary/canon_delta → memory_update_plan → merge preview → entities/ledgers/planning`
-
-在两者前面还有一层可选但重要的 **编剧层**：`architect_context_pack → development_pack → story_architecture/thread_board/rolling_plan`。它负责在写正文前主动撑大世界、安排支线、控制节奏和主角成长预算。正文好不好，看正文闭环。长篇稳不稳，看记忆闭环。世界会不会越写越小，看编剧层。
-
-## 多 Agent 分工
+正史是事件日志 `events/`，当前状态由事件**派生**。写一章的流程：
 
 ```text
-novel-director
-  ├─ novel-architect     编剧层/世界大脑，开发未来 10-30 章世界、支线和节奏
-  ├─ novel-planner       写作前规划，生成 writing_packet.md 草案
-  ├─ novel-writer        写 draft/final，不碰 canon 和状态文件
-  ├─ novel-cold-reader   冷读正文体验、节奏、人物体温
-  ├─ novel-archivist     生成 summary/canon/memory 草案
-  └─ novel-qa            跑 validator，检查格式和流程门禁
+events/  （append-only 正史）
+   │  投影（reducer，确定性）
+   ▼
+当前状态（entities/ledgers，派生、只读）
+   │
+   ▼  kit：给 writer 一份 entering-state + 逐场规格 + 文风范例
+逐场写正文 → 缝合 → chapters/chNNN/final.txt
+   │
+   ▼  把本章 canon 变化记成事件
+events/chNNN.yml
+   │
+   ▼
+check（schema + 引用/时序完整性 + 账本健康 + 结构）
+   │
+   ▼
+commit（门禁通过 → 物化派生 entities/ledgers）
 ```
 
-推荐模型路由：
+因为状态是算出来的，"变化日志说 X 但当前状态是 Y" 这类漂移**构造上不可能发生**。长篇靠望远镜结构维持（远处摘要、近处原文、按需检索），每写一章引擎都从文件重新算出 entering-state，长对话也不会记混。
 
-```yaml
-novel-director: deepseek-v4-pro
-novel-architect: deepseek-v4-pro
-novel-planner: deepseek-v4-pro
-novel-writer: deepseek-v4-pro
-novel-archivist: deepseek-v4-pro
-novel-cold-reader: deepseek-v4-flash
-novel-qa: deepseek-v4-flash
-```
+## 引擎做记账，skill 做创作
 
-`director`、`architect`、`planner`、`writer`、`archivist` 会影响剧情、正文和长期记忆，建议使用强模型。`cold-reader` 和 `qa` 主要做诊断，可以使用轻量模型。
+新版本的分工很简单：
 
-`novel-architect` 是 director 的战略 subagent，不是合并入口。它默认产出 `planning/development_packs/dev_XXX.md`，提出世界运营、支线生命周期、信息释放、节奏/成长预算和可写素材建议。director 审核后，才把接受的内容写入 `story_architecture.yml`、`thread_board.yml`、`future_backlog.yml`、`rolling_plan.yml`、`entities/` 或 `ledgers/`。
+- **`novel_engine`（确定性代码）** 负责一切机械活——状态投影、连续性、门禁、度量、生产套件。不写正文、不判断好坏。
+- **skill（LLM）** 负责创作判断：
+  - `novel-bootstrap`——从一句 seed 生成故事 DNA（宪法/蓝图/初始人物/第一卷章纲）。
+  - `novel-engine-write`——**默认写作流程**：场景级正文 + events 正史 + check/commit。
+  - `novel-architect`——编剧层：撑大世界、安排支线、控制节奏和成长预算。
+  - `novel-review`——质量与连续性审查。
+  - `novel-change`——中途改设定/加反转/变更管理。
 
-当 `rolling_plan.yml` 接近耗尽、世界变窄、支线断供、主角成长过快、进入新地图/新势力/新卷，或你想手动开发后续剧情时，先运行编剧层，再让 planner 生成章节 `writing_packet.md`。
-
-OpenCode 配置位于：
-
-```text
-.opencode/agents/
-```
-
-在仓库根目录运行：
-
-```bash
-opencode
-```
-
-默认进入 `novel-director`。正常生产时让 director 调用其他 subagent，不需要手动反复切换。
+模型路由按角色分（见 [模型路由](docs/MODEL_ROUTING.md)）：正文、剧情方向、canon 决策用强模型；机械诊断可用轻量模型。
 
 ## 事实来源
 
@@ -144,126 +95,41 @@ agent 对话                         临时工作台，不是正史
 `active_flow.yml` 是跨章连续性的权威。
 `rolling_plan.yml` 只保留未来窗口，完成章节进入 `completed_plan_log.yml`。
 
-## 快速开始
+## 怎么用（在 agent 工作台里，对它说话就行）
 
-克隆仓库：
+**你不用敲任何命令。** 你只跟 agent 说人话，它在后台读章纲、写正文、存文件、记账、跑校验。你只管读它写出来的章节，满意就继续，不满意就告诉它怎么改。
 
-```bash
-git clone https://github.com/Wwfhansman/ai-novel-agent.git
-cd ai-novel-agent
-```
+常见的几句话：
 
-创建私有小说项目：
+| 你想做什么 | 对 agent 说 |
+|-----------|------------|
+| 开一本新书 | `用这个点子开一本新书：「一个年轻修灯人发现城市里的灯会保存被遗忘的记忆」` |
+| 写下一章 | `写下一章`（或 `继续写` / `写 ch004`） |
+| 检查质量 | `检查一下最近三章` |
+| 加反转 / 改设定 | `我想给主角加个反转——他父亲其实还活着` |
+| 开发后续剧情、扩展世界 | `帮我把后面 10 章的剧情和世界铺开` |
 
-```bash
-cp -r templates/project projects/my-novel
-```
+就这些。第一次开书时 agent 会问你几个方向让你挑，之后每次说"写下一章"它就接着往下写。
 
-Windows PowerShell：
+> 想自己跑命令、或了解底层怎么运转的，看下面的"引擎核心"和 [docs/ENGINE_WORKFLOW.md](docs/ENGINE_WORKFLOW.md)。**正常写作完全用不到。**
 
-```powershell
-Copy-Item -Recurse templates/project projects/my-novel
-```
+## 进阶：手动命令（正常写作用不到，agent 会自己跑）
 
-初始化新书：
-
-```text
-Use skills/novel-bootstrap to initialize projects/my-novel from this seed:
-"一个年轻修灯人发现城市里的灯会保存被遗忘的记忆。"
-```
-
-开新书时通常只需要启动 `novel-bootstrap`。Bootstrap 会创建创作宪法、长篇蓝图、第一卷执行层设定、实体/账本、`story_architecture.yml`、`thread_board.yml` 和初始 9-15 章 `rolling_plan.yml`。也就是说，新书创建阶段已经包含基础世界观扩展和第一卷近期规划，不需要先单独跑 `novel-architect`。
-
-继续写一轮：
-
-```text
-Use skills/novel-write to continue projects/my-novel.
-```
-
-审查项目：
-
-```text
-Use skills/novel-review to cold-start review projects/my-novel.
-```
-
-开发后续剧情 / 扩展世界：
-
-这一流程用于**已有项目推进一段时间之后**，例如 `rolling_plan.yml` 快写完、世界开始变窄、支线断供、主角成长过快、准备进入新地图/新势力/新卷，或你想手动让编剧层开发未来 10-30 章。它不是开新书的替代流程；开新书用 `novel-bootstrap`。
-
-第一步，编译 architect 上下文包。这个脚本会把当前项目状态压缩成 `novel-architect` 能读的输入，避免让 architect 直接吞全量项目文件：
+以下命令给开发者或想手动操作的人。普通写作只要对 agent 说话即可。完整命令表见下文"引擎核心"。
 
 ```bash
-python3 scripts/compile_architect_context.py projects/my-novel --output projects/my-novel/planning/context_packs/architect_context_pack_001.md --latest 6 --init-missing
+python -m novel_engine init   projects/my-novel                  # 新书：种初始状态
+python -m novel_engine kit    projects/my-novel --chapter chNNN  # 一章生产套件
+python -m novel_engine check  projects/my-novel                  # 统一门禁（schema+完整性+健康+结构）
+python -m novel_engine commit projects/my-novel                  # 通过则物化派生状态
+python -m novel_engine structure projects/my-novel               # 追读性/防缩水报告
+python3 -m unittest discover -s novel_engine/tests -t .          # 跑内核测试
 ```
 
-参数说明：
-
-- `projects/my-novel`：目标小说项目目录。
-- `--output ...architect_context_pack_001.md`：输出给 architect 读取的上下文包路径。
-- `--latest 6`：纳入最近 6 章摘要/变化，用于判断当前推进、节奏和状态漂移。
-- `--init-missing`：旧项目缺少 `story_architecture.yml`、`thread_board.yml` 等编剧层文件时，先补齐模板文件。
-
-第二步，调用 `novel-architect` 生成 development pack：
-
-```text
-@novel-architect 请基于 projects/my-novel/planning/context_packs/architect_context_pack_001.md 生成 planning/development_packs/dev_001.md，开发未来 10-30 章的世界扩张、支线、节奏、信息释放和可写素材。不要直接合并正史文件。
-```
-
-`development_pack` 是编剧建议快照，不是正史。它应该提出：世界如何独立运行、哪些支线推进或交汇、哪些人物/地点/势力/制度需要预制、未来窗口的节奏和主角成长预算、哪些素材可直接给 writer 写成场景。
-
-第三步，由 `novel-director` 或你人工审核 development pack，把接受的内容合并进：
-
-```text
-planning/story_architecture.yml
-planning/thread_board.yml
-planning/future_backlog.yml
-planning/rolling_plan.yml
-entities/
-ledgers/
-```
-
-注意：`novel-architect` 只有战略建议权，不应该直接把未来计划写成当前正史。未来人物、道具、支线触碰点应保持 `planned / expected_touch` 边界，等正文真正发生后再由记忆维护流程升级为 active。
-
-处理中途新点子：
-
-```text
-Use skills/novel-change to evaluate this idea for projects/my-novel:
-"主角的父亲可能已经成为灯塔记忆核心的一部分。"
-```
-
-## 常用命令
-
-校验章节：
+编剧层仍用脚本编译上下文包（architect 用）：
 
 ```bash
-python3 scripts/validate_novel_output.py projects/my-novel --chapters ch001
-python3 scripts/validate_novel_output.py projects/my-novel --chapters ch001 --fix-format
-python3 scripts/validate_novel_output.py projects/my-novel --chapters ch001 --strict
-```
-
-检查已知 AI 腔句式：
-
-```bash
-python3 scripts/check_not_but.py projects/my-novel --chapters ch001 ch002 ch003 --files draft.txt
-python3 scripts/check_not_but.py projects/my-novel --chapters ch001 ch002 ch003 --files final.txt
-```
-
-编译编剧层上下文包：
-
-```bash
-python3 scripts/compile_architect_context.py projects/my-novel --output projects/my-novel/planning/context_packs/architect_context_pack_001.md --latest 6 --init-missing
-```
-
-生成状态合并预览：
-
-```bash
-python3 scripts/round_state_merge.py preview projects/my-novel --round round_001 --chapters ch001 ch002 ch003
-```
-
-应用安全合并项：
-
-```bash
-python3 scripts/round_state_merge.py apply projects/my-novel --preview projects/my-novel/planning/merge_previews/round_001.yml
+python3 scripts/compile_architect_context.py projects/my-novel --init-missing
 ```
 
 ## 写作规则摘要
@@ -327,16 +193,65 @@ ledgers/decision_log.yml           重大决策
 
 ## 文档入口
 
-- [工作流设计](docs/WORKFLOWS.md)
+新版本（引擎）：
+
+- [确定性正史内核 novel_engine](docs/ENGINE.md)
+- [引擎化写作流程](docs/ENGINE_WORKFLOW.md)
+
+仍在用的旧文档（开书/编剧/改设定等引擎未覆盖的层）：
+
 - [编剧层设计](docs/STORY_ARCHITECTURE.md)
-- [OpenCode 多 Agent 配置](docs/OPENCODE_AGENTS.md)
-- [文件格式规范](docs/FILE_FORMATS.md)
-- [上下文编译](docs/CONTEXT_PACK.md)
-- [记忆模型](docs/MEMORY_MODEL.md)
 - [正史与安全规则](docs/CANON_AND_SAFETY.md)
+- [写作心法](docs/WRITING_CRAFT.md)
+- [文件格式规范](docs/FILE_FORMATS.md)
 - [模型路由策略](docs/MODEL_ROUTING.md)
-- [技术架构](docs/TECHNICAL_ARCHITECTURE.md)
+- [记忆模型](docs/MEMORY_MODEL.md)
+- [工作流设计](docs/WORKFLOWS.md)
 - [历史方案归档](docs/archive/README.md)
+
+## 引擎核心（novel_engine）
+
+`novel_engine/` 是新版本的**生产主干与一致性内核**（默认流程即基于它，见上文"快速开始"）。它与旧 `scripts/` 以**绞杀榕**方式并存：旧代码零回归，未迁移项目仍可用旧流程。
+
+它修的根本问题是：旧系统让 LLM **手工维护**本该被推导的状态（`canon_delta` 写变化，又手工折叠进 `entities/ledgers`，再用正则检查一致性），而那套正则只能检查"格式齐不齐"，检查不了"内容对不对"。内核的判断是：
+
+> **正史 = append-only 事件日志；当前状态 = 事件的投影。该推导的不手写，该 schema 的不正则。**
+
+因为状态是算出来的，"`canon_delta` 说 X 但 `entities/` 是 Y" 这类漂移**构造上不可能发生**。
+
+命令：
+
+```bash
+python -m novel_engine check        <project>                 # 一轮收尾统一门禁（schema+完整性+健康+结构）
+python -m novel_engine commit       <project>                 # 门禁通过则物化派生 entities/ledgers
+python -m novel_engine validate    <project>                  # 事件 schema 校验 + 引用/时序完整性
+python -m novel_engine project     <project>                  # 打印由事件推导出的当前状态
+python -m novel_engine health      <project>                  # 逾期债务 / 沉睡伏笔（结构引擎种子）
+python -m novel_engine context     <project> --chapter chNNN  # 写某章时 writer 拿到的 entering-state
+python -m novel_engine materialize <project>                  # 由事件渲染出 entities/ledgers 文件
+python -m novel_engine structure   <project>                  # 追读性/防缩水报告（节奏/张力/世界/弧线）
+python -m novel_engine init        <project>                  # 新书：种 events/bootstrap.yml（初始状态）
+python -m novel_engine shadow      <project>                  # 派生 vs 手写 的漂移（只读）
+python -m novel_engine migrate     <project>                  # 旧项目(已写章节)一次性转成 events/
+python -m novel_engine patterns    <file>                     # 扫 AI 腔句式（profile 驱动）
+python -m novel_engine compare     <file_a> <file_b>          # 两段正文文风对比 + divergence 分数
+python -m novel_engine txt         <file>                     # TXT 格式/段落密度检查（profile 驱动）
+python -m novel_engine kit         <project> --chapter chNNN  # 一章生产套件（逐场 prompt+缝合+events 模板+步骤）
+python -m novel_engine scene       <project> --chapter chNNN  # 每场写作包（entering-state+场景规格+检索范例+约束）
+python -m novel_engine experiment  <project> --chapter chNNN  # 场景级 vs 章级 A/B 实验包
+```
+
+开新书 / 逐章生产的完整流程见上文"快速开始"、[引擎化写作流程](docs/ENGINE_WORKFLOW.md) 与 skill `skills/novel-engine-write/`。
+
+`shadow` 在脱敏示例项目上立刻抓到一处真实漂移：ch001 的 `canon_delta` 声明埋下伏笔 `f_002`，但手写的 `ledgers/foreshadowing.yml` 里从没记录它——旧 validator 抓不到的跨文件派生漏项，reducer 自动抓到。`migrate` 之后再跑 `context --chapter ch002`，`f_002` 会自动回到 writer 的 entering-state——因为状态改为派生，漏项不复存在。
+
+运行内核测试：
+
+```bash
+python3 -m unittest discover -s novel_engine/tests -t .
+```
+
+完整设计、事件词汇表和迁移路径见 [确定性正史内核](docs/ENGINE.md)；引擎化的一轮写作流程见 [引擎化写作流程](docs/ENGINE_WORKFLOW.md)。
 
 ## 仓库安全
 

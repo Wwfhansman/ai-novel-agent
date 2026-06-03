@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Scene Spec",
+  "description": "The atomic creative unit. A scene is an EXPERIENCE unit, not a task unit. Experiential fields come first and are required; the plot advance (one_change) is small and optional — a scene whose one_change is empty is a legitimate pure-texture/relationship beat. This shape is what keeps scene-level writing from amplifying task-feeling.",
+  "type": "object",
+  "required": ["id", "pov", "emotional_temperature", "sensory_anchor", "exit_on"],
+  "properties": {
+    "id": {"type": "string", "description": "e.g. ch012_s02"},
+    "pov": {"type": "string"},
+    "location": {"type": "string"},
+    "time": {"type": "string"},
+    "emotional_temperature": {
+      "type": "object",
+      "description": "Where the scene's feeling starts and where it moves.",
+      "required": ["from", "to"],
+      "properties": {"from": {"type": "string"}, "to": {"type": "string"}}
+    },
+    "sensory_anchor": {"type": "string", "description": "A concrete, place-specific sensory hook."},
+    "weave_beats": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Non-task texture beats (daily reaction, lived-in detail, relationship temperature). Budgeted first-class so texture is distributed, not squeezed out."
+    },
+    "one_change": {"type": "string", "description": "The single small thing that shifts. MAY be empty: a pure-texture scene advances nothing plot-wise."},
+    "enters_via": {"type": "string", "description": "How any new information arrives. Must not be protagonist brain-summary or narrator explanation."},
+    "voice_exemplars": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "2-3 real passages matching this scene's type, for voice transfer."
+    },
+    "exit_on": {"type": "string", "description": "External motion to cut on: action / arrival / interruption / cost / object — never 'objective achieved'."},
+    "prose_constraints": {"type": "array", "items": {"type": "string"}}
+  }
+}

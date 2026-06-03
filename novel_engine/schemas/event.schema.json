@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Canon Event",
+  "description": "One typed change to canon. Events are append-only and authoritative; current state is projected from them. Mechanical changes use typed kinds and project automatically; non-mechanical narrative changes use kind 'note' and are attached for reading without pretending to be machine state.",
+  "type": "object",
+  "required": ["kind"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": [
+        "fact_added",
+        "character_introduced",
+        "character_changed",
+        "relationship_changed",
+        "knowledge_changed",
+        "world_state_changed",
+        "item_moved",
+        "debt_opened",
+        "debt_advanced",
+        "debt_paid",
+        "foreshadow_planted",
+        "foreshadow_advanced",
+        "foreshadow_paid",
+        "note"
+      ]
+    },
+    "chapter": {"type": "string"},
+    "evidence": {"type": "string"}
+  },
+  "oneOf": [
+    {
+      "properties": {"kind": {"const": "fact_added"}, "text": {"type": "string"}},
+      "required": ["kind", "text"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "character_introduced"},
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "role": {"type": "string"},
+        "fixed_profile": {"type": "string"},
+        "current_goal": {"type": "string"},
+        "current_stance": {"type": "string"},
+        "intent": {"type": "string"}
+      },
+      "required": ["kind", "id", "name"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "character_changed"},
+        "id": {"type": "string"},
+        "change": {"type": "string"},
+        "set": {"type": "object"},
+        "last_seen": {"type": "string"}
+      },
+      "required": ["kind", "id", "change"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "relationship_changed"},
+        "a": {"type": "string"},
+        "b": {"type": "string"},
+        "to": {"type": "string"},
+        "change": {"type": "string"}
+      },
+      "required": ["kind", "a", "b", "to"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "knowledge_changed"},
+        "topic": {"type": "string"},
+        "holder": {"type": "string"},
+        "level": {"type": "string", "enum": ["unknown", "hinted", "suspects", "partial", "knows", "knows_truth"]}
+      },
+      "required": ["kind", "topic", "holder", "level"]
+    },
+    {
+      "properties": {"kind": {"const": "world_state_changed"}, "text": {"type": "string"}},
+      "required": ["kind", "text"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "item_moved"},
+        "item": {"type": "string"},
+        "to": {"type": "string"},
+        "from": {"type": "string"}
+      },
+      "required": ["kind", "item", "to"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "debt_opened"},
+        "id": {"type": "string"},
+        "description": {"type": "string"},
+        "type": {"type": "string"},
+        "urgency": {"type": "string"},
+        "emotional_weight": {"type": "string"},
+        "payoff_window": {"type": "string"}
+      },
+      "required": ["kind", "id", "description"]
+    },
+    {
+      "properties": {"kind": {"const": "debt_advanced"}, "id": {"type": "string"}, "note": {"type": "string"}},
+      "required": ["kind", "id"]
+    },
+    {
+      "properties": {"kind": {"const": "debt_paid"}, "id": {"type": "string"}, "note": {"type": "string"}},
+      "required": ["kind", "id"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "foreshadow_planted"},
+        "id": {"type": "string"},
+        "content": {"type": "string"}
+      },
+      "required": ["kind", "id", "content"]
+    },
+    {
+      "properties": {"kind": {"const": "foreshadow_advanced"}, "id": {"type": "string"}, "note": {"type": "string"}},
+      "required": ["kind", "id"]
+    },
+    {
+      "properties": {"kind": {"const": "foreshadow_paid"}, "id": {"type": "string"}, "note": {"type": "string"}},
+      "required": ["kind", "id"]
+    },
+    {
+      "properties": {
+        "kind": {"const": "note"},
+        "text": {"type": "string"},
+        "scope": {"type": "string"}
+      },
+      "required": ["kind", "text"]
+    }
+  ]
+}
