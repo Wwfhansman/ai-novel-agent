@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editor Verdict",
+  "description": "The cold-reader/editor's structured judgment of a draft. Replaces 'grep the file for the word pass': the LLM judgment stays fuzzy, but its OUTPUT is structured so the orchestrator can gate on it programmatically and the reviser can fix only located blockers.",
+  "type": "object",
+  "required": ["verdict"],
+  "properties": {
+    "verdict": {"type": "string", "enum": ["pass", "revise"]},
+    "reader": {"type": "string", "enum": ["cold_reader_subagent", "same_agent_fallback"]},
+    "blockers": {
+      "type": "array",
+      "description": "Located problems that must be fixed. When verdict is 'revise' this should be non-empty.",
+      "items": {
+        "type": "object",
+        "required": ["where", "severity", "why"],
+        "properties": {
+          "scene": {"type": "string"},
+          "where": {"type": "string", "description": "Quote or position of the problem span."},
+          "severity": {"type": "string", "enum": ["high", "medium", "low"]},
+          "why": {"type": "string"},
+          "fix_direction": {"type": "string"}
+        }
+      }
+    },
+    "keepers": {"type": "array", "items": {"type": "string"}, "description": "Passages worth keeping; empty list is itself a red flag."},
+    "prose_notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

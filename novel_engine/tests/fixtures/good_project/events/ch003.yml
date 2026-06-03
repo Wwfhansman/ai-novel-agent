@@ -1,0 +1,15 @@
+chapter: ch003
+events:
+  - kind: debt_paid
+    id: debt_001
+    note: 甲的来历在祠堂被揭开。
+  - kind: foreshadow_paid
+    id: f_001
+    note: 旧刻痕原来是父亲留下的记号。
+  - kind: character_changed
+    id: char_b
+    change: 在对峙后暂时退场。
+    last_seen: ch003
+  - kind: note
+    scope: char_a
+    text: 甲对乙的敌意开始松动，但没有和解。

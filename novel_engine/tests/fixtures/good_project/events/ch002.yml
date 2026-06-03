@@ -1,0 +1,17 @@
+chapter: ch002
+events:
+  - kind: character_changed
+    id: char_a
+    change: 决定主动追查自己的来历。
+    set:
+      current_goal: 查清自己的来历
+      current_stance: 不再躲避乙
+  - kind: debt_advanced
+    id: debt_001
+    note: 甲找到一条线索。
+  - kind: foreshadow_advanced
+    id: f_001
+  - kind: knowledge_changed
+    topic: k_secret
+    holder: char_a
+    level: suspects

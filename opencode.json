@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "novel-director",
+  "default_agent": "novel-engine-write",
   "permission": {
       "*": "ask",
       "read": "allow",

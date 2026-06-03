@@ -7,16 +7,17 @@ description: Manage mid-story changes in an AI Novel Agent project. Use when the
 
 Use this skill for changes after bootstrap. Do not default to rebooting the novel. Most changes should be evaluated, scoped, and integrated into existing memory.
 
+> ⚠️ **引擎项目（有 `events/`）**：当前状态变化记进 `events/`（`relationship_changed`/`character_changed`/`faction_changed`/`knowledge_changed`…），由 `commit` 物化进 `entities/ledgers`——**不要手写 `entities/ledgers`，也不用写 `canon_delta.yml`**。下文提到的 `canon_delta.yml`/`summary.yml` 属未迁移旧项目。受保护文件与变更分级规则（见 `docs/CANON_AND_SAFETY.md`）对两套都适用。
+
 ## Read First
 
 Read:
 
-- `docs/CANON_AND_SAFETY.md`
-- `docs/MEMORY_MODEL.md`
-- `docs/WORKFLOWS.md`
+- `docs/CANON_AND_SAFETY.md`（受保护文件与变更分级）
+- `docs/ENGINE.md`（引擎正史/状态模型：events 权威、entities/ledgers 派生）
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
-- Relevant current-state files.
+- Relevant current-state files. 引擎项目里，canon 变化记进 `events/`，不手写 `entities/ledgers`。
 
 ## Change Levels
 
@@ -43,7 +44,7 @@ candidate_idea: interesting but not committed; store in `ledgers/idea_pool.yml`.
 future_setup: likely useful later; store in `ledgers/foreshadowing.yml` or future backlog.
 near_term_plan: affects the next 6-15 chapters; update `planning/rolling_plan.yml`.
 current_flow_change: affects the current scene chain or immediate handoff; update `planning/active_flow.yml`.
-current_state_change: changes present-time character/world/knowledge state; update `entities/` or `ledgers/`.
+current_state_change: changes present-time character/world/knowledge/faction/location state; record it as a typed event in `events/chNNN.yml` (relationship_changed / character_changed / faction_changed / knowledge_changed / …), then `commit` — do NOT hand-edit `entities/`/`ledgers/` (they are derived).
 protected_change: touches protected book/volume/core-character/secret files; require Change Summary and checkpoint.
 retcon: contradicts existing `final.txt`; require explicit user approval before rewriting canon.
 ```
@@ -54,27 +55,17 @@ Do not promote a user idea directly into canon just because it is appealing. Fir
 
 Respect the current continuity authorities:
 
-- `planning/active_flow.yml` is the authority for the current cross-round scene chain.
+- `final.txt` is the authority for already written prose facts.
+- `events/chXXX.yml` is the authority for what a chapter changed; current state is **derived** from it (`entities/`/`ledgers/` are materialized by `commit`, not hand-written).
 - `planning/rolling_plan.yml` is the authority for the next 6-15 chapter plan.
-- `planning/current_round.yml` is only a production excerpt, not the long-term plan authority.
-- `final.txt` remains the authority for already written prose facts.
-- `summary.yml` summarizes what happened in a chapter.
-- `canon_delta.yml` records what changed in a chapter; it is not the current-state table.
-
-Do not mix up handoff fields:
-
-```text
-planned_handoff: expected handoff in `rolling_plan.yml`.
-actual_handoff: actual handoff after writing, stored in `summary.yml` / `canon_delta.yml`.
-current_handoff: latest actual handoff, represented by `active_flow.yml` → `last_cut`.
-```
+- `planning/active_flow.yml` (if used) tracks the current cross-round scene chain.
 
 When a change affects upcoming continuity:
 
 - If it changes what should happen soon, update `rolling_plan.yml`.
-- If it changes the immediate ongoing pressure, scene chain, last cut, or next opening, update `active_flow.yml`.
-- If it only affects the current production batch, update `current_round.yml` after the authorities above are correct.
-- If it changes current character/world/knowledge state, merge it into the relevant `entities/` or `ledgers/` file; do not leave it only in `canon_delta.yml`.
+- If it changes the immediate ongoing pressure / next opening, update `active_flow.yml`.
+- If it changes current character/world/knowledge/faction/location state, record a typed event in `events/` and `commit`. Never leave it only as prose or hand-edit the derived `entities/`/`ledgers/`.
+- For changes to already-written canon (retcon), get user approval; then add corrective events and, if prose must change, edit the affected `final.txt`.
 
 ## 工作流
 

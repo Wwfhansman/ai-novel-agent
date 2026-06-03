@@ -1,6 +1,6 @@
 # 写作心法与格式规则
 
-本文档从 `skills/novel-write/SKILL.md` 提取。写作时不必全文塞入 `writing_packet.md`，但 Writing Card 必须摘取本章最相关的硬约束。审查时参考 `skills/novel-review/SKILL.md`。
+本文是文笔与 TXT 格式心法，对引擎流程仍然适用：写作时把本章最相关的硬约束摘进 `kit` 的场景规格，不必全文照搬。文风/格式由 `python -m novel_engine patterns` 和 `txt` 检查，审查参考 `skills/novel-review/SKILL.md`。
 
 ## 写作心法
 
@@ -126,7 +126,7 @@
 - 如果连续 3 段都在解释规则、计划、推理、势力、系统或任务执行，必须先局部重写。
 - 如果连续 3 段没有外部动作、对话、感官输入或人物即时反应，必须先局部重写。
 - 如果对话只是在交换信息，没有停顿、遮掩、误解、情绪、动作或关系变化，必须先局部重写。
-- 必须在 `draft.txt` 阶段运行句式专项扫描：`python scripts/check_not_but.py <project> --chapters <batch chapters> --files draft.txt`。not-but、三连否定内心声明、元叙述、箭头/编号式认知总结都必须先改 draft，不能等 `final.txt`、summary 或 canon 合并后再返工。
+- 写完用 `python -m novel_engine patterns <chapter>/final.txt` 扫句式：not-but、三连否定内心声明、元叙述、箭头/编号式认知总结，发现后先改正文再进门禁（not-but 上限可在项目 `profile_overrides` 里按书设 0）。
 - 必须搜索正文元引用和工程痕迹，如 `ch00`、`上一章`、`本章`、`读者`、`章纲`、Markdown/YAML 痕迹。出现在小说正文里时，必须先改 draft。
 - 如果找不到一段让读者愿意停下来多看一眼的段落，不能进入 `final.txt`。
 - 停下来重写的成本低于产出差的 `final.txt` 后假装没看到。

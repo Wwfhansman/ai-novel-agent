@@ -1,8 +1,0 @@
-round: round_001
-chapters: []
-source: planning/rolling_plan.yml
-status: planned
-batch_edges:
-  starts_inside_flow: ""
-  ends_inside_flow: ""
-notes: "本文件只记录生产批次，不复制章纲。每章具体规划见 planning/rolling_plan.yml。"

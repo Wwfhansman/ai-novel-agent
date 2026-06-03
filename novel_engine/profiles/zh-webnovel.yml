@@ -1,0 +1,107 @@
+name: zh-webnovel
+language: zh
+description: >-
+  Chinese web-novel profile. Holds every genre/language-specific threshold and
+  banned pattern that used to be hardcoded in scripts/validators. The engine
+  itself is genre-neutral; swap this file (e.g. en-litfic.yml) to retarget.
+
+prose:
+  normal_chapter_char_threshold: 1800
+  paragraph_min_chars: 40
+  paragraph_max_chars: 160
+  long_paragraph_chars: 160
+  giant_paragraph_chars: 220
+  min_paragraphs_by_genre:
+    crisis: 15
+    face_slap: 15
+    breakthrough: 15
+    competition: 15
+    showing_off: 15
+    investigation: 20
+    reveal: 20
+    dungeon_rule: 20
+    auction: 20
+    building: 25
+    relationship: 25
+    domestic_management: 25
+    aftermath: 25
+    transition: 25
+    _default: 25
+
+# Patterns that signal LLM prose tics. Used as draft-stage advisories, not final
+# gates — moved out of code so they can be tuned per genre/language.
+banned_patterns:
+  max_not_but_per_chapter: 1
+  contrast_negation: '(?<![是岂])不是(?:(?!不是).){0,30}(?:而是|[，,。；;\s]+是)'
+  triple_negated_inner_state: '没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫).{0,24}没有(?:分析|想|评估|判断|琢磨|权衡|害怕|紧张|犹豫)'
+  meta_original_text: '原书中|在原书里|按照原著|原著里|原文中'
+  arrow_or_numbered_cognition: '(?:她|他|我|主角).{0,18}(?:想|判断|意识到|明白|确定).{0,24}(?:->|→|⇒|=>|第一|第二|第三|其一|其二)'
+
+# Thresholds for novel_engine.ledger_health (structure engine).
+ledger_health:
+  foreshadow_stale_after: 12
+  debt_overdue_grace: 0
+
+# Thresholds for novel_engine.structure (read-pull / anti-shrink).
+structure:
+  max_consecutive_same_pacing: 3
+  max_consecutive_same_function: 3
+  world_expansion_drought: 3
+  offscreen_drought: 4
+  flat_position_run: 3
+  growth_density_max: 2
+  arc_stall_chapters: 8
+  flat_positions:
+    - opening
+    - aftermath_trough
+  arc_roles:
+    - protagonist
+    - antagonist
+    - deuteragonist
+    - major
+  # position_in_flow -> tension proxy (1 low .. 5 peak), used when tension absent.
+  tension_by_position:
+    opening: 1
+    aftermath_trough: 1
+    fallout: 2
+    rising_early: 2
+    pressure_rising: 3
+    rising_middle: 3
+    rising: 3
+    turn: 4
+    peak: 5
+    climax: 5
+
+# Extra knowledge holders that are valid without being character entities.
+knowledge_holders:
+  - reader
+  - public
+
+# Memory-coverage check (novel_engine.coverage): relationship/attitude words that,
+# when two known characters appear near them in prose, expect a relationship_changed event.
+coverage:
+  relationship_words:
+    - 结盟
+    - 联手
+    - 盟友
+    - 结仇
+    - 反目
+    - 翻脸
+    - 决裂
+    - 和解
+    - 拜师
+    - 收徒
+    - 结拜
+    - 背叛
+    - 出卖
+    - 投靠
+    - 归顺
+    - 示好
+    - 定情
+    - 倾心
+    - 动情
+    - 化敌为友
+    - 反目成仇
+    - 盯梢
+    - 投诚
+    - 效忠

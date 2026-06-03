@@ -2,19 +2,19 @@
 
 `novel-architect` 是主编剧 / 世界大脑。它负责把全书、当前卷和未来 10-30 章当作一个多方博弈系统来设计和推演，持续给正文写作供给世界、人物、势力、支线、制度、资源、信息差和节奏约束。
 
-它不是 `novel-planner`，也不是 `novel-writer`。`novel-planner` 把既有规划编译成 `writing_packet.md`；`novel-writer` 写正文；`novel-architect` 负责在写作前设计未来世界如何运行、当前卷如何扩张、哪些支线和信息应该进入近期窗口。
+它不写正文、不记正史。`novel-architect` 只在写作前设计未来世界如何运行、当前卷如何扩张、哪些支线和信息应该进入近期窗口；正文由 `novel-engine-write` 写，正史由引擎从 `events/` 派生。
 
 ## 1. 三层边界
 
 ```text
 novel-architect
-  设计未来、运营世界、控制卷节奏、开发可写素材
+  设计未来、运营世界、控制卷节奏、开发可写素材（写入 rolling_plan / development_packs）
   ↓
-novel-planner / novel-writer
-  把已落库、已进入 rolling_plan 的内容写成正文
+novel-engine-write
+  按 kit 把已落库、已进入 rolling_plan 的内容逐场写成 final.txt
   ↓
-novel-archivist / review / validator
-  根据 final.txt 记录已发生事实，维护当前状态
+events/ → 引擎 projection / check
+  根据本章 events 派生当前状态，门禁校验一致性
 ```
 
 核心边界：
@@ -46,15 +46,15 @@ narrative_debts / foreshadowing = 读者等待什么
 thread_board.threads = 编剧怎么调度这些线
 ```
 
-## 3. Director 与 Architect
+## 3. 主控与 Architect
 
-`novel-architect` 是 `novel-director` 的 subagent，而不是平级决策者。
+`novel-architect` 是 `novel-engine-write` 主控的 subagent，而不是平级决策者；主控审核后才合并它的建议。
 
 推荐权限：
 
 - 可写：`planning/development_packs/dev_XXX.md`
-- 可建议：`planning/story_architecture.yml`、`planning/thread_board.yml`、`planning/future_backlog.yml`、`planning/rolling_plan.yml`、`entities/`、`ledgers/`
-- 不直接合并：正史文件、当前状态文件、受保护文件
+- 可建议：`planning/story_architecture.yml`、`planning/thread_board.yml`、`planning/future_backlog.yml`、`planning/rolling_plan.yml`
+- 不直接合并：`events/`（正史）、派生的 `entities/`、`ledgers/`、受保护文件
 
 工作流：
 
@@ -87,8 +87,8 @@ planning/context_packs/architect_context_pack_XXX.md
 - `planning/active_flow.yml` 的当前压力、last_cut、下一步承接。
 - `planning/rolling_plan.yml` 的完整未来窗口摘要。
 - `planning/story_architecture.yml` 和 `planning/thread_board.yml` 的当前状态。
-- 近 6-9 章 `summary.yml`，必要时最近 1-2 章 `final.txt` 的关键片段。
-- 相关 `entities/`、`ledgers/` 的定向摘要，而不是全量复制。
+- 近 6-9 章的 `events/chNNN.yml`（本章造成了什么）与必要时 `final.txt` 的关键片段。
+- 相关 `entities/`、`ledgers/`（引擎派生的当前状态）的定向摘要，而不是全量复制。
 
 必须原文读取或精确摘录的内容：
 

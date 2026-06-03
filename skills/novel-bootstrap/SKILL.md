@@ -30,10 +30,10 @@ If the target project already has canon chapters, stop and route to `novel-chang
 Read:
 
 - `templates/project/README.md`
-- `docs/MEMORY_MODEL.md`
+- `docs/ENGINE.md` 与 `docs/ENGINE_WORKFLOW.md`（开书后用 `novel_engine init` 上引擎）
 - `docs/CANON_AND_SAFETY.md`
-- `docs/FILE_FORMATS.md`
 - `docs/MODEL_ROUTING.md`
+- `docs/STORY_ARCHITECTURE.md`
 - `templates/project/book/chapter_rhythm_guide.md`（初始化章纲时参考网文章类型模板）
 - `templates/project/style/samples.md`（占位模板——bootstrap 时不写内容，但需告知用户此文件用于后续存放文笔风格报告）
 
@@ -103,9 +103,9 @@ Use `templates/project/` as the required output structure.
    - `information_release` 通常每章限制在 1-2 个读者需要记住的核心新变量。
    - `rolling_plan.yml` 中出现的组织、地点、人物、职位、制度事件和关键物品，必须能在 `entities/` 或 `ledgers/` 中找到对应定义；不得出现“待命名”“由 writer 自行命名”“某宗门”“某长老”“某师兄”“某管事”等占位表达。
    - 如果规划需要新增正文会用到的实体，先回到步骤 6-7 补齐实体和账本，再写入章纲。
-   - 写 `planning/current_round.yml` 作为生产批次追踪器，只记录本轮章节、状态和起止 flow，不复制章纲，不是独立规划权威。
    - 不要在 bootstrap 阶段创建死板的 scene-beat 大纲。
-   - 除非用户明确要求进入 novel-write，否则不写正文。
+   - 不创建 `chapters/chXXX/` 下的任何文件——新书没有已写章节，章节由 `novel-engine-write` 用 `kit` 生产。
+   - bootstrap 只建故事 DNA，不写正文。
 
 9. **开书完整性自检**
    - Bootstrap 结束前，检查第一卷执行层设定是否足够支撑前 9-15 章正文。
@@ -120,6 +120,11 @@ Use `templates/project/` as the required output structure.
    - 更新 `project.yml` 和 `meta/project_state.yml`。
    - 创建或更新 `meta/model_policy.yml`。
    - 在 `ledgers/decision_log.yml` 或 `meta/session_log.md` 中记录 bootstrap 决策和开书完整性自检结论。
+
+11. **种引擎初始事件并验收**
+   - 运行 `python -m novel_engine init <project>`——从初始 `entities/`、`ledgers/` 生成 `events/bootstrap.yml`（把初始人物/债务/伏笔/信息差变成事件）。
+   - 运行 `python -m novel_engine check <project>`——确认初始状态 schema + 引用/时序完整性干净。有 error 先修（多半是 ledger 开局条目缺 `created_in: bootstrap`，或实体缺 id）。
+   - 告诉用户切到 `novel-engine-write` 写第一章。
 
 ## 输出要求
 
