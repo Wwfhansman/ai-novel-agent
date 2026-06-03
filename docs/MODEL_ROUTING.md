@@ -56,9 +56,7 @@ fast_model: 快速、便宜、适合机械任务的模型
 - YAML 格式检查和字段补齐。
 - `python -m novel_engine check` / `patterns` / `txt` 报错整理。
 - TXT 空行修复。
-- 章节摘要初稿整理，但必须由 `premium_model` 或当前写作 agent 检查是否改变事实。
-- `canon_delta.yml` 初稿整理，但必须由当前写作 agent 对照正文确认。
-- context pack 的读取清单表格整理。
+- `events/chNNN.yml` 草稿整理，但必须由 `premium_model` 或当前写作 agent 对照正文确认（事件是否真发生、id 是否对）。
 - session log、diff 摘要、文件变更清单整理。
 - 低风险 typo、标点、格式修复。
 
@@ -66,49 +64,41 @@ fast_model: 快速、便宜、适合机械任务的模型
 
 以下任务可以先用 `fast_model` 产出草案，再由 `premium_model` 做最终判断：
 
-- round context pack 初稿。
-- chapter writing_packet 初稿。
-- 最近章节摘要压缩。
-- 动态账本候选更新。
+- 按 `_kit/events.template.yml` 填 `events/chNNN.yml` 的初稿。
+- 动态背景（势力/地点）落库前的字段整理。
 - review checklist 初稿。
 
 但最终写作前，`premium_model` 必须确认：
 
-- active_flow 是否准确。
+- 进入本章的 entering-state（`kit`/`context`）是否准确。
 - rolling_plan 是否足够驱动正文。
-- 本章 handoff 是否具体。
-- 本章禁止事项是否完整。
+- 本章 handoff 是否具体、禁止事项是否完整。
 - 不存在会导致正文跑偏的误读。
 
 ## 4. 写作推荐路由
 
-一轮三章写作推荐流程：
+引擎流程下逐章推荐：
 
 ```text
 premium_model:
-  当 rolling_plan 接近耗尽或世界变窄时，运行 novel-architect / story development
-  读取 rolling_plan 全文
-  刷新 active_flow
-  刷新/扩写 rolling_plan
-  确认本轮剧情方向
+  当 rolling_plan 接近耗尽或世界变窄时，运行 novel-architect 开发未来窗口
+  确认本章剧情方向
 
 fast_model 可选:
-  整理 round context pack 表格
-  检查 YAML 和旧字段
+  python -m novel_engine kit <project> --chapter chNNN（确定性，本身不需 LLM）
+  检查 YAML
 
 premium_model:
-  审定 round context pack
-  逐章写 draft/final
+  按 _kit 逐场写 final.txt
   决定章节结尾和 handoff
 
 fast_model 可选:
-  运行格式检查
-  整理 summary/canon_delta 初稿
+  按 _kit/events.template.yml 填 events/chNNN.yml 初稿
   整理 session log
 
 premium_model:
-  对照正文确认 summary/canon_delta/current state
-  确认 active_flow 和 rolling_plan 已正确更新
+  对照正文确认 events/chNNN.yml（关系/状态变化是否记全）
+  python -m novel_engine check → commit
 ```
 
 ## 5. 禁止降级

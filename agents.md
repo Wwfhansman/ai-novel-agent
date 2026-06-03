@@ -4,7 +4,7 @@
 
 AI Novel Agent 是一套面向长篇小说创作的 agent-native 写作框架。它不是应用、不是 SaaS、不是"一键生成小说"的工具——而是一套基于文件系统的创作操作系统。每本小说是一个独立项目目录，项目文件是正史和长期记忆，agent 对话只是临时工作台。
 
-**新版本以 `novel_engine` 为生产主干（默认）。** 正史是事件日志 `events/`，当前状态由事件**派生**（`entities/ledgers` 不手写、构造上不漂），写作走场景级、收尾走 `check`/`commit`。引擎与旧 `scripts/` 以绞杀榕方式并存：未迁移的旧项目仍可用旧 skill 流程。详见 [`docs/ENGINE.md`](docs/ENGINE.md) 与 [`docs/ENGINE_WORKFLOW.md`](docs/ENGINE_WORKFLOW.md)。
+**新版本以 `novel_engine` 为生产主干（默认，唯一现行流程）。** 正史是事件日志 `events/`，当前状态由事件**派生**（`entities/ledgers` 不手写、构造上不漂），写作走场景级、收尾走 `check`/`commit`。旧的写作 skill（`novel-write`）、旧校验/合并脚本均已删除——**未迁移的旧项目先 `python -m novel_engine migrate <project>` 上引擎，再按引擎流程写**。详见 [`docs/ENGINE.md`](docs/ENGINE.md) 与 [`docs/ENGINE_WORKFLOW.md`](docs/ENGINE_WORKFLOW.md)。
 
 ## 常用命令（引擎为默认）
 
@@ -56,18 +56,13 @@ projects/<novel-name>/
     volume_debts.yml
   arcs/                           # 章群层——3-10 章小事件链
   events/                         # ★引擎正史——append-only 事件日志（当前状态由它派生）
-    bootstrap.yml                 # 初始人物/债务/伏笔/信息差（新书 init 生成）
+    bootstrap.yml                 # 初始人物/势力/地点/物品/债务/伏笔/信息差（init 生成）
     ch001.yml                     # 本章造成的 canon 变化（类型化事件 + note）
-  chapters/ch001/                 # 章节层——正文与产物
+  chapters/ch001/                 # 章节层
     final.txt                     # 终稿（正史正文）★唯一正文权威
     _kit/                         # kit 生成的生产套件（逐场 prompt/缝合/events 模板/步骤）
-    writing_packet.md             # 写作输入包（旧流程）
-    reader_pass.md                # 冷读质量门（旧流程）
-    draft.txt                     # 草稿
-    review.md                     # 审查报告（旧流程）
-    summary.yml                   # 章节摘要
-    canon_delta.yml               # 章节变化记录（旧流程；引擎下由 events 取代）
-  entities/                       # 实体层——人物/势力/地点/物品当前状态
+                                  # （旧项目可能还有 writing_packet/draft/summary/canon_delta 等，引擎不再产出）
+  entities/                       # 实体层——人物/势力/地点/物品/力量体系
                                   # ★引擎下为派生产物（commit 物化），不要手写
     characters.yml
     factions.yml
@@ -84,9 +79,8 @@ projects/<novel-name>/
   planning/                       # 规划层
     story_architecture.yml        # 编剧层控制台：当前卷节奏、成长、信息释放、世界扩张
     thread_board.yml              # 活跃支线、off-screen 行动、冲突网络
-    active_flow.yml               # 当前跨轮连续剧情流 ★唯一连续性权威
+    active_flow.yml               # 当前跨轮连续剧情流
     rolling_plan.yml              # 未来 6-15 章详细章纲 ★唯一近期规划权威
-    current_round.yml             # 本批次生产追踪（轻量，不复制章纲）
     completed_plan_log.yml        # 已完成章纲归档
     completed_threads_log.yml     # 已完成支线归档
     future_backlog.yml            # 远期点子
@@ -110,18 +104,12 @@ projects/<novel-name>/
 | 事实类型 | 权威来源 | 说明 |
 |---------|---------|------|
 | 已发生的正文事实 | `final.txt` | 原文细节以 final.txt 为准 |
-| 某章造成了什么变化（引擎） | `events/chNNN.yml` | append-only 事件日志，当前状态由它派生 |
-| 某章发生了什么 | `summary.yml` | 冲突时回看 final.txt |
-| 某章造成了什么变化（旧流程） | `canon_delta.yml` | 变更日志，不代表当前最终状态 |
-| 人物当前状态 | `entities/characters.yml` | 当前目标/立场/关系/意图（引擎下派生） |
-| 当前世界局势 | `ledgers/world_state.yml` | 主角之外的外部系统 |
-| 谁知道什么 | `ledgers/knowledge_state.yml` | 信息差 |
-| 读者期待债 | `ledgers/narrative_debts.yml` | 全局债务 |
-| 当前连续剧情流 | `planning/active_flow.yml` | 跨轮连续性的权威 |
+| 某章造成了什么变化 | `events/chNNN.yml` | ★append-only 事件日志，当前状态由它派生 |
+| 人物/势力/地点/物品当前状态 | `entities/*.yml` | ★由 events 派生（`commit` 物化），不手写 |
+| 世界局势/信息差/伏笔/债务 | `ledgers/*.yml` | ★同为派生产物 |
 | 当前卷编剧控制 | `planning/story_architecture.yml` | 当前卷节奏、成长、信息释放计划；不覆盖 longform_blueprint |
 | 活跃支线调度 | `planning/thread_board.yml` | 支线生命周期和 off-screen 行动计划 |
-| 近期未来计划 | `planning/rolling_plan.yml` | 6-15 章详细章纲 |
-| 本批次执行计划 | `planning/current_round.yml` | 只是生产摘录 |
+| 近期未来计划 | `planning/rolling_plan.yml` | 6-15 章详细章纲（编剧层维护） |
 | 长篇规模递进 | `book/longform_blueprint.yml` | ★受保护 |
 
 ## 核心工作流
@@ -147,27 +135,27 @@ projects/<novel-name>/
 7. 提交   python -m novel_engine commit <project>        → 物化派生 entities/ledgers
 ```
 不要手写 `entities/ledgers`（引擎下是派生产物，commit 会覆盖）；canon 变化只记成 events。
-旧项目（已写章节、无 events/）先 `shadow → migrate → check → commit` 搬上引擎。
+### 旧项目搬迁（已写章节、无 events/）
 
-### 旧流程（fallback，未迁移项目）
+旧的写作 skill 和校验/合并脚本已删除，没有"旧流程 fallback"。旧项目先上引擎再写：
+
 ```
-新书：用户 seed → novel-bootstrap → 初始化全项目文件 → 9-15 章滚动章纲
-日常：刷新 active_flow + rolling_plan → round context pack → 逐章 writing_packet.md
-      → draft.txt → reader_pass.md → final.txt → review.md → summary.yml + canon_delta.yml
-      → 手工更新 entities/ + ledgers/ + planning/ → 滑动 rolling_plan
+python -m novel_engine shadow  <project>   # 看现状漂移（只读）
+python -m novel_engine migrate <project>   # 旧 canon_delta → events/
+python -m novel_engine check   <project>   # 验收
+python -m novel_engine commit  <project>   # 物化派生状态
+# 之后按引擎流程逐章写
 ```
 
 ### 交接字段语义（重要）
 
-三个字段名字不同，语义不同，不要混淆：
-
 | 字段 | 位置 | 语义 |
 |------|------|------|
 | `planned_handoff` | `rolling_plan.yml` | 规划中期望的交接 |
-| `actual_handoff` | `canon_delta.yml`、`summary.yml` | 写完后实际造成的交接 |
-| `current_handoff` | `active_flow.yml` → `last_cut` | 当前最新的实际交接 |
+| `actual_handoff` | `events/chNNN.yml`（`note` 或类型化事件） | 写完后实际造成的交接 |
+| `current_handoff` | 引擎从 events 派生（`context`/`kit` 的 entering-state） | 当前最新的实际交接 |
 
-写作时：读 `current_handoff`（上一章实际）→ 参考 `planned_handoff`（本章规划）→ 写完后记录 `actual_handoff`（本章实际）。
+写作时：从 `kit` 拿到上一章 entering-state（含 current_handoff）→ 参考 `planned_handoff`（本章规划）→ 写完把实际交接记进 `events/chNNN.yml`。
 
 ## 关键写作约束
 

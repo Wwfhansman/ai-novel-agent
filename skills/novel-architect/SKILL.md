@@ -64,7 +64,7 @@ Prefer the architect context pack. If you must compile it yourself, read and sum
 - `planning/story_architecture.yml`
 - `planning/thread_board.yml`
 - `planning/future_backlog.yml`
-- latest 6-9 chapter `summary.yml`
+- latest 6-9 chapter `events/chNNN.yml` (what each chapter changed)
 - latest 1-2 `final.txt` only if continuity, tone, or scene texture needs exact evidence.
 - relevant `entities/` and `ledgers/` entries by topic.
 

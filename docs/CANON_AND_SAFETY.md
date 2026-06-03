@@ -20,59 +20,43 @@ idea: 未确认灵感
 retcon: 对旧正史的修订计划
 ```
 
-默认规则：
+默认规则（引擎模型）：
 
-- `final.txt` 是已确认章节正文。
-- `draft.txt` 不是正史。
-- `idea_pool.yml` 不是正史，除非条目状态为 `promoted` 且被写入规划、伏笔或正文。
-- `canon_delta.yml` 是章节造成的状态变化记录，不是当前状态总表。
-- `entities/`、`ledgers/`、`planning/` 存当前权威状态。
-- `planning/active_flow.yml` 是当前连续剧情流的权威来源。
+- `final.txt` 是已确认章节正文（原文细节最高权威）。
+- `events/chNNN.yml` 是本章造成的 canon 变化的权威（append-only 事件日志）。
+- `entities/`、`ledgers/` 是**派生产物**：由 `commit` 从 events 投影出来，**不手写**。
+- `idea_pool.yml` 不是正史，除非晋升并写入规划/伏笔/正文（记成事件）。
 
 ## 3. 唯一事实来源
 
 冲突时按下表判断。
 
-| 事实类型 | 权威来源 | 辅助来源 | 说明 |
-| --- | --- | --- | --- |
-| 已发生的正文事实 | `chapters/chXXX/final.txt` | `summary.yml`, `canon_delta.yml` | 原文细节以 `final.txt` 为准。 |
-| 某章发生了什么 | `chapters/chXXX/summary.yml` | `final.txt` | 摘要用于快速理解，冲突时回看正文。 |
-| 某章造成了什么变化 | `chapters/chXXX/canon_delta.yml` | `summary.yml` | delta 是变更日志，不代表当前最终状态。 |
-| 人物当前状态 | `entities/characters.yml` | 最近 `canon_delta.yml` | 当前目标、立场、关系、意图以实体库为准。 |
-| 势力当前状态 | `entities/factions.yml` | `ledgers/world_state.yml` | 势力基本资料在实体库，外部局势在世界状态。 |
-| 地点/物品设定 | `entities/locations.yml`, `entities/items.yml` | 相关章节正文 | 设定以实体库为准，历史细节看正文。 |
-| 当前世界局势 | `ledgers/world_state.yml` | `volume_state.yml`, `canon_delta.yml` | 主角之外的外部系统以 world_state 为准。 |
-| 谁知道什么 | `ledgers/knowledge_state.yml` | 相关章节正文 | 信息差以 knowledge_state 为准。 |
-| 读者期待债 | `ledgers/narrative_debts.yml` | `volume_debts.yml`, `canon_delta.yml` | 全局债务以 ledger 为准。 |
-| 伏笔状态 | `ledgers/foreshadowing.yml` | `canon_delta.yml` | 是否已埋、推进、回收以 ledger 为准。 |
-| 当前卷进展 | `volumes/vol_XXX/volume_state.yml` | `volume_summary.md` | 结构化当前进展以 state 为准。 |
-| 当前连续剧情流 | `planning/active_flow.yml` | `arcs/*`, `rolling_plan.yml`, 最近 `canon_delta.yml` | active_flow 决定章节从哪个压力中切出，不受 round 边界控制。 |
-| 近期未来计划 | `planning/rolling_plan.yml` | `current_round.yml` | 6-15 章详细章纲以 rolling_plan 为准。 |
-| 本批次追踪状态 | `planning/current_round.yml` | `planning/rolling_plan.yml`, `planning/active_flow.yml`, round context pack | current_round 只记录本轮写哪几章、状态和起止 flow，不能复制章纲、另起冲突计划或写 round 级剧情目标。 |
-| 未确认点子 | `ledgers/idea_pool.yml` | `opportunity_ledger.yml` | 不可当作正史。 |
-| 重大创作决策 | `ledgers/decision_log.yml` 或 `meta/decision_log.*` | 用户对话摘要 | 决策必须落盘。 |
+| 事实类型 | 权威来源 | 说明 |
+| --- | --- | --- |
+| 已发生的正文事实 | `chapters/chXXX/final.txt` | 原文细节以 `final.txt` 为准。 |
+| 某章造成了什么变化 | `events/chXXX.yml` | ★append-only 事件日志；当前状态由它派生。 |
+| 人物/势力/地点/物品/力量体系当前状态 | `entities/*.yml` | ★由 events 派生（`commit` 物化），不手写。 |
+| 世界局势/信息差/伏笔/读者期待债 | `ledgers/*.yml` | ★同为派生产物。 |
+| 近期未来计划 | `planning/rolling_plan.yml` | 6-15 章详细章纲，由 `novel-architect` 维护。 |
+| 当前卷编剧控制 | `planning/story_architecture.yml` / `thread_board.yml` | 卷节奏、成长、信息释放、支线调度。 |
+| 重大创作决策 | `ledgers/decision_log.yml` 或 `meta/session_log.md` | 决策必须落盘。 |
+| 长篇规模递进 | `book/longform_blueprint.yml` | ★受保护。 |
 
-## 4. 同步规则
+## 4. 同步规则（引擎模型）
 
-每章完成后，agent 必须按顺序同步：
+每章完成后：
 
 ```text
-final.txt
-→ summary.yml
-→ canon_delta.yml
-→ entities/*
-→ ledgers/*
-→ volumes/*
-→ planning/*
+final.txt → events/chXXX.yml（把本章变化记成类型化事件）→ check → commit（物化派生状态）
 ```
 
 同步原则：
 
-- `canon_delta.yml` 只追加或记录本章变化，不承担当前总状态。
-- 当前状态必须合并进 `entities/` 和 `ledgers/`。
-- 每章造成的外部交接必须写入 `canon_delta.yml` 的 `actual_handoff`，并同步到 `planning/active_flow.yml` 的 `last_cut.current_handoff`；规划中的未来交接写入 `planning/rolling_plan.yml` 的 `planned_handoff`。
-- 旧状态如果失效，必须显式更新状态字段，不要保留冲突描述。
-- 如果无法确定是否应覆盖旧状态，写入 `review.md` 或 `meta/open_questions.md`，不要静默猜。
+- 机械变化（关系/人物状态/信息差/势力/地点/债务/伏笔/道具）**必须用类型化事件**，不塞进 `fact_added`/`note`。
+- **不手工编辑 `entities/`、`ledgers/`**——`commit` 会用 events 重算并覆盖。
+- 章末外部交接记进 `events/chXXX.yml`（`note` 或类型化事件）；规划中的未来交接写 `rolling_plan.yml` 的 `planned_handoff`。
+- 旧状态失效时，追加更正事件（如新的 `*_changed`）；不要手改派生文件。
+- 拿不准是否构成 canon 变化时，写 `meta/open_questions.md` 或调用 `novel-memory-recheck`，不要静默猜。
 
 ## 5. 冲突处理规则
 

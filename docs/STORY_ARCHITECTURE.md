@@ -87,8 +87,8 @@ planning/context_packs/architect_context_pack_XXX.md
 - `planning/active_flow.yml` 的当前压力、last_cut、下一步承接。
 - `planning/rolling_plan.yml` 的完整未来窗口摘要。
 - `planning/story_architecture.yml` 和 `planning/thread_board.yml` 的当前状态。
-- 近 6-9 章 `summary.yml`，必要时最近 1-2 章 `final.txt` 的关键片段。
-- 相关 `entities/`、`ledgers/` 的定向摘要，而不是全量复制。
+- 近 6-9 章的 `events/chNNN.yml`（本章造成了什么）与必要时 `final.txt` 的关键片段。
+- 相关 `entities/`、`ledgers/`（引擎派生的当前状态）的定向摘要，而不是全量复制。
 
 必须原文读取或精确摘录的内容：
 

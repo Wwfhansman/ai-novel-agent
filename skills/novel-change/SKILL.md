@@ -44,7 +44,7 @@ candidate_idea: interesting but not committed; store in `ledgers/idea_pool.yml`.
 future_setup: likely useful later; store in `ledgers/foreshadowing.yml` or future backlog.
 near_term_plan: affects the next 6-15 chapters; update `planning/rolling_plan.yml`.
 current_flow_change: affects the current scene chain or immediate handoff; update `planning/active_flow.yml`.
-current_state_change: changes present-time character/world/knowledge state; update `entities/` or `ledgers/`.
+current_state_change: changes present-time character/world/knowledge/faction/location state; record it as a typed event in `events/chNNN.yml` (relationship_changed / character_changed / faction_changed / knowledge_changed / …), then `commit` — do NOT hand-edit `entities/`/`ledgers/` (they are derived).
 protected_change: touches protected book/volume/core-character/secret files; require Change Summary and checkpoint.
 retcon: contradicts existing `final.txt`; require explicit user approval before rewriting canon.
 ```
@@ -55,27 +55,17 @@ Do not promote a user idea directly into canon just because it is appealing. Fir
 
 Respect the current continuity authorities:
 
-- `planning/active_flow.yml` is the authority for the current cross-round scene chain.
+- `final.txt` is the authority for already written prose facts.
+- `events/chXXX.yml` is the authority for what a chapter changed; current state is **derived** from it (`entities/`/`ledgers/` are materialized by `commit`, not hand-written).
 - `planning/rolling_plan.yml` is the authority for the next 6-15 chapter plan.
-- `planning/current_round.yml` is only a production excerpt, not the long-term plan authority.
-- `final.txt` remains the authority for already written prose facts.
-- `summary.yml` summarizes what happened in a chapter.
-- `canon_delta.yml` records what changed in a chapter; it is not the current-state table.
-
-Do not mix up handoff fields:
-
-```text
-planned_handoff: expected handoff in `rolling_plan.yml`.
-actual_handoff: actual handoff after writing, stored in `summary.yml` / `canon_delta.yml`.
-current_handoff: latest actual handoff, represented by `active_flow.yml` → `last_cut`.
-```
+- `planning/active_flow.yml` (if used) tracks the current cross-round scene chain.
 
 When a change affects upcoming continuity:
 
 - If it changes what should happen soon, update `rolling_plan.yml`.
-- If it changes the immediate ongoing pressure, scene chain, last cut, or next opening, update `active_flow.yml`.
-- If it only affects the current production batch, update `current_round.yml` after the authorities above are correct.
-- If it changes current character/world/knowledge state, merge it into the relevant `entities/` or `ledgers/` file; do not leave it only in `canon_delta.yml`.
+- If it changes the immediate ongoing pressure / next opening, update `active_flow.yml`.
+- If it changes current character/world/knowledge/faction/location state, record a typed event in `events/` and `commit`. Never leave it only as prose or hand-edit the derived `entities/`/`ledgers/`.
+- For changes to already-written canon (retcon), get user approval; then add corrective events and, if prose must change, edit the affected `final.txt`.
 
 ## 工作流
 

@@ -31,7 +31,7 @@ color: accent
 - 如果没有 architect context pack，要求主控先用 `scripts/compile_architect_context.py` 编译；不要靠零散记忆硬做长期规划。
 - 如果当前状态漂移、`python -m novel_engine check` 有 blocking error、`active_flow` / `rolling_plan` 互相冲突，停止并要求主控修复。
 - 不写 `draft.txt` / `final.txt`。
-- 不合并 `summary.yml` / `canon_delta.yml` / `entities` / `ledgers` / `planning` 当前状态。
+- 不写 `events/`，不合并派生的 `entities` / `ledgers` 当前状态。
 - 不覆盖 `book/longform_blueprint.yml` 的规模、力量、秘密释放约束；需要改动时标记 `needs_novel_change`。
 - **章纲一次最多开发 6-10 章,每章必须填满 `architecture_role`**（pacing_mode、world_expansion、protagonist_growth_budget、information_reveal、side_thread_touch、offscreen_pressure、recurring_assets、must_not_resolve、writable_scene_seed）和 `pressure_curve.position_in_flow`。**绝不灌没有 architecture_role 的占位章**（那只会被 `python -m novel_engine structure` 报 FUNCTION_LOOP / WORLD_EXPANSION_DROUGHT）。填不动的章宁可不开,放进 `future_backlog.yml` 当远期点子。
 - 合并进 `rolling_plan.yml` 后,跑 `python -m novel_engine structure <project>` 自检;有节奏/世界/弧线警告先修再交。
