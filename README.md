@@ -125,4 +125,4 @@ python3 -m unittest discover -s novel_engine/tests -t .   # 内核测试
 
 ## License
 
-尚未选择开源许可证。在添加许可证前，本仓库是 public source-available，但不是正式开源授权。
+MIT License. See [LICENSE](LICENSE).
