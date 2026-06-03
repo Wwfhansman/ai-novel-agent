@@ -30,10 +30,10 @@ If the target project already has canon chapters, stop and route to `novel-chang
 Read:
 
 - `templates/project/README.md`
-- `docs/MEMORY_MODEL.md`
+- `docs/ENGINE.md` 与 `docs/ENGINE_WORKFLOW.md`（开书后用 `novel_engine init` 上引擎）
 - `docs/CANON_AND_SAFETY.md`
-- `docs/FILE_FORMATS.md`
 - `docs/MODEL_ROUTING.md`
+- `docs/STORY_ARCHITECTURE.md`
 - `templates/project/book/chapter_rhythm_guide.md`（初始化章纲时参考网文章类型模板）
 - `templates/project/style/samples.md`（占位模板——bootstrap 时不写内容，但需告知用户此文件用于后续存放文笔风格报告）
 

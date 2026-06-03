@@ -7,15 +7,15 @@ description: Review an AI Novel Agent project, round, chapter, or memory state. 
 
 Use this skill to inspect whether a project can be safely continued by a fresh agent and whether recent writing remains aligned with the book.
 
+> ⚠️ **引擎项目（有 `events/`）**：状态/连续性/记漏由引擎门禁覆盖——跑 `python -m novel_engine check`（schema+完整性+健康+结构+记漏）、`structure`、`coverage`，正史以 `events/` + `final.txt` 为准。下文提到的 `writing_packet.md`/`canon_delta.yml`/`summary.yml`/`merge_previews` 属未迁移旧项目；引擎项目无需逐个检查这些旧产物。本 skill 对引擎项目的重点是**冷读质量、文风对齐、追读性、人物体温**这些引擎判断不了的部分。
+
 ## Read First
 
 Read:
 
-- `docs/CANON_AND_SAFETY.md`
-- `docs/MEMORY_MODEL.md`
-- `docs/WORKFLOWS.md`
-- `docs/ENGINE.md`（引擎项目的状态/门禁）
-- `docs/WRITING_CRAFT.md`
+- `docs/ENGINE.md` 与 `docs/ENGINE_WORKFLOW.md`（引擎项目的正史/状态/门禁——默认）
+- `docs/CANON_AND_SAFETY.md`（受保护文件）
+- `docs/WRITING_CRAFT.md`（文笔/TXT 格式）
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
 - `style/samples.md`（如有内容，审查时对照检查文笔是否偏离项目风格）

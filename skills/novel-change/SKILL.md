@@ -7,16 +7,17 @@ description: Manage mid-story changes in an AI Novel Agent project. Use when the
 
 Use this skill for changes after bootstrap. Do not default to rebooting the novel. Most changes should be evaluated, scoped, and integrated into existing memory.
 
+> ⚠️ **引擎项目（有 `events/`）**：当前状态变化记进 `events/`（`relationship_changed`/`character_changed`/`faction_changed`/`knowledge_changed`…），由 `commit` 物化进 `entities/ledgers`——**不要手写 `entities/ledgers`，也不用写 `canon_delta.yml`**。下文提到的 `canon_delta.yml`/`summary.yml` 属未迁移旧项目。受保护文件与变更分级规则（见 `docs/CANON_AND_SAFETY.md`）对两套都适用。
+
 ## Read First
 
 Read:
 
-- `docs/CANON_AND_SAFETY.md`
-- `docs/MEMORY_MODEL.md`
-- `docs/WORKFLOWS.md`
+- `docs/CANON_AND_SAFETY.md`（受保护文件与变更分级）
+- `docs/ENGINE.md`（引擎正史/状态模型：events 权威、entities/ledgers 派生）
 - Target project `project.yml`
 - `meta/model_policy.yml` if present
-- Relevant current-state files.
+- Relevant current-state files. 引擎项目里，canon 变化记进 `events/`，不手写 `entities/ledgers`。
 
 ## Change Levels
 

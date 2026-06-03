@@ -1,5 +1,7 @@
 # 模型路由策略
 
+> 本文的 premium/fast 角色划分仍然适用。文中举的若干"机械任务"例子（`canon_delta` 初稿、`writing_packet` 初稿等）属旧流程；引擎模型下机械任务是 `events` 编写、`check`/`patterns`/`txt` 报错整理。
+
 ## 1. 目标
 
 模型路由的目标是降低长篇写作成本，同时不牺牲正文质量和长篇一致性。
@@ -52,7 +54,7 @@ fast_model: 快速、便宜、适合机械任务的模型
 以下任务可以使用 `fast_model`：
 
 - YAML 格式检查和字段补齐。
-- `scripts/validate_novel_output.py` 报错整理。
+- `python -m novel_engine check` / `patterns` / `txt` 报错整理。
 - TXT 空行修复。
 - 章节摘要初稿整理，但必须由 `premium_model` 或当前写作 agent 检查是否改变事实。
 - `canon_delta.yml` 初稿整理，但必须由当前写作 agent 对照正文确认。

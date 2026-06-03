@@ -162,16 +162,17 @@ book/ style/ meta/       全书设定、文风、模型路由（开书时由 nov
 - [确定性正史内核 novel_engine](docs/ENGINE.md)
 - [引擎化写作流程](docs/ENGINE_WORKFLOW.md)
 
-仍在用的旧文档（开书/编剧/改设定等引擎未覆盖的层）：
+引擎未覆盖的层（开书/编剧/改设定/审查，仍在用）：
 
 - [编剧层设计](docs/STORY_ARCHITECTURE.md)
 - [正史与安全规则](docs/CANON_AND_SAFETY.md)
 - [写作心法](docs/WRITING_CRAFT.md)
-- [文件格式规范](docs/FILE_FORMATS.md)
 - [模型路由策略](docs/MODEL_ROUTING.md)
-- [记忆模型](docs/MEMORY_MODEL.md)
-- [工作流设计](docs/WORKFLOWS.md)
-- [历史方案归档](docs/archive/README.md)
+
+历史/已归档（描述被引擎取代的旧流程，勿照其执行）：
+
+- [工作流设计（旧）](docs/WORKFLOWS.md)
+- [历史方案归档](docs/archive/README.md)（含旧记忆模型、旧文件格式）
 
 ## 引擎核心（novel_engine）
 
